@@ -277,7 +277,7 @@ func readArgs() Input {
 					fmt.Println("The inputted port range is not valid.")
 					os.Exit(1)
 				}
-				if maybeEnd <= 1 && maybeEnd <= EndPort {
+				if maybeEnd >= 1 && maybeEnd <= EndPort {
 					EndPort = maybeEnd
 				}
 			} else if portsRange[len(portsRange)-1] == delimiter {
