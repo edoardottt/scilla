@@ -1,7 +1,8 @@
 # scilla
-<p align="center" width="60%">
+<p align="center">
   <!-- logo -->
-  <img src="https://github.com/edoardottt/scilla/blob/master/images/scilla.jpg">
+  <img width="50%" src="https://github.com/edoardottt/scilla/blob/master/images/scilla.jpg">
+  <br>
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - dns/subdomain/port enumeration</b><br>
   <sub>
     Coded with 💙 by edoardottt.
