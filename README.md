@@ -1,13 +1,5 @@
 # scilla
 
-**See:**
-
-https://appsecco.com/books/subdomain-enumeration/
-
-https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-7d842d5570f6
-
-https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
-
 **To do:**
 
   - [ ] Test the functions built
