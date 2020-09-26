@@ -34,10 +34,14 @@ import (
 	"github.com/asaskevich/govalidator"
 	"github.com/fatih/color"
 	"log"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
+	"strings"
 	"sync"
+	"time"
 )
 
 //intro prints the banner
@@ -94,7 +98,11 @@ func execute(input Input) {
 		asyncGet(strings1)
 	}
 	if input.PortTarget != "" {
-		fmt.Println("PORT")
+		target := input.PortTarget
+		if isUrl(target) {
+			target = cleanProtocol(input.SubdomainTarget)
+		}
+		asyncPort(input.StartPort, input.EndPort, target)
 	}
 
 }
@@ -126,6 +134,8 @@ type Input struct {
 	DnsTarget       string
 	SubdomainTarget string
 	PortTarget      string
+	StartPort       int
+	EndPort         int
 }
 
 //readArgs reads arguments/options from stdin
@@ -153,6 +163,10 @@ func readArgs() Input {
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
+	portsPtr := portCommand.String("p", "", "ports range (Required)")
+	// Default ports
+	StartPort := 1
+	EndPort := 65535
 
 	// Verify that a subcommand has been provided
 	// os.Arg[0] is the main command
@@ -243,10 +257,63 @@ func readArgs() Input {
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
 	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
 	if portCommand.Parsed() {
+
 		// Required Flags
 		if *portTargetPtr == "" {
 			portCommand.PrintDefaults()
 			os.Exit(1)
+		}
+
+		// If there's ports range, define it as inputs for the struct
+		if *portsPtr != "" {
+			portsRange := string(*portsPtr)
+			delimiter := byte('-')
+			//If there is only one number
+
+			// If starting port isn't specified
+			if portsRange[0] == delimiter {
+				maybeEnd, err := strconv.Atoi(portsRange[1:])
+				if err != nil {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				if maybeEnd <= 1 && maybeEnd <= EndPort {
+					EndPort = maybeEnd
+				}
+			} else if portsRange[len(portsRange)-1] == delimiter {
+				// If ending port isn't specified
+				maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)])
+				if err != nil {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				if maybeStart > 0 && maybeStart < EndPort {
+					StartPort = maybeStart
+				}
+			} else {
+				// If a range is specified
+				sliceOfPorts := strings.Split(portsRange, string(delimiter))
+				if len(sliceOfPorts) != 2 {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				maybeStart, err := strconv.Atoi(sliceOfPorts[0])
+				if err != nil {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
+				if err != nil {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > EndPort {
+					fmt.Println("The inputted port range is not valid.")
+					os.Exit(1)
+				}
+				StartPort = maybeStart
+				EndPort = maybeEnd
+			}
 		}
 
 		//Verify good inputs
@@ -267,7 +334,7 @@ func readArgs() Input {
 		os.Exit(0)
 	}
 
-	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *portTargetPtr}
+	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *portTargetPtr, StartPort, EndPort}
 	return result
 }
 
@@ -355,7 +422,7 @@ type HttpResp struct {
 	Err    error
 }
 
-//asyncGet returns a bunch of http requests
+//asyncGet finds for subdomains
 func asyncGet(urls []string) {
 
 	limiter := make(chan string, 50) // Limits simultaneous requests
@@ -382,6 +449,47 @@ func asyncGet(urls []string) {
 				color.Red("%s", resp.Status)
 			}
 		}(i, domain)
+	}
+
+	wg.Wait()
+}
+
+//isOpenPort scan if a port is open
+func isOpenPort(host string, port string) bool {
+	timeout := time.Second
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
+	if err != nil {
+		return false
+	}
+	if conn != nil {
+		defer conn.Close()
+		return true
+	}
+	return false
+}
+
+//asyncPort returns a bunch of open ports
+func asyncPort(StartingPort int, EndingPort int, host string) {
+
+	limiter := make(chan string, 50) // Limits simultaneous requests
+
+	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
+
+	for port := StartingPort; port <= EndingPort; port++ {
+		wg.Add(1)
+		portStr := fmt.Sprint(port)
+		limiter <- portStr
+
+		go func(portStr string, host string) {
+			defer func() { <-limiter }()
+			defer wg.Done()
+
+			resp := isOpenPort(host, portStr)
+			if resp {
+				fmt.Printf("[+]FOUND: %s:", host)
+				color.Green("%s\n", portStr)
+			}
+		}(portStr, host)
 	}
 
 	wg.Wait()
