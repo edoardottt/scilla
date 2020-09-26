@@ -25,9 +25,9 @@ git clone https://github.com/edoardottt/scilla
 Get Started 🎉
 ----------
 
-```
+`
 go run scilla.go help
-```
+`
 
 Contributing 🛠
 -------
