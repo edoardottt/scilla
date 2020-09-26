@@ -1,7 +1,5 @@
 # scilla
-
-<<<<<<< HEAD
-<p align="center">
+<p align="center" width="60%">
   <!-- logo -->
   <img src="https://github.com/edoardottt/scilla/blob/master/images/scilla.jpg">
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - dns/subdomain/port enumeration</b><br>
@@ -10,16 +8,33 @@
   </sub>
 </p>
 
-**See:**
+Requirements 🔍
+----------
 
-https://appsecco.com/books/subdomain-enumeration/
+`
+...
+`
 
-https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-7d842d5570f6
+Installation 📡
+----------
 
-https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
+`
+git clone https://github.com/edoardottt/scilla
+`
 
-=======
->>>>>>> 93d85b2335fc7f31f1b6fdff458da2497f202e7f
+Get Started 🎉
+----------
+
+```
+go run scilla.go help
+```
+
+Contributing 🛠
+-------
+
+Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/edoardottt/scilla/blob/master/CONTRIBUTING.md) and [CODE OF CONDUCT.md](https://github.com/edoardottt/scilla/blob/master/CODE_OF_CONDUCT.md)
+
+
 **To do:**
 
   - [ ] Test the functions built
@@ -37,3 +52,13 @@ https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
   - [x] Output color
   
   - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
+
+--------------------------
+If you liked it drop a :star:
+--------------------------
+
+https://www.edoardoottavianelli.it for contact me.
+
+
+  
+                                                                Edoardo Ottavianelli ©
