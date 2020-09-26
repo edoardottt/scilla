@@ -18,8 +18,6 @@ https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
   
   - [ ] DNS enumeration
   
-  - [ ] username and password field autodetection
-  
   - [ ] Progress bar
   
   - [x] Build an Input Struct and use it as parameter
