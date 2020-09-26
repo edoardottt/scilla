@@ -1,5 +1,6 @@
 # scilla
 
+<<<<<<< HEAD
 <p align="center">
   <!-- logo -->
   <img src="https://github.com/edoardottt/scilla/blob/master/images/scilla.jpg">
@@ -17,6 +18,8 @@ https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-
 
 https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
 
+=======
+>>>>>>> 93d85b2335fc7f31f1b6fdff458da2497f202e7f
 **To do:**
 
   - [ ] Test the functions built
@@ -26,8 +29,6 @@ https://blog.appsecco.com/open-source-intelligence-gathering-101-d2861d4429e3
   - [ ] Search site:<hostname_target> as it should be in google search 
   
   - [ ] DNS enumeration
-  
-  - [ ] username and password field autodetection
   
   - [ ] Progress bar
   
