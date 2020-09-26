@@ -106,9 +106,13 @@ func cleanProtocol(target string) string {
 		if target[:6] == "tls://" {
 			target = target[6:]
 		}
+	}
+	if len(target) > 7 {
 		if target[:7] == "http://" {
 			target = target[7:]
 		}
+	}
+	if len(target) > 8 {
 		if target[:8] == "https://" {
 			target = target[8:]
 		}
