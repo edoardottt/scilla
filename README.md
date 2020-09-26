@@ -39,7 +39,7 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
   - [ ] Test the functions built
   
-  - [ ] Subdomains enumeration
+  - [x] Subdomains enumeration
   
   - [ ] Search site:<hostname_target> as it should be in google search 
   
