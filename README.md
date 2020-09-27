@@ -95,6 +95,12 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
   - [x] Output color
   
   - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
+  
+  - [ ] JSON report output
+  
+  - [ ] PDF report output
+  
+  - [ ] XML report output
 
 --------------------------
 If you liked it drop a :star:
