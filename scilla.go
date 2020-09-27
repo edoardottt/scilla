@@ -70,11 +70,12 @@ func help() {
 	fmt.Println("	Available subcommands:")
 	fmt.Println("		- dns { -target <target (URL)> REQUIRED}")
 	fmt.Println("		- subdomain { -target <target (URL)> REQUIRED}")
-	fmt.Println("		- port { -target <target (URL/IP)> REQUIRED}")
+	fmt.Println("		- port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
 	fmt.Println("		- report { -target <target (URL/IP)> REQUIRED}")
 	fmt.Println("		- help")
 	fmt.Println("	Examples:")
 	fmt.Println("		- scilla subdomain -target target.domain")
+	fmt.Println("		- scilla port -p -450 -target target.domain")
 }
 
 //main
@@ -100,7 +101,7 @@ func execute(input Input) {
 	if input.PortTarget != "" {
 		target := input.PortTarget
 		if isUrl(target) {
-			target = cleanProtocol(input.SubdomainTarget)
+			target = cleanProtocol(input.PortTarget)
 		}
 		asyncPort(input.StartPort, input.EndPort, target)
 	}
@@ -163,7 +164,7 @@ func readArgs() Input {
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
-	portsPtr := portCommand.String("p", "", "ports range (Required)")
+	portsPtr := portCommand.String("p", "", "ports range <start-end>")
 	// Default ports
 	StartPort := 1
 	EndPort := 65535
@@ -456,7 +457,7 @@ func asyncGet(urls []string) {
 
 //isOpenPort scan if a port is open
 func isOpenPort(host string, port string) bool {
-	timeout := time.Second
+	timeout := 500 * time.Millisecond
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
 	if err != nil {
 		return false
