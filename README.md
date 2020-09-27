@@ -32,16 +32,15 @@
       <a href="https://edoardoottavianelli.it">
         <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=master" alt="workflows" />
       </a>
+    <br>
     <!-- ubuntu-build -->
       <a href="https://edoardoottavianelli.it">
         <img src="https://github.com/edoardottt/scilla/blob/master/images/ubuntu-build.svg" alt="ubuntu-build" />
       </a>
-  <br>
     <!-- go-report-card -->
       <a href="https://goreportcard.com/report/github.com/edoardottt/scilla">
         <img src="https://goreportcard.com/badge/github.com/edoardottt/scilla" alt="go-report-card" />
       </a>
-  <br>
     <!-- gobadge -->
       <a href="https://edoardoottavianelli.it">
         <img src="https://github.com/edoardottt/scilla/blob/master/images/gobadge" alt="gobadge" />
