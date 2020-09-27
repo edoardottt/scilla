@@ -71,11 +71,14 @@ func help() {
 	fmt.Println("		- dns { -target <target (URL)> REQUIRED}")
 	fmt.Println("		- subdomain { -target <target (URL)> REQUIRED}")
 	fmt.Println("		- port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
-	fmt.Println("		- report { -target <target (URL/IP)> REQUIRED}")
+	fmt.Println("		- report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
 	fmt.Println("		- help")
 	fmt.Println("	Examples:")
+	fmt.Println("		- scilla dns -target target.domain")
 	fmt.Println("		- scilla subdomain -target target.domain")
 	fmt.Println("		- scilla port -p -450 -target target.domain")
+	fmt.Println("		- scilla report -p 1000- -target target.domain")
+	fmt.Println("")
 }
 
 //main
@@ -102,9 +105,10 @@ func execute(input Input) {
 		fmt.Printf("target: %s\n", target)
 	}
 	if input.DnsTarget != "" {
-		target := cleanProtocol(input.SubdomainTarget)
+		target := cleanProtocol(input.DnsTarget)
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
+		lookupDNS(target)
 	}
 	if input.SubdomainTarget != "" {
 		target := cleanProtocol(input.SubdomainTarget)
@@ -513,4 +517,64 @@ func asyncPort(StartingPort int, EndingPort int, host string) {
 	}
 
 	wg.Wait()
+}
+
+//lookupDNS prints the DNS servers for the input domain
+func lookupDNS(domain string) {
+
+	// -- A RECORDS --
+	ips, err := net.LookupIP(domain)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
+	}
+	for _, ip := range ips {
+		fmt.Printf("[+]FOUND %s IN A: ", domain)
+		color.Green("%s\n", ip.String())
+	}
+
+	// -- CNAME RECORD --
+	cname, err := net.LookupCNAME(domain)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not get CNAME: %v\n", err)
+	}
+	fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
+	color.Green("%s\n", cname)
+
+	// -- NS RECORDS --
+	nameserver, err := net.LookupNS(domain)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not get NSs: %v\n", err)
+	}
+	for _, ns := range nameserver {
+		fmt.Printf("[+]FOUND %s IN NS: ", domain)
+		color.Green("%s\n", ns)
+	}
+
+	// -- MX RECORDS --
+	mxrecords, err := net.LookupMX(domain)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not get MXs: %v\n", err)
+	}
+	for _, mx := range mxrecords {
+		fmt.Printf("[+]FOUND %s IN MX: ", domain)
+		color.Green("%s %v\n", mx.Host, mx.Pref)
+	}
+
+	// -- SRV SERVICE --
+	cname, srvs, err := net.LookupSRV("xmpp-server", "tcp", domain)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not get SRVs: %v\n", err)
+	}
+	for _, srv := range srvs {
+		fmt.Printf("[+]FOUND %s IN SRV: ", domain)
+		color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
+	}
+
+	// -- TXT RECORDS --
+	txtrecords, _ := net.LookupTXT(domain)
+
+	for _, txt := range txtrecords {
+		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
+		color.Green("%s\n", txt)
+	}
 }
