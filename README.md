@@ -59,7 +59,7 @@ Requirements 🔍
 Installation 📡
 ----------
 
-1. `git clone https://github.com/edoardottt/scilla`
+1. `git clone https://github.com/edoardottt/scilla.git`
 
 2. `cd scilla && sudo chmod +x scilla.go`
 
