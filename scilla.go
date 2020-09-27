@@ -89,10 +89,11 @@ func main() {
 func execute(input Input) {
 	if input.ReportTarget != "" {
 		fmt.Println("=============== REPORT ===============")
-		target := cleanProtocol(input.SubdomainTarget)
+		target := cleanProtocol(input.ReportTarget)
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== SUBDOMAINS ===============")
 		strings1 := createSubdomains(target)
+		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1)
 		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
@@ -171,6 +172,7 @@ func readArgs() Input {
 
 	// report subcommand flag pointers
 	reportTargetPtr := reportCommand.String("target", "", "Target {URL/IP} (Required)")
+	portsReportPtr := reportCommand.String("p", "", "ports range <start-end>")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -228,6 +230,11 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+
+		if *portsReportPtr != "" {
+			portsRange := string(*portsReportPtr)
+			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+		}
 	}
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
@@ -272,56 +279,9 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 
-		// If there's ports range, define it as inputs for the struct
 		if *portsPtr != "" {
 			portsRange := string(*portsPtr)
-			delimiter := byte('-')
-			//If there is only one number
-
-			// If starting port isn't specified
-			if portsRange[0] == delimiter {
-				maybeEnd, err := strconv.Atoi(portsRange[1:])
-				if err != nil {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				if maybeEnd >= 1 && maybeEnd <= EndPort {
-					EndPort = maybeEnd
-				}
-			} else if portsRange[len(portsRange)-1] == delimiter {
-				// If ending port isn't specified
-				maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)])
-				if err != nil {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				if maybeStart > 0 && maybeStart < EndPort {
-					StartPort = maybeStart
-				}
-			} else {
-				// If a range is specified
-				sliceOfPorts := strings.Split(portsRange, string(delimiter))
-				if len(sliceOfPorts) != 2 {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				maybeStart, err := strconv.Atoi(sliceOfPorts[0])
-				if err != nil {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
-				if err != nil {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > EndPort {
-					fmt.Println("The inputted port range is not valid.")
-					os.Exit(1)
-				}
-				StartPort = maybeStart
-				EndPort = maybeEnd
-			}
+			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
 		}
 
 		//Verify good inputs
@@ -341,6 +301,59 @@ func readArgs() Input {
 
 	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *portTargetPtr, StartPort, EndPort}
 	return result
+}
+
+//checkPortsRange
+func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
+	// If there's ports range, define it as inputs for the struct
+	delimiter := byte('-')
+	//If there is only one number
+
+	// If starting port isn't specified
+	if portsRange[0] == delimiter {
+		maybeEnd, err := strconv.Atoi(portsRange[1:])
+		if err != nil {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		if maybeEnd >= 1 && maybeEnd <= EndPort {
+			EndPort = maybeEnd
+		}
+	} else if portsRange[len(portsRange)-1] == delimiter {
+		// If ending port isn't specified
+		maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)])
+		if err != nil {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		if maybeStart > 0 && maybeStart < EndPort {
+			StartPort = maybeStart
+		}
+	} else {
+		// If a range is specified
+		sliceOfPorts := strings.Split(portsRange, string(delimiter))
+		if len(sliceOfPorts) != 2 {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		maybeStart, err := strconv.Atoi(sliceOfPorts[0])
+		if err != nil {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
+		if err != nil {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > EndPort {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		StartPort = maybeStart
+		EndPort = maybeEnd
+	}
+	return StartPort, EndPort
 }
 
 //isIp checks if the inputted Ip is valid
