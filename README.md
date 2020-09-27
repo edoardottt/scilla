@@ -18,23 +18,38 @@
   <br>
   <!-- mainteinance -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/READMENATOR/blob/master/images/maintained-yes.svg" alt="Mainteinance yes" />
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/maintained-yes.svg" alt="Mainteinance yes" />
   </a>
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/READMENATOR/blob/master/images/pr-welcome.svg" alt="pr-welcome" />
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/pr-welcome.svg" alt="pr-welcome" />
   </a>
   <!-- ask-me-anything -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/READMENATOR/blob/master/images/ask-me-anything.svg" alt="ask me anything" />
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/ask-me-anything.svg" alt="ask me anything" />
   </a>
-
+    <!-- workflows -->
+      <a href="https://edoardoottavianelli.it">
+        <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=master" alt="workflows" />
+      </a>
+    <!-- ubuntu-build -->
+      <a href="https://edoardoottavianelli.it">
+        <img src="https://github.com/edoardottt/scilla/blob/master/images/ubuntu-build.svg" alt="ubuntu-build" />
+      </a>
   <br>
-
-  <!-- license GPLv3.0 -->
-  <a href="https://github.com/edoardottt/READMENATOR/blob/master/LICENSE">
-    <img src="https://github.com/edoardottt/READMENATOR/blob/master/images/license-GPL3.svg" alt="license-GPL3" />
-  </a>
+    <!-- go-report-card -->
+      <a href="https://goreportcard.com/report/github.com/edoardottt/scilla">
+        <img src="https://goreportcard.com/badge/github.com/edoardottt/scilla" alt="go-report-card" />
+      </a>
+  <br>
+    <!-- gobadge -->
+      <a href="https://edoardoottavianelli.it">
+        <img src="https://github.com/edoardottt/scilla/blob/master/images/gobadge" alt="gobadge" />
+      </a>
+    <!-- license GPLv3.0 -->
+      <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
+        <img src="https://github.com/edoardottt/scilla/blob/master/images/license-GPL3.svg" alt="license-GPL3" />
+      </a>
 </p>
 
 Requirements 🔍
