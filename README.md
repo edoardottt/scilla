@@ -47,11 +47,6 @@
       </a>
 </p>
 
-Requirements 🔍
-----------
-
-`...`
-
 Installation 📡
 ----------
 
