@@ -11,9 +11,7 @@
   <!-- badges -->
 <p align="center">
   <!--Tweet button-->
-  <a class="twitter-share-button"
-    href="https://twitter.com/intent/tweet?text=https://github.com/edoardottt/scilla"
-    data-size="large">Tweet
+  <a href="https://twitter.com/home?status=Scilla:%20Information%20Gathering%20tool!%20Check%20it%20out:%20https://github.com/edoardottt/scilla%20#pentesting%20#security%20#golang%20#linux">Share on Twitter!
   </a>
   <br>
   <!-- mainteinance -->
