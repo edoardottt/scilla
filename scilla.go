@@ -462,7 +462,7 @@ func asyncGet(urls []string) {
 
 //isOpenPort scan if a port is open
 func isOpenPort(host string, port string) bool {
-	timeout := 500 * time.Millisecond
+	timeout := time.Second
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
 	if err != nil {
 		return false
