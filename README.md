@@ -66,10 +66,15 @@ This will create a scilla binary. If you want to install it in the $GOPATH/bin f
 If you have all the dependencies already, you can make use of the build scripts:
 
 `make` builds for the current Go configuration.
+
 `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
+
 `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
+
 `make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
+
 `make clean` clears out the build subfolder.
+
 `make test` runs the tests.
 
 
@@ -79,13 +84,13 @@ Get Started 🎉
 `scilla help` prints the help in the command line.
 
     usage: scilla [subcommand] { options }
-
-            Available subcommands:
-                    - dns { -target <target (URL)> REQUIRED}
-                    - subdomain { -target <target (URL)> REQUIRED}
-                    - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-                    - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-                    - help
+    
+        Available subcommands:
+            - dns { -target <target (URL)> REQUIRED}
+            - subdomain { -target <target (URL)> REQUIRED}
+            - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+            - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+            - help
 
 
 Examples 💡
@@ -97,23 +102,23 @@ Examples 💡
 
 - Port enumeration:
       
-      - Default (all ports, so 1-65635) `scilla port -target target.domain`
+    - Default (all ports, so 1-65635) `scilla port -target target.domain`
 
-      - Specifying ports range `scilla port -p 20-90 -target target.domain`
+    - Specifying ports range `scilla port -p 20-90 -target target.domain`
 
-      - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
+    - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
 
-      - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
+    - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
 
 - Full report:
       
-      - Default (all ports, so 1-65635) `scilla report -target target.domain`
+    - Default (all ports, so 1-65635) `scilla report -target target.domain`
 
-      - Specifying ports range `scilla report -p 20-90 -target target.domain`
+    - Specifying ports range `scilla report -p 20-90 -target target.domain`
 
-      - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
+    - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
 
-      - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
+    - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
 
 Contributing 🛠
 -------
