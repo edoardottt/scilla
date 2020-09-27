@@ -11,7 +11,7 @@
   <!-- badges -->
 <p align="center">
   <!--Tweet button-->
-  <a href="https://twitter.com/home?status=Scilla:%20Information%20Gathering%20tool!%20Check%20it%20out:%20https://github.com/edoardottt/scilla%20#pentesting%20#security%20#golang%20#linux">Share on Twitter!
+  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2C%20linux%2C%20golang%2C%20network">Share on Twitter!
   </a>
   <br>
   <!-- mainteinance -->
