@@ -65,17 +65,17 @@ This will create a scilla binary. If you want to install it in the $GOPATH/bin f
 
 If you have all the dependencies already, you can make use of the build scripts:
 
-`make` builds for the current Go configuration.
+- `make` builds for the current Go configuration.
 
-`make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
+- `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
 
-`make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
+- `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
 
-`make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
+- `make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
 
-`make clean` clears out the build subfolder.
+- `make clean` clears out the build subfolder.
 
-`make test` runs the tests.
+- `make test` runs the tests.
 
 
 Get Started 🎉
