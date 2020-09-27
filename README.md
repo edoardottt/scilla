@@ -50,21 +50,70 @@
 Requirements 🔍
 ----------
 
-`
-...
-`
+`...`
 
 Installation 📡
 ----------
 
-1. `git clone https://github.com/edoardottt/scilla.git`
+Scilla has external dependencies, so they need to be pulled in:
 
-2. `cd scilla && sudo chmod +x scilla.go`
+`go get && go build`
+
+This will create a scilla binary. If you want to install it in the $GOPATH/bin folder you can run:
+
+`go install`
+
+If you have all the dependencies already, you can make use of the build scripts:
+
+`make` builds for the current Go configuration.
+`make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
+`make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
+`make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
+`make clean` clears out the build subfolder.
+`make test` runs the tests.
+
 
 Get Started 🎉
 ----------
 
-`scilla help`
+`scilla help` prints the help in the command line.
+
+    usage: scilla [subcommand] { options }
+
+            Available subcommands:
+                    - dns { -target <target (URL)> REQUIRED}
+                    - subdomain { -target <target (URL)> REQUIRED}
+                    - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+                    - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+                    - help
+
+
+Examples 💡
+----------
+
+- DNS enumeration `scilla dns -target target.domain`
+
+- Subdomain enumeration `scilla subdomain -target target.domain`
+
+- Port enumeration:
+      
+      - Default (all ports, so 1-65635) `scilla port -target target.domain`
+
+      - Specifying ports range `scilla port -p 20-90 -target target.domain`
+
+      - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
+
+      - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
+
+- Full report:
+      
+      - Default (all ports, so 1-65635) `scilla report -target target.domain`
+
+      - Specifying ports range `scilla report -p 20-90 -target target.domain`
+
+      - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
+
+      - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
 
 Contributing 🛠
 -------
@@ -100,12 +149,12 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
   
   - [ ] XML report output
 
---------------------------
+
 If you liked it drop a :star:
---------------------------
+-------
 
 https://www.edoardoottavianelli.it for contact me.
 
 
   
-                                                                Edoardo Ottavianelli ©
+                                                      Edoardo Ottavianelli ©
