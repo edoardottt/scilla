@@ -88,13 +88,27 @@ func main() {
 //execute reads inputs and start the correct procedure
 func execute(input Input) {
 	if input.ReportTarget != "" {
-		fmt.Println("REPORT")
+		fmt.Println("=============== REPORT ===============")
+		target := cleanProtocol(input.SubdomainTarget)
+		fmt.Printf("target: %s\n", target)
+		fmt.Println("=============== SUBDOMAINS ===============")
+		strings1 := createSubdomains(target)
+		asyncGet(strings1)
+		fmt.Println("=============== PORT SCANNING ===============")
+		fmt.Printf("target: %s\n", target)
+		asyncPort(input.StartPort, input.EndPort, target)
+		fmt.Println("=============== DNS SCANNING ===============")
+		fmt.Printf("target: %s\n", target)
 	}
 	if input.DnsTarget != "" {
-		fmt.Println("DNS")
+		target := cleanProtocol(input.SubdomainTarget)
+		fmt.Println("=============== DNS SCANNING ===============")
+		fmt.Printf("target: %s\n", target)
 	}
 	if input.SubdomainTarget != "" {
 		target := cleanProtocol(input.SubdomainTarget)
+		fmt.Println("=============== SUBDOMAINS ===============")
+		fmt.Printf("target: %s\n", target)
 		strings1 := createSubdomains(target)
 		asyncGet(strings1)
 	}
@@ -103,6 +117,8 @@ func execute(input Input) {
 		if isUrl(target) {
 			target = cleanProtocol(input.PortTarget)
 		}
+		fmt.Println("=============== PORT SCANNING ===============")
+		fmt.Printf("target: %s\n", target)
 		asyncPort(input.StartPort, input.EndPort, target)
 	}
 
@@ -212,9 +228,6 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
-
-		// Print
-		fmt.Printf("target: %s\n", *reportTargetPtr)
 	}
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
@@ -231,9 +244,6 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
-
-		// Print
-		fmt.Printf("target: %s\n", *dnsTargetPtr)
 	}
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
@@ -250,9 +260,6 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
-
-		// Print
-		fmt.Printf("target: %s\n", *subdomainTargetPtr)
 	}
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
@@ -322,9 +329,6 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
-
-		// Print
-		fmt.Printf("target: %s\n", *portTargetPtr)
 	}
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
@@ -423,10 +427,11 @@ type HttpResp struct {
 	Err    error
 }
 
-//asyncGet finds for subdomains
+//asyncGet performs concurrent requests to the specified
+//urls and prints the results
 func asyncGet(urls []string) {
 
-	limiter := make(chan string, 50) // Limits simultaneous requests
+	limiter := make(chan string, 200) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
@@ -469,10 +474,11 @@ func isOpenPort(host string, port string) bool {
 	return false
 }
 
-//asyncPort returns a bunch of open ports
+//asyncPort performs concurrent requests to the specified
+//ports range and, if someone is open it prints the results
 func asyncPort(StartingPort int, EndingPort int, host string) {
 
-	limiter := make(chan string, 50) // Limits simultaneous requests
+	limiter := make(chan string, 1000) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
