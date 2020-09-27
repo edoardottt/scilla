@@ -73,6 +73,8 @@ If you have all the dependencies already, you can make use of the build scripts:
 
 - `make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
 
+- `make remod` update the go.mod
+
 - `make clean` clears out the build subfolder.
 
 - `make test` runs the tests.
