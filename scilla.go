@@ -444,7 +444,7 @@ type HttpResp struct {
 //urls and prints the results
 func asyncGet(urls []string) {
 
-	limiter := make(chan string, 200) // Limits simultaneous requests
+	limiter := make(chan string, 70) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
@@ -491,7 +491,7 @@ func isOpenPort(host string, port string) bool {
 //ports range and, if someone is open it prints the results
 func asyncPort(StartingPort int, EndingPort int, host string) {
 
-	limiter := make(chan string, 1000) // Limits simultaneous requests
+	limiter := make(chan string, 500) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
