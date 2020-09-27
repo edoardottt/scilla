@@ -85,6 +85,10 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
   - [ ] Search site:<hostname_target> as it should be in google search 
   
   - [ ] DNS enumeration
+ 
+  - [x] Subdomains enumeration
+
+  - [x] Port enumeration
   
   - [ ] Progress bar
   
