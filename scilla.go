@@ -439,7 +439,7 @@ func readDict(inputFile string) []string {
 
 //createSubdomains returns a list of subdomains
 func createSubdomains(url string) []string {
-	subs := readDict("../lists/subdomains/subdomains.txt")
+	subs := readDict(os.Getenv("GOPATH") + "/bin/" + "lists/subdomains.txt")
 	result := []string{}
 	for _, sub := range subs {
 		path := buildUrl(sub, url)
