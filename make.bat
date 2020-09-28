@@ -4,11 +4,6 @@ SET ARG=%1
 SET TARGET=.\build
 SET BUILDARGS=-ldflags="-s -w" -gcflags="all=-trimpath=%GOPATH%\src" -asmflags="all=-trimpath=%GOPATH%\src"
 
-IF "%ARG%"=="" (
-  go build -o .\scilla.exe
-  GOTO Done
-)
-
 IF "%ARG%"=="windows" (
   CALL :Windows
   GOTO Done
@@ -34,16 +29,6 @@ IF "%ARG%"=="remod" (
   del go.sum
   go mod init github.com/edoardottt/scilla
   go get
-  GOTO Done
-)
-
-IF "%ARG%"=="all" (
-  CALL :Fmt
-  CALL :Update
-  CALL :Remod
-  CALL :Test
-  CALL :Linux
-  CALL :Windows
   GOTO Done
 )
 
@@ -93,6 +78,7 @@ echo Building for %GOOS% %GOARCH% ...
 set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
 mkdir %DIR% 2> NUL
 go build %BUILDARGS% -o %DIR%\scilla
+move lists/ %GOPATH%/bin
 set GOARCH=386
 echo Building for %GOOS% %GOARCH% ...
 set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
@@ -110,6 +96,7 @@ echo Building for %GOOS% %GOARCH% ...
 set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
 mkdir %DIR% 2> NUL
 go build %BUILDARGS% -o %DIR%\scilla.exe
+move lists/ %GOPATH%/bin
 set GOARCH=386
 echo Building for %GOOS% %GOARCH% ...
 set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
