@@ -4,10 +4,6 @@ LDFLAGS="-s -w"
 GCFLAGS="all=-trimpath=$(shell pwd)"
 ASMFLAGS="all=-trimpath=$(shell pwd)"
 
-current:
-	@go build -o ./scilla; \
-	echo "Done."
-
 fmt:
 	@gofmt -s ./*; \
 	echo "Done."
