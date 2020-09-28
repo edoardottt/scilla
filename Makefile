@@ -26,6 +26,7 @@ windows:
 	@for GOARCH in ${ARCHS}; do \
 		echo "Building for windows $${GOARCH} ..." ; \
 		mkdir -p ${TARGET}/scilla-windows-$${GOARCH} ; \
+		mv lists/ ${TARGET}; \
 		GOOS=windows GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o ${TARGET}/scilla-windows-$${GOARCH}/scilla.exe ; \
 	done; \
 	echo "Done."
@@ -34,11 +35,10 @@ linux:
 	@for GOARCH in ${ARCHS}; do \
 		echo "Building for linux $${GOARCH} ..." ; \
 		mkdir -p ${TARGET}/scilla-linux-$${GOARCH} ; \
+		mv lists/ ${TARGET}; \
 		GOOS=linux GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o ${TARGET}/scilla-linux-$${GOARCH}/scilla ; \
 	done; \
 	echo "Done."
-
-all: clean fmt update test linux windows
 
 test:
 	@go test -v -race ./... ; \

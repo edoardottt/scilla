@@ -66,10 +66,6 @@ If you have all the dependencies already, you can make use of the build scripts:
 
 - `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
 
-- `make all` builds for all platforms and architectures, and writes the resulting binaries to the build subfolder.
-
-- `make remod` update the go.mod
-
 - `make clean` clears out the build subfolder.
 
 - `make test` runs the tests.
@@ -107,6 +103,8 @@ Examples 💡
 
     - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
 
+    - Specifying single port `scilla port -p 80 -target target.domain`
+
 - Full report:
       
     - Default (all ports, so 1-65635) `scilla report -target target.domain`
@@ -116,6 +114,8 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
 
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
+
+    - Specifying single port `scilla report -p 80 -target target.domain`
 
 Contributing 🛠
 -------

@@ -93,7 +93,7 @@ func execute(input Input) {
 	if input.ReportTarget != "" {
 		fmt.Println("=============== REPORT ===============")
 		target := cleanProtocol(input.ReportTarget)
-		fmt.Printf("target: %s\n", target)
+		fmt.Printf("====== %s ======\n", target)
 		fmt.Println("=============== SUBDOMAINS ===============")
 		strings1 := createSubdomains(target)
 		fmt.Printf("target: %s\n", target)
@@ -103,6 +103,7 @@ func execute(input Input) {
 		asyncPort(input.StartPort, input.EndPort, target)
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
+		lookupDNS(target)
 	}
 	if input.DnsTarget != "" {
 		target := cleanProtocol(input.DnsTarget)
@@ -333,6 +334,17 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 		if maybeStart > 0 && maybeStart < EndPort {
 			StartPort = maybeStart
 		}
+	} else if !strings.Contains(portsRange, string(delimiter)) {
+		// If a single port is specified
+		maybePort, err := strconv.Atoi(portsRange)
+		if err != nil {
+			fmt.Println("The inputted port range is not valid.")
+			os.Exit(1)
+		}
+		if maybePort > 0 && maybePort < EndPort {
+			StartPort = maybePort
+			EndPort = maybePort
+		}
 	} else {
 		// If a range is specified
 		sliceOfPorts := strings.Split(portsRange, string(delimiter))
@@ -427,7 +439,7 @@ func readDict(inputFile string) []string {
 
 //createSubdomains returns a list of subdomains
 func createSubdomains(url string) []string {
-	subs := readDict("lists/subdomains/subdomains.txt")
+	subs := readDict("../lists/subdomains/subdomains.txt")
 	result := []string{}
 	for _, sub := range subs {
 		path := buildUrl(sub, url)
