@@ -50,25 +50,31 @@
 Installation 📡
 ----------
 
+First of all, clone the repo locally
+
+`git clone https://github.com/edoardottt/scilla.git`
+
 Scilla has external dependencies, so they need to be pulled in:
 
 `go get && go build`
 
-This will create a scilla binary. If you want to install it in the $GOPATH/bin folder you can run:
+This will create a scilla binary. To install it in the $GOPATH/bin folder run:
 
 `go install`
 
-If you have all the dependencies already, you can make use of the build scripts:
-
-- `make` builds for the current Go configuration.
+Then use of the build scripts:
 
 - `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
 
 - `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
 
-- `make clean` clears out the build subfolder.
+- `make fmt` run the golang formatter.
+
+- `make update` Update.
 
 - `make test` runs the tests.
+
+- `make clean` clears out the build subfolder.
 
 
 Get Started 🎉
