@@ -77,7 +77,9 @@ func help() {
 	fmt.Println("		- scilla dns -target target.domain")
 	fmt.Println("		- scilla subdomain -target target.domain")
 	fmt.Println("		- scilla port -p -450 -target target.domain")
-	fmt.Println("		- scilla report -p 1000- -target target.domain")
+	fmt.Println("		- scilla port -p 90- -target target.domain")
+	fmt.Println("		- scilla report -p 80 -target target.domain")
+	fmt.Println("		- scilla report -p 50-200 -target target.domain")
 	fmt.Println("")
 }
 
