@@ -143,7 +143,7 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
   - [x] Port enumeration
   
-  - [ ] Progress bar
+  - [ ] Print the progress percentage value when CR is pressed
   
   - [x] Build an Input Struct and use it as parameter
 
