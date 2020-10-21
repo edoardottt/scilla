@@ -62,6 +62,8 @@ This will create a scilla binary. To install it in the $GOPATH/bin folder run:
 
 `go install`
 
+**Working on installation...*** [See the open issue](https://github.com/edoardottt/scilla/issues/4)
+
 Then use the build scripts:
 
 - `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
