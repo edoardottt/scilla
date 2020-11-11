@@ -70,9 +70,13 @@ Then use the build scripts:
 
 - `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
 
+- `make unlinux` Removes binaries.
+
 - `make fmt` run the golang formatter.
 
 - `make update` Update.
+
+- `make remod` Remod.
 
 - `make test` runs the tests.
 
