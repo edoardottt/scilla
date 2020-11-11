@@ -45,7 +45,7 @@ import (
 	"github.com/fatih/color"
 )
 
-//intro prints the banner
+//intro prints the banner when the program is started
 func intro() {
 	banner1 := "*****************************************\n"
 	banner2 := "*                 _ _ _                 *\n"
@@ -84,14 +84,14 @@ func help() {
 	fmt.Println("")
 }
 
-//main
+//main function
 func main() {
 	intro()
 	input := readArgs()
 	execute(input)
 }
 
-//execute reads inputs and start the correct procedure
+//execute reads inputs and starts the correct procedure
 func execute(input Input) {
 	if input.ReportTarget != "" {
 		fmt.Println("=============== REPORT ===============")
@@ -134,6 +134,7 @@ func execute(input Input) {
 }
 
 //cleanProtocol remove from the url the protocol scheme
+// (http - https - tls)
 func cleanProtocol(target string) string {
 	if len(target) > 6 {
 		// clean protocols and go ahead
@@ -154,7 +155,7 @@ func cleanProtocol(target string) string {
 	return target
 }
 
-//Input contains the input parameters
+//Input struct contains the input parameters
 type Input struct {
 	ReportTarget    string
 	DnsTarget       string
@@ -311,7 +312,8 @@ func readArgs() Input {
 	return result
 }
 
-//checkPortsRange
+//checkPortsRange checks the basic rules to
+//be valid and then returns the starting port and the ending port.
 func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 	// If there's ports range, define it as inputs for the struct
 	delimiter := byte('-')
@@ -388,7 +390,7 @@ func isUrl(str string) bool {
 	return err == nil && u.Host != ""
 }
 
-//get performs a HTTP GET request to the target
+//get performs an HTTP GET request to the target
 func get(url string) bool {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -441,6 +443,7 @@ func readDict(inputFile string) []string {
 }
 
 //createSubdomains returns a list of subdomains
+//from the default file lists/subdomains.txt.
 func createSubdomains(url string) []string {
 	subs := readDict("lists/subdomains.txt")
 	result := []string{}
@@ -451,7 +454,7 @@ func createSubdomains(url string) []string {
 	return result
 }
 
-//HttpResp is a struct representing the fundamental data of HTTP response
+//HttpResp is a struct representing the fundamental data of an HTTP response
 type HttpResp struct {
 	Id     string
 	Target string
@@ -492,7 +495,7 @@ func asyncGet(urls []string) {
 	wg.Wait()
 }
 
-//isOpenPort scan if a port is open
+//isOpenPort scans if a port is open
 func isOpenPort(host string, port string) bool {
 	timeout := time.Second
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
@@ -534,7 +537,7 @@ func asyncPort(StartingPort int, EndingPort int, host string) {
 	wg.Wait()
 }
 
-//lookupDNS prints the DNS servers for the input domain
+//lookupDNS prints the DNS servers for the inputted domain
 func lookupDNS(domain string) {
 
 	// -- A RECORDS --
