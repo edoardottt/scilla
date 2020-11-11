@@ -30,9 +30,16 @@ windows:
 linux:
 	@for GOARCH in ${ARCHS}; do \
 		echo "Building for linux $${GOARCH} ..." ; \
-		mkdir -p ${TARGET}/scilla-linux-$${GOARCH} ; \
-		mv lists/ ${GOPATH}/bin; \
-		GOOS=linux GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o ${TARGET}/scilla-linux-$${GOARCH}/scilla ; \
+		cp -r lists/ /bin; \
+		GOOS=linux GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o /bin/scilla ; \
+	done; \
+	echo "Done."
+
+unlinux:
+	@for GOARCH in ${ARCHS}; do \
+		echo "Unlinuxing for linux $${GOARCH} ..." ; \
+		rm -rf /bin/lists; \
+		rm -rf /bin/scilla ; \
 	done; \
 	echo "Done."
 
