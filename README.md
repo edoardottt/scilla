@@ -56,13 +56,9 @@ First of all, clone the repo locally
 
 Scilla has external dependencies, so they need to be pulled in:
 
-`go get && go build`
+`go get`
 
-This will create a scilla binary. To install it in the $GOPATH/bin folder run:
-
-`go install`
-
-**Working on installation...*** [See the open issue](https://github.com/edoardottt/scilla/issues/4)
+**Working on installation...** [See the open issue](https://github.com/edoardottt/scilla/issues/4)
 
 Then use the build scripts:
 
