@@ -31,8 +31,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/asaskevich/govalidator"
-	"github.com/fatih/color"
 	"log"
 	"net"
 	"net/http"
@@ -42,6 +40,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/asaskevich/govalidator"
+	"github.com/fatih/color"
 )
 
 //intro prints the banner
@@ -328,7 +329,7 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 		}
 	} else if portsRange[len(portsRange)-1] == delimiter {
 		// If ending port isn't specified
-		maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)])
+		maybeStart, err := strconv.Atoi(portsRange)
 		if err != nil {
 			fmt.Println("The inputted port range is not valid.")
 			os.Exit(1)
@@ -441,7 +442,7 @@ func readDict(inputFile string) []string {
 
 //createSubdomains returns a list of subdomains
 func createSubdomains(url string) []string {
-	subs := readDict(os.Getenv("GOPATH") + "/bin/" + "lists/subdomains.txt")
+	subs := readDict("lists/subdomains.txt")
 	result := []string{}
 	for _, sub := range subs {
 		path := buildUrl(sub, url)
