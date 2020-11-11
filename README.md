@@ -60,6 +60,8 @@ Scilla has external dependencies, so they need to be pulled in:
 
 **Working on installation...** [See the open issue](https://github.com/edoardottt/scilla/issues/4)
 
+Too late.. : see [this](https://www.maketecheasier.com/make-scripts-executable-everywhere-linux/)
+
 Then use the build scripts:
 
 - `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.

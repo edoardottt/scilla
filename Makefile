@@ -1,8 +1,10 @@
-TARGET=./build
+TARGET=build
 ARCHS=amd64 386
 LDFLAGS="-s -w"
 GCFLAGS="all=-trimpath=$(shell pwd)"
 ASMFLAGS="all=-trimpath=$(shell pwd)"
+PWD="$(shell pwd)"
+DOLLAR="$"
 
 fmt:
 	@gofmt -s ./*; \
@@ -29,9 +31,9 @@ windows:
 
 linux:
 	@for GOARCH in ${ARCHS}; do \
-		echo "Building for linux $${GOARCH} ..." ; \
-		cp -r lists/ /bin; \
-		GOOS=linux GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o /bin/scilla ; \
+		echo "Building for linux $${GOARCH}; \
+		echo "export PATH=${PWD}/${TARGET}/scilla-linux-$${GOARCH}:${DOLLAR}PATH"; \
+		GOOS=linux GOARCH=$${GOARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags=${LDFLAGS} -gcflags=${GCFLAGS} -asmflags=${ASMFLAGS} -o ${TARGET}/scilla-linux-$${GOARCH}/scilla ; \
 	done; \
 	echo "Done."
 
@@ -39,7 +41,7 @@ unlinux:
 	@for GOARCH in ${ARCHS}; do \
 		echo "Unlinuxing for linux $${GOARCH} ..." ; \
 		rm -rf /bin/lists; \
-		rm -rf /bin/scilla ; \
+		rm -rf /bin/scilla; \
 	done; \
 	echo "Done."
 
