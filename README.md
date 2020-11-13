@@ -1,5 +1,6 @@
-# Scilla
+
 <p align="center">
+  <h1 align="center" >Scilla</h1>
   <!-- logo -->
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - dns/subdomain/port enumeration</b><br>
     <sub>
