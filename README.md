@@ -166,6 +166,10 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
   - [ ] PDF report output
   
   - [ ] XML report output
+  
+  - [ ] Tor support
+  
+  - [ ] Proxy support
 
 
 If you liked it drop a :star:
