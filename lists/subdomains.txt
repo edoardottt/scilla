@@ -684,6 +684,12 @@ australia
 austria
 aut
 auth
+authwifi
+authenticate
+authentication
+authadmin
+authsite
+authentic
 auth1
 auth2
 author
