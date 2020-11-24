@@ -167,6 +167,8 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
   
   - [ ] XML report output
   
+  - [ ] (report mode) In all the subdomains found enumerates ports???
+  
   - [ ] Tor support
   
   - [ ] Proxy support
