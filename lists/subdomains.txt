@@ -4042,6 +4042,8 @@ ip-us
 ip-usa
 ipv4
 ipv6
+ipv4test
+ipv6test
 ipweb
 iq
 ir
