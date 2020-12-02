@@ -50,6 +50,11 @@
       </a>
 </p>
 
+Example :bar_chart:
+----------
+
+![Example](https://github.com/edoardottt/scilla/blob/master/images/scilla.gif)
+
 Installation 📡
 ----------
 
