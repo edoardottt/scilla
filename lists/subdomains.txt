@@ -580,6 +580,8 @@ artemis
 arthur
 article
 articles
+artist
+artists
 arts
 aruba
 aruba-master
@@ -8884,8 +8886,10 @@ tumblr
 tumen
 tuna
 tunet
+tun0
 tuning
 tunnel
+tunneling
 tur
 turbo
 turing
