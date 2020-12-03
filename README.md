@@ -61,7 +61,9 @@ Scilla has external dependencies, so they need to be pulled in:
 
 `go get`
 
-**Working on installation...** [See the open issue](https://github.com/edoardottt/scilla/issues/4)
+**Working on installation...** [See the open issue](https://github.com/edoardottt/scilla/issues/4).
+
+For now you can run it inside the scilla folder with `go run scilla.go ...`  
 
 Too late.. : see [this](https://www.maketecheasier.com/make-scripts-executable-everywhere-linux/)
 
