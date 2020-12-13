@@ -1882,6 +1882,7 @@ customercare
 customers
 customerservice
 cv
+cve
 cvs
 cvsup
 cvsweb
@@ -8319,6 +8320,7 @@ students
 studentweb
 studio
 studios
+studis
 studmail
 studsovet
 study
@@ -9508,6 +9510,7 @@ webpac
 webplus
 webportal
 webprint
+webpro
 webprod
 webproxy
 webs
