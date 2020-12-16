@@ -95,8 +95,9 @@ Get Started 🎉
     
         Available subcommands:
             - dns { -target <target (URL)> REQUIRED}
-            - subdomain { -target <target (URL)> REQUIRED}
+            - subdomain { [-w wordlist] -target <target (URL)> REQUIRED}
             - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+            - dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}
             - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
             - help
 
@@ -104,11 +105,23 @@ Get Started 🎉
 Examples 💡
 ----------
 
-- DNS enumeration `scilla dns -target target.domain`
+- DNS enumeration:
+    
+    - `scilla dns -target target.domain`
 
-- Subdomain enumeration `scilla subdomain -target target.domain`
+- Subdomains enumeration:
 
-- Port enumeration:
+    - `scilla subdomain -target target.domain`
+
+    - `scilla subdomain -w wordlist.txt -target target.domain`
+
+- Directories enumeration:
+
+    - `scilla dir -target target.domain`
+
+    - `scilla dir -w wordlist.txt -target target.domain`
+
+- Ports enumeration:
       
     - Default (all ports, so 1-65635) `scilla port -target target.domain`
 
