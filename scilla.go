@@ -107,21 +107,39 @@ func execute(input Input) {
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		lookupDNS(target)
+		fmt.Println("=============== DIRECTORIES ===============")
+		fmt.Printf("target: %s\n", target)
+		strings2 := createUrls(target)
+		asyncGet(strings2)
+
 	}
 	if input.DnsTarget != "" {
+
 		target := cleanProtocol(input.DnsTarget)
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		lookupDNS(target)
+
 	}
 	if input.SubdomainTarget != "" {
+
 		target := cleanProtocol(input.SubdomainTarget)
 		fmt.Println("=============== SUBDOMAINS ===============")
 		fmt.Printf("target: %s\n", target)
 		strings1 := createSubdomains(target)
 		asyncGet(strings1)
+
+	}
+	if input.DirTarget != "" {
+
+		target := cleanProtocol(input.DirTarget)
+		fmt.Println("=============== DIRECTORIES ===============")
+		fmt.Printf("target: %s\n", target)
+		strings1 := createUrls(target)
+		asyncGet(strings1)
 	}
 	if input.PortTarget != "" {
+
 		target := input.PortTarget
 		if isUrl(target) {
 			target = cleanProtocol(input.PortTarget)
@@ -129,6 +147,7 @@ func execute(input Input) {
 		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		asyncPort(input.StartPort, input.EndPort, target)
+
 	}
 
 }
@@ -160,6 +179,7 @@ type Input struct {
 	ReportTarget    string
 	DnsTarget       string
 	SubdomainTarget string
+	DirTarget       string
 	PortTarget      string
 	StartPort       int
 	EndPort         int
@@ -169,18 +189,22 @@ type Input struct {
 // Subcommands:
 // 		report     ==> Full report
 // 		dns        ==> Dns records enumeration
-// 		subdomains ==> SubDomains enumeration
-// 		port	   ==> port enumeration
+// 		subdomains ==> Subdomains enumeration
+// 		port	   ==> ports enumeration
+//		dir		   ==> directiories enumeration
 // 		help       ==> doc
 func readArgs() Input {
 	reportCommand := flag.NewFlagSet("report", flag.ExitOnError)
 	dnsCommand := flag.NewFlagSet("dns", flag.ExitOnError)
 	subdomainCommand := flag.NewFlagSet("subdomain", flag.ExitOnError)
 	portCommand := flag.NewFlagSet("port", flag.ExitOnError)
+	dirCommand := flag.NewFlagSet("dir", flag.ExitOnError)
 	helpCommand := flag.NewFlagSet("help", flag.ExitOnError)
 
 	// report subcommand flag pointers
 	reportTargetPtr := reportCommand.String("target", "", "Target {URL/IP} (Required)")
+
+	// port subcommand flag pointers
 	portsReportPtr := reportCommand.String("p", "", "ports range <start-end>")
 
 	// dns subcommand flag pointers
@@ -189,8 +213,12 @@ func readArgs() Input {
 	// subdomains subcommand flag pointers
 	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL/IP} (Required)")
 
+	// dir subcommand flag pointers
+	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
+
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
+
 	portsPtr := portCommand.String("p", "", "ports range <start-end>")
 	// Default ports
 	StartPort := 1
@@ -218,6 +246,8 @@ func readArgs() Input {
 		subdomainCommand.Parse(os.Args[2:])
 	case "port":
 		portCommand.Parse(os.Args[2:])
+	case "dir":
+		dirCommand.Parse(os.Args[2:])
 	case "help":
 		helpCommand.Parse(os.Args[2:])
 	default:
@@ -302,13 +332,29 @@ func readArgs() Input {
 
 	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
 	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	if dirCommand.Parsed() {
+		// Required Flags
+		if *dirTargetPtr == "" {
+			dirCommand.PrintDefaults()
+			os.Exit(1)
+		}
+
+		//Verify good inputs
+		if !isUrl(*dirTargetPtr) {
+			fmt.Println("The inputted target is not valid.")
+			os.Exit(1)
+		}
+	}
+
+	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
+	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
 	if helpCommand.Parsed() {
 		// Print help
 		help()
 		os.Exit(0)
 	}
 
-	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *portTargetPtr, StartPort, EndPort}
+	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *dirTargetPtr, *portTargetPtr, StartPort, EndPort}
 	return result
 }
 
@@ -406,6 +452,11 @@ func buildUrl(subdomain string, domain string) string {
 	return "http://" + subdomain + "." + domain
 }
 
+//appendDir returns full URL with the directory
+func appendDir(domain string, dir string) string {
+	return "http://" + domain + "/" + dir + "/"
+}
+
 //readDict scan all the possible subdomains from file
 func readDict(inputFile string) []string {
 	// os.Open() opens specific file in
@@ -414,7 +465,7 @@ func readDict(inputFile string) []string {
 	file, err := os.Open(inputFile)
 
 	if err != nil {
-		log.Fatalf("failed to open")
+		log.Fatalf("failed to open %s ", inputFile)
 
 	}
 
@@ -449,6 +500,18 @@ func createSubdomains(url string) []string {
 	result := []string{}
 	for _, sub := range subs {
 		path := buildUrl(sub, url)
+		result = append(result, path)
+	}
+	return result
+}
+
+//createUrls returns a list of directories
+//from the default file lists/dirs.txt.
+func createUrls(url string) []string {
+	dirs := readDict("lists/dirs.txt")
+	result := []string{}
+	for _, dir := range dirs {
+		path := appendDir(url, dir)
 		result = append(result, path)
 	}
 	return result
