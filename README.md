@@ -141,19 +141,21 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
+A special thanks to [danielmiessler](https://github.com/danielmiessler). Now using one of those lists.
+
 **To do:**
 
   - [ ] Test the functions built
   
   - [x] Subdomains enumeration
   
-  - [ ] Search site:<hostname_target> as it should be in google search 
-  
   - [x] DNS enumeration
  
   - [x] Subdomains enumeration
 
   - [x] Port enumeration
+
+  - [x] Directories enumeration
   
   - [ ] Print the progress percentage value when CR is pressed (not in output doc)
   
