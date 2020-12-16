@@ -64,14 +64,15 @@ func intro() {
 
 //help prints in stdout scilla usage
 func help() {
-	fmt.Println("Information Gathering tool - DNS/subdomain/port enumeration")
+	fmt.Println("Information Gathering tool - DNS / Subdomain / Ports / Directories enumeration")
 	fmt.Println("")
 	fmt.Println("usage: scilla [subcommand] { options }")
 	fmt.Println("")
 	fmt.Println("	Available subcommands:")
 	fmt.Println("		- dns { -target <target (URL)> REQUIRED}")
-	fmt.Println("		- subdomain { -target <target (URL)> REQUIRED}")
+	fmt.Println("		- subdomain { [-w wordlist] -target <target (URL)> REQUIRED}")
 	fmt.Println("		- port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
+	fmt.Println("		- dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}")
 	fmt.Println("		- report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
 	fmt.Println("		- help")
 	fmt.Println("	Examples:")
@@ -81,6 +82,7 @@ func help() {
 	fmt.Println("		- scilla port -p 90- -target target.domain")
 	fmt.Println("		- scilla report -p 80 -target target.domain")
 	fmt.Println("		- scilla report -p 50-200 -target target.domain")
+	fmt.Println("		- scilla dir -w directs.txt -target target.domain")
 	fmt.Println("")
 }
 
@@ -93,12 +95,20 @@ func main() {
 
 //execute reads inputs and starts the correct procedure
 func execute(input Input) {
+
 	if input.ReportTarget != "" {
 		fmt.Println("=============== REPORT ===============")
 		target := cleanProtocol(input.ReportTarget)
 		fmt.Printf("====== %s ======\n", target)
 		fmt.Println("=============== SUBDOMAINS ===============")
-		strings1 := createSubdomains(target)
+		var strings1 []string
+
+		if input.SubdomainWord != "" {
+			strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
+		} else {
+			strings1 = createSubdomains("lists/subdomains.txt", input.SubdomainTarget)
+		}
+		asyncGet(strings1)
 		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1)
 		fmt.Println("=============== PORT SCANNING ===============")
@@ -109,8 +119,14 @@ func execute(input Input) {
 		lookupDNS(target)
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
-		strings2 := createUrls(target)
-		asyncGet(strings2)
+		var strings2 []string
+
+		if input.DirWord != "" {
+			strings2 = createUrls(input.DirWord, input.DirTarget)
+		} else {
+			strings2 = createUrls("lists/dirs.txt", input.DirTarget)
+		}
+		asyncDir(strings2)
 
 	}
 	if input.DnsTarget != "" {
@@ -126,7 +142,13 @@ func execute(input Input) {
 		target := cleanProtocol(input.SubdomainTarget)
 		fmt.Println("=============== SUBDOMAINS ===============")
 		fmt.Printf("target: %s\n", target)
-		strings1 := createSubdomains(target)
+		var strings1 []string
+
+		if input.SubdomainWord != "" {
+			strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
+		} else {
+			strings1 = createSubdomains("lists/subdomains.txt", input.SubdomainTarget)
+		}
 		asyncGet(strings1)
 
 	}
@@ -135,8 +157,14 @@ func execute(input Input) {
 		target := cleanProtocol(input.DirTarget)
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
-		strings1 := createUrls(target)
-		asyncGet(strings1)
+		var strings2 []string
+
+		if input.DirWord != "" {
+			strings2 = createUrls(input.DirWord, input.DirTarget)
+		} else {
+			strings2 = createUrls("lists/dirs.txt", input.DirTarget)
+		}
+		asyncDir(strings2)
 	}
 	if input.PortTarget != "" {
 
@@ -179,7 +207,9 @@ type Input struct {
 	ReportTarget    string
 	DnsTarget       string
 	SubdomainTarget string
+	SubdomainWord   string
 	DirTarget       string
+	DirWord         string
 	PortTarget      string
 	StartPort       int
 	EndPort         int
@@ -204,7 +234,7 @@ func readArgs() Input {
 	// report subcommand flag pointers
 	reportTargetPtr := reportCommand.String("target", "", "Target {URL/IP} (Required)")
 
-	// port subcommand flag pointers
+	// report subcommand flag pointers
 	portsReportPtr := reportCommand.String("p", "", "ports range <start-end>")
 
 	// dns subcommand flag pointers
@@ -213,8 +243,14 @@ func readArgs() Input {
 	// subdomains subcommand flag pointers
 	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL/IP} (Required)")
 
+	// subdomains subcommand wordlist
+	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use")
+
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
+
+	// dor subcommand wordlist
+	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use")
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -301,6 +337,11 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 
+		// Optional Flags
+		if *subdomainWordlistPtr == "" {
+			*subdomainWordlistPtr = "lists/subdomains.txt"
+		}
+
 		//Verify good inputs
 		if !isUrl(*subdomainTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -339,6 +380,11 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 
+		// Optional Flags
+		if *dirWordlistPtr == "" {
+			*dirWordlistPtr = "lists/dirs.txt"
+		}
+
 		//Verify good inputs
 		if !isUrl(*dirTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -354,7 +400,15 @@ func readArgs() Input {
 		os.Exit(0)
 	}
 
-	result := Input{*reportTargetPtr, *dnsTargetPtr, *subdomainTargetPtr, *dirTargetPtr, *portTargetPtr, StartPort, EndPort}
+	result := Input{*reportTargetPtr,
+		*dnsTargetPtr,
+		*subdomainTargetPtr,
+		*subdomainWordlistPtr,
+		*dirTargetPtr,
+		*dirWordlistPtr,
+		*portTargetPtr,
+		StartPort,
+		EndPort}
 	return result
 }
 
@@ -495,8 +549,13 @@ func readDict(inputFile string) []string {
 
 //createSubdomains returns a list of subdomains
 //from the default file lists/subdomains.txt.
-func createSubdomains(url string) []string {
-	subs := readDict("lists/subdomains.txt")
+func createSubdomains(filename string, url string) []string {
+	var subs []string
+	if filename == "" {
+		subs = readDict("lists/subdomains.txt")
+	} else {
+		subs = readDict(filename)
+	}
 	result := []string{}
 	for _, sub := range subs {
 		path := buildUrl(sub, url)
@@ -507,8 +566,13 @@ func createSubdomains(url string) []string {
 
 //createUrls returns a list of directories
 //from the default file lists/dirs.txt.
-func createUrls(url string) []string {
-	dirs := readDict("lists/dirs.txt")
+func createUrls(filename string, url string) []string {
+	var dirs []string
+	if filename == "" {
+		dirs = readDict("lists/dirs.txt")
+	} else {
+		dirs = readDict(filename)
+	}
 	result := []string{}
 	for _, dir := range dirs {
 		path := appendDir(url, dir)
@@ -658,4 +722,35 @@ func lookupDNS(domain string) {
 		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
 		color.Green("%s\n", txt)
 	}
+}
+
+//asyncDir performs concurrent requests to the specified
+//urls and prints the results
+func asyncDir(urls []string) {
+
+	limiter := make(chan string, 60) // Limits simultaneous requests
+
+	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
+
+	for i, domain := range urls {
+		wg.Add(1)
+		limiter <- domain
+
+		go func(i int, domain string) {
+			defer func() { <-limiter }()
+			defer wg.Done()
+
+			resp, err := http.Get(domain)
+			if err != nil {
+				return
+			}
+
+			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" || string(resp.Status[0]) == "5" {
+				fmt.Printf("[+]FOUND: %s: ", domain)
+				color.Green("%s\n", resp.Status)
+			}
+		}(i, domain)
+	}
+
+	wg.Wait()
 }
