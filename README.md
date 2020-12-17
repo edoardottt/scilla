@@ -1,7 +1,7 @@
 # Scilla
 <p align="center">
   <!-- logo -->
-  <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - DNS / Subdomain / Ports / Directories enumeration</b><br>
+  <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - DNS / Subdomains / Ports / Directories enumeration</b><br>
     <sub>
     Coded with 💙 by edoardottt.
   </sub>
