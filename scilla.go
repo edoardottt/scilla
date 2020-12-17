@@ -612,9 +612,9 @@ func asyncGet(urls []string) {
 
 			fmt.Printf("[+]FOUND: %s: ", domain)
 			if string(resp.Status[0]) == "2" {
-				color.Green("%s\n", resp.Status)
+				color.Green("%s\n", resp.StatusCode)
 			} else {
-				color.Red("%s", resp.Status)
+				color.Red("%s", resp.StatusCode)
 			}
 		}(i, domain)
 	}
@@ -745,9 +745,9 @@ func asyncDir(urls []string) {
 				return
 			}
 
-			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" || string(resp.Status[0]) == "5" {
+			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" {
 				fmt.Printf("[+]FOUND: %s: ", domain)
-				color.Green("%s\n", resp.Status)
+				color.Green("%d\n", resp.StatusCode)
 			}
 		}(i, domain)
 	}
