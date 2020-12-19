@@ -612,9 +612,9 @@ func asyncGet(urls []string) {
 
 			fmt.Printf("[+]FOUND: %s: ", domain)
 			if string(resp.Status[0]) == "2" {
-				color.Green("%s\n", resp.StatusCode)
+				color.Green("%d\n", resp.StatusCode)
 			} else {
-				color.Red("%s", resp.StatusCode)
+				color.Red("%d\n", resp.StatusCode)
 			}
 		}(i, domain)
 	}
