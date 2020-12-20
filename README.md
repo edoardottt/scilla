@@ -53,27 +53,23 @@ Example :bar_chart:
 Installation 📡
 ----------
 
-First of all, clone the repo locally
+- First of all, clone the repo locally
 
-`git clone https://github.com/edoardottt/scilla.git`
+    - `git clone https://github.com/edoardottt/scilla.git`
 
-Scilla has external dependencies, so they need to be pulled in:
+- Scilla has external dependencies, so they need to be pulled in:
 
-`go get`
+    - `go get`
 
-**Working on installation...** [See the open issue](https://github.com/edoardottt/scilla/issues/4).
+- Linux
 
-For now you can run it inside the scilla folder with `go run scilla.go ...`  
+    - `make linux`
 
-Too late.. : see [this](https://www.maketecheasier.com/make-scripts-executable-everywhere-linux/)
+    - `make unlinux`
 
-Then use the build scripts:
+- Windows
 
-- `make windows` builds 32 and 64 bit binaries for Windows, and writes them to the build subfolder.
-
-- `make linux` builds 32 and 64 bit binaries for Linux, and writes them to the build subfolder.
-
-- `make unlinux` Removes binaries.
+    - `Working on...`
 
 - `make fmt` run the golang formatter.
 
@@ -82,9 +78,6 @@ Then use the build scripts:
 - `make remod` Remod.
 
 - `make test` runs the tests.
-
-- `make clean` clears out the build subfolder.
-
 
 Get Started 🎉
 ----------
