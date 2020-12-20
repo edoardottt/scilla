@@ -18,10 +18,12 @@ update:
 linux:
 	@go build -o ./scilla
 	mv ./scilla /usr/bin/
+	cp -r lists/ /usr/bin/
 	echo "Done."
 
 unlinux:
 	rm -rf /usr/bin/scilla
+	rm -rf /usr/bin/lists/
 	echo "Done."
 
 test:

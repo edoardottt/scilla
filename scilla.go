@@ -143,12 +143,7 @@ func execute(input Input) {
 		fmt.Println("=============== SUBDOMAINS ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings1 []string
-
-		if input.SubdomainWord != "" {
-			strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
-		} else {
-			strings1 = createSubdomains("lists/subdomains.txt", input.SubdomainTarget)
-		}
+		strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
 		asyncGet(strings1)
 
 	}
@@ -158,12 +153,7 @@ func execute(input Input) {
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
-
-		if input.DirWord != "" {
-			strings2 = createUrls(input.DirWord, input.DirTarget)
-		} else {
-			strings2 = createUrls("lists/dirs.txt", input.DirTarget)
-		}
+		strings2 = createUrls(input.DirWord, input.DirTarget)
 		asyncDir(strings2)
 	}
 	if input.PortTarget != "" {
@@ -337,11 +327,6 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 
-		// Optional Flags
-		if *subdomainWordlistPtr == "" {
-			*subdomainWordlistPtr = "lists/subdomains.txt"
-		}
-
 		//Verify good inputs
 		if !isUrl(*subdomainTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -378,11 +363,6 @@ func readArgs() Input {
 		if *dirTargetPtr == "" {
 			dirCommand.PrintDefaults()
 			os.Exit(1)
-		}
-
-		// Optional Flags
-		if *dirWordlistPtr == "" {
-			*dirWordlistPtr = "lists/dirs.txt"
 		}
 
 		//Verify good inputs
@@ -552,7 +532,7 @@ func readDict(inputFile string) []string {
 func createSubdomains(filename string, url string) []string {
 	var subs []string
 	if filename == "" {
-		subs = readDict("lists/subdomains.txt")
+		subs = readDict("/usr/bin/lists/subdomains.txt")
 	} else {
 		subs = readDict(filename)
 	}
@@ -569,7 +549,7 @@ func createSubdomains(filename string, url string) []string {
 func createUrls(filename string, url string) []string {
 	var dirs []string
 	if filename == "" {
-		dirs = readDict("lists/dirs.txt")
+		dirs = readDict("/usr/bin/lists/dirs.txt")
 	} else {
 		dirs = readDict(filename)
 	}
