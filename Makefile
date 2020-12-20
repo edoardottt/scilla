@@ -17,11 +17,11 @@ update:
 
 linux:
 	@go build -o ./scilla
-	sudo mv ./scilla /usr/bin/
+	mv ./scilla /usr/bin/
 	echo "Done."
 
 unlinux:
-	sudo rm -rf /usr/bin/scilla
+	rm -rf /usr/bin/scilla
 	echo "Done."
 
 test:

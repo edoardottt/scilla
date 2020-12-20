@@ -61,7 +61,7 @@ Installation 📡
 
     - `go get`
 
-- Linux
+- Linux (Requires high perms, run with sudo)
 
     - `make linux`
 
