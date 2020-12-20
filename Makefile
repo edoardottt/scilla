@@ -27,7 +27,3 @@ unlinux:
 test:
 	@go test -v -race ./... ; \
 	echo "Done."
-
-clean:
-	go clean ./... ; \
-	echo "Done."
