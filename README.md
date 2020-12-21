@@ -67,7 +67,7 @@ Installation 📡
 
     - `make unlinux`
 
-- Windows (executable works only in scilla folder. [Alias?]())
+- Windows (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
     - `make windows`
     
