@@ -682,7 +682,7 @@ func lookupDNS(domain string) {
 	}
 
 	// -- SRV SERVICE --
-	cname, srvs, err := net.LookupSRV("xmpp-server", "tcp", domain)
+	_, srvs, err := net.LookupSRV("xmpp-server", "tcp", domain)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get SRVs: %v\n", err)
 	}
