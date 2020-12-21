@@ -85,15 +85,14 @@ Get Started 🎉
 `scilla help` prints the help in the command line.
 
     usage: scilla [subcommand] { options }
-    
-        Available subcommands:
-            - dns { -target <target (URL)> REQUIRED}
-            - subdomain { [-w wordlist] -target <target (URL)> REQUIRED}
-            - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-            - dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}
-            - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-            - help
 
+	    Available subcommands:
+		   - dns { -target <target (URL)> REQUIRED}
+		   - subdomain { [-w wordlist] -target <target (URL)> REQUIRED}
+		   - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+		   - dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}
+		   - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
+		   - help
 
 Examples 💡
 ----------
@@ -137,6 +136,8 @@ Examples 💡
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
 
     - Specifying single port `scilla report -p 80 -target target.domain`
+    
+    - Specifying wordlist `scilla report -w wordlist.txt -target target.domain`
 
 Contributing 🛠
 -------
@@ -151,7 +152,7 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler). Now usi
 
 **To do:**
 
-  - [ ] Test the functions built
+  - [ ] Test the functions
   
   - [x] Subdomains enumeration
   
