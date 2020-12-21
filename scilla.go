@@ -596,7 +596,6 @@ func asyncGet(urls []string) {
 			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("[+]FOUND: %s: ", domain)
 			if string(resp.Status[0]) == "2" {
-				fmt.Fprint(os.Stdout, "\r \r")
 				color.Green("%s\n", resp.Status)
 			} else {
 				color.Red("%s\n", resp.Status)
