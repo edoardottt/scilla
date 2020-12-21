@@ -1,16 +1,10 @@
 @echo off
 
 SET ARG=%1
-SET TARGET=.\build
 SET BUILDARGS=-ldflags="-s -w" -gcflags="all=-trimpath=%GOPATH%\src" -asmflags="all=-trimpath=%GOPATH%\src"
 
 IF "%ARG%"=="windows" (
   CALL :Windows
-  GOTO Done
-)
-
-IF "%ARG%"=="linux" (
-  CALL :Linux
   GOTO Done
 )
 
@@ -29,13 +23,6 @@ IF "%ARG%"=="remod" (
   del go.sum
   go mod init github.com/edoardottt/scilla
   go get
-  GOTO Done
-)
-
-IF "%ARG%"=="clean" (
-  del /F /Q %TARGET%\*.*
-  go clean ./...
-  echo Done.
   GOTO Done
 )
 
@@ -66,24 +53,6 @@ set GO111MODULE=on
 echo Updating ...
 go get -u
 go mod tidy -v
-echo Done.
-EXIT /B 0
-
-:Linux
-set GOOS=linux
-set GOARCH=amd64
-set GO111MODULE=on
-set CGO_ENABLED=0
-echo Building for %GOOS% %GOARCH% ...
-set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
-mkdir %DIR% 2> NUL
-go build %BUILDARGS% -o %DIR%\scilla
-move lists/ %GOPATH%/bin
-set GOARCH=386
-echo Building for %GOOS% %GOARCH% ...
-set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
-mkdir %DIR% 2> NUL
-go build %BUILDARGS% -o %DIR%\scilla
 echo Done.
 EXIT /B 0
 
