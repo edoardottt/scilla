@@ -565,8 +565,10 @@ type HttpResp struct {
 //urls and prints the results
 func asyncGet(urls []string) {
 
+	var count int = 0
+
 	client := http.Client{
-		Timeout: 4 * time.Second,
+		Timeout: 3 * time.Second,
 	}
 
 	limiter := make(chan string, 100) // Limits simultaneous requests
@@ -582,12 +584,19 @@ func asyncGet(urls []string) {
 			defer wg.Done()
 
 			resp, err := client.Get(domain)
+			count++
+			if count%100 == 0 { // update counter
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("%d", count)
+			}
 			if err != nil {
 				return
 			}
 
+			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("[+]FOUND: %s: ", domain)
 			if string(resp.Status[0]) == "2" {
+				fmt.Fprint(os.Stdout, "\r \r")
 				color.Green("%s\n", resp.Status)
 			} else {
 				color.Red("%s\n", resp.Status)
@@ -616,6 +625,8 @@ func isOpenPort(host string, port string) bool {
 //ports range and, if someone is open it prints the results
 func asyncPort(StartingPort int, EndingPort int, host string) {
 
+	var count int = 0
+
 	limiter := make(chan string, 300) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
@@ -630,7 +641,13 @@ func asyncPort(StartingPort int, EndingPort int, host string) {
 			defer wg.Done()
 
 			resp := isOpenPort(host, portStr)
+			count++
+			if count%100 == 0 { // update counter
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("%d", count)
+			}
 			if resp {
+				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s:", host)
 				color.Green("%s\n", portStr)
 			}
@@ -704,8 +721,10 @@ func lookupDNS(domain string) {
 //urls and prints the results
 func asyncDir(urls []string) {
 
+	var count int = 0
+
 	client := http.Client{
-		Timeout: 4 * time.Second,
+		Timeout: 3 * time.Second,
 	}
 
 	limiter := make(chan string, 100) // Limits simultaneous requests
@@ -721,13 +740,23 @@ func asyncDir(urls []string) {
 			defer wg.Done()
 
 			resp, err := client.Get(domain)
+			count++
+			if count%100 == 0 { // update counter
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("%d", count)
+			}
 			if err != nil {
 				return
 			}
 
 			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" {
+				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s: ", domain)
 				color.Green("%s\n", resp.Status)
+			} else if string(resp.Status[0]) == "5" {
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("[+]FOUND: %s: ", domain)
+				color.Red("%s\n", resp.Status)
 			}
 		}(i, domain)
 	}
