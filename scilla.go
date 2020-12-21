@@ -104,7 +104,7 @@ func execute(input Input) {
 
 		fmt.Println("=============== SUBDOMAINS ===============")
 		var strings1 []string
-		strings1 = createSubdomains(input.ReportWord, input.ReportTarget)
+		strings1 = createSubdomains(input.ReportWord, target)
 		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1)
 
@@ -119,7 +119,7 @@ func execute(input Input) {
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
-		strings2 = createUrls(input.ReportWord, input.ReportTarget)
+		strings2 = createUrls(input.ReportWord, target)
 		asyncDir(strings2)
 
 	}
@@ -137,7 +137,7 @@ func execute(input Input) {
 		fmt.Println("=============== SUBDOMAINS ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings1 []string
-		strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
+		strings1 = createSubdomains(input.SubdomainWord, target)
 		asyncGet(strings1)
 
 	}
@@ -147,7 +147,7 @@ func execute(input Input) {
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
-		strings2 = createUrls(input.DirWord, input.DirTarget)
+		strings2 = createUrls(input.DirWord, target)
 		asyncDir(strings2)
 	}
 	if input.PortTarget != "" {
@@ -182,6 +182,10 @@ func cleanProtocol(target string) string {
 		if target[:8] == "https://" {
 			target = target[8:]
 		}
+	}
+
+	if target[len(target)-1:] == "/" {
+		return target[:len(target)-1]
 	}
 	return target
 }
