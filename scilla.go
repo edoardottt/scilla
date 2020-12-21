@@ -97,35 +97,29 @@ func main() {
 func execute(input Input) {
 
 	if input.ReportTarget != "" {
-		fmt.Println("=============== REPORT ===============")
+
+		fmt.Println("=============== FULL REPORT ===============")
 		target := cleanProtocol(input.ReportTarget)
-		fmt.Printf("====== %s ======\n", target)
+		fmt.Printf("====== Target: %s ======\n", target)
+
 		fmt.Println("=============== SUBDOMAINS ===============")
 		var strings1 []string
-
-		if input.SubdomainWord != "" {
-			strings1 = createSubdomains(input.SubdomainWord, input.SubdomainTarget)
-		} else {
-			strings1 = createSubdomains("lists/subdomains.txt", input.SubdomainTarget)
-		}
-		asyncGet(strings1)
+		strings1 = createSubdomains(input.ReportWord, input.ReportTarget)
 		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1)
+
 		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		asyncPort(input.StartPort, input.EndPort, target)
+
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		lookupDNS(target)
+
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
-
-		if input.DirWord != "" {
-			strings2 = createUrls(input.DirWord, input.DirTarget)
-		} else {
-			strings2 = createUrls("lists/dirs.txt", input.DirTarget)
-		}
+		strings2 = createUrls(input.ReportWord, input.ReportTarget)
 		asyncDir(strings2)
 
 	}
@@ -195,6 +189,7 @@ func cleanProtocol(target string) string {
 //Input struct contains the input parameters
 type Input struct {
 	ReportTarget    string
+	ReportWord      string
 	DnsTarget       string
 	SubdomainTarget string
 	SubdomainWord   string
@@ -227,6 +222,9 @@ func readArgs() Input {
 	// report subcommand flag pointers
 	portsReportPtr := reportCommand.String("p", "", "ports range <start-end>")
 
+	// report subcommand flag pointers
+	wordlistsReportPtr := reportCommand.String("w", "", "wordlist to use (default enabled)")
+
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
@@ -234,13 +232,13 @@ func readArgs() Input {
 	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// subdomains subcommand wordlist
-	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use")
+	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// dor subcommand wordlist
-	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use")
+	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -380,7 +378,9 @@ func readArgs() Input {
 		os.Exit(0)
 	}
 
-	result := Input{*reportTargetPtr,
+	result := Input{
+		*reportTargetPtr,
+		*wordlistsReportPtr,
 		*dnsTargetPtr,
 		*subdomainTargetPtr,
 		*subdomainWordlistPtr,
@@ -388,7 +388,9 @@ func readArgs() Input {
 		*dirWordlistPtr,
 		*portTargetPtr,
 		StartPort,
-		EndPort}
+		EndPort,
+	}
+
 	return result
 }
 
@@ -502,18 +504,8 @@ func readDict(inputFile string) []string {
 		log.Fatalf("failed to open %s ", inputFile)
 
 	}
-
-	// The bufio.NewScanner() function is called in which the
-	// object os.File passed as its parameter and this returns a
-	// object bufio.Scanner which is further used on the
-	// bufio.Scanner.Split() method.
 	scanner := bufio.NewScanner(file)
 
-	// The bufio.ScanLines is used as an
-	// input to the method bufio.Scanner.Split()
-	// and then the scanning forwards to each
-	// new line using the bufio.Scanner.Scan()
-	// method.
 	scanner.Split(bufio.ScanLines)
 	var text []string
 
@@ -573,7 +565,11 @@ type HttpResp struct {
 //urls and prints the results
 func asyncGet(urls []string) {
 
-	limiter := make(chan string, 60) // Limits simultaneous requests
+	client := http.Client{
+		Timeout: 4 * time.Second,
+	}
+
+	limiter := make(chan string, 100) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
@@ -585,7 +581,7 @@ func asyncGet(urls []string) {
 			defer func() { <-limiter }()
 			defer wg.Done()
 
-			resp, err := http.Get(domain)
+			resp, err := client.Get(domain)
 			if err != nil {
 				return
 			}
@@ -708,7 +704,11 @@ func lookupDNS(domain string) {
 //urls and prints the results
 func asyncDir(urls []string) {
 
-	limiter := make(chan string, 60) // Limits simultaneous requests
+	client := http.Client{
+		Timeout: 4 * time.Second,
+	}
+
+	limiter := make(chan string, 100) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
@@ -720,7 +720,7 @@ func asyncDir(urls []string) {
 			defer func() { <-limiter }()
 			defer wg.Done()
 
-			resp, err := http.Get(domain)
+			resp, err := client.Get(domain)
 			if err != nil {
 				return
 			}
