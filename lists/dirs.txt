@@ -27,8 +27,6 @@
 .swf
 .web
 .well-known
-.well-known/hidden.txt
-.well-known/keybase.txt
 .well-known/acme-challenge
 .well-known/apple-app-site-association
 .well-known/apple-developer-merchantid-domain-association
@@ -43,7 +41,6 @@
 .well-known/core
 .well-known/csvm
 .well-known/dnt
-.well-known/dnt-policy.txt
 .well-known/dots
 .well-known/ecips
 .well-known/enterprise-transport-security
@@ -51,15 +48,12 @@
 .well-known/genid
 .well-known/hoba
 .well-known/host-meta
-.well-known/host-meta.json
 .well-known/http-opportunistic
 .well-known/idp-proxy
 .well-known/jmap
-.well-known/keybase.txt
 .well-known/looking-glass
 .well-known/matrix
 .well-known/mercure
-.well-known/mta-sts.txt
 .well-known/mud
 .well-known/nfv-oauth-server-configuration
 .well-known/ni
@@ -74,7 +68,6 @@
 .well-known/reload-config
 .well-known/repute-template
 .well-known/resourcesync
-.well-known/security.txt
 .well-known/stun-key
 .well-known/thread
 .well-known/time

@@ -768,7 +768,7 @@ func asyncDir(urls []string) {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s: ", domain)
 				color.Green("%s\n", resp.Status)
-			} else if string(resp.Status[0]) == "5" {
+			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s: ", domain)
 				color.Red("%s\n", resp.Status)
