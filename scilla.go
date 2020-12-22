@@ -572,10 +572,10 @@ func asyncGet(urls []string) {
 	var count int = 0
 
 	client := http.Client{
-		Timeout: 3 * time.Second,
+		Timeout: 10 * time.Second,
 	}
 
-	limiter := make(chan string, 100) // Limits simultaneous requests
+	limiter := make(chan string, 80) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
@@ -727,10 +727,10 @@ func asyncDir(urls []string) {
 	var count int = 0
 
 	client := http.Client{
-		Timeout: 3 * time.Second,
+		Timeout: 10 * time.Second,
 	}
 
-	limiter := make(chan string, 100) // Limits simultaneous requests
+	limiter := make(chan string, 80) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
 
