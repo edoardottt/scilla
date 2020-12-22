@@ -67,9 +67,11 @@ Installation 📡
 
     - `make unlinux`
 
-- Windows
+- Windows (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
-    - `Working on...`
+    - `make windows`
+    
+    - `make unwindows`
 
 - `make fmt` run the golang formatter.
 

@@ -1,10 +1,14 @@
 @echo off
 
 SET ARG=%1
-SET BUILDARGS=-ldflags="-s -w" -gcflags="all=-trimpath=%GOPATH%\src" -asmflags="all=-trimpath=%GOPATH%\src"
 
 IF "%ARG%"=="windows" (
   CALL :Windows
+  GOTO Done
+)
+
+IF "%ARG%"=="unwindows" (
+  CALL :Unwindows
   GOTO Done
 )
 
@@ -61,16 +65,12 @@ set GOOS=windows
 set GOARCH=amd64
 set GO111MODULE=on
 set CGO_ENABLED=0
-echo Building for %GOOS% %GOARCH% ...
-set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
-mkdir %DIR% 2> NUL
-go build %BUILDARGS% -o %DIR%\scilla.exe
-move lists/ %GOPATH%/bin
-set GOARCH=386
-echo Building for %GOOS% %GOARCH% ...
-set DIR=%TARGET%\scilla-%GOOS%-%GOARCH%
-mkdir %DIR% 2> NUL
-go build %BUILDARGS% -o %DIR%\scilla.exe
+go build -o scilla.exe
+echo Done.
+EXIT /B 0
+
+:Unwindows
+del /f scilla.exe
 echo Done.
 EXIT /B 0
 

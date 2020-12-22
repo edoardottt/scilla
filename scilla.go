@@ -40,6 +40,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"runtime"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/fatih/color"
@@ -528,7 +529,13 @@ func readDict(inputFile string) []string {
 func createSubdomains(filename string, url string) []string {
 	var subs []string
 	if filename == "" {
-		subs = readDict("/usr/bin/lists/subdomains.txt")
+
+		if (runtime.GOOS == "windows") {
+			subs = readDict("lists/subdomains.txt")
+		}else { // linux
+			subs = readDict("/usr/bin/lists/subdomains.txt")
+		}
+		
 	} else {
 		subs = readDict(filename)
 	}
@@ -545,7 +552,12 @@ func createSubdomains(filename string, url string) []string {
 func createUrls(filename string, url string) []string {
 	var dirs []string
 	if filename == "" {
-		dirs = readDict("/usr/bin/lists/dirs.txt")
+
+		if (runtime.GOOS == "windows") {
+			dirs = readDict("lists/dirs.txt")
+		}else { // linux
+			dirs = readDict("/usr/bin/lists/dirs.txt")
+		}
 	} else {
 		dirs = readDict(filename)
 	}
