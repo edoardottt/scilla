@@ -36,11 +36,11 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-	"runtime"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/fatih/color"
@@ -530,12 +530,12 @@ func createSubdomains(filename string, url string) []string {
 	var subs []string
 	if filename == "" {
 
-		if (runtime.GOOS == "windows") {
+		if runtime.GOOS == "windows" {
 			subs = readDict("lists/subdomains.txt")
-		}else { // linux
+		} else { // linux
 			subs = readDict("/usr/bin/lists/subdomains.txt")
 		}
-		
+
 	} else {
 		subs = readDict(filename)
 	}
@@ -553,9 +553,9 @@ func createUrls(filename string, url string) []string {
 	var dirs []string
 	if filename == "" {
 
-		if (runtime.GOOS == "windows") {
+		if runtime.GOOS == "windows" {
 			dirs = readDict("lists/dirs.txt")
-		}else { // linux
+		} else { // linux
 			dirs = readDict("/usr/bin/lists/dirs.txt")
 		}
 	} else {
@@ -610,7 +610,7 @@ func asyncGet(urls []string) {
 			}
 
 			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("[+]FOUND: %s: ", domain)
+			fmt.Printf("[+]FOUND: %s ", domain)
 			if string(resp.Status[0]) == "2" {
 				color.Green("%s\n", resp.Status)
 			} else {
@@ -663,7 +663,7 @@ func asyncPort(StartingPort int, EndingPort int, host string) {
 			}
 			if resp {
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("[+]FOUND: %s:", host)
+				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
 			}
 		}(portStr, host)
@@ -766,11 +766,11 @@ func asyncDir(urls []string) {
 
 			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" {
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("[+]FOUND: %s: ", domain)
+				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Green("%s\n", resp.Status)
 			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("[+]FOUND: %s: ", domain)
+				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Red("%s\n", resp.Status)
 			}
 		}(i, domain)
