@@ -10,40 +10,55 @@
   <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2Clinux%2Cgolang%2Cnetwork" target="_blank">Share on Twitter!
   </a>
   <br>
-  <!-- mainteinance -->
+  
+  <!-- go-report-card -->
+  <a href="https://goreportcard.com/report/github.com/edoardottt/scilla">
+    <img src="https://goreportcard.com/badge/github.com/edoardottt/scilla" alt="go-report-card" />
+  </a>
+  <!-- workflows -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/maintained-yes.svg" alt="Mainteinance yes" />
+    <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=master" alt="workflows" />
+  </a>
+  <!-- ubuntu-build -->
+  <a href="https://edoardoottavianelli.it">
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/ubuntu-build.svg" alt="ubuntu-build" />
+  </a>
+  <!-- win10-build -->
+  <a href="https://edoardoottavianelli.it">
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/win10.svg" alt="win10-build" />
   </a>
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/scilla/blob/master/images/pr-welcome.svg" alt="pr-welcome" />
   </a>
+
+  <br>
+  
+  <!-- mainteinance -->
+  <a href="https://edoardoottavianelli.it">
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/maintained-yes.svg" alt="Mainteinance yes" />
+  </a>
   <!-- ask-me-anything -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/scilla/blob/master/images/ask-me-anything.svg" alt="ask me anything" />
   </a>
-    <!-- workflows -->
-      <a href="https://edoardoottavianelli.it">
-        <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=master" alt="workflows" />
-      </a>
-    <br>
-    <!-- ubuntu-build -->
-      <a href="https://edoardoottavianelli.it">
-        <img src="https://github.com/edoardottt/scilla/blob/master/images/ubuntu-build.svg" alt="ubuntu-build" />
-      </a>
-    <!-- go-report-card -->
-      <a href="https://goreportcard.com/report/github.com/edoardottt/scilla">
-        <img src="https://goreportcard.com/badge/github.com/edoardottt/scilla" alt="go-report-card" />
-      </a>
-    <!-- gobadge -->
-      <a href="https://edoardoottavianelli.it">
-        <img src="https://github.com/edoardottt/scilla/blob/master/images/gobadge" alt="gobadge" />
-      </a>
-    <!-- license GPLv3.0 -->
-      <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
-        <img src="https://github.com/edoardottt/scilla/blob/master/images/license-GPL3.svg" alt="license-GPL3" />
-      </a>
+  <!-- gobadge -->
+  <a href="https://edoardoottavianelli.it">
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/gobadge" alt="gobadge" />
+  </a>
+  <!-- license GPLv3.0 -->
+  <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/license-GPL3.svg" alt="license-GPL3" />
+  </a>
 </p>
+
+- [Example](https://github.com/edoardottt/scilla#example-bar_chart)
+- [Installation](https://github.com/edoardottt/scilla#installation-)
+	- [Linux](https://github.com/edoardottt/scilla#installation-)
+	- [Windows](https://github.com/edoardottt/scilla#installation-)
+- [Get Started](https://github.com/edoardottt/scilla#get-started-)
+- [Examples](https://github.com/edoardottt/scilla#examples-)
+- [Contributing](https://github.com/edoardottt/scilla#contributing-)
 
 Example :bar_chart:
 ----------
@@ -73,13 +88,15 @@ Installation 📡
     
     - `make unwindows`
 
-- `make fmt` run the golang formatter.
+- Other commands:
 
-- `make update` Update.
+    - `make fmt` run the golang formatter.
 
-- `make remod` Remod.
+    - `make update` Update.
 
-- `make test` runs the tests.
+    - `make remod` Remod.
+
+    - `make test` runs the tests.
 
 Get Started 🎉
 ----------
@@ -150,7 +167,7 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
-A special thanks to [danielmiessler](https://github.com/danielmiessler). Now using one of those lists.
+A special thanks to [danielmiessler](https://github.com/danielmiessler), using those lists.
 
 **To do:**
 

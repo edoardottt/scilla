@@ -43,7 +43,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asaskevich/govalidator"
 	"github.com/gookit/color"
 )
 
@@ -116,11 +115,11 @@ func main() {
 
 	// Loads the deafult wordlist files
 	if runtime.GOOS == "windows" {
-		subs, subsLength = readDict("lists/subdomains.txt")
-		dirs, dirsLength = readDict("lists/dirs.txt")
+		subs = readDict("lists/subdomains.txt")
+		dirs = readDict("lists/dirs.txt")
 	} else { // linux
-		subs, subsLength = readDict("/usr/bin/lists/subdomains.txt")
-		dirs, dirsLength = readDict("/usr/bin/lists/dirs.txt")
+		subs = readDict("/usr/bin/lists/subdomains.txt")
+		dirs = readDict("/usr/bin/lists/dirs.txt")
 	}
 
 	input := readArgs()
@@ -386,42 +385,33 @@ func checkPortsRange(portsRange string, StartPort, EndPort int) (int, int) {
 	return StartPort, EndPort
 }
 
-//isIP checks if the inputted Ip is valid
-func isIP(str string) bool {
-	return govalidator.IsIPv4(str) || govalidator.IsIPv6(str)
-}
-
 //isURL checks if the inputted Url is valid
 func isURL(target string) bool {
 	return regexp.MustCompile(`^https?://`).MatchString(target)
 }
 
 //readDict scan all the possible subdomains from file
-func readDict(inputFile string) ([]string, int) {
+func readDict(inputFile string) []string {
 	file, err := os.Open(inputFile)
-	defer file.Close()
-
 	if err != nil {
 		log.Fatalf("failed to open %s ", inputFile)
 	}
-	scanner := bufio.NewScanner(file)
+	defer file.Close()
 
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	var text []string
-	var fileLength int
-
 	for scanner.Scan() {
 		text = append(text, scanner.Text())
-		fileLength++
 	}
-	return text, fileLength
+	return text
 }
 
 //createSubdomains returns a list of subdomains
 //from the default file lists/subdomains.txt.
 func createSubdomains(filename string, url string) []string {
 	if filename != "" {
-		subs, subsLength = readDict(filename)
+		subs = readDict(filename)
 	}
 
 	result := make([]string, 0)
@@ -435,7 +425,7 @@ func createSubdomains(filename string, url string) []string {
 //from the default file lists/dirs.txt.
 func createUrls(filename string, url string) []string {
 	if filename != "" {
-		dirs, dirsLength = readDict(filename)
+		dirs = readDict(filename)
 	}
 	result := make([]string, 0)
 	for _, dir := range dirs {
