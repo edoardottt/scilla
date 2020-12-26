@@ -167,7 +167,7 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
-A special thanks to [danielmiessler](https://github.com/danielmiessler). Now using one of those lists.
+A special thanks to [danielmiessler](https://github.com/danielmiessler), using those lists.
 
 **To do:**
 
