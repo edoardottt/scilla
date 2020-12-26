@@ -45,6 +45,14 @@
       </a>
 </p>
 
+- [Example](https://github.com/edoardottt/scilla#example-bar_chart)
+- [Installation](https://github.com/edoardottt/scilla#installation-)
+	- [Linux](https://github.com/edoardottt/scilla#installation-)
+	- [Windows](https://github.com/edoardottt/scilla#installation-)
+- [Get Started](https://github.com/edoardottt/scilla#get-started-)
+- [Examples](https://github.com/edoardottt/scilla#examples-)
+- [Contributing](https://github.com/edoardottt/scilla#contributing-)
+
 Example :bar_chart:
 ----------
 
