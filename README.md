@@ -25,7 +25,7 @@
   </a>
   <!-- win10-build -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/win10-build.svg" alt="win10-build" />
+    <img src="https://github.com/edoardottt/scilla/blob/master/images/win10.svg" alt="win10-build" />
   </a>
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
