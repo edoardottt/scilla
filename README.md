@@ -52,6 +52,14 @@
   </a>
 </p>
 
+- [Example](https://github.com/edoardottt/scilla#example-bar_chart)
+- [Installation](https://github.com/edoardottt/scilla#installation-)
+	- [Linux](https://github.com/edoardottt/scilla#installation-)
+	- [Windows](https://github.com/edoardottt/scilla#installation-)
+- [Get Started](https://github.com/edoardottt/scilla#get-started-)
+- [Examples](https://github.com/edoardottt/scilla#examples-)
+- [Contributing](https://github.com/edoardottt/scilla#contributing-)
+
 Example :bar_chart:
 ----------
 
@@ -80,13 +88,15 @@ Installation 📡
     
     - `make unwindows`
 
-- `make fmt` run the golang formatter.
+- Other commands:
 
-- `make update` Update.
+    - `make fmt` run the golang formatter.
 
-- `make remod` Remod.
+    - `make update` Update.
 
-- `make test` runs the tests.
+    - `make remod` Remod.
+
+    - `make test` runs the tests.
 
 Get Started 🎉
 ----------
