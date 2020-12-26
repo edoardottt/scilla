@@ -81,13 +81,15 @@ Installation 📡
     
     - `make unwindows`
 
-- `make fmt` run the golang formatter.
+- Other commands:
 
-- `make update` Update.
+    - `make fmt` run the golang formatter.
 
-- `make remod` Remod.
+    - `make update` Update.
 
-- `make test` runs the tests.
+    - `make remod` Remod.
+
+    - `make test` runs the tests.
 
 Get Started 🎉
 ----------
