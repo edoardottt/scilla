@@ -500,26 +500,18 @@ func appendDir(domain string, dir string) string {
 
 //readDict scan all the possible subdomains from file
 func readDict(inputFile string) []string {
-	// os.Open() opens specific file in
-	// read-only mode and this return
-	// a pointer of type os.
 	file, err := os.Open(inputFile)
-
 	if err != nil {
 		log.Fatalf("failed to open %s ", inputFile)
-
 	}
-	scanner := bufio.NewScanner(file)
 
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	var text []string
-
 	for scanner.Scan() {
 		text = append(text, scanner.Text())
 	}
 
-	// The method os.File.Close() is called
-	// on the os.File object to close the file
 	file.Close()
 	return text
 }
@@ -529,13 +521,11 @@ func readDict(inputFile string) []string {
 func createSubdomains(filename string, url string) []string {
 	var subs []string
 	if filename == "" {
-
 		if runtime.GOOS == "windows" {
 			subs = readDict("lists/subdomains.txt")
 		} else { // linux
 			subs = readDict("/usr/bin/lists/subdomains.txt")
 		}
-
 	} else {
 		subs = readDict(filename)
 	}
