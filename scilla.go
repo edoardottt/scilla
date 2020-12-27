@@ -768,3 +768,13 @@ func asyncDir(urls []string) {
 
 	wg.Wait()
 }
+
+// OUTPUT STRUCT
+type Output struct {
+	Target      string
+	Time        string
+	Subdomains  []string
+	Directories []string
+	Dns         []string
+	Ports       []string
+}
