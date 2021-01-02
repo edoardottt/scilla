@@ -191,16 +191,34 @@ func cleanProtocol(target string) string {
 	return target
 }
 
+// output formats accepted
+func outputFormatIsOk(input string) bool {
+
+	acceptedOutput := [1]string{"txt"}
+	input = strings.ToLower(input)
+	for _, output := range acceptedOutput {
+		if output == input {
+			return true
+		}
+	}
+	return false
+}
+
 //Input struct contains the input parameters
 type Input struct {
 	ReportTarget    string
 	ReportWord      string
+	ReportOutput    string
 	DnsTarget       string
+	DnsOutput       string
 	SubdomainTarget string
 	SubdomainWord   string
+	SubdomainOutput string
 	DirTarget       string
 	DirWord         string
+	DirOutput       string
 	PortTarget      string
+	PortOutput      string
 	StartPort       int
 	EndPort         int
 }
@@ -225,13 +243,19 @@ func readArgs() Input {
 	reportTargetPtr := reportCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// report subcommand flag pointers
-	portsReportPtr := reportCommand.String("p", "", "ports range <start-end>")
+	reportPortsPtr := reportCommand.String("p", "", "ports range <start-end>")
 
 	// report subcommand flag pointers
-	wordlistsReportPtr := reportCommand.String("w", "", "wordlist to use (default enabled)")
+	reportWordlistPtr := reportCommand.String("w", "", "wordlist to use (default enabled)")
+
+	// report subcommand flag pointers
+	reportOutputPtr := reportCommand.String("o", "", "output format (txt)")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
+
+	// report subcommand flag pointers
+	dnsOutputPtr := dnsCommand.String("o", "", "output format (txt)")
 
 	// subdomains subcommand flag pointers
 	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -239,14 +263,23 @@ func readArgs() Input {
 	// subdomains subcommand wordlist
 	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
 
+	// report subcommand flag pointers
+	subdomainOutputPtr := subdomainCommand.String("o", "", "output format (txt)")
+
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// dor subcommand wordlist
 	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
+	// report subcommand flag pointers
+	dirOutputPtr := dirCommand.String("o", "", "output format (txt)")
+
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
+
+	// report subcommand flag pointers
+	portOutputPtr := portCommand.String("o", "", "output format (txt)")
 
 	portsPtr := portCommand.String("p", "", "ports range <start-end>")
 	// Default ports
@@ -264,8 +297,6 @@ func readArgs() Input {
 
 	// Switch on the subcommand
 	// Parse the flags for appropriate FlagSet
-	// FlagSet.Parse() requires a set of arguments to parse as input
-	// os.Args[2:] will be all arguments starting after the subcommand at os.Args[1]
 	switch os.Args[1] {
 	case "report":
 		reportCommand.Parse(os.Args[2:])
@@ -284,8 +315,7 @@ func readArgs() Input {
 		os.Exit(1)
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// REPORT subcommand
 	if reportCommand.Parsed() {
 		// Required Flags
 		if *reportTargetPtr == "" {
@@ -298,15 +328,18 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+		if !outputFormatIsOk(*reportOutputPtr) {
+			fmt.Println("The output format is not valid.")
+			os.Exit(1)
+		}
 
-		if *portsReportPtr != "" {
-			portsRange := string(*portsReportPtr)
+		if *reportPortsPtr != "" {
+			portsRange := string(*reportPortsPtr)
 			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
 		}
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// DNS subcommand
 	if dnsCommand.Parsed() {
 		// Required Flags
 		if *dnsTargetPtr == "" {
@@ -319,10 +352,13 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+		if !outputFormatIsOk(*dnsOutputPtr) {
+			fmt.Println("The output format is not valid.")
+			os.Exit(1)
+		}
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// SUBDOMAIN subcommand
 	if subdomainCommand.Parsed() {
 		// Required Flags
 		if *subdomainTargetPtr == "" {
@@ -335,10 +371,13 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+		if !outputFormatIsOk(*subdomainOutputPtr) {
+			fmt.Println("The output format is not valid.")
+			os.Exit(1)
+		}
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// PORT subcommand
 	if portCommand.Parsed() {
 
 		// Required Flags
@@ -357,10 +396,13 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+		if !outputFormatIsOk(*portOutputPtr) {
+			fmt.Println("The output format is not valid.")
+			os.Exit(1)
+		}
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// DIR subcommand
 	if dirCommand.Parsed() {
 		// Required Flags
 		if *dirTargetPtr == "" {
@@ -373,10 +415,13 @@ func readArgs() Input {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
+		if !outputFormatIsOk(*dirOutputPtr) {
+			fmt.Println("The output format is not valid.")
+			os.Exit(1)
+		}
 	}
 
-	// Check which subcommand was Parsed using the FlagSet.Parsed() function. Handle each case accordingly.
-	// FlagSet.Parse() will evaluate to false if no flags were parsed (i.e. the user did not provide any flags)
+	// HELP subcommand
 	if helpCommand.Parsed() {
 		// Print help
 		help()
@@ -385,13 +430,18 @@ func readArgs() Input {
 
 	result := Input{
 		*reportTargetPtr,
-		*wordlistsReportPtr,
+		*reportWordlistPtr,
+		*reportOutputPtr,
 		*dnsTargetPtr,
+		*dnsOutputPtr,
 		*subdomainTargetPtr,
 		*subdomainWordlistPtr,
+		*subdomainOutputPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
+		*dirOutputPtr,
 		*portTargetPtr,
+		*portOutputPtr,
 		StartPort,
 		EndPort,
 	}
@@ -572,11 +622,9 @@ type HttpResp struct {
 func asyncGet(urls []string) {
 
 	var count int = 0
-
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
-
 	limiter := make(chan string, 80) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
@@ -631,10 +679,8 @@ func isOpenPort(host string, port string) bool {
 func asyncPort(StartingPort int, EndingPort int, host string) {
 
 	var count int = 0
-
 	limiter := make(chan string, 300) // Limits simultaneous requests
-
-	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
+	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 
 	for port := StartingPort; port <= EndingPort; port++ {
 		wg.Add(1)
@@ -727,11 +773,9 @@ func lookupDNS(domain string) {
 func asyncDir(urls []string) {
 
 	var count int = 0
-
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
-
 	limiter := make(chan string, 80) // Limits simultaneous requests
 
 	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
