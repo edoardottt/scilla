@@ -514,6 +514,51 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 	return StartPort, EndPort
 }
 
+// Create Output Folder
+func createOutputFolder() {
+	//Create a folder/directory at a full qualified path
+	err := os.Mkdir("output", 0755)
+	if err != nil {
+		fmt.Println("Can't create output folder.")
+		os.Exit(1)
+	}
+}
+
+// Create Output File
+func createOutputFile(target string, format string) {
+	filename := "output" + "/" + target + "." + format
+	_, err := os.Stat(filename)
+
+	if os.IsNotExist(err) {
+		createOutputFolder()
+		// If the file doesn't exist, create it.
+		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Println("Can't create output file.")
+			os.Exit(1)
+		}
+		f.Close()
+	} else {
+		// The file already exists, check what the user want.
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("The output file already esists, do you want to overwrite? (Y/n): ")
+		text, _ := reader.ReadString('\n')
+		answer := strings.ToLower(text)
+
+		if answer == "y" || answer == "yes" || answer == "" {
+			f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				fmt.Println("Can't create output file.")
+				os.Exit(1)
+			}
+			f.Close()
+		} else {
+			os.Exit(1)
+		}
+	}
+
+}
+
 //isIp checks if the inputted Ip is valid
 func isIp(str string) bool {
 	return govalidator.IsIPv4(str) || govalidator.IsIPv6(str)
@@ -811,14 +856,4 @@ func asyncDir(urls []string) {
 	}
 
 	wg.Wait()
-}
-
-// OUTPUT STRUCT
-type Output struct {
-	Target      string
-	Time        string
-	Subdomains  []string
-	Directories []string
-	Dns         []string
-	Ports       []string
 }
