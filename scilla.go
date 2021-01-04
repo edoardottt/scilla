@@ -550,7 +550,9 @@ func createOutputFile(target string, format string) string {
 	_, err := os.Stat(filename)
 
 	if os.IsNotExist(err) {
-		createOutputFolder()
+		if _, err := os.Stat("output/"); os.IsNotExist(err) {
+			createOutputFolder()
+		}
 		// If the file doesn't exist, create it.
 		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
@@ -920,6 +922,9 @@ func asyncDir(urls []string, outputFile string) {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Red("%s\n", resp.Status)
+				if output {
+					appendOutputToFile(domain, outputFile)
+				}
 			}
 		}(i, domain)
 	}
