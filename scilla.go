@@ -101,55 +101,71 @@ func execute(input Input) {
 
 		fmt.Println("=============== FULL REPORT ===============")
 		target := cleanProtocol(input.ReportTarget)
+		outputFile := ""
+		if input.ReportOutput != "" {
+			outputFile = createOutputFile(input.ReportTarget, input.ReportOutput)
+		}
 		fmt.Printf("====== Target: %s ======\n", target)
 
 		fmt.Println("=============== SUBDOMAINS ===============")
 		var strings1 []string
 		strings1 = createSubdomains(input.ReportWord, target)
 		fmt.Printf("target: %s\n", target)
-		asyncGet(strings1)
+		asyncGet(strings1, outputFile)
 
 		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
-		asyncPort(input.StartPort, input.EndPort, target)
+		asyncPort(input.StartPort, input.EndPort, target, outputFile)
 
 		fmt.Println("=============== DNS SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
-		lookupDNS(target)
+		lookupDNS(target, outputFile)
 
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
 		strings2 = createUrls(input.ReportWord, target)
-		asyncDir(strings2)
+		asyncDir(strings2, outputFile)
 
 	}
 	if input.DnsTarget != "" {
 
 		target := cleanProtocol(input.DnsTarget)
 		fmt.Println("=============== DNS SCANNING ===============")
+		outputFile := ""
+		if input.DnsOutput != "" {
+			outputFile = createOutputFile(input.DnsTarget, input.DnsOutput)
+		}
 		fmt.Printf("target: %s\n", target)
-		lookupDNS(target)
+		lookupDNS(target, outputFile)
 
 	}
 	if input.SubdomainTarget != "" {
 
 		target := cleanProtocol(input.SubdomainTarget)
 		fmt.Println("=============== SUBDOMAINS ===============")
+		outputFile := ""
+		if input.SubdomainOutput != "" {
+			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
+		}
 		fmt.Printf("target: %s\n", target)
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
-		asyncGet(strings1)
+		asyncGet(strings1, outputFile)
 
 	}
 	if input.DirTarget != "" {
 
 		target := cleanProtocol(input.DirTarget)
 		fmt.Println("=============== DIRECTORIES ===============")
+		outputFile := ""
+		if input.DirOutput != "" {
+			outputFile = createOutputFile(input.DirTarget, input.DirOutput)
+		}
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
 		strings2 = createUrls(input.DirWord, target)
-		asyncDir(strings2)
+		asyncDir(strings2, outputFile)
 	}
 	if input.PortTarget != "" {
 
@@ -157,9 +173,13 @@ func execute(input Input) {
 		if isUrl(target) {
 			target = cleanProtocol(input.PortTarget)
 		}
+		outputFile := ""
+		if input.PortOutput != "" {
+			outputFile = createOutputFile(input.PortTarget, input.PortOutput)
+		}
 		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
-		asyncPort(input.StartPort, input.EndPort, target)
+		asyncPort(input.StartPort, input.EndPort, target, outputFile)
 
 	}
 
@@ -525,7 +545,7 @@ func createOutputFolder() {
 }
 
 // Create Output File
-func createOutputFile(target string, format string) {
+func createOutputFile(target string, format string) string {
 	filename := "output" + "/" + target + "." + format
 	_, err := os.Stat(filename)
 
@@ -544,9 +564,15 @@ func createOutputFile(target string, format string) {
 		fmt.Print("The output file already esists, do you want to overwrite? (Y/n): ")
 		text, _ := reader.ReadString('\n')
 		answer := strings.ToLower(text)
+		answer = strings.TrimSpace(answer)
 
 		if answer == "y" || answer == "yes" || answer == "" {
 			f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				fmt.Println("Can't create output file.")
+				os.Exit(1)
+			}
+			err = f.Truncate(0)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
@@ -556,7 +582,7 @@ func createOutputFile(target string, format string) {
 			os.Exit(1)
 		}
 	}
-
+	return filename
 }
 
 //isIp checks if the inputted Ip is valid
@@ -662,17 +688,30 @@ type HttpResp struct {
 	Err    error
 }
 
+//appendOutputToFile
+func appendOutputToFile(output string, filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	if _, err := file.WriteString(output + "\n"); err != nil {
+		log.Fatal(err)
+	}
+}
+
 //asyncGet performs concurrent requests to the specified
 //urls and prints the results
-func asyncGet(urls []string) {
+func asyncGet(urls []string, outputFile string) {
 
 	var count int = 0
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
 	limiter := make(chan string, 80) // Limits simultaneous requests
+	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
+	output := outputFile != ""
 
 	for i, domain := range urls {
 		wg.Add(1)
@@ -695,13 +734,15 @@ func asyncGet(urls []string) {
 			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("[+]FOUND: %s ", domain)
 			if string(resp.Status[0]) == "2" {
+				if output {
+					appendOutputToFile(domain, outputFile)
+				}
 				color.Green("%s\n", resp.Status)
 			} else {
 				color.Red("%s\n", resp.Status)
 			}
 		}(i, domain)
 	}
-
 	wg.Wait()
 }
 
@@ -721,11 +762,13 @@ func isOpenPort(host string, port string) bool {
 
 //asyncPort performs concurrent requests to the specified
 //ports range and, if someone is open it prints the results
-func asyncPort(StartingPort int, EndingPort int, host string) {
+func asyncPort(StartingPort int, EndingPort int, host string, outputFile string) {
 
 	var count int = 0
 	limiter := make(chan string, 300) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
+
+	output := outputFile != ""
 
 	for port := StartingPort; port <= EndingPort; port++ {
 		wg.Add(1)
@@ -746,15 +789,19 @@ func asyncPort(StartingPort int, EndingPort int, host string) {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
+				if output {
+					appendOutputToFile(portStr, outputFile)
+				}
 			}
 		}(portStr, host)
 	}
-
 	wg.Wait()
 }
 
 //lookupDNS prints the DNS servers for the inputted domain
-func lookupDNS(domain string) {
+func lookupDNS(domain string, outputFile string) {
+
+	output := outputFile != ""
 
 	// -- A RECORDS --
 	ips, err := net.LookupIP(domain)
@@ -764,6 +811,9 @@ func lookupDNS(domain string) {
 	for _, ip := range ips {
 		fmt.Printf("[+]FOUND %s IN A: ", domain)
 		color.Green("%s\n", ip.String())
+		if output {
+			appendOutputToFile(ip.String(), outputFile)
+		}
 	}
 
 	// -- CNAME RECORD --
@@ -773,6 +823,9 @@ func lookupDNS(domain string) {
 	}
 	fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
 	color.Green("%s\n", cname)
+	if output {
+		appendOutputToFile(cname, outputFile)
+	}
 
 	// -- NS RECORDS --
 	nameserver, err := net.LookupNS(domain)
@@ -782,6 +835,9 @@ func lookupDNS(domain string) {
 	for _, ns := range nameserver {
 		fmt.Printf("[+]FOUND %s IN NS: ", domain)
 		color.Green("%s\n", ns)
+		if output {
+			appendOutputToFile(ns.Host, outputFile)
+		}
 	}
 
 	// -- MX RECORDS --
@@ -792,6 +848,9 @@ func lookupDNS(domain string) {
 	for _, mx := range mxrecords {
 		fmt.Printf("[+]FOUND %s IN MX: ", domain)
 		color.Green("%s %v\n", mx.Host, mx.Pref)
+		if output {
+			appendOutputToFile(mx.Host, outputFile)
+		}
 	}
 
 	// -- SRV SERVICE --
@@ -802,6 +861,9 @@ func lookupDNS(domain string) {
 	for _, srv := range srvs {
 		fmt.Printf("[+]FOUND %s IN SRV: ", domain)
 		color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
+		if output {
+			appendOutputToFile(srv.Target, outputFile)
+		}
 	}
 
 	// -- TXT RECORDS --
@@ -810,20 +872,24 @@ func lookupDNS(domain string) {
 	for _, txt := range txtrecords {
 		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
 		color.Green("%s\n", txt)
+		if output {
+			appendOutputToFile(txt, outputFile)
+		}
 	}
 }
 
 //asyncDir performs concurrent requests to the specified
 //urls and prints the results
-func asyncDir(urls []string) {
+func asyncDir(urls []string, outputFile string) {
 
 	var count int = 0
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
 	limiter := make(chan string, 80) // Limits simultaneous requests
+	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	wg := sync.WaitGroup{} // Needed to not prematurely exit before all requests have been finished
+	output := outputFile != ""
 
 	for i, domain := range urls {
 		wg.Add(1)
@@ -847,6 +913,9 @@ func asyncDir(urls []string) {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Green("%s\n", resp.Status)
+				if output {
+					appendOutputToFile(domain, outputFile)
+				}
 			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
@@ -854,6 +923,5 @@ func asyncDir(urls []string) {
 			}
 		}(i, domain)
 	}
-
 	wg.Wait()
 }
