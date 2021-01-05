@@ -214,6 +214,10 @@ func cleanProtocol(target string) string {
 // output formats accepted
 func outputFormatIsOk(input string) bool {
 
+	if input == "" {
+		return true
+	}
+
 	acceptedOutput := [1]string{"txt"}
 	input = strings.ToLower(input)
 	for _, output := range acceptedOutput {
