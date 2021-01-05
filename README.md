@@ -171,7 +171,7 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
 **To do:**
 
-  - [ ] Test the functions
+  - [ ] Tests
   
   - [x] Subdomains enumeration
   
@@ -183,13 +183,17 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [x] Directories enumeration
   
+  - [x] TXT output
+  
   - [ ] Print the progress percentage value when CR is pressed (not in output doc)
+  
+  - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
+  
+  - [ ] Tor support
   
   - [x] Build an Input Struct and use it as parameter
 
   - [x] Output color
-  
-  - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
   - [ ] JSON report output
   
@@ -198,8 +202,6 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   - [ ] XML report output
   
   - [ ] (report mode) In all the subdomains found enumerates ports???
-  
-  - [ ] Tor support
   
   - [ ] Proxy support
 
