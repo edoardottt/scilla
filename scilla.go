@@ -738,7 +738,8 @@ func asyncGet(urls []string, outputFile string) {
 			}
 
 			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("[+]FOUND: %s ", domain)
+			subDomainFound := cleanProtocol(domain)
+			fmt.Printf("[+]FOUND: %s ", subDomainFound)
 			if string(resp.Status[0]) == "2" {
 				if output {
 					appendOutputToFile(domain, outputFile)
