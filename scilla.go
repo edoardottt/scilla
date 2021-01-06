@@ -67,23 +67,34 @@ func intro() {
 func help() {
 	fmt.Println("Information Gathering tool - DNS / Subdomain / Ports / Directories enumeration")
 	fmt.Println("")
-	fmt.Println("usage: scilla [subcommand] { options }")
+	fmt.Println("usage: scilla subcommand { options }")
 	fmt.Println("")
 	fmt.Println("	Available subcommands:")
-	fmt.Println("		- dns { -target <target (URL)> REQUIRED}")
-	fmt.Println("		- subdomain { [-w wordlist] -target <target (URL)> REQUIRED}")
-	fmt.Println("		- port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
-	fmt.Println("		- dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}")
-	fmt.Println("		- report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}")
+	fmt.Println("		- dns -target [-o output-format] <target (URL)> REQUIRED")
+	fmt.Println("		- subdomain [-w wordlist] [-o output-format] -target <target (URL)> REQUIRED")
+	fmt.Println("		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED")
+	fmt.Println("		- dir [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED")
+	fmt.Println("		- report [-p <start-end>] [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED")
 	fmt.Println("		- help")
+	fmt.Println("		- examples")
+}
+
+//examples prints some examples
+func examples() {
 	fmt.Println("	Examples:")
 	fmt.Println("		- scilla dns -target target.domain")
+	fmt.Println("		- scilla dns -target -o txt target.domain")
 	fmt.Println("		- scilla subdomain -target target.domain")
+	fmt.Println("		- scilla subdomain -w wordlist.txt -target target.domain")
+	fmt.Println("		- scilla subdomain -o txt -target target.domain")
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
 	fmt.Println("		- scilla report -p 80 -target target.domain")
 	fmt.Println("		- scilla report -p 50-200 -target target.domain")
-	fmt.Println("		- scilla dir -w directs.txt -target target.domain")
+	fmt.Println("		- scilla port -o txt -target target.domain")
+	fmt.Println("		- scilla dir -target target.domain")
+	fmt.Println("		- scilla dir -o txt -target target.domain")
+	fmt.Println("		- scilla dir -w wordlist.txt -target target.domain")
 	fmt.Println("")
 }
 
@@ -262,6 +273,7 @@ func readArgs() Input {
 	portCommand := flag.NewFlagSet("port", flag.ExitOnError)
 	dirCommand := flag.NewFlagSet("dir", flag.ExitOnError)
 	helpCommand := flag.NewFlagSet("help", flag.ExitOnError)
+	examplesCommand := flag.NewFlagSet("examples", flag.ExitOnError)
 
 	// report subcommand flag pointers
 	reportTargetPtr := reportCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -334,6 +346,8 @@ func readArgs() Input {
 		dirCommand.Parse(os.Args[2:])
 	case "help":
 		helpCommand.Parse(os.Args[2:])
+	case "examples":
+		examplesCommand.Parse(os.Args[2:])
 	default:
 		flag.PrintDefaults()
 		os.Exit(1)
@@ -449,6 +463,13 @@ func readArgs() Input {
 	if helpCommand.Parsed() {
 		// Print help
 		help()
+		os.Exit(0)
+	}
+
+	// EXAMPLES subcommand
+	if examplesCommand.Parsed() {
+		// Print help
+		examples()
 		os.Exit(0)
 	}
 
