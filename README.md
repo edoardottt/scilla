@@ -103,15 +103,16 @@ Get Started 🎉
 
 `scilla help` prints the help in the command line.
 
-    usage: scilla [subcommand] { options }
+	usage: scilla subcommand { options }
 
-	    Available subcommands:
-		   - dns { -target <target (URL)> REQUIRED}
-		   - subdomain { [-w wordlist] -target <target (URL)> REQUIRED}
-		   - port { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-		   - dir { [-w wordlist] -target <target (URL/IP)> REQUIRED}
-		   - report { [-p <start-end>] -target <target (URL/IP)> REQUIRED}
-		   - help
+		Available subcommands:
+			- dns -target [-o output-format] <target (URL)> REQUIRED
+			- subdomain [-w wordlist] [-o output-format] -target <target (URL)> REQUIRED
+			- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
+			- dir [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED
+			- report [-p <start-end>] [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED
+			- help
+			- examples
 
 Examples 💡
 ----------
@@ -119,44 +120,38 @@ Examples 💡
 - DNS enumeration:
     
     - `scilla dns -target target.domain`
+    - `scilla dns -target -o txt target.domain`
 
 - Subdomains enumeration:
 
     - `scilla subdomain -target target.domain`
-
     - `scilla subdomain -w wordlist.txt -target target.domain`
+    - `scilla subdomain -o txt -target target.domain`
 
 - Directories enumeration:
 
     - `scilla dir -target target.domain`
-
     - `scilla dir -w wordlist.txt -target target.domain`
+    - `scilla dir -o txt -target target.domain`
 
 - Ports enumeration:
       
     - Default (all ports, so 1-65635) `scilla port -target target.domain`
-
     - Specifying ports range `scilla port -p 20-90 -target target.domain`
-
     - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
-
     - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
-
     - Specifying single port `scilla port -p 80 -target target.domain`
+    - Specifying output format `scilla port -o txt -target target.domain`
 
 - Full report:
       
     - Default (all ports, so 1-65635) `scilla report -target target.domain`
-
     - Specifying ports range `scilla report -p 20-90 -target target.domain`
-
     - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
-
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
-
     - Specifying single port `scilla report -p 80 -target target.domain`
-    
     - Specifying wordlist `scilla report -w wordlist.txt -target target.domain`
+    - Specifying output format `scilla report -o txt -target target.domain`
 
 Contributing 🛠
 -------
@@ -173,6 +168,26 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [ ] Tests
   
+  - [ ] Print the progress percentage value when CR is pressed (not in output doc) ?
+  
+  - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
+  
+  - [ ] Tor support
+  
+  - [ ] JSON report output
+  
+  - [ ] PDF report output
+  
+  - [ ] XML report output
+  
+  - [ ] (report mode) In all the subdomains found enumerates ports???
+  
+  - [ ] Proxy support
+  
+  - [x] Build an Input Struct and use it as parameter
+
+  - [x] Output color
+  
   - [x] Subdomains enumeration
   
   - [x] DNS enumeration
@@ -185,27 +200,6 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [x] TXT output
   
-  - [ ] Print the progress percentage value when CR is pressed (not in output doc)
-  
-  - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
-  
-  - [ ] Tor support
-  
-  - [x] Build an Input Struct and use it as parameter
-
-  - [x] Output color
-  
-  - [ ] JSON report output
-  
-  - [ ] PDF report output
-  
-  - [ ] XML report output
-  
-  - [ ] (report mode) In all the subdomains found enumerates ports???
-  
-  - [ ] Proxy support
-
-
 If you liked it drop a :star:
 -------
 
