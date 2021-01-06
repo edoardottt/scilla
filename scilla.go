@@ -120,7 +120,7 @@ func execute(input Input) {
 
 		fmt.Println("=============== SUBDOMAINS ===============")
 		var strings1 []string
-		strings1 = createSubdomains(input.ReportWord, target)
+		strings1 = createSubdomains(input.ReportWordSub, target)
 		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1, outputFile)
 
@@ -135,7 +135,7 @@ func execute(input Input) {
 		fmt.Println("=============== DIRECTORIES ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
-		strings2 = createUrls(input.ReportWord, target)
+		strings2 = createUrls(input.ReportWordDir, target)
 		asyncDir(strings2, outputFile)
 
 	}
@@ -242,7 +242,8 @@ func outputFormatIsOk(input string) bool {
 //Input struct contains the input parameters
 type Input struct {
 	ReportTarget    string
-	ReportWord      string
+	ReportWordDir   string
+	ReportWordSub   string
 	ReportOutput    string
 	DnsTarget       string
 	DnsOutput       string
@@ -282,7 +283,10 @@ func readArgs() Input {
 	reportPortsPtr := reportCommand.String("p", "", "ports range <start-end>")
 
 	// report subcommand flag pointers
-	reportWordlistPtr := reportCommand.String("w", "", "wordlist to use (default enabled)")
+	reportWordlistDirPtr := reportCommand.String("wd", "", "wordlist to use for directories (default enabled)")
+
+	// report subcommand flag pointers
+	reportWordlistSubdomainPtr := reportCommand.String("ws", "", "wordlist to use for subdomains (default enabled)")
 
 	// report subcommand flag pointers
 	reportOutputPtr := reportCommand.String("o", "", "output format (txt)")
@@ -294,7 +298,7 @@ func readArgs() Input {
 	dnsOutputPtr := dnsCommand.String("o", "", "output format (txt)")
 
 	// subdomains subcommand flag pointers
-	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL/IP} (Required)")
+	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL} (Required)")
 
 	// subdomains subcommand wordlist
 	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
@@ -475,7 +479,8 @@ func readArgs() Input {
 
 	result := Input{
 		*reportTargetPtr,
-		*reportWordlistPtr,
+		*reportWordlistDirPtr,
+		*reportWordlistSubdomainPtr,
 		*reportOutputPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
