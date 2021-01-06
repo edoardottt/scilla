@@ -150,8 +150,9 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
     - Specifying single port `scilla report -p 80 -target target.domain`
-    - Specifying wordlist `scilla report -w wordlist.txt -target target.domain`
     - Specifying output format `scilla report -o txt -target target.domain`
+    - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
+    - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
 
 Contributing 🛠
 -------
@@ -175,13 +176,13 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [ ] JSON report output
   
-  - [ ] PDF report output
-  
   - [ ] XML report output
   
   - [ ] (report mode) In all the subdomains found enumerates ports???
   
   - [ ] Proxy support
+  
+  - [ ] PDF report output (?...kinda unuseful)
   
   - [x] Build an Input Struct and use it as parameter
 
