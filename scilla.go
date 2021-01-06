@@ -745,6 +745,7 @@ func appendOutputToFile(output string, filename string) {
 func asyncGet(urls []string, outputFile string) {
 
 	var count int = 0
+	var total int = len(urls)
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
@@ -765,7 +766,7 @@ func asyncGet(urls []string, outputFile string) {
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d", count)
+				fmt.Printf("%d / %d", count, total)
 			}
 			if err != nil {
 				return
@@ -806,6 +807,7 @@ func isOpenPort(host string, port string) bool {
 func asyncPort(StartingPort int, EndingPort int, host string, outputFile string) {
 
 	var count int = 0
+	var total int = EndingPort - StartingPort
 	limiter := make(chan string, 300) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 
@@ -824,7 +826,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d", count)
+				fmt.Printf("%d / %d", count, total)
 			}
 			if resp {
 				fmt.Fprint(os.Stdout, "\r \r")
@@ -924,6 +926,7 @@ func lookupDNS(domain string, outputFile string) {
 func asyncDir(urls []string, outputFile string) {
 
 	var count int = 0
+	var total int = len(urls)
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
@@ -944,7 +947,7 @@ func asyncDir(urls []string, outputFile string) {
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d", count)
+				fmt.Printf("%d / %d", count, total)
 			}
 			if err != nil {
 				return
