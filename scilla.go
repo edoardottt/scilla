@@ -77,6 +77,7 @@ func help() {
 	fmt.Println("		- report [-p <start-end>] [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED")
 	fmt.Println("		- help")
 	fmt.Println("		- examples")
+	fmt.Println()
 }
 
 //examples prints some examples
@@ -84,17 +85,24 @@ func examples() {
 	fmt.Println("	Examples:")
 	fmt.Println("		- scilla dns -target target.domain")
 	fmt.Println("		- scilla dns -target -o txt target.domain")
+	fmt.Println()
 	fmt.Println("		- scilla subdomain -target target.domain")
 	fmt.Println("		- scilla subdomain -w wordlist.txt -target target.domain")
 	fmt.Println("		- scilla subdomain -o txt -target target.domain")
+	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
-	fmt.Println("		- scilla report -p 80 -target target.domain")
-	fmt.Println("		- scilla report -p 50-200 -target target.domain")
+	fmt.Println("		- scilla port -p 10-1000 -target target.domain")
 	fmt.Println("		- scilla port -o txt -target target.domain")
+	fmt.Println()
 	fmt.Println("		- scilla dir -target target.domain")
 	fmt.Println("		- scilla dir -o txt -target target.domain")
 	fmt.Println("		- scilla dir -w wordlist.txt -target target.domain")
+	fmt.Println()
+	fmt.Println("		- scilla report -p 80 -target target.domain")
+	fmt.Println("		- scilla report -p 50-200 -target target.domain")
+	fmt.Println("		- scilla report -wd dirs.txt -target target.domain")
+	fmt.Println("		- scilla report -ws subdomains.txt -target target.domain")
 	fmt.Println("")
 }
 
