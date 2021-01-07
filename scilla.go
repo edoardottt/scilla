@@ -740,6 +740,12 @@ func appendOutputToFile(output string, filename string) {
 	}
 }
 
+//percentage
+func percentage(done, total int) float64 {
+	result := (float64(done) / float64(total)) * 100
+	return result
+}
+
 //asyncGet performs concurrent requests to the specified
 //urls and prints the results
 func asyncGet(urls []string, outputFile string) {
@@ -766,7 +772,7 @@ func asyncGet(urls []string, outputFile string) {
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d / %d", count, total)
+				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
 			}
 			if err != nil {
 				return
@@ -826,7 +832,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d / %d", count, total)
+				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
 			}
 			if resp {
 				fmt.Fprint(os.Stdout, "\r \r")
@@ -947,7 +953,7 @@ func asyncDir(urls []string, outputFile string) {
 			count++
 			if count%100 == 0 { // update counter
 				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%d / %d", count, total)
+				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
 			}
 			if err != nil {
 				return
