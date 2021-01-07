@@ -883,7 +883,7 @@ func lookupDNS(domain string, outputFile string) {
 	}
 	for _, ns := range nameserver {
 		fmt.Printf("[+]FOUND %s IN NS: ", domain)
-		color.Green("%s\n", ns)
+		color.Green("%s\n", ns.Host)
 		if output {
 			appendOutputToFile(ns.Host, outputFile)
 		}
