@@ -7,7 +7,8 @@
   </sub>
   <br>
   <!--Tweet button-->
-  <img src="https://giphy.com/gifs/nM6FPHQGvMZqQuU6gn">
+  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2Clinux%2Cgolang%2Cnetwork" target="_blank">Share on Twitter!
+  </a>
   <br>
   
   <!-- go-report-card -->
@@ -62,7 +63,7 @@
 Example :bar_chart:
 ----------
 
-![Example](https://gph.is/g/ZyWVDGW)
+![Example](https://github.com/edoardottt/scilla/blob/master/images/scilla.gif)
 
 Installation 📡
 ----------
