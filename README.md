@@ -7,7 +7,7 @@
   </sub>
   <br>
   <!--Tweet button-->
-  <iframe src="https://giphy.com/embed/nM6FPHQGvMZqQuU6gn" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/nM6FPHQGvMZqQuU6gn">via GIPHY</a></p>
+  <img src="https://giphy.com/gifs/nM6FPHQGvMZqQuU6gn">
   <br>
   
   <!-- go-report-card -->
