@@ -7,8 +7,7 @@
   </sub>
   <br>
   <!--Tweet button-->
-  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2Clinux%2Cgolang%2Cnetwork" target="_blank">Share on Twitter!
-  </a>
+  <iframe src="https://giphy.com/embed/nM6FPHQGvMZqQuU6gn" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/nM6FPHQGvMZqQuU6gn">via GIPHY</a></p>
   <br>
   
   <!-- go-report-card -->
