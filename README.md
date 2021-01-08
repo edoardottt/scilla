@@ -21,34 +21,34 @@
   </a>
   <!-- ubuntu-build -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/ubuntu-build.svg" alt="ubuntu-build" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/ubuntu-build.svg" alt="ubuntu-build" />
   </a>
   <!-- win10-build -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/win10.svg" alt="win10-build" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/win10.svg" alt="win10-build" />
   </a>
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/pr-welcome.svg" alt="pr-welcome" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/pr-welcome.svg" alt="pr-welcome" />
   </a>
 
   <br>
   
   <!-- mainteinance -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/maintained-yes.svg" alt="Mainteinance yes" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/maintained-yes.svg" alt="Mainteinance yes" />
   </a>
   <!-- ask-me-anything -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/ask-me-anything.svg" alt="ask me anything" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/ask-me-anything.svg" alt="ask me anything" />
   </a>
   <!-- gobadge -->
   <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/gobadge" alt="gobadge" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/gobadge" alt="gobadge" />
   </a>
   <!-- license GPLv3.0 -->
   <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
-    <img src="https://github.com/edoardottt/scilla/blob/master/images/license-GPL3.svg" alt="license-GPL3" />
+    <img src="https://github.com/edoardottt/images/blob/main/scilla/license-GPL3.svg" alt="license-GPL3" />
   </a>
 </p>
 
@@ -63,7 +63,7 @@
 Example :bar_chart:
 ----------
 
-![Example](https://github.com/edoardottt/scilla/blob/master/images/scilla.gif)
+![Example](https://github.com/edoardottt/images/blob/main/scilla/scilla.gif)
 
 Installation 📡
 ----------
