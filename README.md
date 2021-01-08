@@ -62,7 +62,7 @@
 Example :bar_chart:
 ----------
 
-![Example](https://github.com/edoardottt/scilla/blob/master/images/scilla.gif)
+![Example](https://gph.is/g/ZyWVDGW)
 
 Installation 📡
 ----------
