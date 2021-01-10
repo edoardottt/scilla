@@ -118,30 +118,27 @@ func execute(input Input) {
 
 	if input.ReportTarget != "" {
 
-		fmt.Println("=============== FULL REPORT ===============")
 		target := cleanProtocol(input.ReportTarget)
+		fmt.Printf("target: %s\n", target)
+
+		fmt.Println("=============== FULL REPORT ===============")
 		outputFile := ""
 		if input.ReportOutput != "" {
 			outputFile = createOutputFile(input.ReportTarget, input.ReportOutput)
 		}
-		fmt.Printf("====== Target: %s ======\n", target)
 
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		var strings1 []string
 		strings1 = createSubdomains(input.ReportWordSub, target)
-		fmt.Printf("target: %s\n", target)
 		asyncGet(strings1, outputFile)
 
 		fmt.Println("=============== PORT SCANNING ===============")
-		fmt.Printf("target: %s\n", target)
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
 
 		fmt.Println("=============== DNS SCANNING ===============")
-		fmt.Printf("target: %s\n", target)
 		lookupDNS(target, outputFile)
 
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
-		fmt.Printf("target: %s\n", target)
 		var strings2 []string
 		strings2 = createUrls(input.ReportWordDir, target)
 		asyncDir(strings2, outputFile)
@@ -150,24 +147,24 @@ func execute(input Input) {
 	if input.DnsTarget != "" {
 
 		target := cleanProtocol(input.DnsTarget)
+		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== DNS SCANNING ===============")
 		outputFile := ""
 		if input.DnsOutput != "" {
 			outputFile = createOutputFile(input.DnsTarget, input.DnsOutput)
 		}
-		fmt.Printf("target: %s\n", target)
 		lookupDNS(target, outputFile)
 
 	}
 	if input.SubdomainTarget != "" {
 
 		target := cleanProtocol(input.SubdomainTarget)
+		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		outputFile := ""
 		if input.SubdomainOutput != "" {
 			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
 		}
-		fmt.Printf("target: %s\n", target)
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
 		asyncGet(strings1, outputFile)
@@ -176,12 +173,12 @@ func execute(input Input) {
 	if input.DirTarget != "" {
 
 		target := cleanProtocol(input.DirTarget)
+		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		outputFile := ""
 		if input.DirOutput != "" {
 			outputFile = createOutputFile(input.DirTarget, input.DirOutput)
 		}
-		fmt.Printf("target: %s\n", target)
 		var strings2 []string
 		strings2 = createUrls(input.DirWord, target)
 		asyncDir(strings2, outputFile)
@@ -196,8 +193,8 @@ func execute(input Input) {
 		if input.PortOutput != "" {
 			outputFile = createOutputFile(input.PortTarget, input.PortOutput)
 		}
-		fmt.Println("=============== PORT SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
+		fmt.Println("=============== PORT SCANNING ===============")
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
 
 	}
