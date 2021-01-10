@@ -126,7 +126,7 @@ func execute(input Input) {
 		}
 		fmt.Printf("====== Target: %s ======\n", target)
 
-		fmt.Println("=============== SUBDOMAINS ===============")
+		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		var strings1 []string
 		strings1 = createSubdomains(input.ReportWordSub, target)
 		fmt.Printf("target: %s\n", target)
@@ -140,7 +140,7 @@ func execute(input Input) {
 		fmt.Printf("target: %s\n", target)
 		lookupDNS(target, outputFile)
 
-		fmt.Println("=============== DIRECTORIES ===============")
+		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		fmt.Printf("target: %s\n", target)
 		var strings2 []string
 		strings2 = createUrls(input.ReportWordDir, target)
@@ -162,7 +162,7 @@ func execute(input Input) {
 	if input.SubdomainTarget != "" {
 
 		target := cleanProtocol(input.SubdomainTarget)
-		fmt.Println("=============== SUBDOMAINS ===============")
+		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		outputFile := ""
 		if input.SubdomainOutput != "" {
 			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
@@ -176,7 +176,7 @@ func execute(input Input) {
 	if input.DirTarget != "" {
 
 		target := cleanProtocol(input.DirTarget)
-		fmt.Println("=============== DIRECTORIES ===============")
+		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		outputFile := ""
 		if input.DirOutput != "" {
 			outputFile = createOutputFile(input.DirTarget, input.DirOutput)
@@ -526,7 +526,7 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 		}
 	} else if portsRange[len(portsRange)-1] == delimiter {
 		// If ending port isn't specified
-		maybeStart, err := strconv.Atoi(portsRange)
+		maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)-1])
 		if err != nil {
 			fmt.Println("The inputted port range is not valid.")
 			os.Exit(1)
@@ -845,6 +845,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 		}(portStr, host)
 	}
 	wg.Wait()
+	fmt.Fprint(os.Stdout, "\r \r")
 }
 
 //lookupDNS prints the DNS servers for the inputted domain
