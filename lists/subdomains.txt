@@ -1,4 +1,4 @@
-www
+rpmwww
 mail
 ftp
 localhost
@@ -3866,6 +3866,7 @@ volga
 wallace
 guardian
 rpm
+rpm-mirror
 mpa
 flower
 prince
