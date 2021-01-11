@@ -750,9 +750,9 @@ func asyncGet(urls []string, outputFile string) {
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: 20 * time.Second,
 	}
-	limiter := make(chan string, 80) // Limits simultaneous requests
+	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
 	output := outputFile != ""
@@ -793,7 +793,7 @@ func asyncGet(urls []string, outputFile string) {
 
 //isOpenPort scans if a port is open
 func isOpenPort(host string, port string) bool {
-	timeout := time.Second
+	timeout := 3 * time.Second
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
 	if err != nil {
 		return false
@@ -811,7 +811,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 
 	var count int = 0
 	var total int = EndingPort - StartingPort
-	limiter := make(chan string, 300) // Limits simultaneous requests
+	limiter := make(chan string, 200) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 
 	output := outputFile != ""
@@ -932,9 +932,9 @@ func asyncDir(urls []string, outputFile string) {
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: 20 * time.Second,
 	}
-	limiter := make(chan string, 80) // Limits simultaneous requests
+	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
 	output := outputFile != ""
