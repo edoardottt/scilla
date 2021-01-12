@@ -569,6 +569,12 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 	return StartPort, EndPort
 }
 
+//replaceBadCharacterOutput
+func replaceBadCharacterOutput(input string) string {
+	result := strings.ReplaceAll(input, "/", "-")
+	return result
+}
+
 // Create Output Folder
 func createOutputFolder() {
 	//Create a folder/directory at a full qualified path
@@ -581,6 +587,7 @@ func createOutputFolder() {
 
 // Create Output File
 func createOutputFile(target string, format string) string {
+	target = replaceBadCharacterOutput(target)
 	filename := "output" + "/" + target + "." + format
 	_, err := os.Stat(filename)
 
