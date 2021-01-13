@@ -733,6 +733,7 @@ type HttpResp struct {
 }
 
 //appendOutputToFile
+//for now it's only .txt output
 func appendOutputToFile(output string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -748,6 +749,23 @@ func appendOutputToFile(output string, filename string) {
 func percentage(done, total int) float64 {
 	result := (float64(done) / float64(total)) * 100
 	return result
+}
+
+//ignoreResponse returns a boolean if the response
+//should be ignored or not.
+func ignoreResponse(response string, ignore []string) bool {
+
+	// if I don't have to ignore responses, just return true
+	if len(ignore) == 0 {
+		return false
+	}
+
+	for _, ignorePort := range ignore {
+		if response == ignorePort {
+			return true
+		}
+	}
+	return false
 }
 
 //asyncGet performs concurrent requests to the specified
