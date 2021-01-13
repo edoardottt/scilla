@@ -775,7 +775,7 @@ func asyncGet(urls []string, outputFile string) {
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
-		Timeout: 20 * time.Second,
+		Timeout: 10 * time.Second,
 	}
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
@@ -783,12 +783,12 @@ func asyncGet(urls []string, outputFile string) {
 	output := outputFile != ""
 
 	for i, domain := range urls {
-		wg.Add(1)
 		limiter <- domain
+		wg.Add(1)
 
 		go func(i int, domain string) {
-			defer func() { <-limiter }()
 			defer wg.Done()
+			defer func() { <-limiter }()
 
 			resp, err := client.Get(domain)
 			count++
@@ -811,6 +811,7 @@ func asyncGet(urls []string, outputFile string) {
 			} else {
 				color.Red("%s\n", resp.Status)
 			}
+			resp.Body.Close()
 		}(i, domain)
 	}
 	wg.Wait()
@@ -957,7 +958,7 @@ func asyncDir(urls []string, outputFile string) {
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
-		Timeout: 20 * time.Second,
+		Timeout: 10 * time.Second,
 	}
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
@@ -965,12 +966,12 @@ func asyncDir(urls []string, outputFile string) {
 	output := outputFile != ""
 
 	for i, domain := range urls {
-		wg.Add(1)
 		limiter <- domain
+		wg.Add(1)
 
 		go func(i int, domain string) {
-			defer func() { <-limiter }()
 			defer wg.Done()
+			defer func() { <-limiter }()
 
 			resp, err := client.Get(domain)
 			count++
@@ -997,6 +998,7 @@ func asyncDir(urls []string, outputFile string) {
 					appendOutputToFile(domain, outputFile)
 				}
 			}
+			resp.Body.Close()
 		}(i, domain)
 	}
 	wg.Wait()
