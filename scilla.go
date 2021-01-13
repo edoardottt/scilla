@@ -71,10 +71,16 @@ func help() {
 	fmt.Println("")
 	fmt.Println("	Available subcommands:")
 	fmt.Println("		- dns -target [-o output-format] <target (URL)> REQUIRED")
-	fmt.Println("		- subdomain [-w wordlist] [-o output-format] -target <target (URL)> REQUIRED")
+	fmt.Println("		- subdomain [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL)> REQUIRED")
 	fmt.Println("		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED")
-	fmt.Println("		- dir [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED")
-	fmt.Println("		- report [-p <start-end>] [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED")
+	fmt.Println("		- dir [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL/IP)> REQUIRED")
+	fmt.Println("		- report [-p <start-end>]")
+	fmt.Println("				 [-ws subdomains wordlist]")
+	fmt.Println("				 [-wd directories wordlist]")
+	fmt.Println("				 [-o output-format]")
+	fmt.Println("				 [-wd directories wordlist]")
+	fmt.Println("				 [-i ignore status codes]")
+	fmt.Println("				 -target <target (URL/IP)> REQUIRED")
 	fmt.Println("		- help")
 	fmt.Println("		- examples")
 	fmt.Println()
@@ -89,6 +95,7 @@ func examples() {
 	fmt.Println("		- scilla subdomain -target target.domain")
 	fmt.Println("		- scilla subdomain -w wordlist.txt -target target.domain")
 	fmt.Println("		- scilla subdomain -o txt -target target.domain")
+	fmt.Println("		- scilla subdomain -i 400 -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
@@ -98,11 +105,13 @@ func examples() {
 	fmt.Println("		- scilla dir -target target.domain")
 	fmt.Println("		- scilla dir -o txt -target target.domain")
 	fmt.Println("		- scilla dir -w wordlist.txt -target target.domain")
+	fmt.Println("		- scilla dir -i 500,401 -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla report -p 80 -target target.domain")
 	fmt.Println("		- scilla report -p 50-200 -target target.domain")
 	fmt.Println("		- scilla report -wd dirs.txt -target target.domain")
 	fmt.Println("		- scilla report -ws subdomains.txt -target target.domain")
+	fmt.Println("		- scilla report -i 500,501,502 -target target.domain")
 	fmt.Println("")
 }
 
@@ -130,7 +139,7 @@ func execute(input Input) {
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		var strings1 []string
 		strings1 = createSubdomains(input.ReportWordSub, target)
-		asyncGet(strings1, outputFile)
+		asyncGet(strings1, outputFile, input.ReportIgnore)
 
 		fmt.Println("=============== PORT SCANNING ===============")
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
@@ -141,7 +150,7 @@ func execute(input Input) {
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		var strings2 []string
 		strings2 = createUrls(input.ReportWordDir, target)
-		asyncDir(strings2, outputFile)
+		asyncDir(strings2, outputFile, input.ReportIgnore)
 
 	}
 	if input.DnsTarget != "" {
@@ -167,7 +176,7 @@ func execute(input Input) {
 		}
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
-		asyncGet(strings1, outputFile)
+		asyncGet(strings1, outputFile, input.SubdomainIgnore)
 
 	}
 	if input.DirTarget != "" {
@@ -181,7 +190,7 @@ func execute(input Input) {
 		}
 		var strings2 []string
 		strings2 = createUrls(input.DirWord, target)
-		asyncDir(strings2, outputFile)
+		asyncDir(strings2, outputFile, input.DirIgnore)
 	}
 	if input.PortTarget != "" {
 
@@ -250,14 +259,17 @@ type Input struct {
 	ReportWordDir   string
 	ReportWordSub   string
 	ReportOutput    string
+	ReportIgnore    []string
 	DnsTarget       string
 	DnsOutput       string
 	SubdomainTarget string
 	SubdomainWord   string
 	SubdomainOutput string
+	SubdomainIgnore []string
 	DirTarget       string
 	DirWord         string
 	DirOutput       string
+	DirIgnore       []string
 	PortTarget      string
 	PortOutput      string
 	StartPort       int
@@ -296,10 +308,14 @@ func readArgs() Input {
 	// report subcommand flag pointers
 	reportOutputPtr := reportCommand.String("o", "", "output format (txt)")
 
+	// report subcommand flag pointers
+	reportIgnorePtr := reportCommand.String("i", "", "Ignore response code(s)")
+	reportIgnore := []string{}
+
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
-	// report subcommand flag pointers
+	// dns subcommand flag pointers
 	dnsOutputPtr := dnsCommand.String("o", "", "output format (txt)")
 
 	// subdomains subcommand flag pointers
@@ -308,17 +324,25 @@ func readArgs() Input {
 	// subdomains subcommand wordlist
 	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
 
-	// report subcommand flag pointers
+	// subdomains subcommand flag pointers
 	subdomainOutputPtr := subdomainCommand.String("o", "", "output format (txt)")
+
+	// subdomains subcommand flag pointers
+	subdomainIgnorePtr := subdomainCommand.String("i", "", "Ignore response code(s)")
+	subdomainIgnore := []string{}
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
 
-	// dor subcommand wordlist
+	// dir subcommand wordlist
 	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
-	// report subcommand flag pointers
+	// dir subcommand flag pointers
 	dirOutputPtr := dirCommand.String("o", "", "output format (txt)")
+
+	// dir subcommand flag pointers
+	dirIgnorePtr := dirCommand.String("i", "", "Ignore response code(s)")
+	dirIgnore := []string{}
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -384,6 +408,11 @@ func readArgs() Input {
 			portsRange := string(*reportPortsPtr)
 			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
 		}
+
+		if *reportIgnorePtr != "" {
+			toBeIgnored := string(*reportIgnorePtr)
+			reportIgnore = checkIgnore(toBeIgnored)
+		}
 	}
 
 	// DNS subcommand
@@ -421,6 +450,11 @@ func readArgs() Input {
 		if !outputFormatIsOk(*subdomainOutputPtr) {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
+		}
+
+		if *subdomainIgnorePtr != "" {
+			toBeIgnored := string(*subdomainIgnorePtr)
+			subdomainIgnore = checkIgnore(toBeIgnored)
 		}
 	}
 
@@ -466,6 +500,11 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
+
+		if *dirIgnorePtr != "" {
+			toBeIgnored := string(*dirIgnorePtr)
+			dirIgnore = checkIgnore(toBeIgnored)
+		}
 	}
 
 	// HELP subcommand
@@ -487,20 +526,37 @@ func readArgs() Input {
 		*reportWordlistDirPtr,
 		*reportWordlistSubdomainPtr,
 		*reportOutputPtr,
+		reportIgnore,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*subdomainTargetPtr,
 		*subdomainWordlistPtr,
 		*subdomainOutputPtr,
+		subdomainIgnore,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputPtr,
+		dirIgnore,
 		*portTargetPtr,
 		*portOutputPtr,
 		StartPort,
 		EndPort,
 	}
 
+	return result
+}
+
+//checkIgnore
+func checkIgnore(input string) []string {
+	result := []string{}
+	temp := strings.Split(input, ",")
+	temp = removeDuplicateValues(temp)
+	for _, elem := range temp {
+		elem := strings.TrimSpace(elem)
+		if _, err := strconv.Atoi(elem); err == nil {
+			result = append(result, elem)
+		}
+	}
 	return result
 }
 
@@ -681,6 +737,18 @@ func readDict(inputFile string) []string {
 	return text
 }
 
+func removeDuplicateValues(intSlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+	for _, entry := range intSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
+}
+
 //createSubdomains returns a list of subdomains
 //from the default file lists/subdomains.txt.
 func createSubdomains(filename string, url string) []string {
@@ -753,15 +821,16 @@ func percentage(done, total int) float64 {
 
 //ignoreResponse returns a boolean if the response
 //should be ignored or not.
-func ignoreResponse(response string, ignore []string) bool {
+func ignoreResponse(response int, ignore []string) bool {
 
+	responseString := strconv.Itoa(response)
 	// if I don't have to ignore responses, just return true
 	if len(ignore) == 0 {
 		return false
 	}
 
 	for _, ignorePort := range ignore {
-		if response == ignorePort {
+		if responseString == ignorePort {
 			return true
 		}
 	}
@@ -770,8 +839,12 @@ func ignoreResponse(response string, ignore []string) bool {
 
 //asyncGet performs concurrent requests to the specified
 //urls and prints the results
-func asyncGet(urls []string, outputFile string) {
+func asyncGet(urls []string, outputFile string, ignore []string) {
 
+	ignoreBool := false
+	if len(ignore) != 0 {
+		ignoreBool = true
+	}
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
@@ -798,6 +871,12 @@ func asyncGet(urls []string, outputFile string) {
 			}
 			if err != nil {
 				return
+			}
+
+			if ignoreBool {
+				if ignoreResponse(resp.StatusCode, ignore) {
+					return
+				}
 			}
 
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -953,8 +1032,12 @@ func lookupDNS(domain string, outputFile string) {
 
 //asyncDir performs concurrent requests to the specified
 //urls and prints the results
-func asyncDir(urls []string, outputFile string) {
+func asyncDir(urls []string, outputFile string, ignore []string) {
 
+	ignoreBool := false
+	if len(ignore) != 0 {
+		ignoreBool = true
+	}
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
@@ -981,6 +1064,12 @@ func asyncDir(urls []string, outputFile string) {
 			}
 			if err != nil {
 				return
+			}
+
+			if ignoreBool {
+				if ignoreResponse(resp.StatusCode, ignore) {
+					return
+				}
 			}
 
 			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" {
