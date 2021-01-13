@@ -107,12 +107,19 @@ Get Started 🎉
 
 		Available subcommands:
 			- dns -target [-o output-format] <target (URL)> REQUIRED
-			- subdomain [-w wordlist] [-o output-format] -target <target (URL)> REQUIRED
+			- subdomain [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL)> REQUIRED
 			- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
-			- dir [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED
-			- report [-p <start-end>] [-w wordlist] [-o output-format] -target <target (URL/IP)> REQUIRED
+			- dir [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL/IP)> REQUIRED
+			- report [-p <start-end>]
+					 [-ws subdomains wordlist]
+					 [-wd directories wordlist]
+					 [-o output-format]
+					 [-wd directories wordlist]
+					 [-i ignore status codes]
+					 -target <target (URL/IP)> REQUIRED
 			- help
 			- examples
+
 
 Examples 💡
 ----------
@@ -127,12 +134,14 @@ Examples 💡
     - `scilla subdomain -target target.domain`
     - `scilla subdomain -w wordlist.txt -target target.domain`
     - `scilla subdomain -o txt -target target.domain`
+    - `scilla subdomain -i 400 -target target.domain`
 
 - Directories enumeration:
 
     - `scilla dir -target target.domain`
     - `scilla dir -w wordlist.txt -target target.domain`
     - `scilla dir -o txt -target target.domain`
+    - `scilla dir -i 500,401 -target target.domain`
 
 - Ports enumeration:
       
@@ -153,6 +162,7 @@ Examples 💡
     - Specifying output format `scilla report -o txt -target target.domain`
     - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
     - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
+    - Specifying status codes to be ignored `- scilla report -i 500,501,502 -target target.domain`
 
 Contributing 🛠
 -------
@@ -183,6 +193,8 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   - [ ] Proxy support
   
   - [ ] PDF report output (?...kinda unuseful)
+  
+  - [ ] Ignore responses by status codes (also with *.. e.g. `-i 4**`)
   
   - [x] Build an Input Struct and use it as parameter
 
