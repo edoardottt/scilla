@@ -284,6 +284,7 @@ type Input struct {
 // 		port	   ==> ports enumeration
 //		dir		   ==> directiories enumeration
 // 		help       ==> doc
+//		examples   ==> examples
 func readArgs() Input {
 	reportCommand := flag.NewFlagSet("report", flag.ExitOnError)
 	dnsCommand := flag.NewFlagSet("dns", flag.ExitOnError)
