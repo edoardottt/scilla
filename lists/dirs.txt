@@ -8,6 +8,10 @@
 .git
 .github
 .git/HEAD
+.git/config
+.git/logs
+.git/logs/HEAD
+.git/index
 .history
 .hta
 .htaccess
