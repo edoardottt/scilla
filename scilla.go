@@ -554,8 +554,18 @@ func checkIgnore(input string) []string {
 	temp = removeDuplicateValues(temp)
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
-		if _, err := strconv.Atoi(elem); err == nil {
-			result = append(result, elem)
+		if len(elem) != 3 {
+			fmt.Println("The status code you entered is invalid (It should consist of three characters).")
+			os.Exit(1)
+		}
+		if ignoreInt, err := strconv.Atoi(elem); err == nil {
+			// if it is a valid status code without * (e.g. 404)
+			if 100 <= ignoreInt && ignoreInt <= 599 {
+				result = append(result, elem)
+			} else {
+				fmt.Println("The status code you entered is invalid (100 <= code <= 599).")
+				os.Exit(1)
+			}
 		}
 	}
 	return result
