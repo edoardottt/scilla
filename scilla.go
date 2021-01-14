@@ -792,14 +792,6 @@ func createUrls(filename string, url string) []string {
 	return result
 }
 
-//HttpResp is a struct representing the fundamental data of an HTTP response
-type HttpResp struct {
-	Id     string
-	Target string
-	Resp   *http.Response
-	Err    error
-}
-
 //appendOutputToFile
 //for now it's only .txt output
 func appendOutputToFile(output string, filename string) {
@@ -841,10 +833,7 @@ func ignoreResponse(response int, ignore []string) bool {
 //urls and prints the results
 func asyncGet(urls []string, outputFile string, ignore []string) {
 
-	ignoreBool := false
-	if len(ignore) != 0 {
-		ignoreBool = true
-	}
+	ignoreBool := len(ignore) != 0
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
@@ -1034,10 +1023,7 @@ func lookupDNS(domain string, outputFile string) {
 //urls and prints the results
 func asyncDir(urls []string, outputFile string, ignore []string) {
 
-	ignoreBool := false
-	if len(ignore) != 0 {
-		ignoreBool = true
-	}
+	ignoreBool := len(ignore) != 0
 	var count int = 0
 	var total int = len(urls)
 	client := http.Client{
