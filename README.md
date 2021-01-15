@@ -111,15 +111,14 @@ Get Started 🎉
 			- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
 			- dir [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL/IP)> REQUIRED
 			- report [-p <start-end>]
-					 [-ws subdomains wordlist]
-					 [-wd directories wordlist]
-					 [-o output-format]
-					 [-wd directories wordlist]
-					 [-i ignore status codes]
-					 -target <target (URL/IP)> REQUIRED
+				 [-ws subdomains wordlist]
+				 [-wd directories wordlist]
+				 [-o output-format]
+				 [-id ignore status codes in directories scanning]
+				 [-is ignore status codes in subdomains scanning]
+				 -target <target (URL/IP)> REQUIRED
 			- help
 			- examples
-
 
 Examples 💡
 ----------
@@ -162,7 +161,8 @@ Examples 💡
     - Specifying output format `scilla report -o txt -target target.domain`
     - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
     - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
-    - Specifying status codes to be ignored `- scilla report -i 500,501,502 -target target.domain`
+    - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
+    - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
 
 Contributing 🛠
 -------
