@@ -178,7 +178,9 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [ ] Tests
   
-  - [ ] Print the progress percentage value when CR is pressed (not in output doc) ?
+  - [ ] HTML output
+  
+  - [ ] Recursive Web crawling for subdomains and directories
   
   - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
