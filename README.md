@@ -84,9 +84,9 @@ Installation 📡
 
 - Windows (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
-    - `make windows`
+    - `make windows` or `.\make.bat windows` (on powershell)
     
-    - `make unwindows`
+    - `make unwindows` or `.\make.bat unwindows` (on powershell)
 
 - Other commands:
 
