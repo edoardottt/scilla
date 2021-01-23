@@ -127,12 +127,14 @@ Examples 💡
     
     - `scilla dns -target target.domain`
     - `scilla dns -target -o txt target.domain`
+    - `scilla dns -target -o html target.domain`
 
 - Subdomains enumeration:
 
     - `scilla subdomain -target target.domain`
     - `scilla subdomain -w wordlist.txt -target target.domain`
     - `scilla subdomain -o txt -target target.domain`
+    - `scilla subdomain -o html -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
 
 - Directories enumeration:
@@ -140,6 +142,7 @@ Examples 💡
     - `scilla dir -target target.domain`
     - `scilla dir -w wordlist.txt -target target.domain`
     - `scilla dir -o txt -target target.domain`
+    - `scilla dir -o html -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
 
 - Ports enumeration:
@@ -149,7 +152,8 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
     - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
     - Specifying single port `scilla port -p 80 -target target.domain`
-    - Specifying output format `scilla port -o txt -target target.domain`
+    - Specifying output format (txt)`scilla port -o txt -target target.domain`
+    - Specifying output format (html)`scilla port -o html -target target.domain`
 
 - Full report:
       
@@ -158,7 +162,8 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
     - Specifying single port `scilla report -p 80 -target target.domain`
-    - Specifying output format `scilla report -o txt -target target.domain`
+    - Specifying output format (txt)`scilla report -o txt -target target.domain`
+    - Specifying output format (html)`scilla report -o html -target target.domain`
     - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
     - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
     - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
@@ -178,8 +183,6 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [ ] Tests
   
-  - [ ] HTML output
-  
   - [ ] Recursive Web crawling for subdomains and directories
   
   - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
@@ -194,9 +197,9 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [ ] Proxy support
   
-  - [ ] PDF report output (?...kinda unuseful)
+  - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
-  - [ ] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
+  - [x] HTML output (partially done)
   
   - [x] Build an Input Struct and use it as parameter
 
