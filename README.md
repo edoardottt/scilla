@@ -196,7 +196,7 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [ ] PDF report output (?...kinda unuseful)
   
-  - [ ] Ignore responses by status codes (also with *.. e.g. `-i 4**`)
+  - [ ] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
   - [x] Build an Input Struct and use it as parameter
 
