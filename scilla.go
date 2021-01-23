@@ -1,10 +1,6 @@
 /*
-          _ _ _
- ___  ___(_) | | __ _
-/ __|/ __| | | |/ _` |
-\__ \ (__| | | | (_| |
-|___/\___|_|_|_|\__,_|
-
+scilla
+------
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -91,23 +87,29 @@ func examples() {
 	fmt.Println("	Examples:")
 	fmt.Println("		- scilla dns -target target.domain")
 	fmt.Println("		- scilla dns -target -o txt target.domain")
+	fmt.Println("		- scilla dns -target -o html target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla subdomain -target target.domain")
 	fmt.Println("		- scilla subdomain -w wordlist.txt -target target.domain")
 	fmt.Println("		- scilla subdomain -o txt -target target.domain")
+	fmt.Println("		- scilla subdomain -o html -target target.domain")
 	fmt.Println("		- scilla subdomain -i 400 -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
 	fmt.Println("		- scilla port -p 10-1000 -target target.domain")
 	fmt.Println("		- scilla port -o txt -target target.domain")
+	fmt.Println("		- scilla port -o html -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla dir -target target.domain")
 	fmt.Println("		- scilla dir -o txt -target target.domain")
+	fmt.Println("		- scilla dir -o html -target target.domain")
 	fmt.Println("		- scilla dir -w wordlist.txt -target target.domain")
 	fmt.Println("		- scilla dir -i 500,401 -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla report -p 80 -target target.domain")
+	fmt.Println("		- scilla report -o txt -target target.domain")
+	fmt.Println("		- scilla report -o html -target target.domain")
 	fmt.Println("		- scilla report -p 50-200 -target target.domain")
 	fmt.Println("		- scilla report -wd dirs.txt -target target.domain")
 	fmt.Println("		- scilla report -ws subdomains.txt -target target.domain")
@@ -309,7 +311,7 @@ func readArgs() Input {
 	reportWordlistSubdomainPtr := reportCommand.String("ws", "", "wordlist to use for subdomains (default enabled)")
 
 	// report subcommand flag pointers
-	reportOutputPtr := reportCommand.String("o", "", "output format (txt)")
+	reportOutputPtr := reportCommand.String("o", "", "output format (txt/html)")
 
 	// report subcommand flag pointers
 	reportIgnoreDirPtr := reportCommand.String("id", "", "Ignore response code(s) for directories scanning")
@@ -323,7 +325,7 @@ func readArgs() Input {
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// dns subcommand flag pointers
-	dnsOutputPtr := dnsCommand.String("o", "", "output format (txt)")
+	dnsOutputPtr := dnsCommand.String("o", "", "output format (txt/html)")
 
 	// subdomains subcommand flag pointers
 	subdomainTargetPtr := subdomainCommand.String("target", "", "Target {URL} (Required)")
@@ -332,7 +334,7 @@ func readArgs() Input {
 	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// subdomains subcommand flag pointers
-	subdomainOutputPtr := subdomainCommand.String("o", "", "output format (txt)")
+	subdomainOutputPtr := subdomainCommand.String("o", "", "output format (txt/html)")
 
 	// subdomains subcommand flag pointers
 	subdomainIgnorePtr := subdomainCommand.String("i", "", "Ignore response code(s)")
@@ -345,7 +347,7 @@ func readArgs() Input {
 	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// dir subcommand flag pointers
-	dirOutputPtr := dirCommand.String("o", "", "output format (txt)")
+	dirOutputPtr := dirCommand.String("o", "", "output format (txt/html)")
 
 	// dir subcommand flag pointers
 	dirIgnorePtr := dirCommand.String("i", "", "Ignore response code(s)")
@@ -355,7 +357,7 @@ func readArgs() Input {
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// report subcommand flag pointers
-	portOutputPtr := portCommand.String("o", "", "output format (txt)")
+	portOutputPtr := portCommand.String("o", "", "output format (txt/html)")
 
 	portsPtr := portCommand.String("p", "", "ports range <start-end>")
 	// Default ports
@@ -827,6 +829,42 @@ func appendOutputToTxt(output string, filename string) {
 	}
 }
 
+//appendOutputToHtml
+func appendOutputToHtml(output string, filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	if _, err := file.WriteString("<li><a href='" + output + "'>" + output + "</a></li>"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+//headerHtml
+func headerHtml(filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	if _, err := file.WriteString("<html><body><ul>"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+//footerHtml
+func footerHtml(filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	if _, err := file.WriteString("</ul></body></html>"); err != nil {
+		log.Fatal(err)
+	}
+}
+
 //percentage
 func percentage(done, total int) float64 {
 	result := (float64(done) / float64(total)) * 100
@@ -864,8 +902,6 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	output := outputFile != ""
-
 	for i, domain := range urls {
 		limiter <- domain
 		wg.Add(1)
@@ -894,8 +930,8 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 			subDomainFound := cleanProtocol(domain)
 			fmt.Printf("[+]FOUND: %s ", subDomainFound)
 			if string(resp.Status[0]) == "2" {
-				if output {
-					appendOutputToTxt(domain, outputFile)
+				if outputFile != "" {
+					appendWhere(domain, outputFile)
 				}
 				color.Green("%s\n", resp.Status)
 			} else {
@@ -905,6 +941,18 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 		}(i, domain)
 	}
 	wg.Wait()
+	if outputFile[len(outputFile)-4:] == "html" {
+		footerHtml(outputFile)
+	}
+}
+
+//appendWhere
+func appendWhere(what string, outputFile string) {
+	if outputFile[len(outputFile)-4:] == "html" {
+		appendOutputToHtml(what, outputFile)
+	} else {
+		appendOutputToTxt(what, outputFile)
+	}
 }
 
 //isOpenPort scans if a port is open
@@ -930,8 +978,6 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 
-	output := outputFile != ""
-
 	for port := StartingPort; port <= EndingPort; port++ {
 		wg.Add(1)
 		portStr := fmt.Sprint(port)
@@ -951,20 +997,25 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
-				if output {
-					appendOutputToTxt(portStr, outputFile)
+				if outputFile != "" {
+					appendWhere(portStr, outputFile)
 				}
 			}
 		}(portStr, host)
 	}
 	wg.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
+	if outputFile[len(outputFile)-4:] == "html" {
+		footerHtml(outputFile)
+	}
 }
 
 //lookupDNS prints the DNS servers for the inputted domain
 func lookupDNS(domain string, outputFile string) {
 
-	output := outputFile != ""
+	if outputFile[len(outputFile)-4:] == "html" {
+		headerHtml(outputFile)
+	}
 
 	// -- A RECORDS --
 	ips, err := net.LookupIP(domain)
@@ -974,8 +1025,8 @@ func lookupDNS(domain string, outputFile string) {
 	for _, ip := range ips {
 		fmt.Printf("[+]FOUND %s IN A: ", domain)
 		color.Green("%s\n", ip.String())
-		if output {
-			appendOutputToTxt(ip.String(), outputFile)
+		if outputFile != "" {
+			appendWhere(ip.String(), outputFile)
 		}
 	}
 
@@ -986,8 +1037,8 @@ func lookupDNS(domain string, outputFile string) {
 	}
 	fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
 	color.Green("%s\n", cname)
-	if output {
-		appendOutputToTxt(cname, outputFile)
+	if outputFile != "" {
+		appendWhere(cname, outputFile)
 	}
 
 	// -- NS RECORDS --
@@ -998,8 +1049,8 @@ func lookupDNS(domain string, outputFile string) {
 	for _, ns := range nameserver {
 		fmt.Printf("[+]FOUND %s IN NS: ", domain)
 		color.Green("%s\n", ns.Host)
-		if output {
-			appendOutputToTxt(ns.Host, outputFile)
+		if outputFile != "" {
+			appendWhere(ns.Host, outputFile)
 		}
 	}
 
@@ -1011,8 +1062,8 @@ func lookupDNS(domain string, outputFile string) {
 	for _, mx := range mxrecords {
 		fmt.Printf("[+]FOUND %s IN MX: ", domain)
 		color.Green("%s %v\n", mx.Host, mx.Pref)
-		if output {
-			appendOutputToTxt(mx.Host, outputFile)
+		if outputFile != "" {
+			appendWhere(mx.Host, outputFile)
 		}
 	}
 
@@ -1024,8 +1075,8 @@ func lookupDNS(domain string, outputFile string) {
 	for _, srv := range srvs {
 		fmt.Printf("[+]FOUND %s IN SRV: ", domain)
 		color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
-		if output {
-			appendOutputToTxt(srv.Target, outputFile)
+		if outputFile != "" {
+			appendWhere(srv.Target, outputFile)
 		}
 	}
 
@@ -1035,9 +1086,12 @@ func lookupDNS(domain string, outputFile string) {
 	for _, txt := range txtrecords {
 		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
 		color.Green("%s\n", txt)
-		if output {
-			appendOutputToTxt(txt, outputFile)
+		if outputFile != "" {
+			appendWhere(txt, outputFile)
 		}
+	}
+	if outputFile[len(outputFile)-4:] == "html" {
+		footerHtml(outputFile)
 	}
 }
 
@@ -1054,7 +1108,9 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	output := outputFile != ""
+	if outputFile[len(outputFile)-4:] == "html" {
+		headerHtml(outputFile)
+	}
 
 	for i, domain := range urls {
 		limiter <- domain
@@ -1084,19 +1140,23 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Green("%s\n", resp.Status)
-				if output {
-					appendOutputToTxt(domain, outputFile)
+				if outputFile != "" {
+					appendWhere(domain, outputFile)
 				}
 			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Red("%s\n", resp.Status)
-				if output {
-					appendOutputToTxt(domain, outputFile)
+
+				if outputFile != "" {
+					appendWhere(domain, outputFile)
 				}
 			}
 			resp.Body.Close()
 		}(i, domain)
 	}
 	wg.Wait()
+	if outputFile[len(outputFile)-4:] == "html" {
+		footerHtml(outputFile)
+	}
 }
