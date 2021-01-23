@@ -244,7 +244,7 @@ func outputFormatIsOk(input string) bool {
 		return true
 	}
 
-	acceptedOutput := [1]string{"txt"}
+	acceptedOutput := [2]string{"txt", "html"}
 	input = strings.ToLower(input)
 	for _, output := range acceptedOutput {
 		if output == input {
@@ -815,9 +815,8 @@ func createUrls(filename string, url string) []string {
 	return result
 }
 
-//appendOutputToFile
-//for now it's only .txt output
-func appendOutputToFile(output string, filename string) {
+//appendOutputToTxt
+func appendOutputToTxt(output string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -896,7 +895,7 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 			fmt.Printf("[+]FOUND: %s ", subDomainFound)
 			if string(resp.Status[0]) == "2" {
 				if output {
-					appendOutputToFile(domain, outputFile)
+					appendOutputToTxt(domain, outputFile)
 				}
 				color.Green("%s\n", resp.Status)
 			} else {
@@ -953,7 +952,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
 				if output {
-					appendOutputToFile(portStr, outputFile)
+					appendOutputToTxt(portStr, outputFile)
 				}
 			}
 		}(portStr, host)
@@ -976,7 +975,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN A: ", domain)
 		color.Green("%s\n", ip.String())
 		if output {
-			appendOutputToFile(ip.String(), outputFile)
+			appendOutputToTxt(ip.String(), outputFile)
 		}
 	}
 
@@ -988,7 +987,7 @@ func lookupDNS(domain string, outputFile string) {
 	fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
 	color.Green("%s\n", cname)
 	if output {
-		appendOutputToFile(cname, outputFile)
+		appendOutputToTxt(cname, outputFile)
 	}
 
 	// -- NS RECORDS --
@@ -1000,7 +999,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN NS: ", domain)
 		color.Green("%s\n", ns.Host)
 		if output {
-			appendOutputToFile(ns.Host, outputFile)
+			appendOutputToTxt(ns.Host, outputFile)
 		}
 	}
 
@@ -1013,7 +1012,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN MX: ", domain)
 		color.Green("%s %v\n", mx.Host, mx.Pref)
 		if output {
-			appendOutputToFile(mx.Host, outputFile)
+			appendOutputToTxt(mx.Host, outputFile)
 		}
 	}
 
@@ -1026,7 +1025,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN SRV: ", domain)
 		color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		if output {
-			appendOutputToFile(srv.Target, outputFile)
+			appendOutputToTxt(srv.Target, outputFile)
 		}
 	}
 
@@ -1037,7 +1036,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
 		color.Green("%s\n", txt)
 		if output {
-			appendOutputToFile(txt, outputFile)
+			appendOutputToTxt(txt, outputFile)
 		}
 	}
 }
@@ -1086,14 +1085,14 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Green("%s\n", resp.Status)
 				if output {
-					appendOutputToFile(domain, outputFile)
+					appendOutputToTxt(domain, outputFile)
 				}
 			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Red("%s\n", resp.Status)
 				if output {
-					appendOutputToFile(domain, outputFile)
+					appendOutputToTxt(domain, outputFile)
 				}
 			}
 			resp.Body.Close()
