@@ -998,7 +998,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
 				if outputFile != "" {
-					appendWhere(portStr, outputFile)
+					appendWhere("http://"+host+":"+portStr, outputFile)
 				}
 			}
 		}(portStr, host)
