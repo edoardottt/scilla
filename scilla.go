@@ -14,11 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
 
-
    @Repository:  https://github.com/edoardottt/scilla
 
    @Author:      edoardottt, https://www.edoardoottavianelli.it
-
 */
 
 package main
@@ -830,13 +828,13 @@ func appendOutputToTxt(output string, filename string) {
 }
 
 //appendOutputToHtml
-func appendOutputToHtml(output string, filename string) {
+func appendOutputToHtml(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("<li><a href='" + output + "'>" + output + "</a></li>"); err != nil {
+	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + output + "</a> " + status + "</li>"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -937,10 +935,15 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 			fmt.Printf("[+]FOUND: %s ", subDomainFound)
 			if string(resp.Status[0]) == "2" {
 				if outputFile != "" {
-					appendWhere(domain, outputFile)
+					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
 				}
 				color.Green("%s\n", resp.Status)
 			} else {
+				if resp.StatusCode != 404 {
+					if outputFile != "" {
+						appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
+					}
+				}
 				color.Red("%s\n", resp.Status)
 			}
 			resp.Body.Close()
@@ -955,9 +958,9 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 }
 
 //appendWhere
-func appendWhere(what string, outputFile string) {
+func appendWhere(what string, status string, outputFile string) {
 	if outputFile[len(outputFile)-4:] == "html" {
-		appendOutputToHtml(what, outputFile)
+		appendOutputToHtml(what, status, outputFile)
 	} else {
 		appendOutputToTxt(what, outputFile)
 	}
@@ -1011,7 +1014,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 				fmt.Printf("[+]FOUND: %s ", host)
 				color.Green("%s\n", portStr)
 				if outputFile != "" {
-					appendWhere("http://"+host+":"+portStr, outputFile)
+					appendWhere("http://"+host+":"+portStr, "", outputFile)
 				}
 			}
 		}(portStr, host)
@@ -1043,7 +1046,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN A: ", domain)
 		color.Green("%s\n", ip.String())
 		if outputFile != "" {
-			appendWhere(ip.String(), outputFile)
+			appendWhere(ip.String(), "", outputFile)
 		}
 	}
 
@@ -1055,7 +1058,7 @@ func lookupDNS(domain string, outputFile string) {
 	fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
 	color.Green("%s\n", cname)
 	if outputFile != "" {
-		appendWhere(cname, outputFile)
+		appendWhere(cname, "", outputFile)
 	}
 
 	// -- NS RECORDS --
@@ -1067,7 +1070,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN NS: ", domain)
 		color.Green("%s\n", ns.Host)
 		if outputFile != "" {
-			appendWhere(ns.Host, outputFile)
+			appendWhere(ns.Host, "", outputFile)
 		}
 	}
 
@@ -1080,7 +1083,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN MX: ", domain)
 		color.Green("%s %v\n", mx.Host, mx.Pref)
 		if outputFile != "" {
-			appendWhere(mx.Host, outputFile)
+			appendWhere(mx.Host, "", outputFile)
 		}
 	}
 
@@ -1093,7 +1096,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN SRV: ", domain)
 		color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		if outputFile != "" {
-			appendWhere(srv.Target, outputFile)
+			appendWhere(srv.Target, "", outputFile)
 		}
 	}
 
@@ -1104,7 +1107,7 @@ func lookupDNS(domain string, outputFile string) {
 		fmt.Printf("[+]FOUND %s IN TXT: ", domain)
 		color.Green("%s\n", txt)
 		if outputFile != "" {
-			appendWhere(txt, outputFile)
+			appendWhere(txt, "", outputFile)
 		}
 	}
 	if outputFile != "" {
@@ -1162,7 +1165,7 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 				fmt.Printf("[+]FOUND: %s ", domain)
 				color.Green("%s\n", resp.Status)
 				if outputFile != "" {
-					appendWhere(domain, outputFile)
+					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
 				}
 			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
 				fmt.Fprint(os.Stdout, "\r \r")
@@ -1170,7 +1173,7 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 				color.Red("%s\n", resp.Status)
 
 				if outputFile != "" {
-					appendWhere(domain, outputFile)
+					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
 				}
 			}
 			resp.Body.Close()
