@@ -902,6 +902,12 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			headerHtml(outputFile)
+		}
+	}
+
 	for i, domain := range urls {
 		limiter <- domain
 		wg.Add(1)
@@ -941,8 +947,10 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 		}(i, domain)
 	}
 	wg.Wait()
-	if outputFile[len(outputFile)-4:] == "html" {
-		footerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			footerHtml(outputFile)
+		}
 	}
 }
 
@@ -978,6 +986,11 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			headerHtml(outputFile)
+		}
+	}
 	for port := StartingPort; port <= EndingPort; port++ {
 		wg.Add(1)
 		portStr := fmt.Sprint(port)
@@ -1005,16 +1018,20 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 	}
 	wg.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
-	if outputFile[len(outputFile)-4:] == "html" {
-		footerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			footerHtml(outputFile)
+		}
 	}
 }
 
 //lookupDNS prints the DNS servers for the inputted domain
 func lookupDNS(domain string, outputFile string) {
 
-	if outputFile[len(outputFile)-4:] == "html" {
-		headerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			headerHtml(outputFile)
+		}
 	}
 
 	// -- A RECORDS --
@@ -1090,8 +1107,10 @@ func lookupDNS(domain string, outputFile string) {
 			appendWhere(txt, outputFile)
 		}
 	}
-	if outputFile[len(outputFile)-4:] == "html" {
-		footerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			footerHtml(outputFile)
+		}
 	}
 }
 
@@ -1108,8 +1127,10 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	if outputFile[len(outputFile)-4:] == "html" {
-		headerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			headerHtml(outputFile)
+		}
 	}
 
 	for i, domain := range urls {
@@ -1156,7 +1177,9 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 		}(i, domain)
 	}
 	wg.Wait()
-	if outputFile[len(outputFile)-4:] == "html" {
-		footerHtml(outputFile)
+	if outputFile != "" {
+		if outputFile[len(outputFile)-4:] == "html" {
+			footerHtml(outputFile)
+		}
 	}
 }
