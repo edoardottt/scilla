@@ -840,13 +840,13 @@ func appendOutputToHtml(output string, status string, filename string) {
 }
 
 //headerHtml
-func headerHtml(filename string) {
+func headerHtml(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("<html><body><ul>"); err != nil {
+	if _, err := file.WriteString("<html><body><h1>Scilla</h1><h3>" + header + "</h3><ul>"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -902,7 +902,7 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml(outputFile)
+			headerHtml("SUBDOMAIN SCANNING", outputFile)
 		}
 	}
 
@@ -991,7 +991,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml(outputFile)
+			headerHtml("PORT SCANNING", outputFile)
 		}
 	}
 	for port := StartingPort; port <= EndingPort; port++ {
@@ -1033,7 +1033,7 @@ func lookupDNS(domain string, outputFile string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml(outputFile)
+			headerHtml("DNS SCANNING", outputFile)
 		}
 	}
 
@@ -1132,7 +1132,7 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml(outputFile)
+			headerHtml("DIRECTORY SCANNING", outputFile)
 		}
 	}
 
