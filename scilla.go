@@ -207,9 +207,7 @@ func execute(input Input) {
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== PORT SCANNING ===============")
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
-
 	}
-
 }
 
 //cleanProtocol remove from the url the protocol scheme
@@ -231,7 +229,6 @@ func cleanProtocol(target string) string {
 			target = target[8:]
 		}
 	}
-
 	if target[len(target)-1:] == "/" {
 		return target[:len(target)-1]
 	}
@@ -240,11 +237,9 @@ func cleanProtocol(target string) string {
 
 // output formats accepted
 func outputFormatIsOk(input string) bool {
-
 	if input == "" {
 		return true
 	}
-
 	acceptedOutput := [2]string{"txt", "html"}
 	input = strings.ToLower(input)
 	for _, output := range acceptedOutput {
@@ -411,17 +406,14 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
-
 		if *reportPortsPtr != "" {
 			portsRange := string(*reportPortsPtr)
 			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
 		}
-
 		if *reportIgnoreDirPtr != "" {
 			toBeIgnored := string(*reportIgnoreDirPtr)
 			reportIgnoreDir = checkIgnore(toBeIgnored)
 		}
-
 		if *reportIgnoreSubPtr != "" {
 			toBeIgnored := string(*reportIgnoreSubPtr)
 			reportIgnoreSub = checkIgnore(toBeIgnored)
@@ -435,7 +427,6 @@ func readArgs() Input {
 			dnsCommand.PrintDefaults()
 			os.Exit(1)
 		}
-
 		//Verify good inputs
 		if !isURL(*dnsTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -454,7 +445,6 @@ func readArgs() Input {
 			subdomainCommand.PrintDefaults()
 			os.Exit(1)
 		}
-
 		//Verify good inputs
 		if !isURL(*subdomainTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -464,7 +454,6 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
-
 		if *subdomainIgnorePtr != "" {
 			toBeIgnored := string(*subdomainIgnorePtr)
 			subdomainIgnore = checkIgnore(toBeIgnored)
@@ -479,12 +468,10 @@ func readArgs() Input {
 			portCommand.PrintDefaults()
 			os.Exit(1)
 		}
-
 		if *portsPtr != "" {
 			portsRange := string(*portsPtr)
 			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
 		}
-
 		//Verify good inputs
 		if !isURL(*portTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -503,7 +490,6 @@ func readArgs() Input {
 			dirCommand.PrintDefaults()
 			os.Exit(1)
 		}
-
 		//Verify good inputs
 		if !isURL(*dirTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
@@ -513,7 +499,6 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
-
 		if *dirIgnorePtr != "" {
 			toBeIgnored := string(*dirIgnorePtr)
 			dirIgnore = checkIgnore(toBeIgnored)
@@ -619,11 +604,9 @@ func deleteUnusefulIgnoreresponses(input []string) []string {
 //Difference A - B
 func Difference(a, b []string) (diff []string) {
 	m := make(map[string]bool)
-
 	for _, item := range b {
 		m[item] = true
 	}
-
 	for _, item := range a {
 		if _, ok := m[item]; !ok {
 			diff = append(diff, item)
