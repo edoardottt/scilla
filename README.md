@@ -136,6 +136,7 @@ Examples 💡
     - `scilla subdomain -o txt -target target.domain`
     - `scilla subdomain -o html -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
+    - `scilla subdomain -i 4** -target target.domain`
 
 - Directories enumeration:
 
@@ -144,6 +145,7 @@ Examples 💡
     - `scilla dir -o txt -target target.domain`
     - `scilla dir -o html -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
+    - `scilla dir -i 5**,401 -target target.domain`
 
 - Ports enumeration:
       
@@ -168,6 +170,8 @@ Examples 💡
     - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
     - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
     - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
+    - Specifying status codes classes to be ignored in directories scanning `scilla report -id 5**,4** -target target.domain`
+    - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
 
 Contributing 🛠
 -------
@@ -199,7 +203,7 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
-  - [x] HTML output (partially done)
+  - [x] HTML output
   
   - [x] Build an Input Struct and use it as parameter
 
