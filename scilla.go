@@ -154,14 +154,14 @@ func execute(input Input) {
 		asyncDir(strings2, outputFile, input.ReportIgnoreDir)
 
 	}
-	if input.DnsTarget != "" {
+	if input.DNSTarget != "" {
 
-		target := cleanProtocol(input.DnsTarget)
+		target := cleanProtocol(input.DNSTarget)
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== DNS SCANNING ===============")
 		outputFile := ""
-		if input.DnsOutput != "" {
-			outputFile = createOutputFile(input.DnsTarget, input.DnsOutput)
+		if input.DNSOutput != "" {
+			outputFile = createOutputFile(input.DNSTarget, input.DNSOutput)
 		}
 		lookupDNS(target, outputFile)
 
@@ -196,7 +196,7 @@ func execute(input Input) {
 	if input.PortTarget != "" {
 
 		target := input.PortTarget
-		if isUrl(target) {
+		if isURL(target) {
 			target = cleanProtocol(input.PortTarget)
 		}
 		outputFile := ""
@@ -262,8 +262,8 @@ type Input struct {
 	ReportOutput    string
 	ReportIgnoreDir []string
 	ReportIgnoreSub []string
-	DnsTarget       string
-	DnsOutput       string
+	DNSTarget       string
+	DNSOutput       string
 	SubdomainTarget string
 	SubdomainWord   string
 	SubdomainOutput string
@@ -402,7 +402,7 @@ func readArgs() Input {
 		}
 
 		//Verify good inputs
-		if !isUrl(*reportTargetPtr) {
+		if !isURL(*reportTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
@@ -436,7 +436,7 @@ func readArgs() Input {
 		}
 
 		//Verify good inputs
-		if !isUrl(*dnsTargetPtr) {
+		if !isURL(*dnsTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
@@ -455,7 +455,7 @@ func readArgs() Input {
 		}
 
 		//Verify good inputs
-		if !isUrl(*subdomainTargetPtr) {
+		if !isURL(*subdomainTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
@@ -485,7 +485,7 @@ func readArgs() Input {
 		}
 
 		//Verify good inputs
-		if !isUrl(*portTargetPtr) {
+		if !isURL(*portTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
@@ -504,7 +504,7 @@ func readArgs() Input {
 		}
 
 		//Verify good inputs
-		if !isUrl(*dirTargetPtr) {
+		if !isURL(*dirTargetPtr) {
 			fmt.Println("The inputted target is not valid.")
 			os.Exit(1)
 		}
@@ -578,9 +578,78 @@ func checkIgnore(input string) []string {
 				fmt.Println("The status code you entered is invalid (100 <= code <= 599).")
 				os.Exit(1)
 			}
+		} else if strings.Contains(elem, "*") {
+			// if it is a valid status code without * (e.g. 4**)
+			if ignoreClassOk(elem) {
+				result = append(result, elem)
+			} else {
+				fmt.Println("The status code you entered is invalid. You can enter * only as 1**,2**,3**,4**,5**.")
+				os.Exit(1)
+			}
 		}
 	}
+	result = removeDuplicateValues(result)
+	result = deleteUnusefulIgnoreresponses(result)
 	return result
+}
+
+//deleteUnusefulIgnoreresponses removes from to-be-ignored arrays
+//the responses included yet with * as classes
+func deleteUnusefulIgnoreresponses(input []string) []string {
+	result := []string{}
+	toberemoved := []string{}
+	classes := []string{}
+	for _, elem := range input {
+		if strings.Contains(elem, "*") {
+			classes = append(classes, elem)
+		}
+	}
+	for _, class := range classes {
+		for _, elem := range input {
+			if class[0] == elem[0] && elem[1] != '*' {
+				toberemoved = append(toberemoved, elem)
+			}
+		}
+	}
+	result = Difference(input, toberemoved)
+	return result
+}
+
+//Difference A - B
+func Difference(a, b []string) (diff []string) {
+	m := make(map[string]bool)
+
+	for _, item := range b {
+		m[item] = true
+	}
+
+	for _, item := range a {
+		if _, ok := m[item]; !ok {
+			diff = append(diff, item)
+		}
+	}
+	return
+}
+
+//ignoreClass states if the class of ignored status codes
+//is correct or not (4**,2**...)
+func ignoreClassOk(input string) bool {
+	if strings.Contains(input, "*") {
+		if _, err := strconv.Atoi(string(input[0])); err == nil {
+			i, err := strconv.Atoi(string(input[0]))
+			if err != nil {
+				// handle error
+				fmt.Println(err)
+				os.Exit(2)
+			}
+			if i >= 1 && i <= 5 {
+				if input[1] == byte('*') && input[2] == byte('*') {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }
 
 //checkPortsRange checks the basic rules to
@@ -709,12 +778,12 @@ func createOutputFile(target string, format string) string {
 }
 
 //isIp checks if the inputted Ip is valid
-func isIp(str string) bool {
+func isIP(str string) bool {
 	return govalidator.IsIPv4(str) || govalidator.IsIPv6(str)
 }
 
 //isUrl checks if the inputted Url is valid
-func isUrl(str string) bool {
+func isURL(str string) bool {
 	target := cleanProtocol(str)
 	str = "http://" + target
 	u, err := url.Parse(str)
@@ -733,7 +802,7 @@ func get(url string) bool {
 }
 
 //buildUrl returns full URL with the subdomain
-func buildUrl(subdomain string, domain string) string {
+func buildURL(subdomain string, domain string) string {
 	return "http://" + subdomain + "." + domain
 }
 
@@ -787,7 +856,7 @@ func createSubdomains(filename string, url string) []string {
 	}
 	result := []string{}
 	for _, sub := range subs {
-		path := buildUrl(sub, url)
+		path := buildURL(sub, url)
 		result = append(result, path)
 	}
 	return result
@@ -828,7 +897,7 @@ func appendOutputToTxt(output string, filename string) {
 }
 
 //appendOutputToHtml
-func appendOutputToHtml(output string, status string, filename string) {
+func appendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -840,7 +909,7 @@ func appendOutputToHtml(output string, status string, filename string) {
 }
 
 //headerHtml
-func headerHtml(header string, filename string) {
+func headerHTML(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -851,8 +920,8 @@ func headerHtml(header string, filename string) {
 	}
 }
 
-//footerHtml
-func footerHtml(filename string) {
+//footerHTML
+func footerHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -880,6 +949,11 @@ func ignoreResponse(response int, ignore []string) bool {
 	}
 
 	for _, ignorePort := range ignore {
+		if strings.Contains(ignorePort, "*") {
+			if responseString[0] == ignorePort[0] {
+				return true
+			}
+		}
 		if responseString == ignorePort {
 			return true
 		}
@@ -902,7 +976,7 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml("SUBDOMAIN SCANNING", outputFile)
+			headerHTML("SUBDOMAIN SCANNING", outputFile)
 		}
 	}
 
@@ -952,7 +1026,7 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 	wg.Wait()
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			footerHtml(outputFile)
+			footerHTML(outputFile)
 		}
 	}
 }
@@ -960,7 +1034,7 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 //appendWhere
 func appendWhere(what string, status string, outputFile string) {
 	if outputFile[len(outputFile)-4:] == "html" {
-		appendOutputToHtml(what, status, outputFile)
+		appendOutputToHTML(what, status, outputFile)
 	} else {
 		appendOutputToTxt(what, outputFile)
 	}
@@ -991,7 +1065,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml("PORT SCANNING", outputFile)
+			headerHTML("PORT SCANNING", outputFile)
 		}
 	}
 	for port := StartingPort; port <= EndingPort; port++ {
@@ -1023,7 +1097,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 	fmt.Fprint(os.Stdout, "\r \r")
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			footerHtml(outputFile)
+			footerHTML(outputFile)
 		}
 	}
 }
@@ -1033,7 +1107,7 @@ func lookupDNS(domain string, outputFile string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml("DNS SCANNING", outputFile)
+			headerHTML("DNS SCANNING", outputFile)
 		}
 	}
 
@@ -1112,7 +1186,7 @@ func lookupDNS(domain string, outputFile string) {
 	}
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			footerHtml(outputFile)
+			footerHTML(outputFile)
 		}
 	}
 }
@@ -1132,7 +1206,7 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			headerHtml("DIRECTORY SCANNING", outputFile)
+			headerHTML("DIRECTORY SCANNING", outputFile)
 		}
 	}
 
@@ -1182,7 +1256,7 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 	wg.Wait()
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			footerHtml(outputFile)
+			footerHTML(outputFile)
 		}
 	}
 }
