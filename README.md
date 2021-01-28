@@ -203,7 +203,7 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
-  - [x] HTML output (partially done)
+  - [x] HTML output
   
   - [x] Build an Input Struct and use it as parameter
 
