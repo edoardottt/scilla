@@ -33,7 +33,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asaskevich/govalidator"
 	"github.com/fatih/color"
 )
 
@@ -759,11 +758,6 @@ func createOutputFile(target string, format string) string {
 		}
 	}
 	return filename
-}
-
-//isIp checks if the inputted Ip is valid
-func isIP(str string) bool {
-	return govalidator.IsIPv4(str) || govalidator.IsIPv6(str)
 }
 
 //isUrl checks if the inputted Url is valid
