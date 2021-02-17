@@ -73,6 +73,7 @@
 .well-known/repute-template
 .well-known/resourcesync
 .well-known/stun-key
+.well-known/security
 .well-known/thread
 .well-known/time
 .well-known/timezone
