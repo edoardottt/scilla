@@ -96,7 +96,7 @@ Installation 📡
 
     - `make remod` Remod.
 
-    - `make test` runs the tests.
+    - `make test` runs the tests (empty now..)
 
 Get Started 🎉
 ----------
