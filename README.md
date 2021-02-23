@@ -188,19 +188,19 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [ ] Tests
   
+  - [ ] Tor support
+  
   - [ ] Recursive Web crawling for subdomains and directories
   
   - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
-  - [ ] Tor support
-  
-  - [ ] JSON report output
-  
-  - [ ] XML report output
-  
   - [ ] (report mode) In all the subdomains found enumerates ports???
   
   - [ ] Proxy support
+    
+  - [ ] JSON report output
+  
+  - [ ] XML report output
   
   - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
