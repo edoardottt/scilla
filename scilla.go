@@ -1,4 +1,11 @@
 /*
+
+		=======================
+
+    Scilla - Information Gathering Tool
+
+	    =======================
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -12,8 +19,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
 
-   @Repository:  https://github.com/edoardottt/scilla
-   @Author:      edoardottt, https://www.edoardoottavianelli.it
+	@Repository:  https://github.com/edoardottt/scilla
+
+	@Author:      edoardottt, https://www.edoardoottavianelli.it
+
 */
 
 package main
@@ -135,6 +144,9 @@ func execute(input Input) {
 		outputFile := ""
 		if input.ReportOutput != "" {
 			outputFile = createOutputFile(input.ReportTarget, input.ReportOutput)
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerHTML(input.ReportTarget, outputFile)
+			}
 		}
 
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
@@ -153,6 +165,12 @@ func execute(input Input) {
 		strings2 = createUrls(input.ReportWordDir, target)
 		asyncDir(strings2, outputFile, input.ReportIgnoreDir)
 
+		if input.ReportOutput != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerFooterHTML(outputFile)
+			}
+		}
+
 	}
 	if input.DNSTarget != "" {
 
@@ -162,8 +180,18 @@ func execute(input Input) {
 		outputFile := ""
 		if input.DNSOutput != "" {
 			outputFile = createOutputFile(input.DNSTarget, input.DNSOutput)
+
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerHTML(input.DNSTarget, outputFile)
+			}
 		}
 		lookupDNS(target, outputFile)
+
+		if input.DNSOutput != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerFooterHTML(outputFile)
+			}
+		}
 
 	}
 	if input.SubdomainTarget != "" {
@@ -174,10 +202,19 @@ func execute(input Input) {
 		outputFile := ""
 		if input.SubdomainOutput != "" {
 			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerHTML(input.SubdomainTarget, outputFile)
+			}
 		}
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
 		asyncGet(strings1, outputFile, input.SubdomainIgnore)
+
+		if input.SubdomainOutput != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerFooterHTML(outputFile)
+			}
+		}
 
 	}
 	if input.DirTarget != "" {
@@ -188,10 +225,20 @@ func execute(input Input) {
 		outputFile := ""
 		if input.DirOutput != "" {
 			outputFile = createOutputFile(input.DirTarget, input.DirOutput)
+
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerHTML(input.DirTarget, outputFile)
+			}
 		}
 		var strings2 []string
 		strings2 = createUrls(input.DirWord, target)
 		asyncDir(strings2, outputFile, input.DirIgnore)
+
+		if input.DirOutput != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerFooterHTML(outputFile)
+			}
+		}
 	}
 	if input.PortTarget != "" {
 
@@ -202,10 +249,19 @@ func execute(input Input) {
 		outputFile := ""
 		if input.PortOutput != "" {
 			outputFile = createOutputFile(input.PortTarget, input.PortOutput)
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerHTML(input.PortTarget, outputFile)
+			}
 		}
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== PORT SCANNING ===============")
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
+
+		if input.PortOutput != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				bannerFooterHTML(outputFile)
+			}
+		}
 	}
 }
 
@@ -874,6 +930,21 @@ func appendOutputToTxt(output string, filename string) {
 	}
 }
 
+//bannerHTML
+func bannerHTML(target string, filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	file.WriteString("<html><body><div style='" + "background-color:#4adeff;color:white" + "'><h1>Scilla - Information Gathering Tool</h1>")
+	file.WriteString("<ul>")
+	file.WriteString("<li><a href='" + "https://github.com/edoardottt/scilla'" + ">github.com/edoardottt/scilla</a></li>")
+	file.WriteString("<li>edoardottt, <a href='" + "https://www.edoardoottavianelli.it'" + ">edoardoottavianelli.it</a></li>")
+	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
+	file.WriteString("target: " + target + "<br>")
+}
+
 //appendOutputToHtml
 func appendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
@@ -893,7 +964,7 @@ func headerHTML(header string, filename string) {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("<html><body><h1>Scilla</h1><h3>" + header + "</h3><ul>"); err != nil {
+	if _, err := file.WriteString("<h3>" + header + "</h3><ul>"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -905,9 +976,21 @@ func footerHTML(filename string) {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("</ul></body></html>"); err != nil {
+	if _, err := file.WriteString("</ul>"); err != nil {
 		log.Fatal(err)
 	}
+}
+
+//bannerFooterHTML
+func bannerFooterHTML(filename string) {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+	file.WriteString("<div style='" + "background-color:#4adeff;color:white" + "'>")
+	file.WriteString("<ul><li><a href='" + "https://github.com/edoardottt/scilla'" + ">Contribute to scilla</a></li>")
+	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
 }
 
 //percentage
