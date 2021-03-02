@@ -952,7 +952,7 @@ func appendOutputToHTML(output string, status string, filename string) {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + output + "</a> " + status + "</li>"); err != nil {
+	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + cleanProtocol(output) + "</a> " + status + "</li>"); err != nil {
 		log.Fatal(err)
 	}
 }
