@@ -942,7 +942,7 @@ func bannerHTML(target string, filename string) {
 	file.WriteString("<li><a href='" + "https://github.com/edoardottt/scilla'" + ">github.com/edoardottt/scilla</a></li>")
 	file.WriteString("<li>edoardottt, <a href='" + "https://www.edoardoottavianelli.it'" + ">edoardoottavianelli.it</a></li>")
 	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
-	file.WriteString("target: " + target + "<br>")
+	file.WriteString("<h4>target: " + target + "</h4>")
 }
 
 //appendOutputToHtml
@@ -952,7 +952,17 @@ func appendOutputToHTML(output string, status string, filename string) {
 		log.Println(err)
 	}
 	defer file.Close()
-	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + cleanProtocol(output) + "</a> " + status + "</li>"); err != nil {
+	var statusColor = ""
+	if status != "" {
+		if string(status[0]) == "2" || string(status[0]) == "3" {
+			statusColor = "<p style='color:green;display:inline'>" + status + "</p>"
+		} else {
+			statusColor = "<p style='color:red;display:inline'>" + status + "</p>"
+		}
+	} else {
+		statusColor = status
+	}
+	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + cleanProtocol(output) + "</a> " + statusColor + "</li>"); err != nil {
 		log.Fatal(err)
 	}
 }
