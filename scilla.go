@@ -138,6 +138,8 @@ func execute(input Input) {
 	if input.ReportTarget != "" {
 
 		target := cleanProtocol(input.ReportTarget)
+		var targetIP string
+
 		fmt.Printf("target: %s\n", target)
 
 		fmt.Println("=============== FULL REPORT ===============")
@@ -151,8 +153,19 @@ func execute(input Input) {
 
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		var strings1 []string
+
+		// change from ip to Hostname
+		if isIP(target) {
+			targetIP = target
+			target = ipToHostname(target)
+		}
+
 		strings1 = createSubdomains(input.ReportWordSub, target)
 		asyncGet(strings1, outputFile, input.ReportIgnoreSub)
+
+		if targetIP != "" {
+			target = targetIP
+		}
 
 		fmt.Println("=============== PORT SCANNING ===============")
 		asyncPort(input.StartPort, input.EndPort, target, outputFile)
@@ -175,6 +188,12 @@ func execute(input Input) {
 	if input.DNSTarget != "" {
 
 		target := cleanProtocol(input.DNSTarget)
+
+		// change from ip to Hostname
+		if isIP(target) {
+			target = ipToHostname(target)
+		}
+
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== DNS SCANNING ===============")
 		outputFile := ""
@@ -197,6 +216,12 @@ func execute(input Input) {
 	if input.SubdomainTarget != "" {
 
 		target := cleanProtocol(input.SubdomainTarget)
+
+		// change from ip to Hostname
+		if isIP(target) {
+			target = ipToHostname(target)
+		}
+
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		outputFile := ""
@@ -822,6 +847,20 @@ func isURL(str string) bool {
 	str = "http://" + target
 	u, err := url.Parse(str)
 	return err == nil && u.Host != ""
+}
+
+//isIP
+func isIP(ip string) bool {
+	return net.ParseIP(ip) != nil
+}
+
+//ipToHostname
+func ipToHostname(ip string) string {
+	addr, err := net.LookupAddr(ip)
+	if err != nil || len(addr) == 0 {
+		log.Fatalf("Failed to resolve ip address %s", ip)
+	}
+	return strings.TrimSuffix(addr[0], ".")
 }
 
 //get performs an HTTP GET request to the target
