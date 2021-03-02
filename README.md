@@ -186,13 +186,11 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
 **To do:**
 
-  - [ ] Tests
+  - [ ] Tests (😂)
   
   - [ ] Tor support
   
   - [ ] Recursive Web crawling for subdomains and directories
-  
-  - [ ] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
   - [ ] (report mode) In all the subdomains found enumerates ports???
   
@@ -201,6 +199,8 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   - [ ] JSON report output
   
   - [ ] XML report output
+
+  - [x] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
   - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
   
