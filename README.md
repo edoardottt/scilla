@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/edoardottt/images/blob/main/scilla/logo.svg"><br>
+  <img src="https://github.com/edoardottt/images/blob/main/scilla/logo.png"><br>
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - DNS / Subdomains / Ports / Directories enumeration</b><br>
     <sub>
     Coded with 💙 by edoardottt.
