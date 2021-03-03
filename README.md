@@ -1,7 +1,6 @@
 <p align="center">
   <img src="https://github.com/edoardottt/images/blob/main/scilla/logo.png"><br>
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - DNS / Subdomains / Ports / Directories enumeration</b><br>
-  <br>
   
   <!-- go-report-card -->
   <a href="https://goreportcard.com/report/github.com/edoardottt/scilla">
