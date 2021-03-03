@@ -1,13 +1,6 @@
 <p align="center">
   <img src="https://github.com/edoardottt/images/blob/main/scilla/logo.png"><br>
   <b>🏴‍☠️ Information Gathering tool 🏴‍☠️ - DNS / Subdomains / Ports / Directories enumeration</b><br>
-    <sub>
-    Coded with 💙 by edoardottt.
-  </sub>
-  <br>
-  <!--Tweet button-->
-  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2Clinux%2Cgolang%2Cnetwork" target="_blank">Share on Twitter!
-  </a>
   <br>
   
   <!-- go-report-card -->
@@ -48,6 +41,14 @@
   <!-- license GPLv3.0 -->
   <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/license-GPL3.svg" alt="license-GPL3" />
+  </a>
+  <br>
+  <sub>
+    Coded with 💙 by edoardottt.
+  </sub>
+  <br>
+  <!--Tweet button-->
+  <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fedoardottt%2Fscilla%20&text=Information%20Gathering%20tool%21&hashtags=pentesting%2Clinux%2Cgolang%2Cnetwork" target="_blank">Share on Twitter!
   </a>
 </p>
 <p align="center">
