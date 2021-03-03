@@ -50,16 +50,15 @@
     <img src="https://github.com/edoardottt/images/blob/main/scilla/license-GPL3.svg" alt="license-GPL3" />
   </a>
 </p>
+<p align="center">
+  <a href="#preview-bar_chart">Preview</a> •
+  <a href="#installation-">Install</a> •
+  <a href="#get-started-">Get Started</a> •
+  <a href="#examples-">Examples</a> •
+  <a href="#contributing-">Contributing</a>
+</p>
 
-- [Example](https://github.com/edoardottt/scilla#example-bar_chart)
-- [Installation](https://github.com/edoardottt/scilla#installation-)
-	- [Linux](https://github.com/edoardottt/scilla#installation-)
-	- [Windows](https://github.com/edoardottt/scilla#installation-)
-- [Get Started](https://github.com/edoardottt/scilla#get-started-)
-- [Examples](https://github.com/edoardottt/scilla#examples-)
-- [Contributing](https://github.com/edoardottt/scilla#contributing-)
-
-Example :bar_chart:
+Preview :bar_chart:
 ----------
 
 ![Example](https://github.com/edoardottt/images/blob/main/scilla/scilla.gif)
