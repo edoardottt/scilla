@@ -76,15 +76,15 @@ Installation 📡
 
 - Linux (Requires high perms, run with sudo)
 
-    - `make linux`
+    - `make linux` (to install)
 
-    - `make unlinux`
+    - `make unlinux` (to uninstall)
 
 - Windows (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
-    - `make windows` or `.\make.bat windows` (powershell)
+    - `make windows` (to install) or `.\make.bat windows` (powershell)
     
-    - `make unwindows` or `.\make.bat unwindows` (powershell)
+    - `make unwindows` (to uninstall) or `.\make.bat unwindows` (powershell)
 
 - Other commands:
 
