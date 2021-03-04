@@ -443,7 +443,8 @@ func readArgs() Input {
 	// os.Arg[1] will be the subcommand
 	if len(os.Args) < 2 {
 		fmt.Println("[ERROR] subcommand is required.")
-		fmt.Println("	Type: scilla help")
+		fmt.Println("	Type: scilla help      - Full overview of the commands.")
+		fmt.Println("	Type: scilla examples  - Some explanatory examples.")
 		os.Exit(1)
 	}
 
