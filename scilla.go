@@ -1095,16 +1095,18 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 		limiter <- domain
 		wg.Add(1)
 
+		if count%100 == 0 { // update counter
+			fmt.Fprint(os.Stdout, "\r \r")
+			fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
+		}
+
 		go func(i int, domain string) {
 			defer wg.Done()
 			defer func() { <-limiter }()
 
 			resp, err := client.Get(domain)
 			count++
-			if count%100 == 0 { // update counter
-				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
-			}
+
 			if err != nil {
 				return
 			}
@@ -1184,16 +1186,18 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 		portStr := fmt.Sprint(port)
 		limiter <- portStr
 
+		if count%100 == 0 { // update counter
+			fmt.Fprint(os.Stdout, "\r \r")
+			fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
+		}
+
 		go func(portStr string, host string) {
 			defer func() { <-limiter }()
 			defer wg.Done()
 
 			resp := isOpenPort(host, portStr)
 			count++
-			if count%100 == 0 { // update counter
-				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
-			}
+
 			if resp {
 				fmt.Fprint(os.Stdout, "\r \r")
 				fmt.Printf("[+]FOUND: %s ", host)
@@ -1325,16 +1329,18 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 		limiter <- domain
 		wg.Add(1)
 
+		if count%100 == 0 { // update counter
+			fmt.Fprint(os.Stdout, "\r \r")
+			fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
+		}
+
 		go func(i int, domain string) {
 			defer wg.Done()
 			defer func() { <-limiter }()
 
 			resp, err := client.Get(domain)
 			count++
-			if count%100 == 0 { // update counter
-				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("%0.2f%% : %d / %d", percentage(count, total), count, total)
-			}
+
 			if err != nil {
 				return
 			}
