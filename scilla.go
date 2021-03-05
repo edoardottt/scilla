@@ -773,7 +773,7 @@ func checkIgnore(input string) []string {
 //deleteUnusefulIgnoreresponses removes from to-be-ignored arrays
 //the responses included yet with * as classes
 func deleteUnusefulIgnoreresponses(input []string) []string {
-	result := []string{}
+	var result []string
 	toberemoved := []string{}
 	classes := []string{}
 	for _, elem := range input {
@@ -1102,7 +1102,7 @@ func appendOutputToHTML(output string, status string, filename string) {
 		log.Println(err)
 	}
 	defer file.Close()
-	var statusColor = ""
+	var statusColor string
 	if status != "" {
 		if string(status[0]) == "2" || string(status[0]) == "3" {
 			statusColor = "<p style='color:green;display:inline'>" + status + "</p>"
