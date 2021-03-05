@@ -101,22 +101,35 @@ Get Started 🎉
 
 `scilla help` prints the help in the command line.
 
-	usage: scilla subcommand { options }
+```
+usage: scilla subcommand { options }
 
-		Available subcommands:
-			- dns -target [-o output-format] <target (URL)> REQUIRED
-			- subdomain [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL)> REQUIRED
-			- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
-			- dir [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL/IP)> REQUIRED
-			- report [-p <start-end>]
-				 [-ws subdomains wordlist]
-				 [-wd directories wordlist]
-				 [-o output-format]
-				 [-id ignore status codes in directories scanning]
-				 [-is ignore status codes in subdomains scanning]
-				 -target <target (URL/IP)> REQUIRED
-			- help
-			- examples
+	Available subcommands:
+		- dns -target [-o output-format] <target (URL)> REQUIRED
+		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
+		- subdomain [-w wordlist]
+			    [-o output-format]
+			    [-i ignore status codes]
+			    [-c use also a web crawler (SLOWER)]
+			    -target <target (URL)> REQUIRED
+		- dir [-w wordlist]
+	              [-o output-format]
+		      [-i ignore status codes]
+		      [-c use also a web crawler (SLOWER)]
+	       	      -target <target (URL)> REQUIRED
+		- report [-p <start-end>]
+			 [-ws subdomains wordlist]
+			 [-wd directories wordlist]
+			 [-o output-format]
+			 [-id ignore status codes in directories scanning]
+			 [-is ignore status codes in subdomains scanning]
+			 [-cd use also a web crawler for directories scanning (SLOWER)]
+			 [-cs use also a web crawler for subdomains scanning (SLOWER)]
+			 -target <target (URL/IP)> REQUIRED
+		- help
+		- examples
+```
+
 
 Examples 💡
 ----------
@@ -135,6 +148,7 @@ Examples 💡
     - `scilla subdomain -o html -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
     - `scilla subdomain -i 4** -target target.domain`
+    - `scilla subdomain -c -target target.domain` (slower)
 
 - Directories enumeration:
 
@@ -144,6 +158,7 @@ Examples 💡
     - `scilla dir -o html -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
     - `scilla dir -i 5**,401 -target target.domain`
+    - `scilla dir -c -target target.domain` (slower)
 
 - Ports enumeration:
       
@@ -170,6 +185,8 @@ Examples 💡
     - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
     - Specifying status codes classes to be ignored in directories scanning `scilla report -id 5**,4** -target target.domain`
     - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
+    - Use also a web crawler for directories enumeration (slower) `scilla report -cd -target target.domain`
+    - Use also a web crawler for subdomains enumeration (slower) `scilla report -cs -target target.domain`
 
 Contributing 🛠
 -------
@@ -188,15 +205,13 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [ ] Tor support
   
-  - [ ] Recursive Web crawling for subdomains and directories
-  
-  - [ ] (report mode) In all the subdomains found enumerates ports???
-  
   - [ ] Proxy support
     
   - [ ] JSON report output
   
   - [ ] XML report output
+
+  - [x] Recursive Web crawling for subdomains and directories
 
   - [x] Check input and if it's an IP try to change to hostname when dns or subdomain is active
   
