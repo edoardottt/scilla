@@ -1473,12 +1473,12 @@ func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs ma
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		if e.Attr("href") != "" {
 			if what == "dir" {
-				if !presentDirs(e.Attr("href"), dirs) && sameTargetDomain(e.Attr("href"), target) {
+				if !presentDirs(e.Attr("href"), dirs) && e.Attr("href") != target {
 
 					e.Request.Visit(e.Attr("href"))
 				}
 			} else {
-				if !presentSubs(e.Attr("href"), subs) && subdomainOk(e.Attr("href"), target) {
+				if !presentSubs(e.Attr("href"), subs) && e.Attr("href") != target {
 
 					e.Request.Visit(e.Attr("href"))
 				}
@@ -1544,20 +1544,4 @@ func presentSubs(input string, subs map[string]Asset) bool {
 func presentDirs(input string, dirs map[string]Asset) bool {
 	_, ok := dirs[input]
 	return ok
-}
-
-//sameTargetDomain
-func sameTargetDomain(input string, target string) bool {
-	if input == target {
-		return false
-	}
-	return true
-}
-
-//subdomainOk
-func subdomainOk(input string, target string) bool {
-	if input == target {
-		return false
-	}
-	return true
 }
