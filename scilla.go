@@ -36,6 +36,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -43,6 +44,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/gocolly/colly"
 )
 
 //intro prints the banner when the program is started
@@ -70,16 +72,26 @@ func help() {
 	fmt.Println("")
 	fmt.Println("	Available subcommands:")
 	fmt.Println("		- dns -target [-o output-format] <target (URL)> REQUIRED")
-	fmt.Println("		- subdomain [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL)> REQUIRED")
 	fmt.Println("		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED")
-	fmt.Println("		- dir [-w wordlist] [-o output-format] [-i ignore status codes] -target <target (URL/IP)> REQUIRED")
+	fmt.Println("		- subdomain	[-w wordlist]")
+	fmt.Println("					[-o output-format]")
+	fmt.Println("					[-i ignore status codes]")
+	fmt.Println("					[-c use also a web crawler (SLOWER)]")
+	fmt.Println("					-target <target (URL)> REQUIRED")
+	fmt.Println("		- dir [-w wordlist]")
+	fmt.Println("			  [-o output-format]")
+	fmt.Println("			  [-i ignore status codes]")
+	fmt.Println("			  [-c use also a web crawler (SLOWER)]")
+	fmt.Println("			  -target <target (URL)> REQUIRED")
 	fmt.Println("		- report [-p <start-end>]")
-	fmt.Println("			 [-ws subdomains wordlist]")
-	fmt.Println("			 [-wd directories wordlist]")
-	fmt.Println("			 [-o output-format]")
-	fmt.Println("			 [-id ignore status codes in directories scanning]")
-	fmt.Println("			 [-is ignore status codes in subdomains scanning]")
-	fmt.Println("			 -target <target (URL/IP)> REQUIRED")
+	fmt.Println("				 [-ws subdomains wordlist]")
+	fmt.Println("			 	 [-wd directories wordlist]")
+	fmt.Println("			 	 [-o output-format]")
+	fmt.Println("			 	 [-id ignore status codes in directories scanning]")
+	fmt.Println("			 	 [-is ignore status codes in subdomains scanning]")
+	fmt.Println("			 	 [-cd use also a web crawler for directories scanning (SLOWER)]")
+	fmt.Println("			 	 [-cs use also a web crawler for subdomains scanning (SLOWER)]")
+	fmt.Println("			 	 -target <target (URL/IP)> REQUIRED")
 	fmt.Println("		- help")
 	fmt.Println("		- examples")
 	fmt.Println()
@@ -98,6 +110,7 @@ func examples() {
 	fmt.Println("		- scilla subdomain -o html -target target.domain")
 	fmt.Println("		- scilla subdomain -i 400 -target target.domain")
 	fmt.Println("		- scilla subdomain -i 4** -target target.domain")
+	fmt.Println("		- scilla subdomain -c -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
@@ -111,6 +124,7 @@ func examples() {
 	fmt.Println("		- scilla dir -w wordlist.txt -target target.domain")
 	fmt.Println("		- scilla dir -i 500,401 -target target.domain")
 	fmt.Println("		- scilla dir -i 5**,401 -target target.domain")
+	fmt.Println("		- scilla dir -c -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla report -p 80 -target target.domain")
 	fmt.Println("		- scilla report -o txt -target target.domain")
@@ -122,6 +136,8 @@ func examples() {
 	fmt.Println("		- scilla report -is 500,501,502 -target target.domain")
 	fmt.Println("		- scilla report -id 5**,4** -target target.domain")
 	fmt.Println("		- scilla report -is 5**,4** -target target.domain")
+	fmt.Println("		- scilla report -cd -target target.domain")
+	fmt.Println("		- scilla report -cs -target target.domain")
 	fmt.Println("")
 }
 
@@ -129,12 +145,24 @@ func examples() {
 func main() {
 	intro()
 	input := readArgs()
-	execute(input)
+
+	// common assets found (only subdomain and dir)
+	subs := make(map[string]Asset)
+	dirs := make(map[string]Asset)
+
+	execute(input, subs, dirs)
+}
+
+//Asset gives information about the asset found
+type Asset struct {
+	Value   string
+	Printed bool
 }
 
 //execute reads inputs and starts the correct procedure
-func execute(input Input) {
+func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 
+	var mutex = &sync.Mutex{}
 	if input.ReportTarget != "" {
 
 		target := cleanProtocol(input.ReportTarget)
@@ -160,8 +188,22 @@ func execute(input Input) {
 			target = ipToHostname(target)
 		}
 
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				headerHTML("SUBDOMAIN SCANNING", outputFile)
+			}
+		}
+		if input.ReportCrawlerSub {
+			go spawnCrawler(target, input.ReportIgnoreSub, dirs, subs, outputFile, mutex, "sub")
+		}
+
 		strings1 = createSubdomains(input.ReportWordSub, target)
-		asyncGet(strings1, outputFile, input.ReportIgnoreSub)
+		asyncGet(strings1, input.ReportIgnoreSub, outputFile, subs, mutex)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				footerHTML(outputFile)
+			}
+		}
 
 		if targetIP != "" {
 			target = targetIP
@@ -175,8 +217,23 @@ func execute(input Input) {
 
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		var strings2 []string
+
 		strings2 = createUrls(input.ReportWordDir, target)
-		asyncDir(strings2, outputFile, input.ReportIgnoreDir)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				headerHTML("DIRECTORY SCANNING", outputFile)
+			}
+		}
+		if input.ReportCrawlerDir {
+			go spawnCrawler(target, input.ReportIgnoreDir, dirs, subs, outputFile, mutex, "dir")
+		}
+
+		asyncDir(strings2, input.ReportIgnoreDir, outputFile, dirs, mutex)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				footerHTML(outputFile)
+			}
+		}
 
 		if input.ReportOutput != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -224,6 +281,7 @@ func execute(input Input) {
 
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
+
 		outputFile := ""
 		if input.SubdomainOutput != "" {
 			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
@@ -231,9 +289,25 @@ func execute(input Input) {
 				bannerHTML(input.SubdomainTarget, outputFile)
 			}
 		}
+
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
-		asyncGet(strings1, outputFile, input.SubdomainIgnore)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				headerHTML("SUBDOMAIN SCANNING", outputFile)
+			}
+		}
+
+		if input.SubdomainCrawler {
+			go spawnCrawler(target, input.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub")
+		}
+
+		asyncGet(strings1, input.SubdomainIgnore, outputFile, subs, mutex)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				footerHTML(outputFile)
+			}
+		}
 
 		if input.SubdomainOutput != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -255,9 +329,25 @@ func execute(input Input) {
 				bannerHTML(input.DirTarget, outputFile)
 			}
 		}
+
 		var strings2 []string
 		strings2 = createUrls(input.DirWord, target)
-		asyncDir(strings2, outputFile, input.DirIgnore)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				headerHTML("DIRECTORY SCANNING", outputFile)
+			}
+		}
+
+		if input.DirCrawler {
+			spawnCrawler(target, input.ReportIgnoreDir, dirs, subs, outputFile, mutex, "dir")
+		}
+
+		asyncDir(strings2, input.DirIgnore, outputFile, dirs, mutex)
+		if outputFile != "" {
+			if outputFile[len(outputFile)-4:] == "html" {
+				footerHTML(outputFile)
+			}
+		}
 
 		if input.DirOutput != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -332,26 +422,30 @@ func outputFormatIsOk(input string) bool {
 
 //Input struct contains the input parameters
 type Input struct {
-	ReportTarget    string
-	ReportWordDir   string
-	ReportWordSub   string
-	ReportOutput    string
-	ReportIgnoreDir []string
-	ReportIgnoreSub []string
-	DNSTarget       string
-	DNSOutput       string
-	SubdomainTarget string
-	SubdomainWord   string
-	SubdomainOutput string
-	SubdomainIgnore []string
-	DirTarget       string
-	DirWord         string
-	DirOutput       string
-	DirIgnore       []string
-	PortTarget      string
-	PortOutput      string
-	StartPort       int
-	EndPort         int
+	ReportTarget     string
+	ReportWordDir    string
+	ReportWordSub    string
+	ReportOutput     string
+	ReportIgnoreDir  []string
+	ReportIgnoreSub  []string
+	ReportCrawlerDir bool
+	ReportCrawlerSub bool
+	DNSTarget        string
+	DNSOutput        string
+	SubdomainTarget  string
+	SubdomainWord    string
+	SubdomainOutput  string
+	SubdomainIgnore  []string
+	SubdomainCrawler bool
+	DirTarget        string
+	DirWord          string
+	DirOutput        string
+	DirIgnore        []string
+	DirCrawler       bool
+	PortTarget       string
+	PortOutput       string
+	StartPort        int
+	EndPort          int
 }
 
 //readArgs reads arguments/options from stdin
@@ -395,6 +489,12 @@ func readArgs() Input {
 	reportIgnoreSubPtr := reportCommand.String("is", "", "Ignore response code(s) for subdomains scanning")
 	reportIgnoreSub := []string{}
 
+	// report subcommand flag pointers
+	reportCrawlerDirPtr := reportCommand.Bool("cd", false, "Use also a web crawler for directories enumeration")
+
+	// report subcommand flag pointers
+	reportCrawlerSubdomainPtr := reportCommand.Bool("cs", false, "Use also a web crawler for subdomains enumeration")
+
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
@@ -414,6 +514,9 @@ func readArgs() Input {
 	subdomainIgnorePtr := subdomainCommand.String("i", "", "Ignore response code(s)")
 	subdomainIgnore := []string{}
 
+	// subdomains subcommand flag pointers
+	subdomainCrawlerPtr := subdomainCommand.Bool("c", false, "Use also a web crawler")
+
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
 
@@ -426,6 +529,9 @@ func readArgs() Input {
 	// dir subcommand flag pointers
 	dirIgnorePtr := dirCommand.String("i", "", "Ignore response code(s)")
 	dirIgnore := []string{}
+
+	// dir subcommand flag pointers
+	dirCrawlerPtr := dirCommand.Bool("c", false, "Use also a web crawler")
 
 	// port subcommand flag pointers
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -607,16 +713,20 @@ func readArgs() Input {
 		*reportOutputPtr,
 		reportIgnoreDir,
 		reportIgnoreSub,
+		*reportCrawlerDirPtr,
+		*reportCrawlerSubdomainPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*subdomainTargetPtr,
 		*subdomainWordlistPtr,
 		*subdomainOutputPtr,
 		subdomainIgnore,
+		*subdomainCrawlerPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputPtr,
 		dirIgnore,
+		*dirCrawlerPtr,
 		*portTargetPtr,
 		*portOutputPtr,
 		StartPort,
@@ -1074,7 +1184,7 @@ func ignoreResponse(response int, ignore []string) bool {
 
 //asyncGet performs concurrent requests to the specified
 //urls and prints the results
-func asyncGet(urls []string, outputFile string, ignore []string) {
+func asyncGet(urls []string, ignore []string, outputFile string, subs map[string]Asset, mutex *sync.Mutex) {
 
 	ignoreBool := len(ignore) != 0
 	var count int = 0
@@ -1085,15 +1195,14 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			headerHTML("SUBDOMAIN SCANNING", outputFile)
-		}
-	}
-
 	for i, domain := range urls {
 		limiter <- domain
 		wg.Add(1)
+
+		if count%50 == 0 { // update counter
+			fmt.Fprint(os.Stdout, "\r \r")
+			printSubs(subs, ignore, outputFile, mutex)
+		}
 
 		if count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -1117,31 +1226,13 @@ func asyncGet(urls []string, outputFile string, ignore []string) {
 				}
 			}
 
-			fmt.Fprint(os.Stdout, "\r \r")
-			subDomainFound := cleanProtocol(domain)
-			fmt.Printf("[+]FOUND: %s ", subDomainFound)
-			if string(resp.Status[0]) == "2" {
-				if outputFile != "" {
-					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
-				}
-				color.Green("%s\n", resp.Status)
-			} else {
-				if resp.StatusCode != 404 {
-					if outputFile != "" {
-						appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
-					}
-				}
-				color.Red("%s\n", resp.Status)
-			}
+			addSubs(domain, resp.Status, subs, mutex)
 			resp.Body.Close()
 		}(i, domain)
 	}
+	printSubs(subs, ignore, outputFile, mutex)
 	wg.Wait()
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			footerHTML(outputFile)
-		}
-	}
+	printSubs(subs, ignore, outputFile, mutex)
 }
 
 //appendWhere
@@ -1308,7 +1399,7 @@ func lookupDNS(domain string, outputFile string) {
 
 //asyncDir performs concurrent requests to the specified
 //urls and prints the results
-func asyncDir(urls []string, outputFile string, ignore []string) {
+func asyncDir(urls []string, ignore []string, outputFile string, dirs map[string]Asset, mutex *sync.Mutex) {
 
 	ignoreBool := len(ignore) != 0
 	var count int = 0
@@ -1319,15 +1410,14 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 	limiter := make(chan string, 50) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			headerHTML("DIRECTORY SCANNING", outputFile)
-		}
-	}
-
 	for i, domain := range urls {
 		limiter <- domain
 		wg.Add(1)
+
+		if count%50 == 0 { // update counter
+			fmt.Fprint(os.Stdout, "\r \r")
+			printDirs(dirs, ignore, outputFile, mutex)
+		}
 
 		if count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -1351,29 +1441,189 @@ func asyncDir(urls []string, outputFile string, ignore []string) {
 				}
 			}
 
-			if string(resp.Status[0]) == "2" || string(resp.Status[0]) == "3" {
-				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("[+]FOUND: %s ", domain)
-				color.Green("%s\n", resp.Status)
-				if outputFile != "" {
-					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
-				}
-			} else if (resp.StatusCode != 404) || string(resp.Status[0]) == "5" {
-				fmt.Fprint(os.Stdout, "\r \r")
-				fmt.Printf("[+]FOUND: %s ", domain)
-				color.Red("%s\n", resp.Status)
+			addDirs(domain, resp.Status, dirs, mutex)
 
-				if outputFile != "" {
-					appendWhere(domain, fmt.Sprint(resp.Status), outputFile)
-				}
-			}
 			resp.Body.Close()
 		}(i, domain)
 	}
+	printDirs(dirs, ignore, outputFile, mutex)
 	wg.Wait()
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			footerHTML(outputFile)
+	printDirs(dirs, ignore, outputFile, mutex)
+}
+
+//printSubs
+func printSubs(subs map[string]Asset, ignore []string, outputFile string, mutex *sync.Mutex) {
+	mutex.Lock()
+	for domain, asset := range subs {
+		if !asset.Printed {
+			sub := Asset{
+				Value:   asset.Value,
+				Printed: true,
+			}
+			subs[domain] = sub
+			var resp = asset.Value
+			fmt.Fprint(os.Stdout, "\r \r")
+			subDomainFound := cleanProtocol(domain)
+			fmt.Printf("[+]FOUND: %s ", subDomainFound)
+			if string(resp[0]) == "2" {
+				if outputFile != "" {
+					appendWhere(domain, fmt.Sprint(resp), outputFile)
+				}
+				color.Green("%s\n", resp)
+			} else {
+				if resp != "404" {
+					if outputFile != "" {
+						appendWhere(domain, fmt.Sprint(resp), outputFile)
+					}
+				}
+				color.Red("%s\n", resp)
+			}
 		}
 	}
+	mutex.Unlock()
+}
+
+//printDirs
+func printDirs(dirs map[string]Asset, ignore []string, outputFile string, mutex *sync.Mutex) {
+	mutex.Lock()
+	for domain, asset := range dirs {
+		if !asset.Printed {
+			dir := Asset{
+				Value:   asset.Value,
+				Printed: true,
+			}
+			dirs[domain] = dir
+			var resp = asset.Value
+			if string(resp[0]) == "2" || string(resp[0]) == "3" {
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("[+]FOUND: %s ", domain)
+				color.Green("%s\n", resp)
+				if outputFile != "" {
+					appendWhere(domain, fmt.Sprint(resp), outputFile)
+				}
+			} else if (resp[:3] != "404") || string(resp[0]) == "5" {
+				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Printf("[+]FOUND: %s ", domain)
+				color.Red("%s\n", resp)
+
+				if outputFile != "" {
+					appendWhere(domain, fmt.Sprint(resp), outputFile)
+				}
+			}
+		}
+	}
+	mutex.Unlock()
+}
+
+//spawnCrawler
+func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs map[string]Asset, outputFile string, mutex *sync.Mutex, what string) {
+	c := colly.NewCollector()
+	if what == "dir" {
+		c = colly.NewCollector(
+			colly.URLFilters(
+				regexp.MustCompile("(http://|https://|ftp://)" + "(www.)?" + target + "*"),
+			),
+		)
+	} else {
+		c = colly.NewCollector(
+			colly.URLFilters(
+				regexp.MustCompile("(http://|https://|ftp://)" + "+." + target),
+			),
+		)
+	}
+
+	// Find and visit all links
+	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
+		if e.Attr("href") != "" {
+			if what == "dir" {
+				if !presentDirs(e.Attr("href"), dirs) && sameTargetDomain(e.Attr("href"), target) {
+
+					e.Request.Visit(e.Attr("href"))
+				}
+			} else {
+				if !presentSubs(e.Attr("href"), subs) && subdomainOk(e.Attr("href"), target) {
+
+					e.Request.Visit(e.Attr("href"))
+				}
+			}
+		}
+
+	})
+
+	c.OnRequest(func(r *colly.Request) {
+		var status = httpGet(r.URL.String())
+		if what == "dir" {
+			addDirs(r.URL.String(), status, dirs, mutex)
+			printDirs(dirs, ignore, outputFile, mutex)
+		} else {
+			addSubs(r.URL.String(), status, subs, mutex)
+			printSubs(subs, ignore, outputFile, mutex)
+		}
+	})
+
+	c.Visit("http://" + target)
+}
+
+//httpGet
+func httpGet(input string) string {
+	resp, err := http.Get(input)
+	if err != nil {
+		return "ERROR"
+	}
+	defer resp.Body.Close()
+	return resp.Status
+}
+
+//addSubs
+func addSubs(target string, value string, subs map[string]Asset, mutex *sync.Mutex) {
+	sub := Asset{
+		Value:   value,
+		Printed: false,
+	}
+	mutex.Lock()
+	if !presentSubs(target, subs) {
+		subs[target] = sub
+	}
+	mutex.Unlock()
+}
+
+//addDirs
+func addDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mutex) {
+	dir := Asset{
+		Value:   value,
+		Printed: false,
+	}
+	mutex.Lock()
+	if !presentDirs(target, dirs) {
+		dirs[target] = dir
+	}
+	mutex.Unlock()
+}
+
+//presentSubs
+func presentSubs(input string, subs map[string]Asset) bool {
+	_, ok := subs[input]
+	return ok
+}
+
+//presentDirs
+func presentDirs(input string, dirs map[string]Asset) bool {
+	_, ok := dirs[input]
+	return ok
+}
+
+//sameTargetDomain
+func sameTargetDomain(input string, target string) bool {
+	if input == target {
+		return false
+	}
+	return true
+}
+
+//subdomainOk
+func subdomainOk(input string, target string) bool {
+	if input == target {
+		return false
+	}
+	return true
 }
