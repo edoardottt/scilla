@@ -111,6 +111,7 @@ usage: scilla subcommand { options }
 			    [-o output-format]
 			    [-i ignore status codes]
 			    [-c use also a web crawler (SLOWER)]
+			    [-db use also a public database]
 			    -target <target (URL)> REQUIRED
 		- dir [-w wordlist]
 	              [-o output-format]
@@ -125,6 +126,7 @@ usage: scilla subcommand { options }
 			 [-is ignore status codes in subdomains scanning]
 			 [-cd use also a web crawler for directories scanning (SLOWER)]
 			 [-cs use also a web crawler for subdomains scanning (SLOWER)]
+			 [-db use also a public database for subdomains scanning]
 			 -target <target (URL/IP)> REQUIRED
 		- help
 		- examples
