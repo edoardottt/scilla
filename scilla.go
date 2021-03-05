@@ -73,7 +73,7 @@ func help() {
 	fmt.Println("	Available subcommands:")
 	fmt.Println("		- dns -target [-o output-format] <target (URL)> REQUIRED")
 	fmt.Println("		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED")
-	fmt.Println("		- subdomain	[-w wordlist]")
+	fmt.Println("		- subdomain [-w wordlist]")
 	fmt.Println("					[-o output-format]")
 	fmt.Println("					[-i ignore status codes]")
 	fmt.Println("					[-c use also a web crawler (SLOWER)]")
