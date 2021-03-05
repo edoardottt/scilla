@@ -151,6 +151,7 @@ Examples 💡
     - `scilla subdomain -i 400 -target target.domain`
     - `scilla subdomain -i 4** -target target.domain`
     - `scilla subdomain -c -target target.domain` (slower)
+    - `scilla subdomain -db -target target.domain`
 
 - Directories enumeration:
 
@@ -189,6 +190,7 @@ Examples 💡
     - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
     - Use also a web crawler for directories enumeration (slower) `scilla report -cd -target target.domain`
     - Use also a web crawler for subdomains enumeration (slower) `scilla report -cs -target target.domain`
+    - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
 
 Contributing 🛠
 -------
@@ -199,7 +201,7 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
-A special thanks to [danielmiessler](https://github.com/danielmiessler), using those lists.
+A special thanks to [danielmiessler](https://github.com/danielmiessler), using those lists; and to [sonarSearch](https://github.com/cgboal/sonarsearch).
 
 **To do:**
 
@@ -212,6 +214,8 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   - [ ] JSON report output
   
   - [ ] XML report output
+
+  - [x] Add option to use a public database of known subdomains
 
   - [x] Recursive Web crawling for subdomains and directories
 
