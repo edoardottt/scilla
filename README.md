@@ -148,7 +148,7 @@ Examples 💡
     - `scilla subdomain -o html -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
     - `scilla subdomain -i 4** -target target.domain`
-    - `scilla subdomain -c -target target.domain`
+    - `scilla subdomain -c -target target.domain` (slower)
 
 - Directories enumeration:
 
@@ -158,7 +158,7 @@ Examples 💡
     - `scilla dir -o html -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
     - `scilla dir -i 5**,401 -target target.domain`
-    - `scilla dir -c -target target.domain`
+    - `scilla dir -c -target target.domain` (slower)
 
 - Ports enumeration:
       
