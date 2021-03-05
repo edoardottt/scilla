@@ -29,9 +29,12 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/rand"
 	"net"
 	"net/http"
 	"net/url"
@@ -77,6 +80,7 @@ func help() {
 	fmt.Println("					[-o output-format]")
 	fmt.Println("					[-i ignore status codes]")
 	fmt.Println("					[-c use also a web crawler (SLOWER)]")
+	fmt.Println("					[-db use also a public database]")
 	fmt.Println("					-target <target (URL)> REQUIRED")
 	fmt.Println("		- dir [-w wordlist]")
 	fmt.Println("			  [-o output-format]")
@@ -91,6 +95,7 @@ func help() {
 	fmt.Println("			 	 [-is ignore status codes in subdomains scanning]")
 	fmt.Println("			 	 [-cd use also a web crawler for directories scanning (SLOWER)]")
 	fmt.Println("			 	 [-cs use also a web crawler for subdomains scanning (SLOWER)]")
+	fmt.Println("			 	 [-db use also a public database for subdomains scanning]")
 	fmt.Println("			 	 -target <target (URL/IP)> REQUIRED")
 	fmt.Println("		- help")
 	fmt.Println("		- examples")
@@ -111,6 +116,7 @@ func examples() {
 	fmt.Println("		- scilla subdomain -i 400 -target target.domain")
 	fmt.Println("		- scilla subdomain -i 4** -target target.domain")
 	fmt.Println("		- scilla subdomain -c -target target.domain")
+	fmt.Println("		- scilla subdomain -db -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
@@ -138,6 +144,7 @@ func examples() {
 	fmt.Println("		- scilla report -is 5**,4** -target target.domain")
 	fmt.Println("		- scilla report -cd -target target.domain")
 	fmt.Println("		- scilla report -cs -target target.domain")
+	fmt.Println("		- scilla report -db -target target.domain")
 	fmt.Println("")
 }
 
@@ -191,6 +198,10 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 			go spawnCrawler(target, input.ReportIgnoreSub, dirs, subs, outputFile, mutex, "sub")
 		}
 		strings1 = createSubdomains(input.ReportWordSub, target)
+		if input.ReportSubdomainDB {
+			sonar := sonarSubdomains(target)
+			strings1 = appendSonarSubdomains(sonar, strings1)
+		}
 		asyncGet(strings1, input.ReportIgnoreSub, outputFile, subs, mutex)
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -273,6 +284,10 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		}
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
+		if input.SubdomainDB {
+			sonar := sonarSubdomains(target)
+			strings1 = appendSonarSubdomains(sonar, strings1)
+		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
 				headerHTML("SUBDOMAIN SCANNING", outputFile)
@@ -396,30 +411,32 @@ func outputFormatIsOk(input string) bool {
 
 //Input struct contains the input parameters
 type Input struct {
-	ReportTarget     string
-	ReportWordDir    string
-	ReportWordSub    string
-	ReportOutput     string
-	ReportIgnoreDir  []string
-	ReportIgnoreSub  []string
-	ReportCrawlerDir bool
-	ReportCrawlerSub bool
-	DNSTarget        string
-	DNSOutput        string
-	SubdomainTarget  string
-	SubdomainWord    string
-	SubdomainOutput  string
-	SubdomainIgnore  []string
-	SubdomainCrawler bool
-	DirTarget        string
-	DirWord          string
-	DirOutput        string
-	DirIgnore        []string
-	DirCrawler       bool
-	PortTarget       string
-	PortOutput       string
-	StartPort        int
-	EndPort          int
+	ReportTarget      string
+	ReportWordDir     string
+	ReportWordSub     string
+	ReportOutput      string
+	ReportIgnoreDir   []string
+	ReportIgnoreSub   []string
+	ReportCrawlerDir  bool
+	ReportCrawlerSub  bool
+	ReportSubdomainDB bool
+	DNSTarget         string
+	DNSOutput         string
+	SubdomainTarget   string
+	SubdomainWord     string
+	SubdomainOutput   string
+	SubdomainIgnore   []string
+	SubdomainCrawler  bool
+	SubdomainDB       bool
+	DirTarget         string
+	DirWord           string
+	DirOutput         string
+	DirIgnore         []string
+	DirCrawler        bool
+	PortTarget        string
+	PortOutput        string
+	StartPort         int
+	EndPort           int
 }
 
 //readArgs reads arguments/options from stdin
@@ -469,6 +486,9 @@ func readArgs() Input {
 	// report subcommand flag pointers
 	reportCrawlerSubdomainPtr := reportCommand.Bool("cs", false, "Use also a web crawler for subdomains enumeration")
 
+	// report subcommand flag pointers
+	reportSubdomainDBPtr := reportCommand.Bool("cdb", false, "Use also a public database for subdomains enumeration")
+
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
@@ -490,6 +510,9 @@ func readArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainCrawlerPtr := subdomainCommand.Bool("c", false, "Use also a web crawler")
+
+	// subdomains subcommand flag pointers
+	subdomainDBPtr := subdomainCommand.Bool("db", false, "Use also a public database")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -692,6 +715,7 @@ func readArgs() Input {
 		reportIgnoreSub,
 		*reportCrawlerDirPtr,
 		*reportCrawlerSubdomainPtr,
+		*reportSubdomainDBPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*subdomainTargetPtr,
@@ -699,6 +723,7 @@ func readArgs() Input {
 		*subdomainOutputPtr,
 		subdomainIgnore,
 		*subdomainCrawlerPtr,
+		*subdomainDBPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputPtr,
@@ -866,6 +891,37 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 		EndPort = maybeEnd
 	}
 	return StartPort, EndPort
+}
+
+//sonarSubdomains retrieves from the below url some known subdomains.
+func sonarSubdomains(target string) []string {
+	var arr []string
+	resp, err := http.Get("https://sonar.omnisint.io/subdomains/" + target)
+	if err != nil {
+		return arr
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return arr
+		}
+		bodyString := string(bodyBytes)
+		_ = json.Unmarshal([]byte(bodyString), &arr)
+	}
+	for index, elem := range arr {
+		arr[index] = "http://" + elem
+	}
+	return arr
+}
+
+func appendSonarSubdomains(sonar []string, urls []string) []string {
+	var result = []string{}
+	sonar = removeDuplicateValues(sonar)
+	result = append(sonar, urls...)
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(result), func(i, j int) { result[i], result[j] = result[j], result[i] })
+	return result
 }
 
 //replaceBadCharacterOutput
@@ -1180,7 +1236,7 @@ func asyncGet(urls []string, ignore []string, outputFile string, subs map[string
 			defer func() { <-limiter }()
 			resp, err := client.Get(domain)
 			count++
-			if err != nil {
+			if err != nil || resp.StatusCode == 404 {
 				return
 			}
 			if ignoreBool {
@@ -1401,20 +1457,20 @@ func printSubs(subs map[string]Asset, ignore []string, outputFile string, mutex 
 			subs[domain] = sub
 			var resp = asset.Value
 			fmt.Fprint(os.Stdout, "\r \r")
-			subDomainFound := cleanProtocol(domain)
-			fmt.Printf("[+]FOUND: %s ", subDomainFound)
-			if string(resp[0]) == "2" {
-				if outputFile != "" {
-					appendWhere(domain, fmt.Sprint(resp), outputFile)
-				}
-				color.Green("%s\n", resp)
-			} else {
-				if resp != "404" {
+			if resp[:3] != "404" {
+				subDomainFound := cleanProtocol(domain)
+				fmt.Printf("[+]FOUND: %s ", subDomainFound)
+				if string(resp[0]) == "2" {
 					if outputFile != "" {
 						appendWhere(domain, fmt.Sprint(resp), outputFile)
 					}
+					color.Green("%s\n", resp)
+				} else {
+					if outputFile != "" {
+						appendWhere(domain, fmt.Sprint(resp), outputFile)
+					}
+					color.Red("%s\n", resp)
 				}
-				color.Red("%s\n", resp)
 			}
 		}
 	}
