@@ -330,7 +330,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 			}
 		}
 		if input.DirCrawler {
-			spawnCrawler(target, input.ReportIgnoreDir, dirs, subs, outputFile, mutex, "dir")
+			go spawnCrawler(target, input.ReportIgnoreDir, dirs, subs, outputFile, mutex, "dir")
 		}
 		asyncDir(strings2, input.DirIgnore, outputFile, dirs, mutex)
 		if outputFile != "" {
