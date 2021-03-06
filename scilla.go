@@ -441,13 +441,13 @@ type Input struct {
 
 //readArgs reads arguments/options from stdin
 // Subcommands:
-// 		report     ==> Full report
-// 		dns        ==> Dns records enumeration
-// 		subdomains ==> Subdomains enumeration
-// 		port	   ==> ports enumeration
-//		dir		   ==> directiories enumeration
-// 		help       ==> doc
-//		examples   ==> examples
+// 		report		==> Full report
+// 		dns			==> Dns records enumeration
+// 		subdomains	==> Subdomains enumeration
+// 		port		==> ports enumeration
+//		dir			==> directiories enumeration
+// 		help		==> doc
+//		examples	==> examples
 func readArgs() Input {
 	reportCommand := flag.NewFlagSet("report", flag.ExitOnError)
 	dnsCommand := flag.NewFlagSet("dns", flag.ExitOnError)
@@ -1253,7 +1253,7 @@ func asyncGet(urls []string, ignore []string, outputFile string, subs map[string
 	printSubs(subs, ignore, outputFile, mutex)
 }
 
-//appendWhere
+//appendWhere (html or txt file)
 func appendWhere(what string, status string, outputFile string) {
 	if outputFile[len(outputFile)-4:] == "html" {
 		appendOutputToHTML(what, status, outputFile)
@@ -1320,7 +1320,7 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 	}
 }
 
-//lookupDNS prints the DNS servers for the inputted domain
+//lookupDNS prints the DNS informations for the inputted domain
 func lookupDNS(domain string, outputFile string) {
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
