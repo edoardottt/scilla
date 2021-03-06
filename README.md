@@ -110,13 +110,13 @@ usage: scilla subcommand { options }
 		- subdomain [-w wordlist]
 			    [-o output-format]
 			    [-i ignore status codes]
-			    [-c use also a web crawler (SLOWER)]
+			    [-c use also a web crawler]
 			    [-db use also a public database]
 			    -target <target (URL)> REQUIRED
 		- dir [-w wordlist]
 	              [-o output-format]
 		      [-i ignore status codes]
-		      [-c use also a web crawler (SLOWER)]
+		      [-c use also a web crawler]
 	       	      -target <target (URL)> REQUIRED
 		- report [-p <start-end>]
 			 [-ws subdomains wordlist]
@@ -124,8 +124,8 @@ usage: scilla subcommand { options }
 			 [-o output-format]
 			 [-id ignore status codes in directories scanning]
 			 [-is ignore status codes in subdomains scanning]
-			 [-cd use also a web crawler for directories scanning (SLOWER)]
-			 [-cs use also a web crawler for subdomains scanning (SLOWER)]
+			 [-cd use also a web crawler for directories scanning]
+			 [-cs use also a web crawler for subdomains scanning]
 			 [-db use also a public database for subdomains scanning]
 			 -target <target (URL/IP)> REQUIRED
 		- help
@@ -150,7 +150,7 @@ Examples 💡
     - `scilla subdomain -o html -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
     - `scilla subdomain -i 4** -target target.domain`
-    - `scilla subdomain -c -target target.domain` (slower)
+    - `scilla subdomain -c -target target.domain`
     - `scilla subdomain -db -target target.domain`
 
 - Directories enumeration:
@@ -161,7 +161,7 @@ Examples 💡
     - `scilla dir -o html -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
     - `scilla dir -i 5**,401 -target target.domain`
-    - `scilla dir -c -target target.domain` (slower)
+    - `scilla dir -c -target target.domain`
 
 - Ports enumeration:
       
@@ -188,8 +188,8 @@ Examples 💡
     - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
     - Specifying status codes classes to be ignored in directories scanning `scilla report -id 5**,4** -target target.domain`
     - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
-    - Use also a web crawler for directories enumeration (slower) `scilla report -cd -target target.domain`
-    - Use also a web crawler for subdomains enumeration (slower) `scilla report -cs -target target.domain`
+    - Use also a web crawler for directories enumeration `scilla report -cd -target target.domain`
+    - Use also a web crawler for subdomains enumeration `scilla report -cs -target target.domain`
     - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
 
 Contributing 🛠
