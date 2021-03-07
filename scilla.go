@@ -176,7 +176,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		fmt.Println("=============== FULL REPORT ===============")
 		outputFile := ""
 		if input.ReportOutput != "" {
-			outputFile = createOutputFile(input.ReportTarget, input.ReportOutput)
+			outputFile = createOutputFile(input.ReportTarget, "report", input.ReportOutput)
 			if outputFile[len(outputFile)-4:] == "html" {
 				bannerHTML(input.ReportTarget, outputFile)
 			}
@@ -252,7 +252,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		fmt.Println("=============== DNS SCANNING ===============")
 		outputFile := ""
 		if input.DNSOutput != "" {
-			outputFile = createOutputFile(input.DNSTarget, input.DNSOutput)
+			outputFile = createOutputFile(input.DNSTarget, "dns", input.DNSOutput)
 
 			if outputFile[len(outputFile)-4:] == "html" {
 				bannerHTML(input.DNSTarget, outputFile)
@@ -277,7 +277,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 		outputFile := ""
 		if input.SubdomainOutput != "" {
-			outputFile = createOutputFile(input.SubdomainTarget, input.SubdomainOutput)
+			outputFile = createOutputFile(input.SubdomainTarget, "subdomain", input.SubdomainOutput)
 			if outputFile[len(outputFile)-4:] == "html" {
 				bannerHTML(input.SubdomainTarget, outputFile)
 			}
@@ -316,7 +316,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		outputFile := ""
 		if input.DirOutput != "" {
-			outputFile = createOutputFile(input.DirTarget, input.DirOutput)
+			outputFile = createOutputFile(input.DirTarget, "dir", input.DirOutput)
 
 			if outputFile[len(outputFile)-4:] == "html" {
 				bannerHTML(input.DirTarget, outputFile)
@@ -352,7 +352,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		}
 		outputFile := ""
 		if input.PortOutput != "" {
-			outputFile = createOutputFile(input.PortTarget, input.PortOutput)
+			outputFile = createOutputFile(input.PortTarget, "port", input.PortOutput)
 			if outputFile[len(outputFile)-4:] == "html" {
 				bannerHTML(input.PortTarget, outputFile)
 			}
@@ -933,7 +933,7 @@ func replaceBadCharacterOutput(input string) string {
 // Create Output Folder
 func createOutputFolder() {
 	//Create a folder/directory at a full qualified path
-	err := os.Mkdir("output", 0755)
+	err := os.Mkdir("output-scilla", 0755)
 	if err != nil {
 		fmt.Println("Can't create output folder.")
 		os.Exit(1)
@@ -941,13 +941,13 @@ func createOutputFolder() {
 }
 
 // Create Output File
-func createOutputFile(target string, format string) string {
+func createOutputFile(target string, subcommand string, format string) string {
 	target = replaceBadCharacterOutput(target)
-	filename := "output" + "/" + target + "." + format
+	filename := "output-scilla" + "/" + target + "." + subcommand + "." + format
 	_, err := os.Stat(filename)
 
 	if os.IsNotExist(err) {
-		if _, err := os.Stat("output/"); os.IsNotExist(err) {
+		if _, err := os.Stat("output-scilla/"); os.IsNotExist(err) {
 			createOutputFolder()
 		}
 		// If the file doesn't exist, create it.
