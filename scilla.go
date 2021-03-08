@@ -1102,10 +1102,10 @@ func appendOutputToTxt(output string, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	defer file.Close()
 	if _, err := file.WriteString(output + "\n"); err != nil {
 		log.Fatal(err)
 	}
+	file.Close()
 }
 
 //bannerHTML
@@ -1121,6 +1121,7 @@ func bannerHTML(target string, filename string) {
 	file.WriteString("<li>edoardottt, <a href='" + "https://www.edoardoottavianelli.it'" + ">edoardoottavianelli.it</a></li>")
 	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
 	file.WriteString("<h4>target: " + target + "</h4>")
+	file.Close()
 }
 
 //appendOutputToHtml
@@ -1143,6 +1144,7 @@ func appendOutputToHTML(output string, status string, filename string) {
 	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + cleanProtocol(output) + "</a> " + statusColor + "</li>"); err != nil {
 		log.Fatal(err)
 	}
+	file.Close()
 }
 
 //headerHtml
@@ -1151,10 +1153,10 @@ func headerHTML(header string, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	defer file.Close()
 	if _, err := file.WriteString("<h3>" + header + "</h3><ul>"); err != nil {
 		log.Fatal(err)
 	}
+	file.Close()
 }
 
 //footerHTML
@@ -1167,6 +1169,7 @@ func footerHTML(filename string) {
 	if _, err := file.WriteString("</ul>"); err != nil {
 		log.Fatal(err)
 	}
+	file.Close()
 }
 
 //bannerFooterHTML
@@ -1175,10 +1178,10 @@ func bannerFooterHTML(filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	defer file.Close()
 	file.WriteString("<div style='" + "background-color:#4adeff;color:white" + "'>")
 	file.WriteString("<ul><li><a href='" + "https://github.com/edoardottt/scilla'" + ">Contribute to scilla</a></li>")
 	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
+	file.Close()
 }
 
 //percentage
