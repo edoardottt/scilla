@@ -1509,6 +1509,18 @@ func printDirs(dirs map[string]Asset, ignore []string, outputFile string, mutex 
 	mutex.Unlock()
 }
 
+//cleanURL takes as input a string and it tries to
+//remove the fragment and the query
+//Example: https://example.com/directory1/?id=abcdef&path=ok#fragment1
+//Output: https://example.com/directory1/
+func cleanURL(input string) string {
+	u, err := url.Parse(input)
+	if err != nil {
+		return input
+	}
+	return u.Scheme + "://" + u.Host + u.Path
+}
+
 //spawnCrawler
 func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs map[string]Asset, outputFile string, mutex *sync.Mutex, what string) {
 	c := colly.NewCollector()
@@ -1528,15 +1540,16 @@ func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs ma
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		if e.Attr("href") != "" {
+			url := cleanURL(e.Attr("href"))
 			if what == "dir" {
-				if !presentDirs(e.Attr("href"), dirs) && e.Attr("href") != target {
+				if !presentDirs(url, dirs) && url != target {
 
-					e.Request.Visit(e.Attr("href"))
+					e.Request.Visit(url)
 				}
 			} else {
-				if !presentSubs(e.Attr("href"), subs) && e.Attr("href") != target {
+				if !presentSubs(url, subs) && url != target {
 
-					e.Request.Visit(e.Attr("href"))
+					e.Request.Visit(url)
 				}
 			}
 		}
