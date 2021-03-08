@@ -394,7 +394,7 @@ func cleanProtocol(target string) string {
 	return target
 }
 
-// output formats accepted
+//outputFormatIsOk (txt or html)
 func outputFormatIsOk(input string) bool {
 	if input == "" {
 		return true
@@ -737,7 +737,7 @@ func readArgs() Input {
 	return result
 }
 
-//checkIgnore
+//checkIgnore checks the inputted status code to be ignored
 func checkIgnore(input string) []string {
 	result := []string{}
 	temp := strings.Split(input, ",")
@@ -915,6 +915,8 @@ func sonarSubdomains(target string) []string {
 	return arr
 }
 
+//appendSonarSubdomains appends to the subdomains in the list
+//the ones found by Sonar
 func appendSonarSubdomains(sonar []string, urls []string) []string {
 	var result = []string{}
 	sonar = removeDuplicateValues(sonar)
@@ -930,7 +932,7 @@ func replaceBadCharacterOutput(input string) string {
 	return result
 }
 
-// Create Output Folder
+//createOutputFolder
 func createOutputFolder() {
 	//Create a folder/directory at a full qualified path
 	err := os.Mkdir("output-scilla", 0755)
@@ -940,7 +942,7 @@ func createOutputFolder() {
 	}
 }
 
-// Create Output File
+//createOutputFile
 func createOutputFile(target string, subcommand string, format string) string {
 	target = replaceBadCharacterOutput(target)
 	filename := "output-scilla" + "/" + target + "." + subcommand + "." + format
@@ -1042,6 +1044,7 @@ func readDict(inputFile string) []string {
 	return text
 }
 
+//removeDuplicateValues
 func removeDuplicateValues(intSlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}
@@ -1448,7 +1451,8 @@ func asyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 	printDirs(dirs, ignore, outputFile, mutex)
 }
 
-//printSubs
+//printSubs prints the results (only the resources not already printed).
+//Also performs the checks based on the response status codes.
 func printSubs(subs map[string]Asset, ignore []string, outputFile string, mutex *sync.Mutex) {
 	mutex.Lock()
 	for domain, asset := range subs {
@@ -1480,7 +1484,8 @@ func printSubs(subs map[string]Asset, ignore []string, outputFile string, mutex 
 	mutex.Unlock()
 }
 
-//printDirs
+//printDirs prints the results (only the resources not already printed).
+//Also performs the checks based on the response status codes.
 func printDirs(dirs map[string]Asset, ignore []string, outputFile string, mutex *sync.Mutex) {
 	mutex.Lock()
 	for domain, asset := range dirs {
@@ -1524,7 +1529,9 @@ func cleanURL(input string) string {
 	return u.Scheme + "://" + u.Host + u.Path
 }
 
-//spawnCrawler
+//spawnCrawler spawn a crawler that search for
+//links with this characteristic:
+//- only http, https or ftp protocols allowed
 func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs map[string]Asset, outputFile string, mutex *sync.Mutex, what string) {
 	c := colly.NewCollector()
 	if what == "dir" {
@@ -1580,7 +1587,7 @@ func httpGet(input string) string {
 	return resp.Status
 }
 
-//addSubs
+//addSubs adds the target found to the subs map
 func addSubs(target string, value string, subs map[string]Asset, mutex *sync.Mutex) {
 	sub := Asset{
 		Value:   value,
@@ -1593,7 +1600,7 @@ func addSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 	mutex.Unlock()
 }
 
-//addDirs
+//addDirs adds the target found to the dirs map
 func addDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mutex) {
 	dir := Asset{
 		Value:   value,
