@@ -107,7 +107,9 @@ usage: scilla subcommand { options }
 
 	Available subcommands:
 		- dns -target [-o output-format] <target (URL)> REQUIRED
-		- port [-p <start-end>] [-o output-format] -target <target (URL/IP)> REQUIRED
+		- port [-p <start-end>  or ports divided by comma]
+		       [-o output-format]
+		       -target <target (URL/IP)> REQUIRED
 		- subdomain [-w wordlist]
 			    [-o output-format]
 			    [-i ignore status codes]
@@ -119,7 +121,7 @@ usage: scilla subcommand { options }
 		      [-i ignore status codes]
 		      [-c use also a web crawler]
 	       	      -target <target (URL)> REQUIRED
-		- report [-p <start-end>]
+		- report [-p <start-end> or ports divided by comma]
 			 [-ws subdomains wordlist]
 			 [-wd directories wordlist]
 			 [-o output-format]
@@ -173,6 +175,7 @@ Examples 💡
     - Specifying single port `scilla port -p 80 -target target.domain`
     - Specifying output format (txt)`scilla port -o txt -target target.domain`
     - Specifying output format (html)`scilla port -o html -target target.domain`
+    - Specifying multiple ports `scilla port -p 21,25,80 -target target.domain`
 
 - Full report:
       
@@ -192,6 +195,7 @@ Examples 💡
     - Use also a web crawler for directories enumeration `scilla report -cd -target target.domain`
     - Use also a web crawler for subdomains enumeration `scilla report -cs -target target.domain`
     - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
+    - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
 
 Contributing 🛠
 -------
