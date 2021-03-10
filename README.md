@@ -69,6 +69,7 @@ Installation 📡
 - First of all, clone the repo locally
 
     - `git clone https://github.com/edoardottt/scilla.git`
+    - `cd scilla`
 
 - Scilla has external dependencies, so they need to be pulled in:
 
