@@ -1,9 +1,6 @@
 /*
-
 =======================
-
 Scilla - Information Gathering Tool
-
 =======================
 
 This program is free software: you can redistribute it and/or modify
@@ -20,9 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Repository:  https://github.com/edoardottt/scilla
-
 	@Author:      edoardottt, https://www.edoardoottavianelli.it
-
 */
 
 package main
@@ -213,7 +208,8 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 			target = targetIP
 		}
 		fmt.Println("=============== PORT SCANNING ===============")
-		asyncPort(input.StartPort, input.EndPort, target, outputFile)
+
+		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile)
 
 		fmt.Println("=============== DNS SCANNING ===============")
 		lookupDNS(target, outputFile)
@@ -359,7 +355,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		}
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== PORT SCANNING ===============")
-		asyncPort(input.StartPort, input.EndPort, target, outputFile)
+		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile)
 
 		if input.PortOutput != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -437,6 +433,8 @@ type Input struct {
 	PortOutput        string
 	StartPort         int
 	EndPort           int
+	portArrayBool     bool
+	portsArray        []int
 }
 
 //readArgs reads arguments/options from stdin
@@ -540,6 +538,8 @@ func readArgs() Input {
 	// Default ports
 	StartPort := 1
 	EndPort := 65535
+	portsArray := []int{}
+	portArrayBool := false
 
 	// Verify that a subcommand has been provided
 	// os.Arg[0] is the main command
@@ -591,8 +591,18 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 		if *reportPortsPtr != "" {
-			portsRange := string(*reportPortsPtr)
-			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+			if strings.Contains(*reportPortsPtr, "-") && strings.Contains(*reportPortsPtr, ",") {
+				fmt.Println("You can specify a ports range or an array, not both.")
+				os.Exit(1)
+			}
+			if strings.Contains(*reportPortsPtr, "-") {
+				portsRange := string(*reportPortsPtr)
+				StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+				portArrayBool = false
+			} else if strings.Contains(*reportPortsPtr, ",") {
+				portsArray = checkPortsArray(*reportPortsPtr)
+				portArrayBool = true
+			}
 		}
 		if *reportIgnoreDirPtr != "" {
 			toBeIgnored := string(*reportIgnoreDirPtr)
@@ -655,8 +665,18 @@ func readArgs() Input {
 			os.Exit(1)
 		}
 		if *portsPtr != "" {
-			portsRange := string(*portsPtr)
-			StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+			if strings.Contains(*portsPtr, "-") && strings.Contains(*portsPtr, ",") {
+				fmt.Println("You can specify a ports range or an array, not both.")
+				os.Exit(1)
+			}
+			if strings.Contains(*portsPtr, "-") {
+				portsRange := string(*portsPtr)
+				StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+				portArrayBool = false
+			} else if strings.Contains(*portsPtr, ",") {
+				portsArray = checkPortsArray(*portsPtr)
+				portArrayBool = true
+			}
 		}
 		//Verify good inputs
 		if !isURL(*portTargetPtr) {
@@ -733,6 +753,8 @@ func readArgs() Input {
 		*portOutputPtr,
 		StartPort,
 		EndPort,
+		portArrayBool,
+		portsArray,
 	}
 	return result
 }
@@ -826,6 +848,26 @@ func ignoreClassOk(input string) bool {
 		}
 	}
 	return false
+}
+
+//checkPortsArray checks the basic rules to
+//be valid and then returns the ports array to scan.
+func checkPortsArray(input string) []int {
+	delimiter := byte(',')
+	sliceOfPorts := strings.Split(input, string(delimiter))
+	sliceOfPorts = removeDuplicateValues(sliceOfPorts)
+	result := []int{}
+	for _, elem := range sliceOfPorts {
+		try, err := strconv.Atoi(elem)
+		if err != nil {
+			fmt.Println("The inputted ports array is not valid.")
+			os.Exit(1)
+		}
+		if try > 0 && try < 65536 {
+			result = append(result, try)
+		}
+	}
+	return result
 }
 
 //checkPortsRange checks the basic rules to
@@ -1284,9 +1326,12 @@ func isOpenPort(host string, port string) bool {
 
 //asyncPort performs concurrent requests to the specified
 //ports range and, if someone is open it prints the results
-func asyncPort(StartingPort int, EndingPort int, host string, outputFile string) {
+func asyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int, host string, outputFile string) {
 	var count int = 0
-	var total int = EndingPort - StartingPort
+	var total int = (EndingPort - StartingPort) + 1
+	if portsArrayBool {
+		total = len(portsArray)
+	}
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 	if outputFile != "" {
@@ -1294,7 +1339,15 @@ func asyncPort(StartingPort int, EndingPort int, host string, outputFile string)
 			headerHTML("PORT SCANNING", outputFile)
 		}
 	}
-	for port := StartingPort; port <= EndingPort; port++ {
+	ports := []int{}
+	if portsArrayBool {
+		ports = portsArray
+	} else {
+		for port := StartingPort; port <= EndingPort; port++ {
+			ports = append(ports, port)
+		}
+	}
+	for _, port := range ports {
 		wg.Add(1)
 		portStr := fmt.Sprint(port)
 		limiter <- portStr
