@@ -606,6 +606,10 @@ func readArgs() Input {
 			} else if strings.Contains(*reportPortsPtr, ",") {
 				portsArray = checkPortsArray(*reportPortsPtr)
 				portArrayBool = true
+			} else {
+				portsRange := string(*reportPortsPtr)
+				StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+				portArrayBool = false
 			}
 		}
 		if *reportIgnoreDirPtr != "" {
@@ -680,6 +684,10 @@ func readArgs() Input {
 			} else if strings.Contains(*portsPtr, ",") {
 				portsArray = checkPortsArray(*portsPtr)
 				portArrayBool = true
+			} else {
+				portsRange := string(*portsPtr)
+				StartPort, EndPort = checkPortsRange(portsRange, StartPort, EndPort)
+				portArrayBool = false
 			}
 		}
 		//Verify good inputs
