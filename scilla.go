@@ -72,6 +72,7 @@ func help() {
 	fmt.Println("       - dns -target [-o output-format] <target (URL)> REQUIRED")
 	fmt.Println("       - port [-p <start-end> or ports divided by comma]")
 	fmt.Println("              [-o output-format]")
+	fmt.Println("              [-common scan common ports]")
 	fmt.Println("              -target <target (URL/IP)> REQUIRED")
 	fmt.Println("       - subdomain [-w wordlist]")
 	fmt.Println("                   [-o output-format]")
@@ -93,6 +94,7 @@ func help() {
 	fmt.Println("                [-cd use also a web crawler for directories scanning]")
 	fmt.Println("                [-cs use also a web crawler for subdomains scanning]")
 	fmt.Println("                [-db use also a public database for subdomains scanning]")
+	fmt.Println("                [-common scan common ports]")
 	fmt.Println("                -target <target (URL/IP)> REQUIRED")
 	fmt.Println("       - help")
 	fmt.Println("       - examples")
@@ -121,6 +123,7 @@ func examples() {
 	fmt.Println("		- scilla port -o txt -target target.domain")
 	fmt.Println("		- scilla port -o html -target target.domain")
 	fmt.Println("		- scilla port -p 21,25,80 -target target.domain")
+	fmt.Println("		- scilla port -common -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla dir -target target.domain")
 	fmt.Println("		- scilla dir -o txt -target target.domain")
@@ -144,6 +147,7 @@ func examples() {
 	fmt.Println("		- scilla report -cs -target target.domain")
 	fmt.Println("		- scilla report -db -target target.domain")
 	fmt.Println("		- scilla report -p 21,25,80 -target target.domain")
+	fmt.Println("		- scilla report -common -target target.domain")
 	fmt.Println("")
 }
 
@@ -154,7 +158,13 @@ func main() {
 	// common assets found (only subdomain and dir)
 	subs := make(map[string]Asset)
 	dirs := make(map[string]Asset)
-	execute(input, subs, dirs)
+	//common ports
+	common := []int{20, 21, 22, 23, 25, 50, 51, 53, 67, 68, 69, 80, 88, 110, 119,
+		123, 135, 136, 137, 138, 139, 143, 161, 162, 389, 443, 464,
+		514, 587, 631, 902, 989, 990, 1025, 1194, 1433, 1434, 1883,
+		2483, 2484, 3306, 3389, 5000, 5432, 8000, 8001, 8080, 8200,
+		10000}
+	execute(input, subs, dirs, common)
 }
 
 //Asset gives information about the asset found
@@ -164,7 +174,7 @@ type Asset struct {
 }
 
 //execute reads inputs and starts the correct procedure
-func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
+func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common []int) {
 
 	var mutex = &sync.Mutex{}
 	if input.ReportTarget != "" {
@@ -213,7 +223,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		}
 		fmt.Println("=============== PORT SCANNING ===============")
 
-		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile)
+		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile, input.ReportCommon, common)
 
 		fmt.Println("=============== DNS SCANNING ===============")
 		lookupDNS(target, outputFile)
@@ -359,7 +369,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset) {
 		}
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== PORT SCANNING ===============")
-		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile)
+		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile, input.PortCommon, common)
 
 		if input.PortOutput != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -420,6 +430,7 @@ type Input struct {
 	ReportCrawlerDir  bool
 	ReportCrawlerSub  bool
 	ReportSubdomainDB bool
+	ReportCommon      bool
 	DNSTarget         string
 	DNSOutput         string
 	SubdomainTarget   string
@@ -439,6 +450,7 @@ type Input struct {
 	EndPort           int
 	portArrayBool     bool
 	portsArray        []int
+	PortCommon        bool
 }
 
 //readArgs reads arguments/options from stdin
@@ -491,6 +503,9 @@ func readArgs() Input {
 	// report subcommand flag pointers
 	reportSubdomainDBPtr := reportCommand.Bool("cdb", false, "Use also a public database for subdomains enumeration")
 
+	// report subcommand flag pointers
+	reportCommonPtr := reportCommand.Bool("common", false, "Scan common ports")
+
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
@@ -539,6 +554,9 @@ func readArgs() Input {
 	portOutputPtr := portCommand.String("o", "", "output format (txt/html)")
 
 	portsPtr := portCommand.String("p", "", "ports range <start-end>")
+
+	portCommonPtr := portCommand.Bool("common", false, "Scan common ports")
+
 	// Default ports
 	StartPort := 1
 	EndPort := 65535
@@ -594,6 +612,12 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
+		//common and p not together
+		if *reportPortsPtr != "" && *reportCommonPtr {
+			fmt.Println("You can't specify a port range and common option together.")
+			os.Exit(1)
+		}
+
 		if *reportPortsPtr != "" {
 			if strings.Contains(*reportPortsPtr, "-") && strings.Contains(*reportPortsPtr, ",") {
 				fmt.Println("You can specify a ports range or an array, not both.")
@@ -672,6 +696,11 @@ func readArgs() Input {
 			portCommand.PrintDefaults()
 			os.Exit(1)
 		}
+		//common and p not together
+		if *portsPtr != "" && *portCommonPtr {
+			fmt.Println("You can't specify a port range and common option together.")
+			os.Exit(1)
+		}
 		if *portsPtr != "" {
 			if strings.Contains(*portsPtr, "-") && strings.Contains(*portsPtr, ",") {
 				fmt.Println("You can specify a ports range or an array, not both.")
@@ -748,6 +777,7 @@ func readArgs() Input {
 		*reportCrawlerDirPtr,
 		*reportCrawlerSubdomainPtr,
 		*reportSubdomainDBPtr,
+		*reportCommonPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*subdomainTargetPtr,
@@ -767,6 +797,7 @@ func readArgs() Input {
 		EndPort,
 		portArrayBool,
 		portsArray,
+		*portCommonPtr,
 	}
 	return result
 }
@@ -1338,7 +1369,7 @@ func isOpenPort(host string, port string) bool {
 
 //asyncPort performs concurrent requests to the specified
 //ports range and, if someone is open it prints the results
-func asyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int, host string, outputFile string) {
+func asyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int, host string, outputFile string, common bool, commonPorts []int) {
 	var count int = 0
 	var total int = (EndingPort - StartingPort) + 1
 	if portsArrayBool {
@@ -1352,12 +1383,16 @@ func asyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		}
 	}
 	ports := []int{}
-	if portsArrayBool {
-		ports = portsArray
-	} else {
-		for port := StartingPort; port <= EndingPort; port++ {
-			ports = append(ports, port)
+	if !common {
+		if portsArrayBool {
+			ports = portsArray
+		} else {
+			for port := StartingPort; port <= EndingPort; port++ {
+				ports = append(ports, port)
+			}
 		}
+	} else {
+		ports = commonPorts
 	}
 	for _, port := range ports {
 		wg.Add(1)
