@@ -69,7 +69,7 @@ func help() {
 	fmt.Println("usage: scilla subcommand { options }")
 	fmt.Println("")
 	fmt.Println("   Available subcommands:")
-	fmt.Println("       - dns -target [-o output-format] <target (URL)> REQUIRED")
+	fmt.Println("       - dns [-o output-format] -target <target (URL)> REQUIRED")
 	fmt.Println("       - port [-p <start-end> or ports divided by comma]")
 	fmt.Println("              [-o output-format]")
 	fmt.Println("              [-common scan common ports]")

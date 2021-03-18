@@ -106,7 +106,7 @@ Get Started 🎉
 usage: scilla subcommand { options }
 
 	Available subcommands:
-		- dns -target [-o output-format] <target (URL)> REQUIRED
+		- dns [-o output-format] -target <target (URL)> REQUIRED
 		- port [-p <start-end>  or ports divided by comma]
 		       [-o output-format]
 		       -target <target (URL/IP)> REQUIRED
