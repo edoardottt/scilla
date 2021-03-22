@@ -1333,7 +1333,7 @@ func asyncGet(urls []string, ignore []string, outputFile string, subs map[string
 			defer func() { <-limiter }()
 			resp, err := client.Get(domain)
 			count++
-			if err != nil || resp.StatusCode == 404 {
+			if err != nil {
 				return
 			}
 			if ignoreBool {
