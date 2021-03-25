@@ -1115,12 +1115,12 @@ func buildURL(subdomain string, domain string) string {
 }
 
 //appendDir returns full URL with the directory
-func appendDir(domain string, dir string) string {
-	return "http://" + domain + "/" + dir + "/"
+func appendDir(domain string, dir string) (string, string) {
+	return "http://" + domain + "/" + dir + "/", "http://" + domain + "/" + dir
 }
 
 //readDict scan all the possible subdomains from file
-func readDict(inputFile string) []string {
+func readDictSubs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {
 		log.Fatalf("failed to open %s ", inputFile)
@@ -1132,6 +1132,32 @@ func readDict(inputFile string) []string {
 		text = append(text, scanner.Text())
 	}
 	file.Close()
+	return text
+}
+
+//readDict scan all the possible dirs from file
+//
+//	1. REMOVE LAST CHARACTER IF /
+//	2. CHECK FOR DUPLICATES
+//
+func readDictDirs(inputFile string) []string {
+	file, err := os.Open(inputFile)
+	if err != nil {
+		log.Fatalf("failed to open %s ", inputFile)
+	}
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	var text []string
+	var dir = ""
+	for scanner.Scan() {
+		dir = scanner.Text()
+		if string(dir[len(dir)-1:]) == "/" {
+			dir = dir[:len(dir)-1]
+		}
+		text = append(text, dir)
+	}
+	file.Close()
+	text = removeDuplicateValues(text)
 	return text
 }
 
@@ -1154,12 +1180,12 @@ func createSubdomains(filename string, url string) []string {
 	var subs []string
 	if filename == "" {
 		if runtime.GOOS == "windows" {
-			subs = readDict("lists/subdomains.txt")
+			subs = readDictSubs("lists/subdomains.txt")
 		} else { // linux
-			subs = readDict("/usr/bin/lists/subdomains.txt")
+			subs = readDictSubs("/usr/bin/lists/subdomains.txt")
 		}
 	} else {
-		subs = readDict(filename)
+		subs = readDictSubs(filename)
 	}
 	result := []string{}
 	for _, sub := range subs {
@@ -1175,17 +1201,18 @@ func createUrls(filename string, url string) []string {
 	var dirs []string
 	if filename == "" {
 		if runtime.GOOS == "windows" {
-			dirs = readDict("lists/dirs.txt")
+			dirs = readDictDirs("lists/dirs.txt")
 		} else { // linux
-			dirs = readDict("/usr/bin/lists/dirs.txt")
+			dirs = readDictDirs("/usr/bin/lists/dirs.txt")
 		}
 	} else {
-		dirs = readDict(filename)
+		dirs = readDictDirs(filename)
 	}
 	result := []string{}
 	for _, dir := range dirs {
-		path := appendDir(url, dir)
+		path, path2 := appendDir(url, dir)
 		result = append(result, path)
+		result = append(result, path2)
 	}
 	return result
 }
