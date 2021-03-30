@@ -47,19 +47,19 @@ import (
 
 //intro prints the banner when the program is started
 func intro() {
-	banner1 := " =========================================\n"
-	banner2 := " |                 _ _ _                 |\n"
-	banner3 := " |        ___  ___(_) | | __ _           |\n"
-	banner4 := " |       / __|/ __| | | |/ _` |          |\n"
-	banner5 := " |       \\__ \\ (__| | | | (_| |          |\n"
-	banner6 := " |       |___/\\___|_|_|_|\\__,_|          |\n"
-	banner7 := " |                                       |\n"
-	banner8 := " | https://github.com/edoardottt/scilla  |\n"
-	banner9 := " | https://www.edoardoottavianelli.it    |\n"
-	banner10 := " | Released under GPLv3 license          |\n"
-	banner11 := " =========================================\n"
-	banner := banner1 + banner2 + banner3 + banner4 + banner5 + banner6 + banner7 + banner8 + banner9 + banner10 + banner11
-	fmt.Println(banner)
+	banner1 := "                  _ _ _                 \n"
+	banner2 := "         ___  ___(_) | | __ _           \n"
+	banner3 := "        / __|/ __| | | |/ _` |          \n"
+	banner4 := "        \\__ \\ (__| | | | (_| |          \n"
+	banner5 := "        |___/\\___|_|_|_|\\__,_|          \n"
+	banner6 := " - https://github.com/edoardottt/scilla  \n"
+	banner7 := " - https://www.edoardoottavianelli.it    \n"
+	banner8 := " - Released under GPLv3 license          "
+	bannerPart1 := banner1 + banner2 + banner3 + banner4 + banner5
+	bannerPart2 := banner6 + banner7 + banner8
+	color.Cyan("%s\n", bannerPart1)
+	fmt.Println(bannerPart2)
+	fmt.Println("========================================")
 }
 
 //help prints in stdout scilla usage
