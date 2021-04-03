@@ -346,7 +346,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			}
 		}
 		if input.DirCrawler {
-			go spawnCrawler(target, input.ReportIgnoreDir, dirs, subs, outputFile, mutex, "dir")
+			go spawnCrawler(target, input.DirIgnore, dirs, subs, outputFile, mutex, "dir")
 		}
 		asyncDir(strings2, input.DirIgnore, outputFile, dirs, mutex)
 		if outputFile != "" {
@@ -1666,6 +1666,7 @@ func cleanURL(input string) string {
 //links with this characteristic:
 //- only http, https or ftp protocols allowed
 func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs map[string]Asset, outputFile string, mutex *sync.Mutex, what string) {
+	ignoreBool := len(ignore) != 0
 	c := colly.NewCollector()
 	if what == "dir" {
 		c = colly.NewCollector(
@@ -1699,12 +1700,30 @@ func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs ma
 	})
 	c.OnRequest(func(r *colly.Request) {
 		var status = httpGet(r.URL.String())
-		if what == "dir" {
-			addDirs(r.URL.String(), status, dirs, mutex)
-			printDirs(dirs, ignore, outputFile, mutex)
+		if ignoreBool {
+			statusArray := strings.Split(status, " ")
+			statusInt, err := strconv.Atoi(statusArray[0])
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Could not get response status %s\n", status)
+				os.Exit(1)
+			}
+			if !ignoreResponse(statusInt, ignore) {
+				if what == "dir" {
+					addDirs(r.URL.String(), status, dirs, mutex)
+					printDirs(dirs, ignore, outputFile, mutex)
+				} else {
+					addSubs(r.URL.String(), status, subs, mutex)
+					printSubs(subs, ignore, outputFile, mutex)
+				}
+			}
 		} else {
-			addSubs(r.URL.String(), status, subs, mutex)
-			printSubs(subs, ignore, outputFile, mutex)
+			if what == "dir" {
+				addDirs(r.URL.String(), status, dirs, mutex)
+				printDirs(dirs, ignore, outputFile, mutex)
+			} else {
+				addSubs(r.URL.String(), status, subs, mutex)
+				printSubs(subs, ignore, outputFile, mutex)
+			}
 		}
 	})
 	c.Visit("http://" + target)
