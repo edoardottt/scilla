@@ -52,11 +52,10 @@ func intro() {
 	banner3 := "        / __|/ __| | | |/ _` |          \n"
 	banner4 := "        \\__ \\ (__| | | | (_| |          \n"
 	banner5 := "        |___/\\___|_|_|_|\\__,_|          \n"
-	banner6 := " - https://github.com/edoardottt/scilla  \n"
-	banner7 := " - https://www.edoardoottavianelli.it    \n"
-	banner8 := " - Released under GPLv3 license          "
+	banner6 := " > github.com/edoardottt/scilla  \n"
+	banner7 := " > edoardoottavianelli.it    "
 	bannerPart1 := banner1 + banner2 + banner3 + banner4 + banner5
-	bannerPart2 := banner6 + banner7 + banner8
+	bannerPart2 := banner6 + banner7
 	color.Cyan("%s\n", bannerPart1)
 	fmt.Println(bannerPart2)
 	fmt.Println("========================================")
