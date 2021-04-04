@@ -61,7 +61,9 @@
 Preview :bar_chart:
 ----------
 
-![Example](https://github.com/edoardottt/images/blob/main/scilla/scilla.gif)
+[![asciicast](https://asciinema.org/a/fpw54TarhvLDbIwQM2WB0MpSV.svg)](https://asciinema.org/a/fpw54TarhvLDbIwQM2WB0MpSV)
+
+<!--![Example](https://github.com/edoardottt/images/blob/main/scilla/scilla.gif)-->
 
 Installation 📡
 ----------
