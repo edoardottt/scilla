@@ -24,6 +24,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -214,7 +215,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		strings1 = createSubdomains(input.ReportWordSub, target)
 		if input.ReportSubdomainDB {
 			sonar := sonarSubdomains(target)
-			strings1 = appendSonarSubdomains(sonar, strings1)
+			strings1 = appendDBSubdomains(sonar, strings1)
+			hackerTarget := hackerTargetSubdomains(target)
+			strings1 = appendDBSubdomains(hackerTarget, strings1)
 		}
 		asyncGet(strings1, input.ReportIgnoreSub, outputFile, subs, mutex)
 		if outputFile != "" {
@@ -301,7 +304,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		strings1 = createSubdomains(input.SubdomainWord, target)
 		if input.SubdomainDB {
 			sonar := sonarSubdomains(target)
-			strings1 = appendSonarSubdomains(sonar, strings1)
+			strings1 = appendDBSubdomains(sonar, strings1)
+			hackerTarget := hackerTargetSubdomains(target)
+			strings1 = appendDBSubdomains(hackerTarget, strings1)
 		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -1005,14 +1010,37 @@ func sonarSubdomains(target string) []string {
 	return arr
 }
 
-//appendSonarSubdomains appends to the subdomains in the list
-//the ones found by Sonar
-func appendSonarSubdomains(sonar []string, urls []string) []string {
+//appendDBSubdomains appends to the subdomains in the list
+//the subdomains found with the open DBs.
+func appendDBSubdomains(sonar []string, urls []string) []string {
 	var result = []string{}
 	sonar = removeDuplicateValues(sonar)
 	result = append(sonar, urls...)
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(result), func(i, j int) { result[i], result[j] = result[j], result[i] })
+	return result
+}
+
+//hackerTargetSubdomain retrieves from the below url some known subdomains.
+func hackerTargetSubdomains(domain string) []string {
+	result := make([]string, 0)
+	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=%s" + domain)
+	if err != nil {
+		return result
+	}
+	res, err := ioutil.ReadAll(raw.Body)
+	if err != nil {
+		return result
+	}
+	raw.Body.Close()
+	sc := bufio.NewScanner(bytes.NewReader(res))
+	for sc.Scan() {
+		parts := strings.SplitN(sc.Text(), ",", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		result = append(result, parts[0])
+	}
 	return result
 }
 
