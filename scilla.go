@@ -218,7 +218,11 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			strings1 = appendDBSubdomains(sonar, strings1)
 			hackerTarget := hackerTargetSubdomains(target)
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
+			bufferOverrun := bufferOverrunSubdomains(target)
+			strings1 = appendDBSubdomains(bufferOverrun, strings1)
 		}
+		// be sure to not scan duplicate values
+		strings1 = removeDuplicateValues(strings1)
 		asyncGet(strings1, input.ReportIgnoreSub, outputFile, subs, mutex)
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -307,6 +311,8 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			strings1 = appendDBSubdomains(sonar, strings1)
 			hackerTarget := hackerTargetSubdomains(target)
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
+			bufferOverrun := bufferOverrunSubdomains(target)
+			strings1 = appendDBSubdomains(bufferOverrun, strings1)
 		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -316,6 +322,8 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		if input.SubdomainCrawler {
 			go spawnCrawler(target, input.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub")
 		}
+		// be sure to not scan duplicate values
+		strings1 = removeDuplicateValues(strings1)
 		asyncGet(strings1, input.SubdomainIgnore, outputFile, subs, mutex)
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -1012,10 +1020,13 @@ func sonarSubdomains(target string) []string {
 
 //appendDBSubdomains appends to the subdomains in the list
 //the subdomains found with the open DBs.
-func appendDBSubdomains(sonar []string, urls []string) []string {
+func appendDBSubdomains(dbsubs []string, urls []string) []string {
+	if len(dbsubs) == 0 {
+		return urls
+	}
 	var result = []string{}
-	sonar = removeDuplicateValues(sonar)
-	result = append(sonar, urls...)
+	dbsubs = removeDuplicateValues(dbsubs)
+	result = append(dbsubs, urls...)
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(result), func(i, j int) { result[i], result[j] = result[j], result[i] })
 	return result
@@ -1024,7 +1035,7 @@ func appendDBSubdomains(sonar []string, urls []string) []string {
 //hackerTargetSubdomain retrieves from the below url some known subdomains.
 func hackerTargetSubdomains(domain string) []string {
 	result := make([]string, 0)
-	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=%s" + domain)
+	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 	if err != nil {
 		return result
 	}
@@ -1040,6 +1051,34 @@ func hackerTargetSubdomains(domain string) []string {
 			continue
 		}
 		result = append(result, parts[0])
+	}
+	return result
+}
+
+//bufferOverrunSubdomains retrieves from the below url some known subdomains.
+func bufferOverrunSubdomains(domain string) []string {
+	result := make([]string, 0)
+	url := "https://dns.bufferover.run/dns?q=" + domain
+	wrapper := struct {
+		Records []string `json:"FDNS_A"`
+	}{}
+	resp, err := http.Get(url)
+	if err != nil {
+		return result
+	}
+	defer resp.Body.Close()
+	dec := json.NewDecoder(resp.Body)
+
+	dec.Decode(&wrapper)
+	if err != nil {
+		return result
+	}
+	for _, r := range wrapper.Records {
+		parts := strings.SplitN(r, ",", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		result = append(result, parts[1])
 	}
 	return result
 }
