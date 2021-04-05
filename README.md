@@ -151,6 +151,7 @@ Examples 💡
     - `scilla dns -target target.domain`
     - `scilla dns -target -o txt target.domain`
     - `scilla dns -target -o html target.domain`
+    - `scilla dns -target -plain target.domain`
 
 - Subdomains enumeration:
 
@@ -162,6 +163,7 @@ Examples 💡
     - `scilla subdomain -i 4** -target target.domain`
     - `scilla subdomain -c -target target.domain`
     - `scilla subdomain -db -target target.domain`
+    - `scilla subdomain -plain -target target.domain`
 
 - Directories enumeration:
 
@@ -172,6 +174,7 @@ Examples 💡
     - `scilla dir -i 500,401 -target target.domain`
     - `scilla dir -i 5**,401 -target target.domain`
     - `scilla dir -c -target target.domain`
+    - `scilla dir -plain -target target.domain`
 
 - Ports enumeration:
       
@@ -184,6 +187,7 @@ Examples 💡
     - Specifying output format (html)`scilla port -o html -target target.domain`
     - Specifying multiple ports `scilla port -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla port -common -target target.domain`
+    - Print only results `scilla port -plain -target target.domain`
 
 - Full report:
       
@@ -225,9 +229,11 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [ ] Proxy support
     
-  - [ ] JSON report output
+  - [ ] JSON output
   
-  - [ ] XML report output
+  - [ ] XML output
+
+  - [x] Plain output (print only results)
 
   - [x] Add option to use a public database of known subdomains
 
