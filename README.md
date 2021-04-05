@@ -105,36 +105,41 @@ Get Started 🎉
 ```
 usage: scilla subcommand { options }
 
-	Available subcommands:
-		- dns [-o output-format] -target <target (URL)> REQUIRED
-		- port [-p <start-end>  or ports divided by comma]
-		       [-o output-format]
-		       [-common scan common ports]
-		       -target <target (URL/IP)> REQUIRED
-		- subdomain [-w wordlist]
-			    [-o output-format]
-			    [-i ignore status codes]
-			    [-c use also a web crawler]
-			    [-db use also a public database]
-			    -target <target (URL)> REQUIRED
-		- dir [-w wordlist]
-	              [-o output-format]
-		      [-i ignore status codes]
-		      [-c use also a web crawler]
-	       	      -target <target (URL)> REQUIRED
-		- report [-p <start-end> or ports divided by comma]
-			 [-ws subdomains wordlist]
-			 [-wd directories wordlist]
-			 [-o output-format]
-			 [-id ignore status codes in directories scanning]
-			 [-is ignore status codes in subdomains scanning]
-			 [-cd use also a web crawler for directories scanning]
-			 [-cs use also a web crawler for subdomains scanning]
-			 [-db use also a public database for subdomains scanning]
-			 [-common scan common ports]
-			 -target <target (URL/IP)> REQUIRED
-		- help
-		- examples
+   Available subcommands:
+       - dns [-o output-format]
+             [-plain Print only results]
+             -target <target (URL/IP)> REQUIRED
+       - port [-p <start-end> or ports divided by comma]
+              [-o output-format]
+              [-common scan common ports]
+              [-plain Print only results]
+              -target <target (URL/IP)> REQUIRED
+       - subdomain [-w wordlist]
+                   [-o output-format]
+                   [-i ignore status codes]
+                   [-c use also a web crawler]
+                   [-db use also a public database]
+                   [-plain Print only results]
+                   -target <target (URL)> REQUIRED
+       - dir [-w wordlist]
+             [-o output-format]
+             [-i ignore status codes]
+             [-c use also a web crawler]
+             [-plain Print only results]
+             -target <target (URL)> REQUIRED
+       - report [-p <start-end> or ports divided by comma]
+                [-ws subdomains wordlist]
+                [-wd directories wordlist]
+                [-o output-format]
+                [-id ignore status codes in directories scanning]
+                [-is ignore status codes in subdomains scanning]
+                [-cd use also a web crawler for directories scanning]
+                [-cs use also a web crawler for subdomains scanning]
+                [-db use also a public database for subdomains scanning]
+                [-common scan common ports]
+                -target <target (URL/IP)> REQUIRED
+       - help
+       - examples
 ```
 
 
