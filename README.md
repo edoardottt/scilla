@@ -149,9 +149,9 @@ Examples 💡
 - DNS enumeration:
     
     - `scilla dns -target target.domain`
-    - `scilla dns -target -o txt target.domain`
-    - `scilla dns -target -o html target.domain`
-    - `scilla dns -target -plain target.domain`
+    - `scilla dns -o txt -target target.domain`
+    - `scilla dns -o html -target target.domain`
+    - `scilla dns -plain -target target.domain`
 
 - Subdomains enumeration:
 
