@@ -235,6 +235,8 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
 
   - [x] Plain output (print only results)
 
+  - [x] Scan only common ports
+
   - [x] Add option to use a public database of known subdomains
 
   - [x] Recursive Web crawling for subdomains and directories
