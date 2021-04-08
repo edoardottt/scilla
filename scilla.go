@@ -633,6 +633,7 @@ func readArgs() Input {
 	// os.Arg[0] is the main command
 	// os.Arg[1] will be the subcommand
 	if len(os.Args) < 2 {
+		intro()
 		fmt.Println("[ERROR] subcommand is required.")
 		fmt.Println("	Type: scilla help      - Full overview of the commands.")
 		fmt.Println("	Type: scilla examples  - Some explanatory examples.")
@@ -653,10 +654,13 @@ func readArgs() Input {
 	case "dir":
 		dirCommand.Parse(os.Args[2:])
 	case "help":
+		intro()
 		helpCommand.Parse(os.Args[2:])
 	case "examples":
+		intro()
 		examplesCommand.Parse(os.Args[2:])
 	default:
+		intro()
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
