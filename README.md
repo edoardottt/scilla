@@ -61,7 +61,7 @@
 Preview :bar_chart:
 ----------
 
-[![asciicast](https://asciinema.org/a/fpw54TarhvLDbIwQM2WB0MpSV.svg)](https://asciinema.org/a/fpw54TarhvLDbIwQM2WB0MpSV)
+[![asciicast](https://asciinema.org/a/406707.svg)](https://asciinema.org/a/406707)
 
 Installation 📡
 ----------
