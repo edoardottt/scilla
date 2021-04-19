@@ -1258,10 +1258,6 @@ func readDictSubs(inputFile string) []string {
 }
 
 //readDict scan all the possible dirs from file
-//
-//	1. REMOVE LAST CHARACTER IF /
-//	2. CHECK FOR DUPLICATES
-//
 func readDictDirs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {
