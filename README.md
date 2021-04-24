@@ -263,11 +263,8 @@ A special thanks to [danielmiessler](https://github.com/danielmiessler), using t
   
   - [x] TXT output
   
-If you liked it drop a :star:
+License 📝
 -------
 
+This repository is under [GNU General Public License v3.0](https://github.com/edoardottt/scilla/blob/main/LICENSE).  
 [edoardoottavianelli.it](https://www.edoardoottavianelli.it) for contact me.
-
-
-  
-                                                                    Edoardo Ottavianelli
