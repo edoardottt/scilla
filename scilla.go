@@ -1920,6 +1920,7 @@ func addSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 		Value:   value,
 		Printed: false,
 	}
+	target = cleanProtocol(target)
 	mutex.Lock()
 	if !presentSubs(target, subs) {
 		subs[target] = sub
