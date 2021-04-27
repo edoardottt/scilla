@@ -66,36 +66,21 @@ Preview :bar_chart:
 Installation 📡
 ----------
 
-- First of all, clone the repo locally
+- **Linux**
 
-    - `git clone https://github.com/edoardottt/scilla.git`
-    - `cd scilla`
+  - `git clone https://github.com/edoardottt/scilla.git`
+  - `cd scilla`
+  - `go get`
+  - `make linux` (to install)
+  - `make unlinux` (to uninstall)
 
-- Scilla has external dependencies, so they need to be pulled in:
+- **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
-    - `go get`
-
-- Linux (Requires high perms, run with sudo)
-
-    - `make linux` (to install)
-
-    - `make unlinux` (to uninstall)
-
-- Windows (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
-
-    - `make windows` (to install) or `.\make.bat windows` (powershell)
-    
-    - `make unwindows` (to uninstall) or `.\make.bat unwindows` (powershell)
-
-- Other commands:
-
-    - `make fmt` run the golang formatter.
-
-    - `make update` Update.
-
-    - `make remod` Remod.
-
-    - `make test` runs the tests (empty now..)
+  - `git clone https://github.com/edoardottt/scilla.git`
+  - `cd scilla`
+  - `go get`
+  - `.\make.bat windows` (to install)    
+  - `.\make.bat unwindows` (to uninstall)
 
 Get Started 🎉
 ----------
