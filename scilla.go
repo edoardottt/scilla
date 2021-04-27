@@ -1341,7 +1341,7 @@ func appendOutputToTxt(output string, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	if _, err := file.WriteString(output + "\n"); err != nil {
+	if _, err := file.WriteString(cleanProtocol(output) + "\n"); err != nil {
 		log.Fatal(err)
 	}
 	file.Close()
@@ -1920,7 +1920,6 @@ func addSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 		Value:   value,
 		Printed: false,
 	}
-	target = cleanProtocol(target)
 	mutex.Lock()
 	if !presentSubs(target, subs) {
 		subs[target] = sub
