@@ -74,7 +74,7 @@ Installation 📡
   - `sudo make linux` (to install)
   - `sudo make unlinux` (to uninstall)
 
-Or in one line: `git clone https://github.com/edoardottt/scilla.git;cd scilla; go get; sudo make linux`
+  Or in one line: `git clone https://github.com/edoardottt/scilla.git;cd scilla; go get; sudo make linux`
 
 - **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
