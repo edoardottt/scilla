@@ -1459,7 +1459,7 @@ func asyncGet(urls []string, ignore []string, outputFile string, subs map[string
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
-	limiter := make(chan string, 50) // Limits simultaneous requests
+	limiter := make(chan string, 10) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 
 	for i, domain := range urls {
@@ -1697,7 +1697,7 @@ func asyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
-	limiter := make(chan string, 50) // Limits simultaneous requests
+	limiter := make(chan string, 30) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
 	for i, domain := range urls {
 		limiter <- domain
