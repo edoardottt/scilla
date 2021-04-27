@@ -66,6 +66,8 @@ Preview :bar_chart:
 Installation 📡
 ----------
 
+You need [Go](https://golang.org/).
+
 - **Linux**
 
   - `git clone https://github.com/edoardottt/scilla.git`
