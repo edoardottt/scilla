@@ -208,7 +208,11 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
-A special thanks to [danielmiessler](https://github.com/danielmiessler), using those lists; and to [sonarSearch](https://github.com/cgboal/sonarsearch).
+A special thanks to:
+
+  - [danielmiessler](https://github.com/danielmiessler)
+  - [sonarSearch](https://github.com/cgboal/sonarsearch)
+  - [tomnomnom](https://github.com/tomnomnom/assetfinder)
 
 **To do:**
 
