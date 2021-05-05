@@ -332,6 +332,10 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
 			bufferOverrun := bufferOverrunSubdomains(target)
 			strings1 = appendDBSubdomains(bufferOverrun, strings1)
+			threatcrowd := threatcrowdSubdomains(target)
+			strings1 = appendDBSubdomains(threatcrowd, strings1)
+			crtsh := crtshSubdomains(target)
+			strings1 = appendDBSubdomains(crtsh, strings1)
 		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -1137,6 +1141,59 @@ func bufferOverrunSubdomains(domain string) []string {
 		result = append(result, parts[1])
 	}
 	return result
+}
+
+//threatcrowdSubdomains retrieves from the below url some known subdomains.
+func threatcrowdSubdomains(domain string) []string {
+	result := make([]string, 0)
+	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain
+	wrapper := struct {
+		Records []string `json:"subdomains"`
+	}{}
+	resp, err := http.Get(url)
+	if err != nil {
+		return result
+	}
+	defer resp.Body.Close()
+	dec := json.NewDecoder(resp.Body)
+
+	dec.Decode(&wrapper)
+	if err != nil {
+		return result
+	}
+	result = append(result, wrapper.Records...)
+	return result
+}
+
+//CrtShResult
+type CrtShResult struct {
+	Name string `json:"name_value"`
+}
+
+//crtshSubdomains retrieves from the below url some known subdomains.
+func crtshSubdomains(domain string) []string {
+	var results []CrtShResult
+	url := "https://crt.sh/?q=%25." + domain + "&output=json"
+	resp, err := http.Get(url)
+	if err != nil {
+		return []string{}
+	}
+	defer resp.Body.Close()
+
+	output := make([]string, 0)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	if err := json.Unmarshal(body, &results); err != nil {
+		return []string{}
+	}
+
+	for _, res := range results {
+		out := strings.Replace(res.Name, "{", "", -1)
+		out = strings.Replace(out, "}", "", -1)
+		output = append(output, out)
+	}
+	return output
 }
 
 //replaceBadCharacterOutput
