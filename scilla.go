@@ -222,12 +222,17 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 		strings1 = createSubdomains(input.ReportWordSub, target)
 		if input.ReportSubdomainDB {
-			sonar := sonarSubdomains(target)
+			sonar := sonarSubdomains(target, false)
 			strings1 = appendDBSubdomains(sonar, strings1)
-			hackerTarget := hackerTargetSubdomains(target)
+			crtsh := crtshSubdomains(target, false)
+			strings1 = appendDBSubdomains(crtsh, strings1)
+			threatcrowd := threatcrowdSubdomains(target, false)
+			strings1 = appendDBSubdomains(threatcrowd, strings1)
+			hackerTarget := hackerTargetSubdomains(target, false)
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
-			bufferOverrun := bufferOverrunSubdomains(target)
+			bufferOverrun := bufferOverrunSubdomains(target, false)
 			strings1 = appendDBSubdomains(bufferOverrun, strings1)
+			fmt.Fprint(os.Stdout, "\r \r \r \r")
 		}
 		// be sure to not scan duplicate values
 		strings1 = removeDuplicateValues(strings1)
@@ -326,16 +331,19 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		var strings1 []string
 		strings1 = createSubdomains(input.SubdomainWord, target)
 		if input.SubdomainDB {
-			sonar := sonarSubdomains(target)
+			sonar := sonarSubdomains(target, input.SubdomainPlain)
 			strings1 = appendDBSubdomains(sonar, strings1)
-			hackerTarget := hackerTargetSubdomains(target)
-			strings1 = appendDBSubdomains(hackerTarget, strings1)
-			bufferOverrun := bufferOverrunSubdomains(target)
-			strings1 = appendDBSubdomains(bufferOverrun, strings1)
-			threatcrowd := threatcrowdSubdomains(target)
-			strings1 = appendDBSubdomains(threatcrowd, strings1)
-			crtsh := crtshSubdomains(target)
+			crtsh := crtshSubdomains(target, input.SubdomainPlain)
 			strings1 = appendDBSubdomains(crtsh, strings1)
+			threatcrowd := threatcrowdSubdomains(target, input.SubdomainPlain)
+			strings1 = appendDBSubdomains(threatcrowd, strings1)
+			hackerTarget := hackerTargetSubdomains(target, input.SubdomainPlain)
+			strings1 = appendDBSubdomains(hackerTarget, strings1)
+			bufferOverrun := bufferOverrunSubdomains(target, input.SubdomainPlain)
+			strings1 = appendDBSubdomains(bufferOverrun, strings1)
+			if !input.SubdomainPlain {
+				fmt.Fprint(os.Stdout, "\r \r \r \r")
+			}
 		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -1057,7 +1065,10 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 }
 
 //sonarSubdomains retrieves from the below url some known subdomains.
-func sonarSubdomains(target string) []string {
+func sonarSubdomains(target string, plain bool) []string {
+	if !plain {
+		fmt.Print("Searching subs on Sonar")
+	}
 	var arr []string
 	resp, err := http.Get("https://sonar.omnisint.io/subdomains/" + target)
 	if err != nil {
@@ -1074,6 +1085,9 @@ func sonarSubdomains(target string) []string {
 	}
 	for index, elem := range arr {
 		arr[index] = "http://" + elem
+	}
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
 	}
 	return arr
 }
@@ -1093,7 +1107,10 @@ func appendDBSubdomains(dbsubs []string, urls []string) []string {
 }
 
 //hackerTargetSubdomain retrieves from the below url some known subdomains.
-func hackerTargetSubdomains(domain string) []string {
+func hackerTargetSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Print("Searching subs on HackerTarget")
+	}
 	result := make([]string, 0)
 	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 	if err != nil {
@@ -1112,11 +1129,17 @@ func hackerTargetSubdomains(domain string) []string {
 		}
 		result = append(result, parts[0])
 	}
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
+	}
 	return result
 }
 
 //bufferOverrunSubdomains retrieves from the below url some known subdomains.
-func bufferOverrunSubdomains(domain string) []string {
+func bufferOverrunSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Print("Searching subs on BufferOverrun")
+	}
 	result := make([]string, 0)
 	url := "https://dns.bufferover.run/dns?q=" + domain
 	wrapper := struct {
@@ -1140,11 +1163,17 @@ func bufferOverrunSubdomains(domain string) []string {
 		}
 		result = append(result, parts[1])
 	}
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
+	}
 	return result
 }
 
 //threatcrowdSubdomains retrieves from the below url some known subdomains.
-func threatcrowdSubdomains(domain string) []string {
+func threatcrowdSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Print("Searching subs on ThreatCrowd")
+	}
 	result := make([]string, 0)
 	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain
 	wrapper := struct {
@@ -1162,6 +1191,9 @@ func threatcrowdSubdomains(domain string) []string {
 		return result
 	}
 	result = append(result, wrapper.Records...)
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
+	}
 	return result
 }
 
@@ -1171,7 +1203,10 @@ type CrtShResult struct {
 }
 
 //crtshSubdomains retrieves from the below url some known subdomains.
-func crtshSubdomains(domain string) []string {
+func crtshSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Print("Searching subs on Crt.sh")
+	}
 	var results []CrtShResult
 	url := "https://crt.sh/?q=%25." + domain + "&output=json"
 	resp, err := http.Get(url)
@@ -1192,6 +1227,9 @@ func crtshSubdomains(domain string) []string {
 		out := strings.Replace(res.Name, "{", "", -1)
 		out = strings.Replace(out, "}", "", -1)
 		output = append(output, out)
+	}
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
 	}
 	return output
 }
