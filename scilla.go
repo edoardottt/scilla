@@ -565,7 +565,7 @@ func readArgs() Input {
 	reportCrawlerSubdomainPtr := reportCommand.Bool("cs", false, "Use also a web crawler for subdomains enumeration")
 
 	// report subcommand flag pointers
-	reportSubdomainDBPtr := reportCommand.Bool("cdb", false, "Use also a public database for subdomains enumeration")
+	reportSubdomainDBPtr := reportCommand.Bool("db", false, "Use also a public database for subdomains enumeration")
 
 	// report subcommand flag pointers
 	reportCommonPtr := reportCommand.Bool("common", false, "Scan common ports")
