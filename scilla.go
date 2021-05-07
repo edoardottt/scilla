@@ -1364,10 +1364,12 @@ func readDictDirs(inputFile string) []string {
 	var dir = ""
 	for scanner.Scan() {
 		dir = scanner.Text()
-		if string(dir[len(dir)-1:]) == "/" {
-			dir = dir[:len(dir)-1]
+		if len(dir) > 0 {
+			if string(dir[len(dir)-1:]) == "/" {
+				dir = dir[:len(dir)-1]
+			}
+			text = append(text, dir)
 		}
-		text = append(text, dir)
 	}
 	file.Close()
 	text = removeDuplicateValues(text)
