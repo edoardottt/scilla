@@ -73,10 +73,10 @@ You need [Go](https://golang.org/).
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
   - `go get`
-  - `sudo make linux` (to install)
-  - `sudo make unlinux` (to uninstall)
+  - `make linux` (to install)
+  - `make unlinux` (to uninstall)
 
-  Or in one line: `git clone https://github.com/edoardottt/scilla.git;cd scilla; go get; sudo make linux`
+  Or in one line: `git clone https://github.com/edoardottt/scilla.git; cd scilla; go get; make linux`
 
 - **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
