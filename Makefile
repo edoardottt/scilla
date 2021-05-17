@@ -17,14 +17,14 @@ update:
 
 linux:
 	go build -o scilla
-	mv scilla /usr/bin/
-	cp -r lists/ /usr/bin/
-	echo "Done."
+	sudo mv scilla /usr/bin/
+	sudo cp -r lists/ /usr/bin/
+	@echo "Done."
 
 unlinux:
-	rm -rf /usr/bin/scilla
-	rm -rf /usr/bin/lists/
-	echo "Done."
+	sudo rm -rf /usr/bin/scilla
+	sudo rm -rf /usr/bin/lists/
+	@echo "Done."
 
 test:
 	go test -v -race ./... ; \
