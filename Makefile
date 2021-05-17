@@ -1,7 +1,7 @@
 REPO=github.com/edoardottt/scilla
 
 fmt:
-	@gofmt -s ./*; \
+	gofmt -s ./*; \
 	echo "Done."
 
 remod:
@@ -11,13 +11,13 @@ remod:
 	echo "Done."
 
 update:
-	@go get -u; \
+	go get -u; \
 	go mod tidy -v; \
 	echo "Done."
 
 linux:
-	@go build -o ./scilla
-	mv ./scilla /usr/bin/
+	go build -o scilla
+	mv scilla /usr/bin/
 	cp -r lists/ /usr/bin/
 	echo "Done."
 
@@ -27,5 +27,5 @@ unlinux:
 	echo "Done."
 
 test:
-	@go test -v -race ./... ; \
+	go test -v -race ./... ; \
 	echo "Done."
