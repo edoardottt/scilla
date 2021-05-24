@@ -247,8 +247,6 @@ A special thanks to:
   - [x] Subdomains enumeration
   
   - [x] DNS enumeration
- 
-  - [x] Subdomains enumeration
 
   - [x] Port enumeration
 
