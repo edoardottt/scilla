@@ -60,6 +60,11 @@
 .well-known/mercure
 .well-known/mud
 .well-known/nfv-oauth-server-configuration
+.well-known/oauth
+.well-known/openid
+.well-known/openid-connect
+.well-known/oauth-authorization-server
+.well-known/openid-configuration
 .well-known/ni
 .well-known/nodeinfo
 .well-known/oauth-authorization-server
