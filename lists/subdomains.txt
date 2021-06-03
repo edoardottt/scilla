@@ -64,6 +64,9 @@ video
 mail1
 mx1
 www3
+stag
+stag-dev
+stag-admin
 staging
 www.m
 sip
@@ -385,6 +388,7 @@ barracuda
 link
 ns11
 internal
+internal-dev
 dc
 smtp3
 zabbix

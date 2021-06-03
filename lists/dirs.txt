@@ -794,6 +794,8 @@ next
 corp
 bloggers
 dev
+dev/register
+dev/login
 C
 alumni
 frontpage
@@ -5621,6 +5623,8 @@ sss
 icon_lol
 avcenter
 helpcenter
+stag
+stag/register
 stage
 reservations
 gsa
