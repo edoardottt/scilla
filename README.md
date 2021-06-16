@@ -115,6 +115,7 @@ usage: scilla subcommand { options }
              [-i ignore status codes]
              [-c use also a web crawler]
              [-plain Print only results]
+             [-nr No follow redirects]
              -target <target (URL)> REQUIRED
        - report [-p <start-end> or ports divided by comma]
                 [-ws subdomains wordlist]
@@ -126,6 +127,7 @@ usage: scilla subcommand { options }
                 [-cs use also a web crawler for subdomains scanning]
                 [-db use also a public database for subdomains scanning]
                 [-common scan common ports]
+                [-nr No follow redirects]
                 -target <target (URL/IP)> REQUIRED
        - help
        - examples
@@ -164,6 +166,7 @@ Examples 💡
     - `scilla dir -i 5**,401 -target target.domain`
     - `scilla dir -c -target target.domain`
     - `scilla dir -plain -target target.domain`
+    - `scilla dir -nr -target target.domain`
 
 - Ports enumeration:
       
@@ -198,6 +201,7 @@ Examples 💡
     - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
     - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla report -common -target target.domain`
+    - No follow redirects `scilla report -nr -target target.domain`
 
 Contributing 🛠
 -------
