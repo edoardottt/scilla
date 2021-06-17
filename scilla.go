@@ -1,4 +1,5 @@
 /*
+
 =======================
 Scilla - Information Gathering Tool
 =======================
@@ -17,7 +18,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Repository:  https://github.com/edoardottt/scilla
+
 	@Author:      edoardottt, https://www.edoardoottavianelli.it
+
 */
 
 package main
@@ -195,6 +198,8 @@ type Asset struct {
 func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common []int) {
 
 	var mutex = &sync.Mutex{}
+
+	// :::::::: REPORT SUBCOMMAND HANDLER ::::::::
 	if input.ReportTarget != "" {
 		intro()
 		target := input.ReportTarget
@@ -286,6 +291,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 	}
 
+	// :::::::: DNS SUBCOMMAND HANDLER ::::::::
 	if input.DNSTarget != "" {
 		if !input.DNSPlain {
 			intro()
@@ -318,6 +324,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 	}
 
+	// :::::::: SUBDOMAIN SUBCOMMAND HANDLER ::::::::
 	if input.SubdomainTarget != "" {
 
 		if !input.SubdomainPlain {
@@ -383,6 +390,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 	}
 
+	// :::::::: DIRECTORIES SUBCOMMAND HANDLER ::::::::
 	if input.DirTarget != "" {
 
 		if !input.DirPlain {
@@ -429,6 +437,7 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 	}
 
+	// :::::::: PORT SUBCOMMAND HANDLER ::::::::
 	if input.PortTarget != "" {
 		if !input.PortPlain {
 			intro()
@@ -471,7 +480,6 @@ func protocolExists(target string) bool {
 // (http - https - tls)
 func cleanProtocol(target string) string {
 	if len(target) > 6 {
-		// clean protocols and go ahead
 		if target[:6] == "tls://" {
 			target = target[6:]
 		}
