@@ -181,7 +181,7 @@ func main() {
 		1813, 1880, 1883, 2000, 2049, 2095, 2096, 2222, 2483, 2484,
 		2638, 3000, 3268, 3283, 3333, 3306, 3389, 4000, 4444, 5000,
 		5432, 5555, 5938, 6000, 6666, 7000, 7071, 7777, 8000, 8001,
-		8002, 8003, 8004, 8005, 8080, 8200, 8888, 9050, 10000}
+		8002, 8003, 8004, 8005, 8080, 8200, 8888, 9000, 9050, 10000}
 	execute(input, subs, dirs, common)
 }
 
@@ -197,7 +197,13 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 	var mutex = &sync.Mutex{}
 	if input.ReportTarget != "" {
 		intro()
-		target := cleanProtocol(input.ReportTarget)
+		target := input.ReportTarget
+		if target[len(target)-1] == byte('/') {
+			target = target[:len(target)-1]
+		}
+		if !protocolExists(target) {
+			target = "http://" + input.DirTarget
+		}
 		var targetIP string
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== FULL REPORT ===============")
@@ -224,17 +230,17 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		if input.ReportCrawlerSub {
 			go spawnCrawler(target, input.ReportIgnoreSub, dirs, subs, outputFile, mutex, "sub", false)
 		}
-		strings1 = createSubdomains(input.ReportWordSub, target)
+		strings1 = createSubdomains(input.ReportWordSub, cleanProtocol(target))
 		if input.ReportSubdomainDB {
-			sonar := sonarSubdomains(target, false)
+			sonar := sonarSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(sonar, strings1)
-			crtsh := crtshSubdomains(target, false)
+			crtsh := crtshSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(crtsh, strings1)
-			threatcrowd := threatcrowdSubdomains(target, false)
+			threatcrowd := threatcrowdSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(threatcrowd, strings1)
-			hackerTarget := hackerTargetSubdomains(target, false)
+			hackerTarget := hackerTargetSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
-			bufferOverrun := bufferOverrunSubdomains(target, false)
+			bufferOverrun := bufferOverrunSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(bufferOverrun, strings1)
 			fmt.Fprint(os.Stdout, "\r \r \r \r")
 		}
@@ -252,10 +258,10 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		}
 		fmt.Println("=============== PORT SCANNING ===============")
 
-		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, target, outputFile, input.ReportCommon, common, false)
+		asyncPort(input.portsArray, input.portArrayBool, input.StartPort, input.EndPort, cleanProtocol(target), outputFile, input.ReportCommon, common, false)
 
 		fmt.Println("=============== DNS SCANNING ===============")
-		lookupDNS(target, outputFile, false)
+		lookupDNS(cleanProtocol(target), outputFile, false)
 
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 		var strings2 = createUrls(input.ReportWordDir, target)
@@ -289,6 +295,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		if isIP(target) {
 			target = ipToHostname(target)
 		}
+		if target[len(target)-1] == byte('/') {
+			target = target[:len(target)-1]
+		}
 		if !input.DNSPlain {
 			fmt.Printf("target: %s\n", target)
 			fmt.Println("=============== DNS SCANNING ===============")
@@ -319,6 +328,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		// change from ip to Hostname
 		if isIP(target) {
 			target = ipToHostname(target)
+		}
+		if target[len(target)-1] == byte('/') {
+			target = target[:len(target)-1]
 		}
 		if !input.SubdomainPlain {
 			fmt.Printf("target: %s\n", target)
@@ -380,6 +392,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		if !protocolExists(target) {
 			target = "http://" + input.DirTarget
 		}
+		if target[len(target)-1] == byte('/') {
+			target = target[:len(target)-1]
+		}
 		if !input.DirPlain {
 			fmt.Printf("target: %s\n", target)
 			fmt.Println("=============== DIRECTORIES SCANNING ===============")
@@ -421,6 +436,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 		target := input.PortTarget
 		if isURL(target) {
 			target = cleanProtocol(input.PortTarget)
+		}
+		if target[len(target)-1] == byte('/') {
+			target = target[:len(target)-1]
 		}
 		outputFile := ""
 		if input.PortOutput != "" {
@@ -467,9 +485,6 @@ func cleanProtocol(target string) string {
 		if target[:8] == "https://" {
 			target = target[8:]
 		}
-	}
-	if target[len(target)-1:] == "/" {
-		return target[:len(target)-1]
 	}
 	return target
 }
@@ -1449,7 +1464,7 @@ func appendOutputToTxt(output string, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	if _, err := file.WriteString(cleanProtocol(output) + "\n"); err != nil {
+	if _, err := file.WriteString(output + "\n"); err != nil {
 		log.Fatal(err)
 	}
 	file.Close()
@@ -2025,7 +2040,6 @@ func spawnCrawler(target string, ignore []string, dirs map[string]Asset, subs ma
 			}
 		}
 	})
-	fmt.Println(target)
 	c.Visit(target)
 }
 
