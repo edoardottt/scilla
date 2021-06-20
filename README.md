@@ -212,10 +212,14 @@ Just open an issue/pull request. See also [CONTRIBUTING.md](https://github.com/e
 
 **Help me building this!**
 
-A special thanks to:
+Special thanks to:
 
   - [danielmiessler](https://github.com/danielmiessler)
   - [sonarSearch](https://github.com/cgboal/sonarsearch)
+  - [HackerTarget](https://hackertarget.com/)
+  - [BufferOverrun](http://dns.bufferover.run/)
+  - [Threatcrowd](https://www.threatcrowd.org/)
+  - [Crt.sh](https://crt.sh/)
   - [tomnomnom](https://github.com/tomnomnom/assetfinder)
 
 **To do:**
