@@ -1,5 +1,9 @@
 # Security Policy
 
-- Supported Versions --> The supported version is the latest :)
+## Supported Versions
 
-- Reporting a Vulnerability --> Just open an [issue](https://github.com/edoardottt/scilla/issues/new?assignees=&labels=&template=bug_report.md)! 
+The supported version is always **the latest**
+
+## Reporting a Vulnerability
+
+Just open an [issue](https://github.com/edoardottt/scilla/issues)
