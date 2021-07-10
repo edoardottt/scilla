@@ -110,6 +110,7 @@ usage: scilla subcommand { options }
                    [-c use also a web crawler]
                    [-db use also a public database]
                    [-plain Print only results]
+                   [-db -no-check Don't check status codes for subdomains.]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-o output-format]
@@ -156,6 +157,7 @@ Examples 💡
     - `scilla subdomain -c -target target.domain`
     - `scilla subdomain -db -target target.domain`
     - `scilla subdomain -plain -target target.domain`
+    - `scilla subdomain -db -no-check -target target.domain`
 
 - Directories enumeration:
 

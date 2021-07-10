@@ -86,6 +86,7 @@ func help() {
 	fmt.Println("                   [-c use also a web crawler]")
 	fmt.Println("                   [-db use also a public database]")
 	fmt.Println("                   [-plain Print only results]")
+	fmt.Println("                   [-db -no-check Don't check status codes for subdomains.]")
 	fmt.Println("                   -target <target (URL)> REQUIRED")
 	fmt.Println("       - dir [-w wordlist]")
 	fmt.Println("             [-o output-format]")
@@ -128,6 +129,7 @@ func examples() {
 	fmt.Println("		- scilla subdomain -c -target target.domain")
 	fmt.Println("		- scilla subdomain -db -target target.domain")
 	fmt.Println("		- scilla subdomain -plain -target target.domain")
+	fmt.Println("		- scilla subdomain -db -no-check -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
@@ -247,10 +249,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
 			bufferOverrun := bufferOverrunSubdomains(cleanProtocol(target), false)
 			strings1 = appendDBSubdomains(bufferOverrun, strings1)
-			fmt.Fprint(os.Stdout, "\r \r \r \r")
 		}
 		// be sure to not scan duplicate values
-		strings1 = removeDuplicateValues(strings1)
+		strings1 = removeDuplicateValues(CleanSubdomainsOk(cleanProtocol(target), strings1))
 		asyncGet(strings1, input.ReportIgnoreSub, outputFile, subs, mutex, false)
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -351,7 +352,9 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			}
 		}
 		var strings1 []string
-		strings1 = createSubdomains(input.SubdomainWord, target)
+		if !input.SubdomainNoCheck {
+			strings1 = createSubdomains(input.SubdomainWord, target)
+		}
 		if input.SubdomainDB {
 			sonar := sonarSubdomains(target, input.SubdomainPlain)
 			strings1 = appendDBSubdomains(sonar, strings1)
@@ -363,9 +366,6 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			strings1 = appendDBSubdomains(hackerTarget, strings1)
 			bufferOverrun := bufferOverrunSubdomains(target, input.SubdomainPlain)
 			strings1 = appendDBSubdomains(bufferOverrun, strings1)
-			if !input.SubdomainPlain {
-				fmt.Fprint(os.Stdout, "\r \r \r \r")
-			}
 		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
@@ -376,8 +376,20 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 			go spawnCrawler(target, input.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub", input.SubdomainPlain)
 		}
 		// be sure to not scan duplicate values
-		strings1 = removeDuplicateValues(strings1)
-		asyncGet(strings1, input.SubdomainIgnore, outputFile, subs, mutex, input.SubdomainPlain)
+		strings1 = removeDuplicateValues(CleanSubdomainsOk(cleanProtocol(target), strings1))
+		if !input.SubdomainNoCheck {
+			asyncGet(strings1, input.SubdomainIgnore, outputFile, subs, mutex, input.SubdomainPlain)
+		} else {
+			for _, elem := range strings1 {
+				fmt.Println(elem)
+				if input.SubdomainOutput == "txt" {
+					appendOutputToTxt(elem, outputFile)
+				}
+				if input.SubdomainOutput == "html" {
+					appendOutputToHTML(elem, "", outputFile)
+				}
+			}
+		}
 		if outputFile != "" {
 			if outputFile[len(outputFile)-4:] == "html" {
 				footerHTML(outputFile)
@@ -535,6 +547,7 @@ type Input struct {
 	SubdomainCrawler  bool
 	SubdomainDB       bool
 	SubdomainPlain    bool
+	SubdomainNoCheck  bool
 	DirTarget         string
 	DirWord           string
 	DirOutput         string
@@ -638,6 +651,9 @@ func readArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainPlainPtr := subdomainCommand.Bool("plain", false, "Print only results")
+
+	// subdomains subcommand flag pointers
+	subdomainNoCheckPtr := subdomainCommand.Bool("no-check", false, "Don't check status codes for subdomains.")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -805,6 +821,25 @@ func readArgs() Input {
 			fmt.Println("The output format is not valid.")
 			os.Exit(1)
 		}
+
+		//no-check checks
+		if *subdomainNoCheckPtr && !*subdomainDBPtr {
+			fmt.Println("You can use no-check only with db option.")
+			os.Exit(1)
+		}
+		if *subdomainNoCheckPtr && *subdomainWordlistPtr != "" {
+			fmt.Println("You can't use no-check with wordlist option.")
+			os.Exit(1)
+		}
+		if *subdomainNoCheckPtr && *subdomainIgnorePtr != "" {
+			fmt.Println("You can't use no-check with ignore option.")
+			os.Exit(1)
+		}
+		if *subdomainNoCheckPtr && *subdomainCrawlerPtr {
+			fmt.Println("You can't use no-check with crawler option.")
+			os.Exit(1)
+		}
+
 		if *subdomainIgnorePtr != "" {
 			toBeIgnored := string(*subdomainIgnorePtr)
 			subdomainIgnore = checkIgnore(toBeIgnored)
@@ -912,6 +947,7 @@ func readArgs() Input {
 		*subdomainCrawlerPtr,
 		*subdomainDBPtr,
 		*subdomainPlainPtr,
+		*subdomainNoCheckPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputPtr,
@@ -1109,9 +1145,6 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 
 //sonarSubdomains retrieves from the below url some known subdomains.
 func sonarSubdomains(target string, plain bool) []string {
-	if !plain {
-		fmt.Print("Searching subs on Sonar")
-	}
 	var arr []string
 	resp, err := http.Get("https://sonar.omnisint.io/subdomains/" + target)
 	if err != nil {
@@ -1128,9 +1161,6 @@ func sonarSubdomains(target string, plain bool) []string {
 	}
 	for index, elem := range arr {
 		arr[index] = "http://" + elem
-	}
-	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
 	}
 	return arr
 }
@@ -1151,9 +1181,6 @@ func appendDBSubdomains(dbsubs []string, urls []string) []string {
 
 //hackerTargetSubdomain retrieves from the below url some known subdomains.
 func hackerTargetSubdomains(domain string, plain bool) []string {
-	if !plain {
-		fmt.Print("Searching subs on HackerTarget")
-	}
 	result := make([]string, 0)
 	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 	if err != nil {
@@ -1172,17 +1199,11 @@ func hackerTargetSubdomains(domain string, plain bool) []string {
 		}
 		result = append(result, parts[0])
 	}
-	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-	}
 	return result
 }
 
 //bufferOverrunSubdomains retrieves from the below url some known subdomains.
 func bufferOverrunSubdomains(domain string, plain bool) []string {
-	if !plain {
-		fmt.Print("Searching subs on BufferOverrun")
-	}
 	result := make([]string, 0)
 	url := "https://dns.bufferover.run/dns?q=" + domain
 	wrapper := struct {
@@ -1206,17 +1227,11 @@ func bufferOverrunSubdomains(domain string, plain bool) []string {
 		}
 		result = append(result, parts[1])
 	}
-	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-	}
 	return result
 }
 
 //threatcrowdSubdomains retrieves from the below url some known subdomains.
 func threatcrowdSubdomains(domain string, plain bool) []string {
-	if !plain {
-		fmt.Print("Searching subs on ThreatCrowd")
-	}
 	result := make([]string, 0)
 	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain
 	wrapper := struct {
@@ -1234,9 +1249,6 @@ func threatcrowdSubdomains(domain string, plain bool) []string {
 		return result
 	}
 	result = append(result, wrapper.Records...)
-	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-	}
 	return result
 }
 
@@ -1247,9 +1259,6 @@ type CrtShResult struct {
 
 //crtshSubdomains retrieves from the below url some known subdomains.
 func crtshSubdomains(domain string, plain bool) []string {
-	if !plain {
-		fmt.Print("Searching subs on Crt.sh")
-	}
 	var results []CrtShResult
 	url := "https://crt.sh/?q=%25." + domain + "&output=json"
 	resp, err := http.Get(url)
@@ -1270,9 +1279,6 @@ func crtshSubdomains(domain string, plain bool) []string {
 		out := strings.Replace(res.Name, "{", "", -1)
 		out = strings.Replace(out, "}", "", -1)
 		output = append(output, out)
-	}
-	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
 	}
 	return output
 }
@@ -1335,6 +1341,21 @@ func createOutputFile(target string, subcommand string, format string) string {
 		}
 	}
 	return filename
+}
+
+//CleanSubdomainsOk >
+func CleanSubdomainsOk(target string, input []string) []string {
+	var result []string
+	for _, elem := range input {
+		if strings.Contains(elem, "."+target) && elem[len(elem)-len(target):] == target {
+			if strings.Contains(elem, "\n") {
+				splits := strings.Split(elem, "\n")
+				elem = splits[1]
+			}
+			result = append(result, elem)
+		}
+	}
+	return result
 }
 
 //isUrl checks if the inputted Url is valid
