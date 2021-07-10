@@ -372,9 +372,14 @@ func execute(input Input, subs map[string]Asset, dirs map[string]Asset, common [
 				headerHTML("SUBDOMAIN SCANNING", outputFile)
 			}
 		}
-		if input.SubdomainCrawler {
+		if input.SubdomainCrawler && !input.SubdomainNoCheck {
 			go spawnCrawler(target, input.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub", input.SubdomainPlain)
 		}
+		var cleanStrings1 []string
+		for _, elem := range strings1 {
+			cleanStrings1 = append(cleanStrings1, cleanProtocol(elem))
+		}
+		strings1 = cleanStrings1
 		// be sure to not scan duplicate values
 		strings1 = removeDuplicateValues(CleanSubdomainsOk(cleanProtocol(target), strings1))
 		if !input.SubdomainNoCheck {
@@ -489,24 +494,13 @@ func protocolExists(target string) bool {
 }
 
 //cleanProtocol remove from the url the protocol scheme
-// (http - https - tls)
 func cleanProtocol(target string) string {
-	if len(target) > 6 {
-		if target[:6] == "tls://" {
-			target = target[6:]
-		}
+	res := strings.Index(target, "://")
+	if res >= 0 {
+		return target[res+3:]
+	} else {
+		return target
 	}
-	if len(target) > 7 {
-		if target[:7] == "http://" {
-			target = target[7:]
-		}
-	}
-	if len(target) > 8 {
-		if target[:8] == "https://" {
-			target = target[8:]
-		}
-	}
-	return target
 }
 
 //outputFormatIsOk (txt or html)
