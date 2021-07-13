@@ -1139,8 +1139,11 @@ func checkPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
 
 //sonarSubdomains retrieves from the below url some known subdomains.
 func sonarSubdomains(target string, plain bool) []string {
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
 	var arr []string
-	resp, err := http.Get("https://sonar.omnisint.io/subdomains/" + target)
+	resp, err := client.Get("https://sonar.omnisint.io/subdomains/" + target)
 	if err != nil {
 		return arr
 	}
@@ -1175,8 +1178,11 @@ func appendDBSubdomains(dbsubs []string, urls []string) []string {
 
 //hackerTargetSubdomain retrieves from the below url some known subdomains.
 func hackerTargetSubdomains(domain string, plain bool) []string {
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
 	result := make([]string, 0)
-	raw, err := http.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
+	raw, err := client.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 	if err != nil {
 		return result
 	}
@@ -1198,12 +1204,15 @@ func hackerTargetSubdomains(domain string, plain bool) []string {
 
 //bufferOverrunSubdomains retrieves from the below url some known subdomains.
 func bufferOverrunSubdomains(domain string, plain bool) []string {
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
 	result := make([]string, 0)
 	url := "https://dns.bufferover.run/dns?q=" + domain
 	wrapper := struct {
 		Records []string `json:"FDNS_A"`
 	}{}
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return result
 	}
@@ -1226,12 +1235,15 @@ func bufferOverrunSubdomains(domain string, plain bool) []string {
 
 //threatcrowdSubdomains retrieves from the below url some known subdomains.
 func threatcrowdSubdomains(domain string, plain bool) []string {
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
 	result := make([]string, 0)
 	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain
 	wrapper := struct {
 		Records []string `json:"subdomains"`
 	}{}
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return result
 	}
@@ -1253,9 +1265,12 @@ type CrtShResult struct {
 
 //crtshSubdomains retrieves from the below url some known subdomains.
 func crtshSubdomains(domain string, plain bool) []string {
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
 	var results []CrtShResult
 	url := "https://crt.sh/?q=%25." + domain + "&output=json"
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return []string{}
 	}
@@ -1624,7 +1639,7 @@ func asyncGet(urls []string, ignore []string, outputFile string, subs map[string
 		go func(i int, domain string) {
 			defer wg.Done()
 			defer func() { <-limiter }()
-			resp, err := client.Get(domain)
+			resp, err := client.Get("http://" + domain)
 			count++
 			if err != nil {
 				return
