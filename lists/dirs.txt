@@ -5,6 +5,7 @@
 .cvs
 .cvsignore
 .forward
+.env
 .git
 .github
 .git/HEAD
@@ -952,6 +953,7 @@ subSilver
 locations
 Linux
 api
+api/.env
 AboutUs
 advanced_search
 religion
