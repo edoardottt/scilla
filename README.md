@@ -158,6 +158,7 @@ Examples 💡
     - `scilla subdomain -db -target target.domain`
     - `scilla subdomain -plain -target target.domain`
     - `scilla subdomain -db -no-check -target target.domain`
+    - `scilla subdomain -db -spyse API-KEY -target target.domain`
 
 - Directories enumeration:
 
@@ -205,6 +206,7 @@ Examples 💡
     - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla report -common -target target.domain`
     - No follow redirects `scilla report -nr -target target.domain`
+    - Use Spyse as subdomains source `scilla report -db -spyse API-KEY -target target.domain`
 
 Contributing 🛠
 -------
@@ -223,6 +225,7 @@ Special thanks to:
   - [BufferOverrun](http://dns.bufferover.run/)
   - [Threatcrowd](https://www.threatcrowd.org/)
   - [Crt.sh](https://crt.sh/)
+  - [Spyse](https://spyse.com/)
   - [tomnomnom](https://github.com/tomnomnom/assetfinder)
 
 **To do:**

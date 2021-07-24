@@ -161,7 +161,7 @@ func ReadArgs() Input {
 	subdomainCrawlerPtr := subdomainCommand.Bool("c", false, "Use also a web crawler")
 
 	// subdomains subcommand flag pointers
-	subdomainDBPtr := subdomainCommand.Bool("db", false, "Use also a public database")
+	subdomainDBPtr := subdomainCommand.Bool("db", false, "Use also public databases")
 
 	// subdomains subcommand flag pointers
 	subdomainPlainPtr := subdomainCommand.Bool("plain", false, "Print only results")
