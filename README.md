@@ -110,7 +110,8 @@ usage: scilla subcommand { options }
                    [-c use also a web crawler]
                    [-db use also a public database]
                    [-plain Print only results]
-                   [-db -no-check Don't check status codes for subdomains.]
+                   [-db -no-check Don't check status codes for subdomains]
+                   [-db -spyse API-KEY Use Spyse as subdomains source]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-o output-format]
@@ -130,6 +131,7 @@ usage: scilla subcommand { options }
                 [-db use also a public database for subdomains scanning]
                 [-common scan common ports]
                 [-nr No follow redirects]
+                [-db -spyse API-KEY Use Spyse as subdomains source]
                 -target <target (URL/IP)> REQUIRED
        - help
        - examples
