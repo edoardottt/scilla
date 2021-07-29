@@ -251,6 +251,8 @@ Special thanks to:
   
   - [ ] XML output
 
+  - [x] Dockerfile
+
   - [x] Plain output (print only results)
 
   - [x] Scan only common ports
