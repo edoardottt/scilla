@@ -67,6 +67,15 @@ Preview :bar_chart:
 Installation 📡
 ----------
 
+### Using Docker
+
+```shell
+docker build -t scilla .
+docker run scilla help
+```
+
+### Building from source
+
 You need [Go](https://golang.org/).
 
 - **Linux**
