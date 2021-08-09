@@ -30,6 +30,6 @@ import (
 )
 
 //AppendOutputToJSON >
-func AppendOutputToJSON(output string, filename string) {
+func AppendOutputToJSON(output string, key string, filename string) {
 	log.Println(output)
 }

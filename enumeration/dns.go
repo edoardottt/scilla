@@ -54,7 +54,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			fmt.Printf("%s\n", ip.String())
 		}
 		if outputFile != "" {
-			output.AppendWhere(ip.String(), "", outputFile)
+			output.AppendWhere(ip.String(), "", "DNS", outputFile)
 		}
 	}
 	// -- CNAME RECORD --
@@ -69,7 +69,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		fmt.Printf("%s\n", cname)
 	}
 	if outputFile != "" {
-		output.AppendWhere(cname, "", outputFile)
+		output.AppendWhere(cname, "", "DNS", outputFile)
 	}
 	// -- NS RECORDS --
 	nameserver, err := net.LookupNS(domain)
@@ -84,7 +84,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			fmt.Printf("%s\n", ns.Host)
 		}
 		if outputFile != "" {
-			output.AppendWhere(ns.Host, "", outputFile)
+			output.AppendWhere(ns.Host, "", "DNS", outputFile)
 		}
 	}
 	// -- MX RECORDS --
@@ -100,7 +100,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			fmt.Printf("%s %v\n", mx.Host, mx.Pref)
 		}
 		if outputFile != "" {
-			output.AppendWhere(mx.Host, "", outputFile)
+			output.AppendWhere(mx.Host, "", "DNS", outputFile)
 		}
 	}
 	// -- SRV SERVICE --
@@ -116,7 +116,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		}
 		if outputFile != "" {
-			output.AppendWhere(srv.Target, "", outputFile)
+			output.AppendWhere(srv.Target, "", "DNS", outputFile)
 		}
 	}
 	// -- TXT RECORDS --
@@ -129,7 +129,7 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			fmt.Printf("%s\n", txt)
 		}
 		if outputFile != "" {
-			output.AppendWhere(txt, "", outputFile)
+			output.AppendWhere(txt, "", "DNS", outputFile)
 		}
 	}
 	if outputFile != "" {

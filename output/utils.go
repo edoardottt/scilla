@@ -38,7 +38,7 @@ func OutputFormatIsOk(input string) bool {
 	if input == "" {
 		return true
 	}
-	acceptedOutput := [2]string{"txt", "html"}
+	acceptedOutput := [3]string{"txt", "html", "json"}
 	input = strings.ToLower(input)
 	for _, output := range acceptedOutput {
 		if output == input {

@@ -179,7 +179,7 @@ func ReadArgs() Input {
 	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// dir subcommand flag pointers
-	dirOutputPtr := dirCommand.String("o", "", "output format (txt/html)")
+	dirOutputPtr := dirCommand.String("o", "", "output format (txt/html/json)")
 
 	// dir subcommand flag pointers
 	dirIgnorePtr := dirCommand.String("i", "", "Ignore response code(s)")

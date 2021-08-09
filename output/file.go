@@ -87,9 +87,11 @@ func CreateOutputFile(target string, subcommand string, format string) string {
 }
 
 //AppendWhere (html or txt file)
-func AppendWhere(what string, status string, outputFile string) {
+func AppendWhere(what string, status string, key string, outputFile string) {
 	if outputFile[len(outputFile)-4:] == "html" {
 		AppendOutputToHTML(what, status, outputFile)
+	} else if outputFile[len(outputFile)-4:] == "json" {
+		AppendOutputToJSON(what, key, outputFile)
 	} else {
 		AppendOutputToTxt(what, outputFile)
 	}
