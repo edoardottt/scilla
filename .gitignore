@@ -21,3 +21,6 @@ coverage.txt
 .idea
 
 output-scilla/
+
+# VScode Debugging folder
+.vscode/
