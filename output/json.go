@@ -26,10 +26,30 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package output
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 )
 
+type OutputFile struct {
+	port      []string `json: "port,omitempty"`
+	dns       []string `json: "dns,omitempty"`
+	subdomain []string `json: "subdomain,omitempty"`
+	dir       []string `json: "dir,omitempty"`
+}
+
 //AppendOutputToJSON >
 func AppendOutputToJSON(output string, key string, filename string) {
-	log.Println(output)
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Println(err)
+	}
+	data := OutputFile{}
+
+	_ = json.Unmarshal([]byte(file), &data)
+	if key == "PORT" {
+		data.port = append(data.port, output)
+		log.Println(output)
+	}
+
 }
