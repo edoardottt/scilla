@@ -54,8 +54,9 @@ func AppendOutputToJSON(output string, key string, filename string) {
 	file, err = json.MarshalIndent(data, "", " ")
 	if err != nil {
 		log.Println(err)
+	} else {
+		ioutil.WriteFile(filename, file, 0644)
+		log.Println("Written")
 	}
-	ioutil.WriteFile(filename, file, 0644)
-	log.Println("Written")
 
 }
