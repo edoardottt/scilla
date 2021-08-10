@@ -50,7 +50,6 @@ func AppendOutputToJSON(output string, key string, filename string) {
 	if key == "PORT" {
 		data.port = append(data.port, output)
 	}
-	data.port = append(data.port, "1234", "5679")
 
 	file, err = json.MarshalIndent(data, "", " ")
 	if err != nil {
