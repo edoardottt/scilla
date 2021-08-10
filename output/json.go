@@ -55,7 +55,7 @@ func AppendOutputToJSON(output string, key string, filename string) {
 	if err != nil {
 		log.Println(err)
 	}
-	ioutil.WriteFile("filename.json", file, 0644)
+	ioutil.WriteFile(filename, file, 0644)
 	log.Println("Written")
 
 }
