@@ -32,14 +32,14 @@ import (
 )
 
 type OutputFile struct {
-	Port      []string `json: "port,omitempty"`
-	Dns       []string `json: "dns,omitempty"`
-	Subdomain []string `json: "subdomain,omitempty"`
-	Dir       []string `json: "dir,omitempty"`
+	Port      []string            `json: "port,omitempty"`
+	Dns       map[string][]string `json: "dns,omitempty"`
+	Subdomain []string            `json: "subdomain,omitempty"`
+	Dir       []string            `json: "dir,omitempty"`
 }
 
 //AppendOutputToJSON >
-func AppendOutputToJSON(output string, key string, filename string) {
+func AppendOutputToJSON(output string, key string, record string, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Println(err)
@@ -53,6 +53,9 @@ func AppendOutputToJSON(output string, key string, filename string) {
 		data.Subdomain = append(data.Subdomain, output)
 	} else if key == "DIR" {
 		data.Dir = append(data.Dir, output)
+	} else if key == "DNS" {
+		data.Dns = make(map[string][]string)
+		data.Dns[record] = append(data.Dns[record], output)
 	}
 
 	file, err = json.MarshalIndent(data, "", " ")

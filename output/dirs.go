@@ -51,7 +51,7 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFile string, mutex 
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Green("%s\n", resp)
 					if outputFile != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", outputFile)
+						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 					}
 				} else if (resp[:3] != "404") || string(resp[0]) == "5" {
 					fmt.Fprint(os.Stdout, "\r \r")
@@ -59,14 +59,14 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFile string, mutex 
 					color.Red("%s\n", resp)
 
 					if outputFile != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", outputFile)
+						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 					}
 				}
 			} else {
 				if resp[:3] != "404" {
 					fmt.Printf("%s\n", domain)
 					if outputFile != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", outputFile)
+						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 					}
 				}
 			}

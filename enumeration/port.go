@@ -115,7 +115,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 					fmt.Printf("%s\n", portStr)
 				}
 				if outputFile != "" {
-					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", outputFile)
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", outputFile)
 				}
 			}
 		}(portStr, host)
