@@ -49,6 +49,10 @@ func AppendOutputToJSON(output string, key string, filename string) {
 	_ = json.Unmarshal([]byte(file), &data)
 	if key == "PORT" {
 		data.Port = append(data.Port, output)
+	} else if key == "SUB" {
+		data.Subdomain = append(data.Subdomain, output)
+	} else if key == "DIR" {
+		data.Dir = append(data.Dir, output)
 	}
 
 	file, err = json.MarshalIndent(data, "", " ")
