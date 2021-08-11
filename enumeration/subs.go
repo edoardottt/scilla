@@ -64,7 +64,7 @@ func AsyncGet(urls []string, ignore []string, outputFile string, subs map[string
 		go func(i int, domain string) {
 			defer wg.Done()
 			defer func() { <-limiter }()
-			resp, err := client.Get("http://" + domain)
+			resp, err := client.Get(domain)
 			count++
 			if err != nil {
 				return

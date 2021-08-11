@@ -85,7 +85,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 		target = target[:len(target)-1]
 	}
 	if !utils.ProtocolExists(target) {
-		target = "http://" + userInput.DirTarget
+		target = "http://" + target
 	}
 	var targetIP string
 	fmt.Printf("target: %s\n", target)
@@ -103,8 +103,9 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	// change from ip to Hostname
 	if utils.IsIP(target) {
 		targetIP = target
-		target = utils.IpToHostname(target)
+		target = utils.IpToHostname(targetIP)
 	}
+	target = utils.CleanProtocol(target)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
 			output.HeaderHTML("SUBDOMAIN SCANNING", outputFile)
@@ -149,6 +150,9 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)
 
 	fmt.Println("=============== DIRECTORIES SCANNING ===============")
+	if !utils.ProtocolExists(target) {
+		target = "http://" + target
+	}
 	var strings2 = input.CreateUrls(userInput.ReportWordDir, target)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
@@ -171,7 +175,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 }
 
-//DNSSubcommandHandler
+//DNSSubcommandHandler >
 func DNSSubcommandHandler(userInput input.Input) {
 	if !userInput.DNSPlain {
 		output.Intro()
