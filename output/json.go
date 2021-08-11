@@ -32,10 +32,10 @@ import (
 )
 
 type OutputFile struct {
-	Port      []string            `json: "port,omitempty"`
-	Dns       map[string][]string `json: "dns,omitempty"`
-	Subdomain []string            `json: "subdomain,omitempty"`
-	Dir       []string            `json: "dir,omitempty"`
+	Port      []string            `json:"port,omitempty"`
+	Dns       map[string][]string `json:"dns,omitempty"`
+	Subdomain []string            `json:"subdomain,omitempty"`
+	Dir       []string            `json:"dir,omitempty"`
 }
 
 //AppendOutputToJSON >
