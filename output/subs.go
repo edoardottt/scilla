@@ -53,12 +53,12 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFile string, mutex 
 					fmt.Printf("[+]FOUND: %s ", subDomainFound)
 					if string(resp[0]) == "2" {
 						if outputFile != "" {
-							AppendWhere(domain, fmt.Sprint(resp), outputFile)
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 						}
 						color.Green("%s\n", resp)
 					} else {
 						if outputFile != "" {
-							AppendWhere(domain, fmt.Sprint(resp), outputFile)
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 						}
 						color.Red("%s\n", resp)
 					}
@@ -69,11 +69,11 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFile string, mutex 
 					fmt.Printf("%s\n", subDomainFound)
 					if string(resp[0]) == "2" {
 						if outputFile != "" {
-							AppendWhere(domain, fmt.Sprint(resp), outputFile)
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 						}
 					} else {
 						if outputFile != "" {
-							AppendWhere(domain, fmt.Sprint(resp), outputFile)
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", outputFile)
 						}
 					}
 				}
