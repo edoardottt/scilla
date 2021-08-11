@@ -58,7 +58,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 			data.Dns = make(map[string][]string)
 		}
 		if _, ok := data.Dns[record]; !ok {
-			data.Dns[record] = make([]string, 1)
+			data.Dns[record] = make([]string, 0)
 		}
 		data.Dns[record] = append(data.Dns[record], output)
 	}
