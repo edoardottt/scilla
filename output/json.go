@@ -31,6 +31,7 @@ import (
 	"log"
 )
 
+//OutputFile struct helping json output
 type OutputFile struct {
 	Port      []string            `json:"port,omitempty"`
 	Dns       map[string][]string `json:"dns,omitempty"`
