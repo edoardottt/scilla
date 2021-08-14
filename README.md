@@ -247,9 +247,9 @@ Special thanks to:
   
   - [ ] Proxy support
     
-  - [ ] JSON output
-  
   - [ ] XML output
+  
+  - [x] JSON output
 
   - [x] Dockerfile
 
