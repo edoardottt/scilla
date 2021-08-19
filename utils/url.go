@@ -91,3 +91,13 @@ func CleanSubdomainsOk(target string, input []string) []string {
 	}
 	return result
 }
+
+//RetrieveProtocol remove from the url the protocol scheme
+func RetrieveProtocol(target string) string {
+	res := strings.Index(target, "://")
+	if res >= 0 {
+		return target[:res]
+	} else {
+		return target
+	}
+}
