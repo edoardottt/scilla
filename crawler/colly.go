@@ -41,7 +41,7 @@ import (
 //SpawnCrawler spawn a crawler that search for
 //links with this characteristic:
 //- only http, https or ftp protocols allowed
-func SpawnCrawler(target string, ignore []string, dirs map[string]output.Asset, subs map[string]output.Asset, outputFile string, mutex *sync.Mutex, what string, plain bool) {
+func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset, subs map[string]output.Asset, outputFile string, mutex *sync.Mutex, what string, plain bool) {
 	ignoreBool := len(ignore) != 0
 	c := colly.NewCollector()
 	if what == "dir" {
@@ -58,7 +58,6 @@ func SpawnCrawler(target string, ignore []string, dirs map[string]output.Asset, 
 		)
 	}
 	c.AllowURLRevisit = false
-
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		if e.Attr("href") != "" {
@@ -105,5 +104,5 @@ func SpawnCrawler(target string, ignore []string, dirs map[string]output.Asset, 
 			}
 		}
 	})
-	c.Visit(target)
+	c.Visit(scheme + "://" + target)
 }
