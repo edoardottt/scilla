@@ -60,7 +60,7 @@ func ReadDictDirs(inputFile string) []string {
 
 //CreateUrls returns a list of directories
 //from the default file lists/dirs.txt.
-func CreateUrls(filename string, url string) []string {
+func CreateUrls(filename string, scheme string, url string) []string {
 	var dirs []string
 	if filename == "" {
 		if runtime.GOOS == "windows" {
@@ -73,7 +73,7 @@ func CreateUrls(filename string, url string) []string {
 	}
 	result := []string{}
 	for _, dir := range dirs {
-		path, path2 := utils.AppendDir(url, dir)
+		path, path2 := utils.AppendDir(scheme, url, dir)
 		result = append(result, path)
 		result = append(result, path2)
 	}

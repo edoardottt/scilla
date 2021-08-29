@@ -101,7 +101,6 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 			output.BannerHTML(userInput.ReportTarget, outputFile)
 		}
 	}
-
 	fmt.Println("=============== SUBDOMAINS SCANNING ===============")
 	var strings1 []string
 	// change from ip to Hostname
@@ -135,7 +134,6 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
-	fmt.Println(strings1[0])
 	enumeration.AsyncGet(strings1, userInput.ReportIgnoreSub, outputFile, subs, mutex, false)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
@@ -153,12 +151,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 
 	fmt.Println("=============== DNS SCANNING ===============")
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)
-
 	fmt.Println("=============== DIRECTORIES SCANNING ===============")
-	if !utils.ProtocolExists(target) {
-		target = "http://" + target
-	}
-	var strings2 = input.CreateUrls(userInput.ReportWordDir, target)
+	var strings2 = input.CreateUrls(userInput.ReportWordDir, protocolTemp, utils.CleanProtocol(target))
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
 			output.HeaderHTML("DIRECTORY SCANNING", outputFile)
@@ -306,8 +300,12 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 		output.Intro()
 	}
 	target := userInput.DirTarget
+	var protocolTemp string
+	// if there isn't a scheme use http.
 	if !utils.ProtocolExists(target) {
-		target = "http://" + userInput.DirTarget
+		protocolTemp = "http"
+	} else {
+		protocolTemp = utils.RetrieveProtocol(target)
 	}
 	if target[len(target)-1] == byte('/') {
 		target = target[:len(target)-1]
@@ -316,6 +314,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("=============== DIRECTORIES SCANNING ===============")
 	}
+	target = utils.CleanProtocol(target)
 	outputFile := ""
 	if userInput.DirOutput != "" {
 		outputFile = output.CreateOutputFile(userInput.DirTarget, "dir", userInput.DirOutput)
@@ -324,7 +323,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 			output.BannerHTML(userInput.DirTarget, outputFile)
 		}
 	}
-	var strings2 = input.CreateUrls(userInput.DirWord, target)
+	var strings2 = input.CreateUrls(userInput.DirWord, protocolTemp, target)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
 			output.HeaderHTML("DIRECTORY SCANNING", outputFile)

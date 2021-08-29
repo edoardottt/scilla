@@ -73,8 +73,8 @@ func BuildURL(scheme string, subdomain string, domain string) string {
 }
 
 //AppendDir returns full URL with the directory
-func AppendDir(domain string, dir string) (string, string) {
-	return domain + "/" + dir + "/", domain + "/" + dir
+func AppendDir(scheme string, domain string, dir string) (string, string) {
+	return scheme + "://" + domain + "/" + dir + "/", scheme + "://" + domain + "/" + dir
 }
 
 //CleanSubdomainsOk >
