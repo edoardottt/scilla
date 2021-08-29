@@ -68,8 +68,8 @@ func IsURL(str string) bool {
 }
 
 //BuildUrl returns full URL with the subdomain
-func BuildURL(subdomain string, domain string) string {
-	return "http://" + subdomain + "." + domain
+func BuildURL(scheme string, subdomain string, domain string) string {
+	return scheme + "://" + subdomain + "." + domain
 }
 
 //AppendDir returns full URL with the directory

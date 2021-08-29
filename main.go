@@ -84,8 +84,12 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	if target[len(target)-1] == byte('/') {
 		target = target[:len(target)-1]
 	}
+	var protocolTemp string
+	// if there isn't a scheme use http.
 	if !utils.ProtocolExists(target) {
-		target = "http://" + target
+		protocolTemp = "http"
+	} else {
+		protocolTemp = utils.RetrieveProtocol(target)
 	}
 	var targetIP string
 	fmt.Printf("target: %s\n", target)
@@ -114,7 +118,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	if userInput.ReportCrawlerSub {
 		go crawler.SpawnCrawler(target, userInput.ReportIgnoreSub, dirs, subs, outputFile, mutex, "sub", false)
 	}
-	strings1 = input.CreateSubdomains(userInput.ReportWordSub, utils.CleanProtocol(target))
+	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
 	if userInput.ReportSubdomainDB {
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
@@ -131,6 +135,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
+	fmt.Println(strings1[0])
 	enumeration.AsyncGet(strings1, userInput.ReportIgnoreSub, outputFile, subs, mutex, false)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
@@ -214,7 +219,14 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		output.Intro()
 	}
 
-	target := utils.CleanProtocol(userInput.SubdomainTarget)
+	target := userInput.SubdomainTarget
+	var protocolTemp string
+	// if there isn't a scheme use http.
+	if !utils.ProtocolExists(target) {
+		protocolTemp = "http"
+	} else {
+		protocolTemp = utils.RetrieveProtocol(target)
+	}
 	// change from ip to Hostname
 	if utils.IsIP(target) {
 		target = utils.IpToHostname(target)
@@ -235,7 +247,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	var strings1 []string
 	if !userInput.SubdomainNoCheck {
-		strings1 = input.CreateSubdomains(userInput.SubdomainWord, target)
+		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
 		sonar := opendb.SonarSubdomains(target)
@@ -261,11 +273,6 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
 		go crawler.SpawnCrawler(target, userInput.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub", userInput.SubdomainPlain)
 	}
-	var cleanStrings1 []string
-	for _, elem := range strings1 {
-		cleanStrings1 = append(cleanStrings1, utils.CleanProtocol(elem))
-	}
-	strings1 = cleanStrings1
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {

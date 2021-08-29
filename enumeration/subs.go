@@ -47,7 +47,6 @@ func AsyncGet(urls []string, ignore []string, outputFile string, subs map[string
 	}
 	limiter := make(chan string, 10) // Limits simultaneous requests
 	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
-
 	for i, domain := range urls {
 		limiter <- domain
 		wg.Add(1)

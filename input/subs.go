@@ -52,7 +52,7 @@ func ReadDictSubs(inputFile string) []string {
 
 //CreateSubdomains returns a list of subdomains
 //from the default file lists/subdomains.txt.
-func CreateSubdomains(filename string, url string) []string {
+func CreateSubdomains(filename string, scheme string, url string) []string {
 	var subs []string
 	if filename == "" {
 		if runtime.GOOS == "windows" {
@@ -65,7 +65,7 @@ func CreateSubdomains(filename string, url string) []string {
 	}
 	result := []string{}
 	for _, sub := range subs {
-		path := utils.BuildURL(sub, url)
+		path := utils.BuildURL(scheme, sub, url)
 		result = append(result, path)
 	}
 	return result
