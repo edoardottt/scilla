@@ -41,7 +41,9 @@ import (
 //SpawnCrawler spawn a crawler that search for
 //links with this characteristic:
 //- only http, https or ftp protocols allowed
-func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset, subs map[string]output.Asset, outputFile string, mutex *sync.Mutex, what string, plain bool) {
+func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset,
+	subs map[string]output.Asset, outputFile string, mutex *sync.Mutex, what string, plain bool) {
+
 	ignoreBool := len(ignore) != 0
 	c := colly.NewCollector()
 	if what == "dir" {
@@ -51,24 +53,87 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			),
 		)
 	} else {
-		c = colly.NewCollector(
-			colly.URLFilters(
-				regexp.MustCompile("(http://|https://|ftp://)" + "+." + target),
-			),
-		)
+		c = colly.NewCollector()
+		targetTemp := "." + utils.GetRootHost(target)
+		targetTemp = strings.ReplaceAll(targetTemp, ".", "\\.")
+		targetRegex := "([-a-z0-9.]*)" + targetTemp + "([-a-z0-9.]*)"
+		c.URLFilters = []*regexp.Regexp{regexp.MustCompile(targetRegex)}
 	}
 	c.AllowURLRevisit = false
+
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
-		if e.Attr("href") != "" {
-			url := utils.CleanURL(e.Attr("href"))
+		link := e.Attr("href")
+		if link != "" {
+			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
-				if !output.PresentDirs(url, dirs) && url != target {
+				if !output.PresentDirs(url, dirs, mutex) && url != target {
 
 					e.Request.Visit(url)
 				}
 			} else {
-				if !output.PresentSubs(url, subs) && url != target {
+				newDomain := utils.RetrieveHost(url)
+				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
+
+					e.Request.Visit(url)
+				}
+			}
+		}
+	})
+
+	// On every script element which has src attribute call callback
+	c.OnHTML("script[src]", func(e *colly.HTMLElement) {
+		link := e.Attr("src")
+		if len(link) != 0 {
+			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			if what == "dir" {
+				if !output.PresentDirs(url, dirs, mutex) && url != target {
+
+					e.Request.Visit(url)
+				}
+			} else {
+				newDomain := utils.RetrieveHost(url)
+				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
+
+					e.Request.Visit(url)
+				}
+			}
+		}
+	})
+
+	// On every link element which has href attribute call callback
+	c.OnHTML("link[href]", func(e *colly.HTMLElement) {
+		link := e.Attr("href")
+		if len(link) != 0 {
+			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			if what == "dir" {
+				if !output.PresentDirs(url, dirs, mutex) && url != target {
+
+					e.Request.Visit(url)
+				}
+			} else {
+				newDomain := utils.RetrieveHost(url)
+				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
+
+					e.Request.Visit(url)
+				}
+			}
+		}
+	})
+
+	// On every iframe element which has src attribute call callback
+	c.OnHTML("iframe[src]", func(e *colly.HTMLElement) {
+		link := e.Attr("src")
+		if len(link) != 0 {
+			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			if what == "dir" {
+				if !output.PresentDirs(url, dirs, mutex) && url != target {
+
+					e.Request.Visit(url)
+				}
+			} else {
+				newDomain := utils.RetrieveHost(url)
+				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
 
 					e.Request.Visit(url)
 				}
@@ -90,7 +155,8 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 					output.AddDirs(r.URL.String(), status, dirs, mutex)
 					output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
 				} else {
-					output.AddSubs(r.URL.String(), status, subs, mutex)
+					newDomain := utils.RetrieveHost(r.URL.String())
+					output.AddSubs(newDomain, status, subs, mutex)
 					output.PrintSubs(subs, ignore, outputFile, mutex, plain)
 				}
 			}
@@ -99,7 +165,8 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 				output.AddDirs(r.URL.String(), status, dirs, mutex)
 				output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
 			} else {
-				output.AddSubs(r.URL.String(), status, subs, mutex)
+				newDomain := utils.RetrieveHost(r.URL.String())
+				output.AddSubs(newDomain, status, subs, mutex)
 				output.PrintSubs(subs, ignore, outputFile, mutex, plain)
 			}
 		}

@@ -28,6 +28,8 @@ package utils
 import (
 	"net/url"
 	"strings"
+
+	"github.com/bobesa/go-domain-util/domainutil"
 )
 
 //ProtocolExists checks if the protocol is present in the URL
@@ -100,4 +102,37 @@ func RetrieveProtocol(target string) string {
 	} else {
 		return target
 	}
+}
+
+//AbsoluteURL takes as input a path and returns the full
+//absolute URL with protocol + host + path
+func AbsoluteURL(protocol string, target string, path string) string {
+	// if the path variable starts with a scheme, it means that the
+	// path is itself an absolute path.
+	if ProtocolExists(path) {
+		return path
+	}
+	if path[0] == '/' {
+		return protocol + "://" + target + path
+	}
+	return protocol + "://" + target + "/" + path
+}
+
+//RetrieveHost takes as input a URL and returns
+// as output the domain
+func RetrieveHost(input string) string {
+	u, err := url.Parse(input)
+	if err != nil {
+		return input
+	}
+	return u.Host
+}
+
+//GetRootHost >
+func GetRootHost(input string) string {
+	_, err := url.Parse(input)
+	if err != nil {
+		return ""
+	}
+	return domainutil.Domain(input)
 }

@@ -81,15 +81,17 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 		Value:   value,
 		Printed: false,
 	}
-	mutex.Lock()
-	if !PresentDirs(target, dirs) {
+	if !PresentDirs(target, dirs, mutex) {
+		mutex.Lock()
 		dirs[target] = dir
+		mutex.Unlock()
 	}
-	mutex.Unlock()
 }
 
 //PresentDirs
-func PresentDirs(input string, dirs map[string]Asset) bool {
+func PresentDirs(input string, dirs map[string]Asset, mutex *sync.Mutex) bool {
+	mutex.Lock()
 	_, ok := dirs[input]
+	mutex.Unlock()
 	return ok
 }

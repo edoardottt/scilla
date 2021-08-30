@@ -90,15 +90,17 @@ func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 		Printed: false,
 	}
 	target = utils.CleanProtocol(target)
-	mutex.Lock()
-	if !PresentSubs(target, subs) {
+	if !PresentSubs(target, subs, mutex) {
+		mutex.Lock()
 		subs[target] = sub
+		mutex.Unlock()
 	}
-	mutex.Unlock()
 }
 
 //PresentSubs
-func PresentSubs(input string, subs map[string]Asset) bool {
+func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
+	mutex.Lock()
 	_, ok := subs[input]
+	mutex.Unlock()
 	return ok
 }
