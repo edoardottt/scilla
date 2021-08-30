@@ -246,18 +246,18 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
-		sonar := opendb.SonarSubdomains(target)
+		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
-		crtsh := opendb.CrtshSubdomains(target)
+		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(crtsh, strings1)
-		threatcrowd := opendb.ThreatcrowdSubdomains(target)
+		threatcrowd := opendb.ThreatcrowdSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(threatcrowd, strings1)
-		hackerTarget := opendb.HackerTargetSubdomains(target)
+		hackerTarget := opendb.HackerTargetSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
-		bufferOverrun := opendb.BufferOverrunSubdomains(target)
+		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
 		if userInput.SubdomainSpyse != "" {
-			spyseSubs := opendb.SpyseSubdomains(target, userInput.SubdomainSpyse)
+			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), userInput.SubdomainSpyse)
 			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
 		}
 	}
@@ -267,13 +267,13 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		}
 	}
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
-		crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
+		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub", userInput.SubdomainPlain)
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
-		//enumeration.AsyncGet(strings1, userInput.SubdomainIgnore, outputFile, subs, mutex, userInput.SubdomainPlain)
+		enumeration.AsyncGet(strings1, userInput.SubdomainIgnore, outputFile, subs, mutex, userInput.SubdomainPlain)
 	} else {
 		for _, elem := range strings1 {
 			fmt.Println(elem)
