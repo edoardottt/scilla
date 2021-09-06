@@ -33,7 +33,7 @@ import (
 	"time"
 )
 
-//CrtShResult
+//CrtShResult >
 type CrtShResult struct {
 	Name string `json:"name_value"`
 }

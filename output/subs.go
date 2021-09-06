@@ -97,7 +97,7 @@ func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 	}
 }
 
-//PresentSubs
+//PresentSubs checks if a subdomain is present inside the subs map
 func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := subs[input]

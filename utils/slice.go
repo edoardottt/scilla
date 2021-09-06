@@ -25,7 +25,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package utils
 
-//RemoveDuplicateValues
+//RemoveDuplicateValues from a slice of string
 func RemoveDuplicateValues(strSlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}

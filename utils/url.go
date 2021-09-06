@@ -43,9 +43,8 @@ func CleanProtocol(target string) string {
 	res := strings.Index(target, "://")
 	if res >= 0 {
 		return target[res+3:]
-	} else {
-		return target
 	}
+	return target
 }
 
 //CleanURL takes as input a string and it tries to
@@ -60,7 +59,7 @@ func CleanURL(input string) string {
 	return u.Scheme + "://" + u.Host + u.Path
 }
 
-//IsUrl checks if the inputted Url is valid
+//IsURL checks if the inputted Url is valid
 func IsURL(str string) bool {
 	if !ProtocolExists(str) {
 		str = "http://" + str
@@ -69,7 +68,7 @@ func IsURL(str string) bool {
 	return err == nil && u.Host != ""
 }
 
-//BuildUrl returns full URL with the subdomain
+//BuildURL returns full URL with the subdomain
 func BuildURL(scheme string, subdomain string, domain string) string {
 	return scheme + "://" + subdomain + "." + domain
 }
@@ -99,9 +98,8 @@ func RetrieveProtocol(target string) string {
 	res := strings.Index(target, "://")
 	if res >= 0 {
 		return target[:res]
-	} else {
-		return target
 	}
+	return target
 }
 
 //AbsoluteURL takes as input a path and returns the full

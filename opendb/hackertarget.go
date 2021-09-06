@@ -34,7 +34,7 @@ import (
 	"time"
 )
 
-//HackerTargetSubdomain retrieves from the below url some known subdomains.
+//HackerTargetSubdomains retrieves from the url below some known subdomains.
 func HackerTargetSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,

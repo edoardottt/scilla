@@ -88,7 +88,7 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 	}
 }
 
-//PresentDirs
+//PresentDirs checks if a directory is present inside the dirs map
 func PresentDirs(input string, dirs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := dirs[input]

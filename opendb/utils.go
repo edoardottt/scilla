@@ -39,7 +39,7 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 	if len(dbsubs) == 0 {
 		return urls
 	}
-	var result = []string{}
+	var result []string
 	dbsubs = utils.RemoveDuplicateValues(dbsubs)
 	result = append(dbsubs, urls...)
 	rand.Seed(time.Now().UnixNano())

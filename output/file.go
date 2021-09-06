@@ -32,7 +32,7 @@ import (
 	"strings"
 )
 
-//CreateOutputFolder
+//CreateOutputFolder >
 func CreateOutputFolder() {
 	//Create a folder/directory at a full qualified path
 	err := os.Mkdir("output-scilla", 0755)

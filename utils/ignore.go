@@ -88,7 +88,7 @@ func DeleteUnusefulIgnoreresponses(input []string) []string {
 	return result
 }
 
-//IgnoreClass states if the class of ignored status codes
+//IgnoreClassOk states if the class of ignored status codes
 //is correct or not (4**,2**...)
 func IgnoreClassOk(input string) bool {
 	if strings.Contains(input, "*") {

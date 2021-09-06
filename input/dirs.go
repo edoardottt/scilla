@@ -34,7 +34,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReadDict scan all the possible dirs from file
+//ReadDictDirs scan all the possible dirs from file
 func ReadDictDirs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {

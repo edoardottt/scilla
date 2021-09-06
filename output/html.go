@@ -32,7 +32,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//BannerHTML
+//BannerHTML >
 func BannerHTML(target string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -48,7 +48,7 @@ func BannerHTML(target string, filename string) {
 	file.Close()
 }
 
-//AppendOutputToHtml
+//AppendOutputToHTML >
 func AppendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -71,7 +71,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 	file.Close()
 }
 
-//HeaderHtml
+//HeaderHTML >
 func HeaderHTML(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -83,7 +83,7 @@ func HeaderHTML(header string, filename string) {
 	file.Close()
 }
 
-//FooterHTML
+//FooterHTML >
 func FooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -96,7 +96,7 @@ func FooterHTML(filename string) {
 	file.Close()
 }
 
-//BannerFooterHTML
+//BannerFooterHTML >
 func BannerFooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
