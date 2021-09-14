@@ -111,6 +111,7 @@
 ~user
 ~webmaster
 ~www
+_env
 index
 images
 download
@@ -954,6 +955,7 @@ locations
 Linux
 api
 api/.env
+api/_env
 AboutUs
 advanced_search
 religion
