@@ -32,6 +32,9 @@ import (
 	spyse "github.com/spyse-com/go-spyse/pkg"
 )
 
+const searchMethodResultsLimit = 10000
+const defaultScrollResultsLimit = 20000
+
 //SpyseSubdomains appends to the subdomains in the list
 //thr subdomains found with the Spyse service.
 func SpyseSubdomains(target string, accessToken string) []string {
@@ -48,6 +51,7 @@ func SpyseSubdomains(target string, accessToken string) []string {
 	//Dot before the domain name is important because search fetch any domains that end with ".$target"
 	var searchDomain = "." + target
 	var subdomainsSearchParams spyse.QueryBuilder
+	var ctx = context.Background()
 
 	subdomainsSearchParams.AppendParam(spyse.QueryParam{
 		Name:     svc.Params().Name.Name,
@@ -55,24 +59,66 @@ func SpyseSubdomains(target string, accessToken string) []string {
 		Value:    searchDomain,
 	})
 
-	countResults, err := svc.SearchCount(context.Background(), subdomainsSearchParams.Query)
+	totalResults, err := svc.SearchCount(ctx, subdomainsSearchParams.Query)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	var limit = 100
-	var offset = 0
-	var searchResults []spyse.Domain
-	var domain spyse.Domain
-	for ; int64(offset) < countResults; offset += limit {
-		//Notice that you can fetch only the first 10000 (can depend on your subscription plan) results using the Search method
-		searchResults, err = svc.Search(context.Background(), subdomainsSearchParams.Query, limit, offset)
-		if err != nil {
-			log.Fatal(err.Error())
+	if totalResults == 0 {
+		return result
+	}
+
+	// The default "Search" method returns only first 10 000 subdomains
+	// To obtain more than 10 000 subdomains the "Scroll" method should be using
+	// Note: The "Scroll" method is only available for "PRO" customers, so we need to check
+	// quota.IsScrollSearchEnabled param
+	if totalResults > searchMethodResultsLimit && client.Account().IsScrollSearchEnabled {
+		var scrollID string
+		var scrollResults *spyse.DomainScrollResponse
+
+		for {
+			if scrollResults, err = svc.ScrollSearch(ctx, subdomainsSearchParams.Query, scrollID); err != nil {
+				if len(result) > 0 {
+					spyseErr, ok := err.(*spyse.ErrResponse)
+					if ok && spyseErr.Err.Code == spyse.CodeRequestsLimitReached {
+						break
+					}
+				}
+				log.Fatal(err.Error())
+			}
+			if len(scrollResults.Items) > 0 {
+				scrollID = scrollResults.SearchID
+
+				for _, domain := range scrollResults.Items {
+					result = append(result, domain.Name)
+				}
+				// The default "Scroll" limit, to avoid results that more than 20k
+				// If a limit of the number of requested subdomains will be added this block should be changed
+				if len(result) > defaultScrollResultsLimit {
+					break
+				}
+			}
 		}
-		for _, domain = range searchResults {
-			result = append(result, domain.Name)
+	} else {
+		var limit = 100
+		var searchResults []spyse.Domain
+
+		for offset := 0; int64(offset) < totalResults && int64(offset) < searchMethodResultsLimit; offset += limit {
+			if searchResults, err = svc.Search(ctx, subdomainsSearchParams.Query, limit, offset); err != nil {
+				if len(result) > 0 {
+					spyseErr, ok := err.(*spyse.ErrResponse)
+					if ok && spyseErr.Err.Code == spyse.CodeRequestsLimitReached {
+						break
+					}
+				}
+				log.Fatal(err.Error())
+			}
+
+			for _, domain := range searchResults {
+				result = append(result, domain.Name)
+			}
 		}
 	}
+
 	return result
 }
