@@ -50,30 +50,40 @@ func main() {
 func execute(userInput input.Input, subs map[string]output.Asset, dirs map[string]output.Asset, common []int) {
 
 	var mutex = &sync.Mutex{}
+	var commandProvided = false
 
 	// :::::::: REPORT SUBCOMMAND HANDLER ::::::::
 	if userInput.ReportTarget != "" {
+		commandProvided = true
 		ReportSubcommandHandler(userInput, mutex, dirs, subs)
 	}
 
 	// :::::::: DNS SUBCOMMAND HANDLER ::::::::
 	if userInput.DNSTarget != "" {
+		commandProvided = true
 		DNSSubcommandHandler(userInput)
 	}
 
 	// :::::::: SUBDOMAIN SUBCOMMAND HANDLER ::::::::
 	if userInput.SubdomainTarget != "" {
+		commandProvided = true
 		SubdomainSubcommandHandler(userInput, mutex, dirs, subs)
 	}
 
 	// :::::::: DIRECTORIES SUBCOMMAND HANDLER ::::::::
 	if userInput.DirTarget != "" {
+		commandProvided = true
 		DirSubcommandHandler(userInput, mutex, dirs, subs)
 	}
 
 	// :::::::: PORT SUBCOMMAND HANDLER ::::::::
 	if userInput.PortTarget != "" {
+		commandProvided = true
 		PortSubcommandHandler(userInput, common)
+	}
+
+	if !commandProvided {
+		output.Help()
 	}
 }
 

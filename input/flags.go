@@ -247,7 +247,7 @@ func ReadArgs() Input {
 		examplesCommand.Parse(os.Args[2:])
 	default:
 		output.Intro()
-		flag.PrintDefaults()
+		output.Help()
 		os.Exit(1)
 	}
 
