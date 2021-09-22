@@ -78,7 +78,8 @@ func AppendDir(scheme string, domain string, dir string) (string, string) {
 	return scheme + "://" + domain + "/" + dir + "/", scheme + "://" + domain + "/" + dir
 }
 
-//CleanSubdomainsOk >
+//CleanSubdomainsOk takes as input a slice of subdomains and remove
+//from the input slice all the 'wrong' subdomains.
 func CleanSubdomainsOk(target string, input []string) []string {
 	var result []string
 	for _, elem := range input {
@@ -87,7 +88,7 @@ func CleanSubdomainsOk(target string, input []string) []string {
 				splits := strings.Split(elem, "\n")
 				elem = splits[1]
 			}
-			result = append(result, elem)
+			result = append(result, CleanProtocol(elem))
 		}
 	}
 	return result
