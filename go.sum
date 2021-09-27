@@ -47,6 +47,8 @@ github.com/spyse-com/go-spyse v1.2.1 h1:Za/BnLnXWY/DqZZQm2V7NQ69aJ8FgFA8vBiipf3C
 github.com/spyse-com/go-spyse v1.2.1/go.mod h1:YzL0kTQIlCVTtP0Bna4I7p/sKF2rgY1cV32dq/L4oIw=
 github.com/spyse-com/go-spyse v1.2.3 h1:0qo0OP5kLv0equyvI7H5pAGuDFTiFON3zXLv4BSw1yY=
 github.com/spyse-com/go-spyse v1.2.3/go.mod h1:MTle/KKITU7B2oSlfpzHZPc2k+WH+n5YATh1eUje7po=
+github.com/spyse-com/go-spyse v1.2.4 h1:QEI+CHM2w4kCIkTihk0TQSIUupWueRhyBWf6L6LcYQY=
+github.com/spyse-com/go-spyse v1.2.4/go.mod h1:MTle/KKITU7B2oSlfpzHZPc2k+WH+n5YATh1eUje7po=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
