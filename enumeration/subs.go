@@ -38,7 +38,7 @@ import (
 
 //AsyncGet performs concurrent requests to the specified
 //urls and prints the results
-func AsyncGet(urls []string, ignore []string, outputFile string, subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
+func AsyncGet(protocol string, urls []string, ignore []string, outputFile string, subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
 	ignoreBool := len(ignore) != 0
 	var count int = 0
 	var total int = len(urls)
@@ -63,7 +63,7 @@ func AsyncGet(urls []string, ignore []string, outputFile string, subs map[string
 		go func(i int, domain string) {
 			defer wg.Done()
 			defer func() { <-limiter }()
-			resp, err := client.Get(domain)
+			resp, err := client.Get(protocol + "://" + domain)
 			count++
 			if err != nil {
 				return

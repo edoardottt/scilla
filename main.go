@@ -145,7 +145,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
-	enumeration.AsyncGet(strings1, userInput.ReportIgnoreSub, outputFile, subs, mutex, false)
+	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFile, subs, mutex, false)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
 			output.FooterHTML(outputFile)
@@ -283,7 +283,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
-		enumeration.AsyncGet(strings1, userInput.SubdomainIgnore, outputFile, subs, mutex, userInput.SubdomainPlain)
+		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFile, subs, mutex, userInput.SubdomainPlain)
 	} else {
 		for _, elem := range strings1 {
 			fmt.Println(elem)
