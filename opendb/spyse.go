@@ -48,7 +48,7 @@ func SpyseSubdomains(target string, accessToken string) []string {
 
 	svc := spyse.NewDomainService(client)
 
-	//Dot before the domain name is important because search fetch any domains that end with ".$target"
+	//Dot before the domain name is important because search fetch any domains ending with ".$target"
 	var searchDomain = "." + target
 	var subdomainsSearchParams spyse.QueryBuilder
 	var ctx = context.Background()
@@ -68,10 +68,10 @@ func SpyseSubdomains(target string, accessToken string) []string {
 		return result
 	}
 
-	// The default "Search" method returns only first 10 000 subdomains
-	// To obtain more than 10 000 subdomains the "Scroll" method should be using
+	// The default "Search" method returns only first 10 000 subdomains.
+	// To obtain more than 10 000 subdomains the "Scroll" method should be used.
 	// Note: The "Scroll" method is only available for "PRO" customers, so we need to check
-	// quota.IsScrollSearchEnabled param
+	// quota.IsScrollSearchEnabled parameter.
 	if totalResults > searchMethodResultsLimit && client.Account().IsScrollSearchEnabled {
 		var scrollID string
 		var scrollResults *spyse.DomainScrollResponse
