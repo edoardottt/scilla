@@ -76,7 +76,6 @@ func AsyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 			resp, err := client.Get(domain)
 			count++
 			if err != nil {
-				fmt.Println(err)
 				return
 			}
 			if ignoreBool {
