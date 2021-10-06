@@ -67,7 +67,7 @@ set GO111MODULE=on
 set CGO_ENABLED=0
 go build -o scilla.exe
 echo Create keys.yaml file and add your keys there if you need them.
-echo See https://github.com/edoardottt/scilla
+echo See https://github.com/edoardottt/scilla/wiki/Installation
 echo Done.
 EXIT /B 0
 
