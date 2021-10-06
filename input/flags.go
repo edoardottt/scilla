@@ -35,45 +35,47 @@ import (
 
 //Input struct contains the input parameters
 type Input struct {
-	ReportTarget      string
-	ReportWordDir     string
-	ReportWordSub     string
-	ReportOutput      string
-	ReportIgnoreDir   []string
-	ReportIgnoreSub   []string
-	ReportCrawlerDir  bool
-	ReportCrawlerSub  bool
-	ReportSubdomainDB bool
-	ReportCommon      bool
-	ReportRedirect    bool
-	ReportSpyse       bool
-	DNSTarget         string
-	DNSOutput         string
-	DNSPlain          bool
-	SubdomainTarget   string
-	SubdomainWord     string
-	SubdomainOutput   string
-	SubdomainIgnore   []string
-	SubdomainCrawler  bool
-	SubdomainDB       bool
-	SubdomainPlain    bool
-	SubdomainNoCheck  bool
-	SubdomainSpyse    bool
-	DirTarget         string
-	DirWord           string
-	DirOutput         string
-	DirIgnore         []string
-	DirCrawler        bool
-	DirPlain          bool
-	DirRedirect       bool
-	PortTarget        string
-	PortOutput        string
-	StartPort         int
-	EndPort           int
-	PortArrayBool     bool
-	PortsArray        []int
-	PortCommon        bool
-	PortPlain         bool
+	ReportTarget        string
+	ReportWordDir       string
+	ReportWordSub       string
+	ReportOutput        string
+	ReportIgnoreDir     []string
+	ReportIgnoreSub     []string
+	ReportCrawlerDir    bool
+	ReportCrawlerSub    bool
+	ReportSubdomainDB   bool
+	ReportCommon        bool
+	ReportRedirect      bool
+	ReportSpyse         bool
+	ReportVirusTotal    bool
+	DNSTarget           string
+	DNSOutput           string
+	DNSPlain            bool
+	SubdomainTarget     string
+	SubdomainWord       string
+	SubdomainOutput     string
+	SubdomainIgnore     []string
+	SubdomainCrawler    bool
+	SubdomainDB         bool
+	SubdomainPlain      bool
+	SubdomainNoCheck    bool
+	SubdomainSpyse      bool
+	SubdomainVirusTotal bool
+	DirTarget           string
+	DirWord             string
+	DirOutput           string
+	DirIgnore           []string
+	DirCrawler          bool
+	DirPlain            bool
+	DirRedirect         bool
+	PortTarget          string
+	PortOutput          string
+	StartPort           int
+	EndPort             int
+	PortArrayBool       bool
+	PortsArray          []int
+	PortCommon          bool
+	PortPlain           bool
 }
 
 //ReadArgs reads arguments/options from stdin
@@ -133,7 +135,10 @@ func ReadArgs() Input {
 	reportRedirectPtr := reportCommand.Bool("nr", false, "No follow redirects")
 
 	// report subcommand flag pointers
-	reportSpysePtr := reportCommand.Bool("spyse", false, "Spyse Access token")
+	reportSpysePtr := reportCommand.Bool("spyse", false, "Use Spyse as a subdomain source")
+
+	// report subcommand flag pointers
+	reportVirusTotalPtr := reportCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -171,6 +176,9 @@ func ReadArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainSpysePtr := subdomainCommand.Bool("spyse", false, "Use Spyse as a subdomain source")
+
+	// subdomains subcommand flag pointers
+	subdomainVirusTotalPtr := subdomainCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -255,7 +263,7 @@ func ReadArgs() Input {
 	if reportCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportOutputPtr, reportPortsPtr, reportCommonPtr,
-			reportSpysePtr, reportSubdomainDBPtr, StartPort, EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr)
+			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort, EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr)
 	}
 
 	// DNS subcommand
@@ -267,7 +275,7 @@ func ReadArgs() Input {
 	if subdomainCommand.Parsed() {
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr, subdomainOutputPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
-			subdomainCrawlerPtr, subdomainSpysePtr)
+			subdomainCrawlerPtr, subdomainSpysePtr, subdomainVirusTotalPtr)
 	}
 
 	// PORT subcommand
@@ -309,6 +317,7 @@ func ReadArgs() Input {
 		*reportCommonPtr,
 		*reportRedirectPtr,
 		*reportSpysePtr,
+		*reportVirusTotalPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*dnsPlainPtr,
@@ -321,6 +330,7 @@ func ReadArgs() Input {
 		*subdomainPlainPtr,
 		*subdomainNoCheckPtr,
 		*subdomainSpysePtr,
+		*subdomainVirusTotalPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputPtr,

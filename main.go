@@ -167,6 +167,31 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 				os.Exit(1)
 			}
 		}
+		if userInput.ReportVirusTotal {
+			filename := ""
+			if runtime.GOOS == "windows" {
+				filename = "keys.yaml"
+			} else { // linux
+				home, err := os.UserHomeDir()
+				if err != nil {
+					fmt.Println("Cannot read VirusTotal Api Key.")
+					os.Exit(1)
+				}
+				filename = home + "/.config/scilla/keys.yaml"
+			}
+			keys, err := input.ReadKeys(filename)
+			if keys.VirusTotal == "" {
+				fmt.Println("VirusTotal Api Key is empty.")
+				os.Exit(1)
+			}
+			if err == nil {
+				vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), keys.VirusTotal)
+				strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+			} else {
+				fmt.Println("Cannot read VirusTotal Api Key.")
+				os.Exit(1)
+			}
+		}
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
@@ -313,6 +338,31 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 				strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
 			} else {
 				fmt.Println("Cannot read Spyse Api Key.")
+				os.Exit(1)
+			}
+		}
+		if userInput.SubdomainVirusTotal {
+			filename := ""
+			if runtime.GOOS == "windows" {
+				filename = "keys.yaml"
+			} else { // linux
+				home, err := os.UserHomeDir()
+				if err != nil {
+					fmt.Println("Cannot read VirusTotal Api Key.")
+					os.Exit(1)
+				}
+				filename = home + "/.config/scilla/keys.yaml"
+			}
+			keys, err := input.ReadKeys(filename)
+			if keys.VirusTotal == "" {
+				fmt.Println("VirusTotal Api Key is empty.")
+				os.Exit(1)
+			}
+			if err == nil {
+				vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), keys.VirusTotal)
+				strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+			} else {
+				fmt.Println("Cannot read VirusTotal Api Key.")
 				os.Exit(1)
 			}
 		}

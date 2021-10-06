@@ -38,8 +38,9 @@ import (
 //ReportSubcommandCheckFlags >
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
 	reportOutputPtr *string, reportPortsPtr *string, reportCommonPtr *bool,
-	reportSpysePtr *bool, reportSubdomainDBPtr *bool, StartPort int,
-	EndPort int, reportIgnoreDirPtr *string, reportIgnoreSubPtr *string) (int, int, []int, bool, []string, []string) {
+	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
+	StartPort int, EndPort int, reportIgnoreDirPtr *string,
+	reportIgnoreSubPtr *string) (int, int, []int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -63,6 +64,12 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	if *reportSpysePtr && !*reportSubdomainDBPtr {
 		fmt.Println("You can't specify Spyse and not the Open Database option.")
 		fmt.Println("If you want to use Spyse Api, set also -db option.")
+		os.Exit(1)
+	}
+
+	if *reportVirusTotalPtr && !*reportSubdomainDBPtr {
+		fmt.Println("You can't specify VirusTotal and not the Open Database option.")
+		fmt.Println("If you want to use VirusTotal Api, set also -db option.")
 		os.Exit(1)
 	}
 
@@ -121,7 +128,7 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsO
 //SubdomainSubcommandCheckFlags >
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string, subdomainOutputPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
-	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool) []string {
+	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool, subdomainVirusTotalPtr *bool) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -158,6 +165,12 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	if *subdomainSpysePtr && !*subdomainDBPtr {
 		fmt.Println("You can't specify Spyse and not the Open Database option.")
 		fmt.Println("If you want to use Spyse Api, set also -db option.")
+		os.Exit(1)
+	}
+
+	if *subdomainVirusTotalPtr && !*subdomainDBPtr {
+		fmt.Println("You can't specify VirusTotal and not the Open Database option.")
+		fmt.Println("If you want to use VirusTotal Api, set also -db option.")
 		os.Exit(1)
 	}
 
