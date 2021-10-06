@@ -1,11 +1,20 @@
 #!/bin/bash
 
-if [[ ! -d "~/.config/scilla" ]]; then
-    mkdir -p ~/.config/scilla
+# check if HOME env var is set
+if [ -z $HOME ]; then
+    echo "Please set the HOME environment variable."
 fi
-if [[ ! -f "~/.config/scilla/keys.yaml" ]]; then
-    touch ~/.config/scilla/keys.yaml
+
+# check if scilla configuration folder exists 
+if [[ ! -d "$HOME/.config/scilla" ]]; then
+    mkdir -p $HOME/.config/scilla
+fi
+
+# check if scilla keys file exists 
+if [[ ! -e "$HOME/.config/scilla/keys.yaml" ]]; then
+    touch $HOME/.config/scilla/keys.yaml
     echo -n "Spyse: 
-VirusTotal: " > ~/.config/scilla/keys.yaml
+VirusTotal: " > $HOME/.config/scilla/keys.yaml
 fi
+
 echo "Configuration OK."
