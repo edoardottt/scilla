@@ -27,6 +27,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"runtime"
 	"sync"
 
 	"github.com/edoardottt/scilla/crawler"
@@ -140,8 +142,31 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), userInput.ReportSpyse)
-		strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+		if userInput.ReportSpyse {
+			filename := ""
+			if runtime.GOOS == "windows" {
+				filename = "keys.yaml"
+			} else { // linux
+				home, err := os.UserHomeDir()
+				if err != nil {
+					fmt.Println("Cannot read Spyse Api Key.")
+					os.Exit(1)
+				}
+				filename = home + "/.config/scilla/keys.yaml"
+			}
+			keys, err := input.ReadKeys(filename)
+			if keys.Spyse == "" {
+				fmt.Println("Spyse Api Key is empty.")
+				os.Exit(1)
+			}
+			if err == nil {
+				spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), keys.Spyse)
+				strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+			} else {
+				fmt.Println("Cannot read Spyse Api Key.")
+				os.Exit(1)
+			}
+		}
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
@@ -256,7 +281,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
-		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
+		/*sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(crtsh, strings1)
@@ -266,9 +291,31 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		if userInput.SubdomainSpyse != "" {
-			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), userInput.SubdomainSpyse)
-			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+		*/
+		if userInput.SubdomainSpyse {
+			filename := ""
+			if runtime.GOOS == "windows" {
+				filename = "keys.yaml"
+			} else { // linux
+				home, err := os.UserHomeDir()
+				if err != nil {
+					fmt.Println("Cannot read Spyse Api Key.")
+					os.Exit(1)
+				}
+				filename = home + "/.config/scilla/keys.yaml"
+			}
+			keys, err := input.ReadKeys(filename)
+			if keys.Spyse == "" {
+				fmt.Println("Spyse Api Key is empty.")
+				os.Exit(1)
+			}
+			if err == nil {
+				spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), keys.Spyse)
+				strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+			} else {
+				fmt.Println("Cannot read Spyse Api Key.")
+				os.Exit(1)
+			}
 		}
 	}
 	if outputFile != "" {
@@ -281,7 +328,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 			userInput.SubdomainIgnore, dirs, subs, outputFile, mutex, "sub", userInput.SubdomainPlain)
 	}
 	// be sure to not scan duplicate values
-	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
+	//strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
 		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFile, subs, mutex, userInput.SubdomainPlain)
 	} else {

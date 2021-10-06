@@ -46,7 +46,7 @@ type Input struct {
 	ReportSubdomainDB bool
 	ReportCommon      bool
 	ReportRedirect    bool
-	ReportSpyse       string
+	ReportSpyse       bool
 	DNSTarget         string
 	DNSOutput         string
 	DNSPlain          bool
@@ -58,7 +58,7 @@ type Input struct {
 	SubdomainDB       bool
 	SubdomainPlain    bool
 	SubdomainNoCheck  bool
-	SubdomainSpyse    string
+	SubdomainSpyse    bool
 	DirTarget         string
 	DirWord           string
 	DirOutput         string
@@ -133,7 +133,7 @@ func ReadArgs() Input {
 	reportRedirectPtr := reportCommand.Bool("nr", false, "No follow redirects")
 
 	// report subcommand flag pointers
-	reportSpysePtr := reportCommand.String("spyse", "", "Spyse Access token")
+	reportSpysePtr := reportCommand.Bool("spyse", false, "Spyse Access token")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -170,7 +170,7 @@ func ReadArgs() Input {
 	subdomainNoCheckPtr := subdomainCommand.Bool("no-check", false, "Don't check status codes for subdomains.")
 
 	// subdomains subcommand flag pointers
-	subdomainSpysePtr := subdomainCommand.String("spyse", "", "Spyse Access token")
+	subdomainSpysePtr := subdomainCommand.Bool("spyse", false, "Use Spyse as a subdomain source")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
