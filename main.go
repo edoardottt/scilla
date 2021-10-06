@@ -27,8 +27,6 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"runtime"
 	"sync"
 
 	"github.com/edoardottt/scilla/crawler"
@@ -132,6 +130,12 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
 	if userInput.ReportSubdomainDB {
+		if userInput.ReportSpyse {
+			_ = input.GetSpyseKey()
+		}
+		if userInput.ReportVirusTotal {
+			_ = input.GetVirusTotalKey()
+		}
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
@@ -143,54 +147,12 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
 		if userInput.ReportSpyse {
-			filename := ""
-			if runtime.GOOS == "windows" {
-				filename = "keys.yaml"
-			} else { // linux
-				home, err := os.UserHomeDir()
-				if err != nil {
-					fmt.Println("Cannot read Spyse Api Key.")
-					os.Exit(1)
-				}
-				filename = home + "/.config/scilla/keys.yaml"
-			}
-			keys, err := input.ReadKeys(filename)
-			if keys.Spyse == "" {
-				fmt.Println("Spyse Api Key is empty.")
-				os.Exit(1)
-			}
-			if err == nil {
-				spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), keys.Spyse)
-				strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
-			} else {
-				fmt.Println("Cannot read Spyse Api Key.")
-				os.Exit(1)
-			}
+			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
+			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
 		}
 		if userInput.ReportVirusTotal {
-			filename := ""
-			if runtime.GOOS == "windows" {
-				filename = "keys.yaml"
-			} else { // linux
-				home, err := os.UserHomeDir()
-				if err != nil {
-					fmt.Println("Cannot read VirusTotal Api Key.")
-					os.Exit(1)
-				}
-				filename = home + "/.config/scilla/keys.yaml"
-			}
-			keys, err := input.ReadKeys(filename)
-			if keys.VirusTotal == "" {
-				fmt.Println("VirusTotal Api Key is empty.")
-				os.Exit(1)
-			}
-			if err == nil {
-				vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), keys.VirusTotal)
-				strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
-			} else {
-				fmt.Println("Cannot read VirusTotal Api Key.")
-				os.Exit(1)
-			}
+			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
+			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
 		}
 	}
 	// be sure to not scan duplicate values
@@ -306,6 +268,12 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
+		if userInput.SubdomainSpyse {
+			_ = input.GetSpyseKey()
+		}
+		if userInput.SubdomainVirusTotal {
+			_ = input.GetVirusTotalKey()
+		}
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
@@ -317,55 +285,14 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
 		if userInput.SubdomainSpyse {
-			filename := ""
-			if runtime.GOOS == "windows" {
-				filename = "keys.yaml"
-			} else { // linux
-				home, err := os.UserHomeDir()
-				if err != nil {
-					fmt.Println("Cannot read Spyse Api Key.")
-					os.Exit(1)
-				}
-				filename = home + "/.config/scilla/keys.yaml"
-			}
-			keys, err := input.ReadKeys(filename)
-			if keys.Spyse == "" {
-				fmt.Println("Spyse Api Key is empty.")
-				os.Exit(1)
-			}
-			if err == nil {
-				spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), keys.Spyse)
-				strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
-			} else {
-				fmt.Println("Cannot read Spyse Api Key.")
-				os.Exit(1)
-			}
+			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
+			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
 		}
 		if userInput.SubdomainVirusTotal {
-			filename := ""
-			if runtime.GOOS == "windows" {
-				filename = "keys.yaml"
-			} else { // linux
-				home, err := os.UserHomeDir()
-				if err != nil {
-					fmt.Println("Cannot read VirusTotal Api Key.")
-					os.Exit(1)
-				}
-				filename = home + "/.config/scilla/keys.yaml"
-			}
-			keys, err := input.ReadKeys(filename)
-			if keys.VirusTotal == "" {
-				fmt.Println("VirusTotal Api Key is empty.")
-				os.Exit(1)
-			}
-			if err == nil {
-				vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), keys.VirusTotal)
-				strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
-			} else {
-				fmt.Println("Cannot read VirusTotal Api Key.")
-				os.Exit(1)
-			}
+			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
+			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
 		}
+
 	}
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {

@@ -28,6 +28,8 @@ package input
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
+	"runtime"
 
 	"gopkg.in/yaml.v3"
 )
@@ -52,4 +54,54 @@ func ReadKeys(filename string) (Keys, error) {
 	}
 
 	return c, nil
+}
+
+//GetSpyseKey >
+func GetSpyseKey() string {
+	filename := ""
+	if runtime.GOOS == "windows" {
+		filename = "keys.yaml"
+	} else { // linux
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println("Cannot read Spyse Api Key.")
+			os.Exit(1)
+		}
+		filename = home + "/.config/scilla/keys.yaml"
+	}
+	keys, err := ReadKeys(filename)
+	if keys.Spyse == "" {
+		fmt.Println("Spyse Api Key is empty.")
+		os.Exit(1)
+	}
+	if err != nil {
+		fmt.Println("Cannot read Spyse Api Key.")
+		os.Exit(1)
+	}
+	return keys.Spyse
+}
+
+//GetVirusTotalKey >
+func GetVirusTotalKey() string {
+	filename := ""
+	if runtime.GOOS == "windows" {
+		filename = "keys.yaml"
+	} else { // linux
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println("Cannot read VirusTotal Api Key.")
+			os.Exit(1)
+		}
+		filename = home + "/.config/scilla/keys.yaml"
+	}
+	keys, err := ReadKeys(filename)
+	if keys.VirusTotal == "" {
+		fmt.Println("VirusTotal Api Key is empty.")
+		os.Exit(1)
+	}
+	if err != nil {
+		fmt.Println("Cannot read VirusTotal Api Key.")
+		os.Exit(1)
+	}
+	return keys.VirusTotal
 }
