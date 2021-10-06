@@ -130,6 +130,12 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
 	if userInput.ReportSubdomainDB {
+		if userInput.ReportSpyse {
+			_ = input.GetSpyseKey()
+		}
+		if userInput.ReportVirusTotal {
+			_ = input.GetVirusTotalKey()
+		}
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
@@ -140,8 +146,14 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), userInput.ReportSpyse)
-		strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+		if userInput.ReportSpyse {
+			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
+			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
+		}
+		if userInput.ReportVirusTotal {
+			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
+			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+		}
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
@@ -256,6 +268,12 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
+		if userInput.SubdomainSpyse {
+			_ = input.GetSpyseKey()
+		}
+		if userInput.SubdomainVirusTotal {
+			_ = input.GetVirusTotalKey()
+		}
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
@@ -266,10 +284,15 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		if userInput.SubdomainSpyse != "" {
-			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), userInput.SubdomainSpyse)
+		if userInput.SubdomainSpyse {
+			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
 			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
 		}
+		if userInput.SubdomainVirusTotal {
+			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
+			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+		}
+
 	}
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {

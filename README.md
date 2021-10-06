@@ -84,16 +84,16 @@ You need [Go](https://golang.org/).
   - `cd scilla`
   - `go get`
   - `make linux` (to install)
+  - Edit the `~/.config/scilla/keys.yaml` file if you want to use api keys
   - `make unlinux` (to uninstall)
-
-  Or in one line: `git clone https://github.com/edoardottt/scilla.git; cd scilla; go get; make linux`
 
 - **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
   - `go get`
-  - `.\make.bat windows` (to install)    
+  - `.\make.bat windows` (to install)
+  - Create a `keys.yaml` file  if you want to use api keys 
   - `.\make.bat unwindows` (to uninstall)
 
 Get Started 🎉
@@ -120,7 +120,8 @@ usage: scilla subcommand { options }
                    [-db use also a public database]
                    [-plain Print only results]
                    [-db -no-check Don't check status codes for subdomains]
-                   [-db -spyse API-KEY Use Spyse as subdomains source]
+                   [-db -spyse Use Spyse as subdomains source]
+                   [-db -vt Use VirusTotal as subdomains source]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-o output-format]
@@ -140,7 +141,8 @@ usage: scilla subcommand { options }
                 [-db use also a public database for subdomains scanning]
                 [-common scan common ports]
                 [-nr No follow redirects]
-                [-db -spyse API-KEY Use Spyse as subdomains source]
+                [-db -spyse Use Spyse as subdomains source]
+                [-db -vt Use VirusTotal as subdomains source]
                 -target <target (URL/IP)> REQUIRED
        - help
        - examples
@@ -169,7 +171,8 @@ Examples 💡
     - `scilla subdomain -db -target target.domain`
     - `scilla subdomain -plain -target target.domain`
     - `scilla subdomain -db -no-check -target target.domain`
-    - `scilla subdomain -db -spyse API-KEY -target target.domain`
+    - `scilla subdomain -db -spyse -target target.domain`
+    - `scilla subdomain -db -vt -target target.domain`
 
 - Directories enumeration:
 
@@ -217,7 +220,8 @@ Examples 💡
     - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla report -common -target target.domain`
     - No follow redirects `scilla report -nr -target target.domain`
-    - Use Spyse as subdomains source `scilla report -db -spyse API-KEY -target target.domain`
+    - Use Spyse as subdomains source `scilla report -db -spyse -target target.domain`
+    - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
 
 Contributing 🛠
 -------
@@ -237,6 +241,7 @@ Special thanks to:
   - [Threatcrowd](https://www.threatcrowd.org/)
   - [Crt.sh](https://crt.sh/)
   - [Spyse](https://spyse.com/)
+  - [VirusTotal](https://www.virustotal.com/)
   - [tomnomnom](https://github.com/tomnomnom/assetfinder)
 
 **To do:**

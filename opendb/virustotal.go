@@ -23,26 +23,42 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package output
+package opendb
 
 import (
+	"encoding/json"
 	"fmt"
-
-	"github.com/fatih/color"
+	"net/http"
+	"time"
 )
 
-//Intro prints the banner when the program is started
-func Intro() {
-	banner1 := "                  _ _ _\n"
-	banner2 := "         ___  ___(_) | | __ _\n"
-	banner3 := "        / __|/ __| | | |/ _` |\n"
-	banner4 := "        \\__ \\ (__| | | | (_| |\n"
-	banner5 := "        |___/\\___|_|_|_|\\__,_| v1.2\n"
-	banner6 := " > github.com/edoardottt/scilla\n"
-	banner7 := " > edoardoottavianelli.it"
-	bannerPart1 := banner1 + banner2 + banner3 + banner4 + banner5
-	bannerPart2 := banner6 + banner7
-	color.Cyan("%s\n", bannerPart1)
-	fmt.Println(bannerPart2)
-	fmt.Println("========================================")
+//VirusTotalSubdomains retrieves from the below url some known subdomains.
+func VirusTotalSubdomains(target string, apikey string) []string {
+
+	var result []string
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
+	fetchURL := fmt.Sprintf(
+		"https://www.virustotal.com/vtapi/v2/domain/report?domain=%s&apikey=%s",
+		target, apikey,
+	)
+
+	wrapper := struct {
+		Subdomains []string `json:"subdomains"`
+	}{}
+
+	resp, err := client.Get(fetchURL)
+	if err != nil {
+		return result
+	}
+	defer resp.Body.Close()
+	dec := json.NewDecoder(resp.Body)
+
+	dec.Decode(&wrapper)
+	if err != nil {
+		return result
+	}
+	result = append(result, wrapper.Subdomains...)
+	return result
 }
