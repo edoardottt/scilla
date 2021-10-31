@@ -251,8 +251,6 @@ Special thanks to:
   - [ ] Tor support
   
   - [ ] Proxy support
-    
-  - [ ] XML output
   
   - [x] JSON output
 
