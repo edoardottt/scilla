@@ -41,6 +41,7 @@ func Help() {
 	fmt.Println("              [-o output-format]")
 	fmt.Println("              [-common scan common ports]")
 	fmt.Println("              [-plain Print only results]")
+	fmt.Println("              [-t Port scan timeout]")
 	fmt.Println("              -target <target (URL/IP)> REQUIRED")
 	fmt.Println("       - subdomain [-w wordlist]")
 	fmt.Println("                   [-o output-format]")

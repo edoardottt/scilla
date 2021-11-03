@@ -76,6 +76,7 @@ type Input struct {
 	PortsArray          []int
 	PortCommon          bool
 	PortPlain           bool
+	PortTimeout         int
 }
 
 //ReadArgs reads arguments/options from stdin
@@ -217,6 +218,9 @@ func ReadArgs() Input {
 	// port subcommand flag pointers
 	portPlainPtr := portCommand.Bool("plain", false, "Print only results")
 
+	// port subcommand flag pointers
+	portTimeoutPtr := portCommand.Int("t", 3, "Port scan timeout")
+
 	// Default ports
 	StartPort := 1
 	EndPort := 65535
@@ -281,7 +285,7 @@ func ReadArgs() Input {
 	// PORT subcommand
 	if portCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
-			portCommonPtr, StartPort, EndPort, portOutputPtr)
+			portCommonPtr, StartPort, EndPort, portOutputPtr, portTimeoutPtr)
 	}
 
 	// DIR subcommand
@@ -346,6 +350,7 @@ func ReadArgs() Input {
 		portsArray,
 		*portCommonPtr,
 		*portPlainPtr,
+		*portTimeoutPtr,
 	}
 	return result
 }

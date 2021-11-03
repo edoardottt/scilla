@@ -53,9 +53,8 @@ func CommonPorts() []int {
 }
 
 //IsOpenPort scans if a port is open
-func IsOpenPort(host string, port string) bool {
-	timeout := 3 * time.Second
-	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), timeout)
+func IsOpenPort(host string, port string, timeout int) bool {
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), time.Duration(timeout)*time.Second)
 	if err != nil {
 		return false
 	}
@@ -68,7 +67,9 @@ func IsOpenPort(host string, port string) bool {
 
 //AsyncPort performs concurrent requests to the specified
 //ports range and, if someone is open it prints the results
-func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int, host string, outputFile string, common bool, commonPorts []int, plain bool) {
+func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
+	EndingPort int, host string, outputFile string, common bool,
+	commonPorts []int, plain bool, timeout int) {
 	var count int = 0
 	var total int = (EndingPort - StartingPort) + 1
 	if portsArrayBool {
@@ -104,7 +105,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		go func(portStr string, host string) {
 			defer func() { <-limiter }()
 			defer wg.Done()
-			resp := IsOpenPort(host, portStr)
+			resp := IsOpenPort(host, portStr, timeout)
 			count++
 			if resp {
 				if !plain {

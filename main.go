@@ -170,7 +170,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	fmt.Println("=============== PORT SCANNING ===============")
 
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
-		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false)
+		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.PortTimeout)
 
 	fmt.Println("=============== DNS SCANNING ===============")
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)
@@ -406,7 +406,7 @@ func PortSubcommandHandler(userInput input.Input, common []int) {
 		fmt.Println("=============== PORT SCANNING ===============")
 	}
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
-		target, outputFile, userInput.PortCommon, common, userInput.PortPlain)
+		target, outputFile, userInput.PortCommon, common, userInput.PortPlain, userInput.PortTimeout)
 
 	if userInput.PortOutput != "" {
 		if outputFile[len(outputFile)-4:] == "html" {

@@ -184,7 +184,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 
 //PortSubcommandCheckFlags >
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
-	portCommonPtr *bool, StartPort int, EndPort int, portOutputPtr *string) (int, int, []int, bool) {
+	portCommonPtr *bool, StartPort int, EndPort int, portOutputPtr *string, portTimeout *int) (int, int, []int, bool) {
 	// Required Flags
 	if *portTargetPtr == "" {
 		portCommand.PrintDefaults()
@@ -222,6 +222,10 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 	}
 	if !output.OutputFormatIsOk(*portOutputPtr) {
 		fmt.Println("The output format is not valid.")
+		os.Exit(1)
+	}
+	if *portTimeout < 1 || *portTimeout > 100 {
+		fmt.Println("Port timeout must be an integer between 1 and 100.")
 		os.Exit(1)
 	}
 
