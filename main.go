@@ -170,7 +170,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	fmt.Println("=============== PORT SCANNING ===============")
 
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
-		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.PortTimeout)
+		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.ReportTimeoutPort)
 
 	fmt.Println("=============== DNS SCANNING ===============")
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)

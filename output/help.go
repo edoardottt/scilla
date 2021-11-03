@@ -73,6 +73,7 @@ func Help() {
 	fmt.Println("                [-nr No follow redirects]")
 	fmt.Println("                [-db -spyse Use Spyse as subdomains source]")
 	fmt.Println("                [-db -vt Use VirusTotal as subdomains source]")
+	fmt.Println("                [-tp Port scan timeout]")
 	fmt.Println("                -target <target (URL/IP)> REQUIRED")
 	fmt.Println("       - help")
 	fmt.Println("       - examples")

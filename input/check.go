@@ -40,7 +40,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	reportOutputPtr *string, reportPortsPtr *string, reportCommonPtr *bool,
 	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	StartPort int, EndPort int, reportIgnoreDirPtr *string,
-	reportIgnoreSubPtr *string) (int, int, []int, bool, []string, []string) {
+	reportIgnoreSubPtr *string, reportTimeoutPort *int) (int, int, []int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -102,6 +102,10 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	if *reportIgnoreSubPtr != "" {
 		toBeIgnored := string(*reportIgnoreSubPtr)
 		reportIgnoreSub = utils.CheckIgnore(toBeIgnored)
+	}
+	if *reportTimeoutPort < 1 || *reportTimeoutPort > 100 {
+		fmt.Println("Port Scan timeout must be an integer between 1 and 100.")
+		os.Exit(1)
 	}
 
 	return StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub
@@ -225,7 +229,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		os.Exit(1)
 	}
 	if *portTimeout < 1 || *portTimeout > 100 {
-		fmt.Println("Port timeout must be an integer between 1 and 100.")
+		fmt.Println("Port Scan timeout must be an integer between 1 and 100.")
 		os.Exit(1)
 	}
 

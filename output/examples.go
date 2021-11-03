@@ -91,5 +91,6 @@ func Examples() {
 	fmt.Println("		- scilla report -nr -target target.domain")
 	fmt.Println("		- scilla report -db -spyse -target target.domain")
 	fmt.Println("		- scilla report -db -vt -target target.domain")
+	fmt.Println("		- scilla report -tp 2 -target target.domain")
 	fmt.Println("")
 }

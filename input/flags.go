@@ -48,6 +48,7 @@ type Input struct {
 	ReportRedirect      bool
 	ReportSpyse         bool
 	ReportVirusTotal    bool
+	ReportTimeoutPort   int
 	DNSTarget           string
 	DNSOutput           string
 	DNSPlain            bool
@@ -140,6 +141,9 @@ func ReadArgs() Input {
 
 	// report subcommand flag pointers
 	reportVirusTotalPtr := reportCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
+
+	// report subcommand flag pointers
+	reportTimeoutPortPtr := reportCommand.Int("tp", 3, "Scan Port timeout")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -267,7 +271,8 @@ func ReadArgs() Input {
 	if reportCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportOutputPtr, reportPortsPtr, reportCommonPtr,
-			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort, EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr)
+			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
+			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr)
 	}
 
 	// DNS subcommand
@@ -322,6 +327,7 @@ func ReadArgs() Input {
 		*reportRedirectPtr,
 		*reportSpysePtr,
 		*reportVirusTotalPtr,
+		*reportTimeoutPortPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*dnsPlainPtr,
