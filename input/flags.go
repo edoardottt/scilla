@@ -48,6 +48,7 @@ type Input struct {
 	ReportRedirect      bool
 	ReportSpyse         bool
 	ReportVirusTotal    bool
+	ReportTimeoutPort   int
 	DNSTarget           string
 	DNSOutput           string
 	DNSPlain            bool
@@ -76,6 +77,7 @@ type Input struct {
 	PortsArray          []int
 	PortCommon          bool
 	PortPlain           bool
+	PortTimeout         int
 }
 
 //ReadArgs reads arguments/options from stdin
@@ -139,6 +141,9 @@ func ReadArgs() Input {
 
 	// report subcommand flag pointers
 	reportVirusTotalPtr := reportCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
+
+	// report subcommand flag pointers
+	reportTimeoutPortPtr := reportCommand.Int("tp", 3, "Scan Port timeout")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -217,6 +222,9 @@ func ReadArgs() Input {
 	// port subcommand flag pointers
 	portPlainPtr := portCommand.Bool("plain", false, "Print only results")
 
+	// port subcommand flag pointers
+	portTimeoutPtr := portCommand.Int("t", 3, "Port scan timeout")
+
 	// Default ports
 	StartPort := 1
 	EndPort := 65535
@@ -263,7 +271,8 @@ func ReadArgs() Input {
 	if reportCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportOutputPtr, reportPortsPtr, reportCommonPtr,
-			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort, EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr)
+			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
+			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr)
 	}
 
 	// DNS subcommand
@@ -281,7 +290,7 @@ func ReadArgs() Input {
 	// PORT subcommand
 	if portCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
-			portCommonPtr, StartPort, EndPort, portOutputPtr)
+			portCommonPtr, StartPort, EndPort, portOutputPtr, portTimeoutPtr)
 	}
 
 	// DIR subcommand
@@ -318,6 +327,7 @@ func ReadArgs() Input {
 		*reportRedirectPtr,
 		*reportSpysePtr,
 		*reportVirusTotalPtr,
+		*reportTimeoutPortPtr,
 		*dnsTargetPtr,
 		*dnsOutputPtr,
 		*dnsPlainPtr,
@@ -346,6 +356,7 @@ func ReadArgs() Input {
 		portsArray,
 		*portCommonPtr,
 		*portPlainPtr,
+		*portTimeoutPtr,
 	}
 	return result
 }

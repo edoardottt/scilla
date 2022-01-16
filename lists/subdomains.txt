@@ -149,10 +149,8 @@ survey
 s
 www.mail
 www.new
-c-n7k-v03-01.rz
 data
 docs
-c-n7k-n04-01.rz
 ad
 legacy
 router
@@ -6895,7 +6893,6 @@ atest
 ns69
 rtpqaim
 fair
-c-asa5580-v03-01.rz
 s42
 beyond
 demoshop
@@ -9724,10 +9721,8 @@ hartford
 rwxy
 i19
 edu1
-c-asa5550-v03-03.rz
 sita
 osi
-c-asa5580-v03-02.rz
 autoconfig.director
 massive
 autodiscover.director
@@ -12269,9 +12264,7 @@ epro
 belize
 samer
 ripe
-c-asa5550-v03-01.rz
 ortho
-c-asa5550-v03-02.rz
 barrie
 ikaros
 imobiliare

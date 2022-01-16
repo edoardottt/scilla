@@ -59,6 +59,7 @@ func Examples() {
 	fmt.Println("		- scilla port -p 21,25,80 -target target.domain")
 	fmt.Println("		- scilla port -common -target target.domain")
 	fmt.Println("		- scilla port -plain -target target.domain")
+	fmt.Println("		- scilla port -t 2 -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla dir -target target.domain")
 	fmt.Println("		- scilla dir -o txt -target target.domain")
@@ -90,5 +91,6 @@ func Examples() {
 	fmt.Println("		- scilla report -nr -target target.domain")
 	fmt.Println("		- scilla report -db -spyse -target target.domain")
 	fmt.Println("		- scilla report -db -vt -target target.domain")
+	fmt.Println("		- scilla report -tp 2 -target target.domain")
 	fmt.Println("")
 }
