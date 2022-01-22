@@ -15,6 +15,7 @@ if [[ ! -e "$HOME/.config/scilla/keys.yaml" ]]; then
     touch $HOME/.config/scilla/keys.yaml
     echo -n "Spyse: 
 VirusTotal: " > $HOME/.config/scilla/keys.yaml
+    echo "Remember to add your keys in $HOME/.config/scilla/keys.yaml!"
 fi
 
 echo "Configuration OK."
