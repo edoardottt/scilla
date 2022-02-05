@@ -40,7 +40,7 @@ func CheckIgnore(input string) []string {
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
 		if len(elem) != 3 {
-			fmt.Println("The status code you entered is invalid (It should consist of three characters).")
+			fmt.Println("The status code you entered is invalid (It should consist of three digits).")
 			os.Exit(1)
 		}
 		if ignoreInt, err := strconv.Atoi(elem); err == nil {
