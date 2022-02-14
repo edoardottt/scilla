@@ -32,7 +32,9 @@ import (
 	"strings"
 )
 
-//CheckIgnore checks the inputted status code to be ignored
+//CheckIgnore checks the inputted status code(s) to be ignored.
+//It can be a list e.g. 301,302,400,404,500
+//It can be a 'class' of codes e.g. 3**
 func CheckIgnore(input string) []string {
 	result := []string{}
 	temp := strings.Split(input, ",")
@@ -67,7 +69,7 @@ func CheckIgnore(input string) []string {
 }
 
 //DeleteUnusefulIgnoreresponses removes from to-be-ignored arrays
-//the responses included yet with * as classes
+//the responses already included with * as classes
 func DeleteUnusefulIgnoreresponses(input []string) []string {
 	var result []string
 	toberemoved := []string{}
