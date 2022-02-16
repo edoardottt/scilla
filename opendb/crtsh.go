@@ -38,7 +38,7 @@ type CrtShResult struct {
 	Name string `json:"name_value"`
 }
 
-//CrtshSubdomains retrieves from the below url some known subdomains.
+//CrtshSubdomains retrieves from the url below some known subdomains.
 func CrtshSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
