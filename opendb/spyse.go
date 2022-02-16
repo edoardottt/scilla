@@ -36,7 +36,7 @@ const searchMethodResultsLimit = 10000
 const defaultScrollResultsLimit = 20000
 
 //SpyseSubdomains appends to the subdomains in the list
-//thr subdomains found with the Spyse service.
+//the subdomains found with the Spyse service.
 func SpyseSubdomains(target string, accessToken string) []string {
 
 	var result []string
@@ -119,6 +119,5 @@ func SpyseSubdomains(target string, accessToken string) []string {
 			}
 		}
 	}
-
 	return result
 }
