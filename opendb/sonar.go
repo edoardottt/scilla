@@ -32,7 +32,7 @@ import (
 	"time"
 )
 
-//SonarSubdomains retrieves from the below url some known subdomains.
+//SonarSubdomains retrieves from the url below some known subdomains.
 func SonarSubdomains(target string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
