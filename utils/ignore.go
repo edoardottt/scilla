@@ -33,6 +33,7 @@ import (
 )
 
 //CheckIgnore checks the inputted status code to be ignored
+// - 404, 3** ...
 func CheckIgnore(input string) []string {
 	result := []string{}
 	temp := strings.Split(input, ",")

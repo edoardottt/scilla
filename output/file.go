@@ -32,7 +32,7 @@ import (
 	"strings"
 )
 
-//CreateOutputFolder >
+//CreateOutputFolder creates the output folder (output-scilla)
 func CreateOutputFolder() {
 	//Create a folder/directory at a full qualified path
 	err := os.Mkdir("output-scilla", 0755)
@@ -42,7 +42,7 @@ func CreateOutputFolder() {
 	}
 }
 
-//CreateOutputFile >
+//CreateOutputFile creates the output file (txt/json/html)
 func CreateOutputFile(target string, subcommand string, format string) string {
 	target = ReplaceBadCharacterOutput(target)
 	filename := "output-scilla" + "/" + target + "." + subcommand + "." + format
@@ -86,7 +86,7 @@ func CreateOutputFile(target string, subcommand string, format string) string {
 	return filename
 }
 
-//AppendWhere (html or txt file)
+//AppendWhere checks which format the output should be (html, json or txt)
 func AppendWhere(what string, status string, key string, record string, outputFile string) {
 	if outputFile[len(outputFile)-4:] == "html" {
 		AppendOutputToHTML(what, status, outputFile)

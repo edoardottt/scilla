@@ -33,7 +33,7 @@ import (
 	"time"
 )
 
-//CrtShResult >
+//CrtShResult is the struct containing crt.sh results
 type CrtShResult struct {
 	Name string `json:"name_value"`
 }

@@ -27,7 +27,7 @@ package utils
 
 import "net/http"
 
-//HttpGet >
+//HttpGet performs a GET request and return the status
 func HttpGet(input string) string {
 	resp, err := http.Get(input)
 	if err != nil {

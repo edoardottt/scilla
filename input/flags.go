@@ -33,7 +33,7 @@ import (
 	"github.com/edoardottt/scilla/output"
 )
 
-//Input struct contains the input parameters
+//Input is the struct containing the input parameters
 type Input struct {
 	ReportTarget        string
 	ReportWordDir       string

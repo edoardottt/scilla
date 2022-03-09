@@ -39,7 +39,7 @@ type OutputFile struct {
 	Dir       []string            `json:"dir,omitempty"`
 }
 
-//AppendOutputToJSON >
+//AppendOutputToJSON appends a (json) row in the JSON output file
 func AppendOutputToJSON(output string, key string, record string, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
