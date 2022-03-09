@@ -34,7 +34,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReadDictSubs scan all the possible subdomains from file
+//ReadDictSubs reads all the possible subdomains from file
 func ReadDictSubs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {

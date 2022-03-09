@@ -32,6 +32,7 @@ import (
 	"strings"
 )
 
+
 //CheckIgnore checks the inputted status code(s) to be ignored.
 //It can be a list e.g. 301,302,400,404,500
 //It can be a 'class' of codes e.g. 3**

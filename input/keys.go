@@ -56,7 +56,7 @@ func ReadKeys(filename string) (Keys, error) {
 	return c, nil
 }
 
-//GetSpyseKey >
+//GetSpyseKey reads the Spyse key
 func GetSpyseKey() string {
 	filename := ""
 	if runtime.GOOS == "windows" {
@@ -81,7 +81,7 @@ func GetSpyseKey() string {
 	return keys.Spyse
 }
 
-//GetVirusTotalKey >
+//GetVirusTotalKey reads the Virustotal key
 func GetVirusTotalKey() string {
 	filename := ""
 	if runtime.GOOS == "windows" {

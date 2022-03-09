@@ -25,7 +25,8 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package utils
 
-//Percentage calculates the percentage (result: float64)
+
+//Percentage calculates the % done/total
 func Percentage(done, total int) float64 {
 	result := (float64(done) / float64(total)) * 100
 	return result

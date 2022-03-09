@@ -33,7 +33,8 @@ type Asset struct {
 	Printed bool
 }
 
-//OutputFormatIsOk (txt or html)
+//OutputFormatIsOk checks if the specified output format is Ok
+//(txt, html or json)
 func OutputFormatIsOk(input string) bool {
 	if input == "" {
 		return true
@@ -48,7 +49,7 @@ func OutputFormatIsOk(input string) bool {
 	return false
 }
 
-//ReplaceBadCharacterOutput >
+//ReplaceBadCharacterOutput replaces slashes with dots
 func ReplaceBadCharacterOutput(input string) string {
 	result := strings.ReplaceAll(input, "/", "-")
 	return result

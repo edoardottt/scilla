@@ -35,7 +35,8 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReportSubcommandCheckFlags >
+//ReportSubcommandCheckFlags performs all the necessary checks on the flags
+//for the report subcommand
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
 	reportOutputPtr *string, reportPortsPtr *string, reportCommonPtr *bool,
 	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
@@ -111,7 +112,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	return StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub
 }
 
-//DNSSubcommandCheckFlags >
+//DNSSubcommandCheckFlags performs all the necessary checks on the flags
+//for the dns subcommand
 func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsOutputPtr *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
@@ -129,7 +131,8 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsO
 	}
 }
 
-//SubdomainSubcommandCheckFlags >
+//SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
+//for the subdomain subcommand
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string, subdomainOutputPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
 	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool, subdomainVirusTotalPtr *bool) []string {
@@ -186,7 +189,8 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	return subdomainIgnore
 }
 
-//PortSubcommandCheckFlags >
+//PortSubcommandCheckFlags performs all the necessary checks on the flags
+//for the port subcommand
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
 	portCommonPtr *bool, StartPort int, EndPort int, portOutputPtr *string, portTimeout *int) (int, int, []int, bool) {
 	// Required Flags
@@ -236,7 +240,8 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 	return StartPort, EndPort, portsArray, portArrayBool
 }
 
-//DirSubcommandCheckFlags >
+//DirSubcommandCheckFlags performs all the necessary checks on the flags
+//for the dir subcommand
 func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string, dirOutputPtr *string,
 	dirIgnorePtr *string) []string {
 	// Required Flags

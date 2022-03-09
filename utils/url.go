@@ -128,8 +128,7 @@ func RetrieveHost(input string) string {
 	return u.Host
 }
 
-//GetRootHost returns the second level domain of the 
-//string as input
+//GetRootHost returns the root host (domain.tld)
 func GetRootHost(input string) string {
 	_, err := url.Parse(input)
 	if err != nil {
