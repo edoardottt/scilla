@@ -33,12 +33,13 @@ import (
 )
 
 //ProtocolExists checks if the protocol is present in the URL
+//taken as input
 func ProtocolExists(target string) bool {
 	res := strings.Index(target, "://")
 	return res >= 0
 }
 
-//CleanProtocol remove from the url the protocol scheme
+//CleanProtocol removes the protocol from the url
 func CleanProtocol(target string) string {
 	res := strings.Index(target, "://")
 	if res >= 0 {
@@ -59,7 +60,7 @@ func CleanURL(input string) string {
 	return u.Scheme + "://" + u.Host + u.Path
 }
 
-//IsURL checks if the inputted Url is valid
+//IsURL checks if the inputted url is valid
 func IsURL(str string) bool {
 	if !ProtocolExists(str) {
 		str = "http://" + str
@@ -118,7 +119,7 @@ func AbsoluteURL(protocol string, target string, path string) string {
 }
 
 //RetrieveHost takes as input a URL and returns
-// as output the domain
+//as output the domain (host)
 func RetrieveHost(input string) string {
 	u, err := url.Parse(input)
 	if err != nil {

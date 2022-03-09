@@ -25,7 +25,8 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package utils
 
-//RemoveDuplicateValues from a slice of string
+//RemoveDuplicateValues removes from a slice of string the 
+//duplicate values
 func RemoveDuplicateValues(strSlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}
@@ -38,7 +39,8 @@ func RemoveDuplicateValues(strSlice []string) []string {
 	return list
 }
 
-//Difference A - B
+//Difference computes the difference between
+//two slices of string (A - B)
 func Difference(a, b []string) (diff []string) {
 	m := make(map[string]bool)
 	for _, item := range b {

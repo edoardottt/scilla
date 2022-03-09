@@ -47,7 +47,9 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 	return result
 }
 
-//CleanSubdomainsOk checks if the subdomain is valid
+//CleanSubdomainsOk checks if the subdomains found are well formatted:
+// - contain ".domain.tld"
+// - ".domain.tld" at the end
 func CleanSubdomainsOk(target string, input []string) []string {
 	var result []string
 	for _, elem := range input {

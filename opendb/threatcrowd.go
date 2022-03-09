@@ -31,7 +31,7 @@ import (
 	"time"
 )
 
-//ThreatcrowdSubdomains retrieves from the below url some known subdomains.
+//ThreatcrowdSubdomains retrieves from the url below some known subdomains.
 func ThreatcrowdSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
