@@ -21,12 +21,13 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Author:      edoardottt, https://www.edoardoottavianelli.it
 
+	@License: https://github.com/edoardottt/scilla/blob/main/LICENSE
+
 */
 
 package utils
 
 import "net/http"
-
 
 //HttpGet performs a GET request (HTTP)
 //and returns ERROR if it's not possible,
