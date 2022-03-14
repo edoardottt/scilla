@@ -21,11 +21,13 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Author:      edoardottt, https://www.edoardoottavianelli.it
 
+	@License: https://github.com/edoardottt/scilla/blob/main/LICENSE
+
 */
 
 package utils
 
-//RemoveDuplicateValues removes from a slice of string the 
+//RemoveDuplicateValues removes from a slice of string the
 //duplicate values
 func RemoveDuplicateValues(strSlice []string) []string {
 	keys := make(map[string]bool)

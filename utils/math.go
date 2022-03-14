@@ -21,10 +21,11 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Author:      edoardottt, https://www.edoardoottavianelli.it
 
+	@License: https://github.com/edoardottt/scilla/blob/main/LICENSE
+
 */
 
 package utils
-
 
 //Percentage calculates the % done/total
 func Percentage(done, total int) float64 {
