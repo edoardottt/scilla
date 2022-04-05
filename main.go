@@ -105,7 +105,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	var targetIP string
 	fmt.Printf("target: %s\n", target)
-	fmt.Println("=============== FULL REPORT ===============")
+	fmt.Println("================ FULL REPORT ========================")
 	outputFile := ""
 	if userInput.ReportOutput != "" {
 		outputFile = output.CreateOutputFile(userInput.ReportTarget, "report", userInput.ReportOutput)
@@ -113,7 +113,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 			output.BannerHTML(userInput.ReportTarget, outputFile)
 		}
 	}
-	fmt.Println("=============== SCANNING SUBDOMAINS ===============")
+	fmt.Println("================ SCANNING SUBDOMAINS ================")
 	var strings1 []string
 	// change from ip to Hostname
 	if utils.IsIP(target) {
@@ -169,14 +169,14 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	if targetIP != "" {
 		target = targetIP
 	}
-	fmt.Println("=============== SCANNING PORTS ===============")
+	fmt.Println("================ SCANNING PORTS =====================")
 
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
 		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.ReportTimeoutPort)
 
-	fmt.Println("=============== SCANNING DNS ===============")
+	fmt.Println("================ SCANNING DNS =======================")
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)
-	fmt.Println("=============== SCANNING DIRECTORIES ===============")
+	fmt.Println("================ SCANNING DIRECTORIES ===============")
 	var strings2 = input.CreateUrls(userInput.ReportWordDir, protocolTemp, utils.CleanProtocol(target))
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
@@ -215,7 +215,7 @@ func DNSSubcommandHandler(userInput input.Input) {
 	}
 	if !userInput.DNSPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== SCANNING DNS ===============")
+		fmt.Println("================ SCANNING DNS =======================")
 	}
 	outputFile := ""
 	if userInput.DNSOutput != "" {
@@ -256,7 +256,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	if !userInput.SubdomainPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== SCANNING SUBDOMAINS ===============")
+		fmt.Println("================ SCANNING SUBDOMAINS ================")
 	}
 	outputFile := ""
 	if userInput.SubdomainOutput != "" {
@@ -350,7 +350,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	}
 	if !userInput.DirPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== SCANNING DIRECTORIES ===============")
+		fmt.Println("================ SCANNING DIRECTORIES ===============")
 	}
 	target = utils.CleanProtocol(target)
 	outputFile := ""
@@ -405,7 +405,7 @@ func PortSubcommandHandler(userInput input.Input, common []int) {
 	}
 	if !userInput.PortPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== SCANNING PORTS ===============")
+		fmt.Println("================ SCANNING PORTS =====================")
 	}
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
 		target, outputFile, userInput.PortCommon, common, userInput.PortPlain, userInput.PortTimeout)
