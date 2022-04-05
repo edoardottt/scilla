@@ -92,4 +92,6 @@ func AsyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 	output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
 	wg.Wait()
 	output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
+	fmt.Fprint(os.Stdout, "\r \r")
+	fmt.Println()
 }

@@ -107,7 +107,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("PORT SCANNING", outputFile)
+			output.HeaderHTML("PORT ENUMERATION", outputFile)
 		}
 	}
 	ports := []int{}
@@ -151,6 +151,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
 	}
 	wg.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
+	fmt.Println()
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
 			output.FooterHTML(outputFile)

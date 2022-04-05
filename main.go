@@ -113,7 +113,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 			output.BannerHTML(userInput.ReportTarget, outputFile)
 		}
 	}
-	fmt.Println("=============== SUBDOMAINS SCANNING ===============")
+	fmt.Println("=============== SCANNING SUBDOMAINS ===============")
 	var strings1 []string
 	// change from ip to Hostname
 	if utils.IsIP(target) {
@@ -123,7 +123,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	target = utils.CleanProtocol(target)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("SUBDOMAIN SCANNING", outputFile)
+			output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFile)
 		}
 	}
 	if userInput.ReportCrawlerSub {
@@ -169,18 +169,18 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	if targetIP != "" {
 		target = targetIP
 	}
-	fmt.Println("=============== PORT SCANNING ===============")
+	fmt.Println("=============== SCANNING PORTS ===============")
 
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
 		utils.CleanProtocol(target), outputFile, userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.ReportTimeoutPort)
 
-	fmt.Println("=============== DNS SCANNING ===============")
+	fmt.Println("=============== SCANNING DNS ===============")
 	enumeration.LookupDNS(utils.CleanProtocol(target), outputFile, false)
-	fmt.Println("=============== DIRECTORIES SCANNING ===============")
+	fmt.Println("=============== SCANNING DIRECTORIES ===============")
 	var strings2 = input.CreateUrls(userInput.ReportWordDir, protocolTemp, utils.CleanProtocol(target))
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("DIRECTORY SCANNING", outputFile)
+			output.HeaderHTML("DIRECTORIES ENUMERATION", outputFile)
 		}
 	}
 	if userInput.ReportCrawlerDir {
@@ -215,7 +215,7 @@ func DNSSubcommandHandler(userInput input.Input) {
 	}
 	if !userInput.DNSPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== DNS SCANNING ===============")
+		fmt.Println("=============== SCANNING DNS ===============")
 	}
 	outputFile := ""
 	if userInput.DNSOutput != "" {
@@ -256,7 +256,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	if !userInput.SubdomainPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== SUBDOMAINS SCANNING ===============")
+		fmt.Println("=============== SCANNING SUBDOMAINS ===============")
 	}
 	outputFile := ""
 	if userInput.SubdomainOutput != "" {
@@ -298,7 +298,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("SUBDOMAIN SCANNING", outputFile)
+			output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFile)
 		}
 	}
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
@@ -350,7 +350,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	}
 	if !userInput.DirPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== DIRECTORIES SCANNING ===============")
+		fmt.Println("=============== SCANNING DIRECTORIES ===============")
 	}
 	target = utils.CleanProtocol(target)
 	outputFile := ""
@@ -364,7 +364,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	var strings2 = input.CreateUrls(userInput.DirWord, protocolTemp, target)
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("DIRECTORY SCANNING", outputFile)
+			output.HeaderHTML("DIRECTORIES ENUMERATION", outputFile)
 		}
 	}
 	if userInput.DirCrawler {
@@ -405,7 +405,7 @@ func PortSubcommandHandler(userInput input.Input, common []int) {
 	}
 	if !userInput.PortPlain {
 		fmt.Printf("target: %s\n", target)
-		fmt.Println("=============== PORT SCANNING ===============")
+		fmt.Println("=============== SCANNING PORTS ===============")
 	}
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
 		target, outputFile, userInput.PortCommon, common, userInput.PortPlain, userInput.PortTimeout)

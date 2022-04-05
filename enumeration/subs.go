@@ -82,4 +82,6 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFile string
 	output.PrintSubs(subs, ignore, outputFile, mutex, plain)
 	wg.Wait()
 	output.PrintSubs(subs, ignore, outputFile, mutex, plain)
+	fmt.Fprint(os.Stdout, "\r \r")
+	fmt.Println()
 }
