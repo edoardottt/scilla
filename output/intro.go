@@ -46,5 +46,5 @@ func Intro() {
 	bannerPart2 := banner6 + banner7
 	color.Cyan("%s\n", bannerPart1)
 	fmt.Println(bannerPart2)
-	fmt.Println("========================================")
+	fmt.Println("=====================================================")
 }

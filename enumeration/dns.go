@@ -40,7 +40,7 @@ import (
 func LookupDNS(domain string, outputFile string, plain bool) {
 	if outputFile != "" {
 		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("DNS SCANNING", outputFile)
+			output.HeaderHTML("DNS ENUMERATION", outputFile)
 		}
 	}
 	// -- A RECORDS --
@@ -139,4 +139,5 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 			output.FooterHTML(outputFile)
 		}
 	}
+	fmt.Println()
 }
