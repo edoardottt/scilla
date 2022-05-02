@@ -31,13 +31,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
-//CreateOutputFolder creates the output folder (output-scilla)
-func CreateOutputFolder() {
+//CreateOutputFolder creates the output folder
+func CreateOutputFolder(path string) {
 	//Create a folder/directory at a full qualified path
-	err := os.Mkdir("output-scilla", 0755)
+	err := os.MkdirAll(path, 0755)
 	if err != nil {
 		fmt.Println("Can't create output folder.")
 		os.Exit(1)
@@ -45,17 +46,17 @@ func CreateOutputFolder() {
 }
 
 //CreateOutputFile creates the output file (txt/json/html)
-func CreateOutputFile(target string, subcommand string, format string) string {
-	target = ReplaceBadCharacterOutput(target)
-	filename := "output-scilla" + "/" + target + "." + subcommand + "." + format
-	_, err := os.Stat(filename)
+func CreateOutputFile(path string) string {
+	dir, _ := filepath.Split("/some/path/to/remove/file.name")
+
+	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
-		if _, err := os.Stat("output-scilla/"); os.IsNotExist(err) {
-			CreateOutputFolder()
+		if _, err := os.Stat(dir); os.IsNotExist(err) {
+			CreateOutputFolder(dir)
 		}
 		// If the file doesn't exist, create it.
-		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+		f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			fmt.Println("Can't create output file.")
 			os.Exit(1)
@@ -70,7 +71,7 @@ func CreateOutputFile(target string, subcommand string, format string) string {
 		answer = strings.TrimSpace(answer)
 
 		if answer == "y" || answer == "yes" || answer == "" {
-			f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+			f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
@@ -85,7 +86,7 @@ func CreateOutputFile(target string, subcommand string, format string) string {
 			os.Exit(1)
 		}
 	}
-	return filename
+	return path
 }
 
 //AppendWhere checks which format the output should be (html, json or txt)

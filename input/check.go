@@ -42,7 +42,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	reportPortsPtr *string, reportCommonPtr *bool,
 	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	StartPort int, EndPort int, reportIgnoreDirPtr *string,
-	reportIgnoreSubPtr *string, reportTimeoutPort *int) (int, int, []int, bool, []string, []string) {
+	reportIgnoreSubPtr *string, reportTimeoutPort *int,
+	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int, []int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -53,6 +54,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
+	//output files all different
+
 	//common and p not together
 	if *reportPortsPtr != "" && *reportCommonPtr {
 		fmt.Println("You can't specify a port range and common option together.")
