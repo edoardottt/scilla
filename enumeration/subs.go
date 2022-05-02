@@ -40,7 +40,8 @@ import (
 
 //AsyncGet performs concurrent requests to the specified
 //urls and prints the results
-func AsyncGet(protocol string, urls []string, ignore []string, outputFile string, subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
+func AsyncGet(protocol string, urls []string, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
+	subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
 	ignoreBool := len(ignore) != 0
 	var count int = 0
 	var total int = len(urls)
@@ -56,7 +57,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFile string
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 			}
-			output.PrintSubs(subs, ignore, outputFile, mutex, plain)
+			output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 		}
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -79,9 +80,9 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFile string
 			resp.Body.Close()
 		}(i, domain)
 	}
-	output.PrintSubs(subs, ignore, outputFile, mutex, plain)
+	output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 	wg.Wait()
-	output.PrintSubs(subs, ignore, outputFile, mutex, plain)
+	output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
 }

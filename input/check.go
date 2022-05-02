@@ -33,17 +33,17 @@ import (
 	"os"
 	"strings"
 
-	"github.com/edoardottt/scilla/output"
 	"github.com/edoardottt/scilla/utils"
 )
 
 //ReportSubcommandCheckFlags performs all the necessary checks on the flags
 //for the report subcommand
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
-	reportOutputPtr *string, reportPortsPtr *string, reportCommonPtr *bool,
+	reportPortsPtr *string, reportCommonPtr *bool,
 	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	StartPort int, EndPort int, reportIgnoreDirPtr *string,
-	reportIgnoreSubPtr *string, reportTimeoutPort *int) (int, int, []int, bool, []string, []string) {
+	reportIgnoreSubPtr *string, reportTimeoutPort *int,
+	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int, []int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -54,8 +54,9 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*reportOutputPtr) {
-		fmt.Println("The output format is not valid.")
+	//output files all different
+	if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml || *reportOutputHtml == *reportOutputTxt {
+		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
 	//common and p not together
@@ -116,10 +117,15 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 //DNSSubcommandCheckFlags performs all the necessary checks on the flags
 //for the dns subcommand
-func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsOutputPtr *string) {
+func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJson, dnsOutputHtml, dnsOutputTxt *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
 		dnsCommand.PrintDefaults()
+		os.Exit(1)
+	}
+	//output files all different
+	if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml || *dnsOutputHtml == *dnsOutputTxt {
+		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
 	//Verify good inputs
@@ -127,17 +133,14 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsO
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*dnsOutputPtr) {
-		fmt.Println("The output format is not valid.")
-		os.Exit(1)
-	}
 }
 
 //SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
 //for the subdomain subcommand
-func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string, subdomainOutputPtr *string,
+func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
-	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool, subdomainVirusTotalPtr *bool) []string {
+	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool, subdomainVirusTotalPtr *bool,
+	subdomainOutputJson, subdomainOutputHtml, subdomainOutputTxt *string) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -148,11 +151,6 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*subdomainOutputPtr) {
-		fmt.Println("The output format is not valid.")
-		os.Exit(1)
-	}
-
 	//no-check checks
 	if *subdomainNoCheckPtr && !*subdomainDBPtr {
 		fmt.Println("You can use no-check only with db option.")
@@ -170,7 +168,11 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		fmt.Println("You can't use no-check with crawler option.")
 		os.Exit(1)
 	}
-
+	//output files all different
+	if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml || *subdomainOutputHtml == *subdomainOutputTxt {
+		fmt.Println("The output paths must be all different.")
+		os.Exit(1)
+	}
 	if *subdomainSpysePtr && !*subdomainDBPtr {
 		fmt.Println("You can't specify Spyse and not the Open Database option.")
 		fmt.Println("If you want to use Spyse Api, set also -db option.")
@@ -194,7 +196,8 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 //PortSubcommandCheckFlags performs all the necessary checks on the flags
 //for the port subcommand
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
-	portCommonPtr *bool, StartPort int, EndPort int, portOutputPtr *string, portTimeout *int) (int, int, []int, bool) {
+	portCommonPtr *bool, StartPort int, EndPort int, portTimeout *int,
+	portOutputJson, portOutputHtml, portOutputTxt *string) (int, int, []int, bool) {
 	// Required Flags
 	if *portTargetPtr == "" {
 		portCommand.PrintDefaults()
@@ -225,13 +228,14 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 			portArrayBool = false
 		}
 	}
+	//output files all different
+	if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml || *portOutputHtml == *portOutputTxt {
+		fmt.Println("The output paths must be all different.")
+		os.Exit(1)
+	}
 	//Verify good inputs
 	if !utils.IsURL(*portTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
-		os.Exit(1)
-	}
-	if !output.OutputFormatIsOk(*portOutputPtr) {
-		fmt.Println("The output format is not valid.")
 		os.Exit(1)
 	}
 	if *portTimeout < 1 || *portTimeout > 100 {
@@ -244,8 +248,8 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 
 //DirSubcommandCheckFlags performs all the necessary checks on the flags
 //for the dir subcommand
-func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string, dirOutputPtr *string,
-	dirIgnorePtr *string) []string {
+func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
+	dirIgnorePtr *string, dirOutputJson, dirOutputHtml, dirOutputTxt *string) []string {
 	// Required Flags
 	if *dirTargetPtr == "" {
 		dirCommand.PrintDefaults()
@@ -256,8 +260,9 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string, dirO
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*dirOutputPtr) {
-		fmt.Println("The output format is not valid.")
+	//output files all different
+	if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml || *dirOutputHtml == *dirOutputTxt {
+		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
 	var dirIgnore []string

@@ -40,7 +40,8 @@ import (
 
 //AsyncDir performs concurrent requests to the specified
 //urls and prints the results
-func AsyncDir(urls []string, ignore []string, outputFile string, dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
+func AsyncDir(urls []string, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
+	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
 	ignoreBool := len(ignore) != 0
 	var count int = 0
 	var total int = len(urls)
@@ -66,7 +67,7 @@ func AsyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 			}
-			output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
+			output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 		}
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -89,9 +90,9 @@ func AsyncDir(urls []string, ignore []string, outputFile string, dirs map[string
 			resp.Body.Close()
 		}(i, domain)
 	}
-	output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
+	output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 	wg.Wait()
-	output.PrintDirs(dirs, ignore, outputFile, mutex, plain)
+	output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
 }

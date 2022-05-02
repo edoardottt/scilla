@@ -39,7 +39,7 @@ func Intro() {
 	banner2 := "         ___  ___(_) | | __ _\n"
 	banner3 := "        / __|/ __| | | |/ _` |\n"
 	banner4 := "        \\__ \\ (__| | | | (_| |\n"
-	banner5 := "        |___/\\___|_|_|_|\\__,_| v1.2.1\n"
+	banner5 := "        |___/\\___|_|_|_|\\__,_| v1.2.2\n"
 	banner6 := " > github.com/edoardottt/scilla\n"
 	banner7 := " > edoardoottavianelli.it"
 	bannerPart1 := banner1 + banner2 + banner3 + banner4 + banner5

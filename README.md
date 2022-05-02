@@ -105,16 +105,22 @@ Get Started 🎉
 usage: scilla subcommand { options }
 
    Available subcommands:
-       - dns [-o output-format]
+       - dns [-oj JSON output file]
+             [-oh HTML output file]
+             [-ot TXT output file]
              [-plain Print only results]
              -target <target (URL/IP)> REQUIRED
        - port [-p <start-end> or ports divided by comma]
-              [-o output-format]
+              [-oj JSON output file]
+              [-oh HTML output file]
+              [-ot TXT output file]
               [-common scan common ports]
               [-plain Print only results]
               -target <target (URL/IP)> REQUIRED
        - subdomain [-w wordlist]
-                   [-o output-format]
+                   [-oj JSON output file]
+                   [-oh HTML output file]
+                   [-ot TXT output file]
                    [-i ignore status codes]
                    [-c use also a web crawler]
                    [-db use also a public database]
@@ -124,7 +130,9 @@ usage: scilla subcommand { options }
                    [-db -vt Use VirusTotal as subdomains source]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
-             [-o output-format]
+             [-oj JSON output file]
+             [-oh HTML output file]
+             [-ot TXT output file]
              [-i ignore status codes]
              [-c use also a web crawler]
              [-plain Print only results]
@@ -133,7 +141,9 @@ usage: scilla subcommand { options }
        - report [-p <start-end> or ports divided by comma]
                 [-ws subdomains wordlist]
                 [-wd directories wordlist]
-                [-o output-format]
+                [-oj JSON output file]
+                [-oh HTML output file]
+                [-ot TXT output file]
                 [-id ignore status codes in directories scanning]
                 [-is ignore status codes in subdomains scanning]
                 [-cd use also a web crawler for directories scanning]
@@ -155,16 +165,18 @@ Examples 💡
 - DNS enumeration:
     
     - `scilla dns -target target.domain`
-    - `scilla dns -o txt -target target.domain`
-    - `scilla dns -o html -target target.domain`
+    - `scilla dns -oj output -target target.domain`
+    - `scilla dns -oh output -target target.domain`
+    - `scilla dns -ot output -target target.domain`
     - `scilla dns -plain -target target.domain`
 
 - Subdomains enumeration:
 
     - `scilla subdomain -target target.domain`
     - `scilla subdomain -w wordlist.txt -target target.domain`
-    - `scilla subdomain -o txt -target target.domain`
-    - `scilla subdomain -o html -target target.domain`
+    - `scilla subdomain -oj output -target target.domain`
+    - `scilla subdomain -oh output -target target.domain`
+    - `scilla subdomain -ot output -target target.domain`
     - `scilla subdomain -i 400 -target target.domain`
     - `scilla subdomain -i 4** -target target.domain`
     - `scilla subdomain -c -target target.domain`
@@ -178,8 +190,9 @@ Examples 💡
 
     - `scilla dir -target target.domain`
     - `scilla dir -w wordlist.txt -target target.domain`
-    - `scilla dir -o txt -target target.domain`
-    - `scilla dir -o html -target target.domain`
+    - `scilla dir -oj output -target target.domain`
+    - `scilla dir -oh output -target target.domain`
+    - `scilla dir -ot output -target target.domain`
     - `scilla dir -i 500,401 -target target.domain`
     - `scilla dir -i 5**,401 -target target.domain`
     - `scilla dir -c -target target.domain`
@@ -193,8 +206,9 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
     - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
     - Specifying single port `scilla port -p 80 -target target.domain`
-    - Specifying output format (txt)`scilla port -o txt -target target.domain`
-    - Specifying output format (html)`scilla port -o html -target target.domain`
+    - Specifying output format (json)`scilla port -oj output -target target.domain`
+    - Specifying output format (html)`scilla port -oh output -target target.domain`
+    - Specifying output format (txt)`scilla port -ot output -target target.domain`
     - Specifying multiple ports `scilla port -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla port -common -target target.domain`
     - Print only results `scilla port -plain -target target.domain`
@@ -206,8 +220,9 @@ Examples 💡
     - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
     - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
     - Specifying single port `scilla report -p 80 -target target.domain`
-    - Specifying output format (txt)`scilla report -o txt -target target.domain`
-    - Specifying output format (html)`scilla report -o html -target target.domain`
+    - Specifying output format (json)`scilla report -oj output -target target.domain`
+    - Specifying output format (html)`scilla report -oh output -target target.domain`
+    - Specifying output format (txt)`scilla report -ot output -target target.domain`
     - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
     - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
     - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
@@ -225,9 +240,7 @@ Examples 💡
 
 Contributing 🛠
 -------
-<!--
-[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/0)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/0)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/1)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/1)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/2)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/2)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/3)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/3)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/4)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/4)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/5)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/5)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/6)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/6)[![](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/images/7)](https://sourcerer.io/fame/edoardottt/edoardottt/scilla/links/7)
--->
+
 Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls). See also [CONTRIBUTING.md](https://github.com/edoardottt/scilla/blob/master/CONTRIBUTING.md) and [CODE OF CONDUCT.md](https://github.com/edoardottt/scilla/blob/master/CODE_OF_CONDUCT.md)
 
 **Help me building this!**
