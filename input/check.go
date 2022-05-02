@@ -55,7 +55,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 	//output files all different
-	if reportOutputJson == reportOutputTxt || reportOutputJson == reportOutputHtml || reportOutputHtml == reportOutputTxt {
+	if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml || *reportOutputHtml == *reportOutputTxt {
 		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
@@ -124,7 +124,7 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 		os.Exit(1)
 	}
 	//output files all different
-	if dnsOutputJson == dnsOutputTxt || dnsOutputJson == dnsOutputHtml || dnsOutputHtml == dnsOutputTxt {
+	if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml || *dnsOutputHtml == *dnsOutputTxt {
 		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
@@ -169,7 +169,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 	//output files all different
-	if subdomainOutputJson == subdomainOutputTxt || subdomainOutputJson == subdomainOutputHtml || subdomainOutputHtml == subdomainOutputTxt {
+	if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml || *subdomainOutputHtml == *subdomainOutputTxt {
 		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
@@ -229,7 +229,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		}
 	}
 	//output files all different
-	if portOutputJson == portOutputTxt || portOutputJson == portOutputHtml || portOutputHtml == portOutputTxt {
+	if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml || *portOutputHtml == *portOutputTxt {
 		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}
@@ -261,7 +261,7 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		os.Exit(1)
 	}
 	//output files all different
-	if dirOutputJson == dirOutputTxt || dirOutputJson == dirOutputHtml || dirOutputHtml == dirOutputTxt {
+	if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml || *dirOutputHtml == *dirOutputTxt {
 		fmt.Println("The output paths must be all different.")
 		os.Exit(1)
 	}

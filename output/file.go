@@ -38,21 +38,26 @@ import (
 //CreateOutputFolder creates the output folder
 func CreateOutputFolder(path string) {
 	//Create a folder/directory at a full qualified path
-	err := os.MkdirAll(path, 0755)
-	if err != nil {
-		fmt.Println("Can't create output folder.")
-		os.Exit(1)
+	if strings.Trim(path, " ") != "" {
+		err := os.MkdirAll(path, 0755)
+		if err != nil {
+			fmt.Println("Can't create output folder.")
+			os.Exit(1)
+		}
 	}
 }
 
 //CreateOutputFile creates the output file (txt/json/html)
-func CreateOutputFile(path string) string {
-	dir, _ := filepath.Split("/some/path/to/remove/file.name")
+func CreateOutputFile(path, extension string) string {
+	dir, _ := filepath.Split(path)
+	// 1. check if separator is present.
+	sepPresent := strings.Contains(path, string(os.PathSeparator))
+	path = AppendExtension(path, extension)
 
 	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
-		if _, err := os.Stat(dir); os.IsNotExist(err) {
+		if _, err := os.Stat(dir); os.IsNotExist(err) && sepPresent {
 			CreateOutputFolder(dir)
 		}
 		// If the file doesn't exist, create it.
@@ -98,4 +103,15 @@ func AppendWhere(what string, status string, key string, record string, format s
 	} else {
 		AppendOutputToTxt(what, outputFile)
 	}
+}
+
+//AppendExtension appends to the path the given extension
+func AppendExtension(path, extension string) string {
+	if len(path) < len(extension)+1 {
+		return path + "." + extension
+	}
+	if path[len(path)-len(extension)-1:] != "."+extension {
+		return path + "." + extension
+	}
+	return path
 }
