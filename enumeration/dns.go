@@ -37,11 +37,9 @@ import (
 )
 
 //LookupDNS prints the DNS informations for the inputted domain
-func LookupDNS(domain string, outputFile string, plain bool) {
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("DNS ENUMERATION", outputFile)
-		}
+func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt string, plain bool) {
+	if outputFileHtml != "" {
+		output.HeaderHTML("DNS ENUMERATION", outputFileHtml)
 	}
 	// -- A RECORDS --
 	ips, err := net.LookupIP(domain)
@@ -55,8 +53,14 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		} else {
 			fmt.Printf("%s\n", ip.String())
 		}
-		if outputFile != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", outputFile)
+		if outputFileJson != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "json", outputFileJson)
+		}
+		if outputFileHtml != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "html", outputFileHtml)
+		}
+		if outputFileTxt != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "txt", outputFileTxt)
 		}
 	}
 	// -- CNAME RECORD --
@@ -70,8 +74,14 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 	} else {
 		fmt.Printf("%s\n", cname)
 	}
-	if outputFile != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", outputFile)
+	if outputFileJson != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "json", outputFileJson)
+	}
+	if outputFileHtml != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "html", outputFileHtml)
+	}
+	if outputFileTxt != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "txt", outputFileTxt)
 	}
 	// -- NS RECORDS --
 	nameserver, err := net.LookupNS(domain)
@@ -85,8 +95,14 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		} else {
 			fmt.Printf("%s\n", ns.Host)
 		}
-		if outputFile != "" {
-			output.AppendWhere(ns.Host, "", "DNS", "NS", outputFile)
+		if outputFileJson != "" {
+			output.AppendWhere(ns.Host, "", "DNS", "NS", "json", outputFileJson)
+		}
+		if outputFileHtml != "" {
+			output.AppendWhere(ns.Host, "", "DNS", "NS", "html", outputFileHtml)
+		}
+		if outputFileTxt != "" {
+			output.AppendWhere(ns.Host, "", "DNS", "NS", "txt", outputFileTxt)
 		}
 	}
 	// -- MX RECORDS --
@@ -101,8 +117,14 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		} else {
 			fmt.Printf("%s %v\n", mx.Host, mx.Pref)
 		}
-		if outputFile != "" {
-			output.AppendWhere(mx.Host, "", "DNS", "MX", outputFile)
+		if outputFileJson != "" {
+			output.AppendWhere(mx.Host, "", "DNS", "MX", "json", outputFileJson)
+		}
+		if outputFileHtml != "" {
+			output.AppendWhere(mx.Host, "", "DNS", "MX", "html", outputFileHtml)
+		}
+		if outputFileTxt != "" {
+			output.AppendWhere(mx.Host, "", "DNS", "MX", "txt", outputFileTxt)
 		}
 	}
 	// -- SRV SERVICE --
@@ -117,8 +139,14 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		} else {
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		}
-		if outputFile != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", outputFile)
+		if outputFileJson != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "json", outputFileJson)
+		}
+		if outputFileHtml != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "html", outputFileHtml)
+		}
+		if outputFileTxt != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "txt", outputFileTxt)
 		}
 	}
 	// -- TXT RECORDS --
@@ -130,14 +158,18 @@ func LookupDNS(domain string, outputFile string, plain bool) {
 		} else {
 			fmt.Printf("%s\n", txt)
 		}
-		if outputFile != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", outputFile)
+		if outputFileJson != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "json", outputFileJson)
+		}
+		if outputFileHtml != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "html", outputFileHtml)
+		}
+		if outputFileTxt != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "txt", outputFileTxt)
 		}
 	}
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			output.FooterHTML(outputFile)
-		}
+	if outputFileHtml != "" {
+		output.FooterHTML(outputFileHtml)
 	}
 	fmt.Println()
 }

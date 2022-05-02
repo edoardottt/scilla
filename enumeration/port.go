@@ -92,8 +92,8 @@ func IsOpenPort(host string, port string, timeout int) bool {
 
 //AsyncPort performs concurrent requests to the specified
 //ports range and, if someone is open it prints the results
-func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
-	EndingPort int, host string, outputFile string, common bool,
+func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int,
+	host string, outputFileJson, outputFileHtml, outputFileTxt string, common bool,
 	commonPorts []int, plain bool, timeout int) {
 	var count int = 0
 	var total int = (EndingPort - StartingPort) + 1
@@ -105,10 +105,8 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
 	}
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			output.HeaderHTML("PORT ENUMERATION", outputFile)
-		}
+	if outputFileHtml != "" {
+		output.HeaderHTML("PORT ENUMERATION", outputFileHtml)
 	}
 	ports := []int{}
 	if !common {
@@ -143,8 +141,14 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
 				} else {
 					fmt.Printf("%s:%s\n", host, portStr)
 				}
-				if outputFile != "" {
-					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", outputFile)
+				if outputFileJson != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "json", outputFileJson)
+				}
+				if outputFileHtml != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "html", outputFileHtml)
+				}
+				if outputFileTxt != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "txt", outputFileTxt)
 				}
 			}
 		}(portStr, host)
@@ -152,9 +156,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int,
 	wg.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
-	if outputFile != "" {
-		if outputFile[len(outputFile)-4:] == "html" {
-			output.FooterHTML(outputFile)
-		}
+	if outputFileHtml != "" {
+		output.FooterHTML(outputFileHtml)
 	}
 }
