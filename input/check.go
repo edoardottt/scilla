@@ -33,14 +33,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/edoardottt/scilla/output"
 	"github.com/edoardottt/scilla/utils"
 )
 
 //ReportSubcommandCheckFlags performs all the necessary checks on the flags
 //for the report subcommand
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
-	reportOutputPtr *string, reportPortsPtr *string, reportCommonPtr *bool,
+	reportPortsPtr *string, reportCommonPtr *bool,
 	reportSpysePtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	StartPort int, EndPort int, reportIgnoreDirPtr *string,
 	reportIgnoreSubPtr *string, reportTimeoutPort *int) (int, int, []int, bool, []string, []string) {
@@ -52,10 +51,6 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	//Verify good inputs
 	if !utils.IsURL(*reportTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
-		os.Exit(1)
-	}
-	if !output.OutputFormatIsOk(*reportOutputPtr) {
-		fmt.Println("The output format is not valid.")
 		os.Exit(1)
 	}
 	//common and p not together
@@ -116,7 +111,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 //DNSSubcommandCheckFlags performs all the necessary checks on the flags
 //for the dns subcommand
-func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsOutputPtr *string) {
+func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
 		dnsCommand.PrintDefaults()
@@ -127,15 +122,11 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr *string, dnsO
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*dnsOutputPtr) {
-		fmt.Println("The output format is not valid.")
-		os.Exit(1)
-	}
 }
 
 //SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
 //for the subdomain subcommand
-func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string, subdomainOutputPtr *string,
+func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
 	subdomainCrawlerPtr *bool, subdomainSpysePtr *bool, subdomainVirusTotalPtr *bool) []string {
 	// Required Flags
@@ -148,11 +139,6 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*subdomainOutputPtr) {
-		fmt.Println("The output format is not valid.")
-		os.Exit(1)
-	}
-
 	//no-check checks
 	if *subdomainNoCheckPtr && !*subdomainDBPtr {
 		fmt.Println("You can use no-check only with db option.")
@@ -194,7 +180,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 //PortSubcommandCheckFlags performs all the necessary checks on the flags
 //for the port subcommand
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
-	portCommonPtr *bool, StartPort int, EndPort int, portOutputPtr *string, portTimeout *int) (int, int, []int, bool) {
+	portCommonPtr *bool, StartPort int, EndPort int, portTimeout *int) (int, int, []int, bool) {
 	// Required Flags
 	if *portTargetPtr == "" {
 		portCommand.PrintDefaults()
@@ -230,10 +216,6 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	if !output.OutputFormatIsOk(*portOutputPtr) {
-		fmt.Println("The output format is not valid.")
-		os.Exit(1)
-	}
 	if *portTimeout < 1 || *portTimeout > 100 {
 		fmt.Println("Port Scan timeout must be an integer between 1 and 100.")
 		os.Exit(1)
@@ -244,7 +226,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 
 //DirSubcommandCheckFlags performs all the necessary checks on the flags
 //for the dir subcommand
-func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string, dirOutputPtr *string,
+func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 	dirIgnorePtr *string) []string {
 	// Required Flags
 	if *dirTargetPtr == "" {
@@ -254,10 +236,6 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string, dirO
 	//Verify good inputs
 	if !utils.IsURL(*dirTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
-		os.Exit(1)
-	}
-	if !output.OutputFormatIsOk(*dirOutputPtr) {
-		fmt.Println("The output format is not valid.")
 		os.Exit(1)
 	}
 	var dirIgnore []string
