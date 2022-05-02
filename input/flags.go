@@ -314,30 +314,33 @@ func ReadArgs() Input {
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportPortsPtr, reportCommonPtr,
 			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
-			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr)
+			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr,
+			reportOutputJsonPtr, reportOutputHtmlPtr, reportOutputTxtPtr)
 	}
 
 	// DNS subcommand
 	if dnsCommand.Parsed() {
-		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr)
+		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr, dnsOutputJsonPtr, dnsOutputHtmlPtr, dnsOutputTxtPtr)
 	}
 
 	// SUBDOMAIN subcommand
 	if subdomainCommand.Parsed() {
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
-			subdomainCrawlerPtr, subdomainSpysePtr, subdomainVirusTotalPtr)
+			subdomainCrawlerPtr, subdomainSpysePtr, subdomainVirusTotalPtr,
+			subdomainOutputJsonPtr, subdomainOutputHtmlPtr, subdomainOutputTxtPtr)
 	}
 
 	// PORT subcommand
 	if portCommand.Parsed() {
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
-			portCommonPtr, StartPort, EndPort, portTimeoutPtr)
+			portCommonPtr, StartPort, EndPort, portTimeoutPtr, portOutputJsonPtr, portOutputHtmlPtr, portOutputTxtPtr)
 	}
 
 	// DIR subcommand
 	if dirCommand.Parsed() {
-		dirIgnore = DirSubcommandCheckFlags(*dirCommand, dirTargetPtr, dirIgnorePtr)
+		dirIgnore = DirSubcommandCheckFlags(*dirCommand, dirTargetPtr, dirIgnorePtr,
+			dirOutputJsonPtr, dirOutputHtmlPtr, dirOutputTxtPtr)
 	}
 
 	// HELP subcommand
