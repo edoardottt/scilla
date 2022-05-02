@@ -90,10 +90,10 @@ func CreateOutputFile(path string) string {
 }
 
 //AppendWhere checks which format the output should be (html, json or txt)
-func AppendWhere(what string, status string, key string, record string, outputFile string) {
-	if outputFile[len(outputFile)-4:] == "html" {
+func AppendWhere(what string, status string, key string, record string, format string, outputFile string) {
+	if format == "html" {
 		AppendOutputToHTML(what, status, outputFile)
-	} else if outputFile[len(outputFile)-4:] == "json" {
+	} else if format == "json" {
 		AppendOutputToJSON(what, key, record, outputFile)
 	} else {
 		AppendOutputToTxt(what, outputFile)
