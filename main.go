@@ -110,18 +110,18 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	// - json output -
 	var outputFileJson string
 	if userInput.ReportOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.ReportOutputJson)
+		outputFileJson = output.CreateOutputFile(userInput.ReportOutputJson, "json")
 	}
 	// - html output -
 	var outputFileHtml string
 	if userInput.ReportOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.ReportOutputHtml)
+		outputFileHtml = output.CreateOutputFile(userInput.ReportOutputHtml, "html")
 		output.BannerHTML(userInput.ReportTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
 	if userInput.ReportOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.ReportOutputTxt)
+		outputFileTxt = output.CreateOutputFile(userInput.ReportOutputTxt, "txt")
 	}
 
 	fmt.Println("================ SCANNING SUBDOMAINS ================")
@@ -223,18 +223,18 @@ func DNSSubcommandHandler(userInput input.Input) {
 	// - json output -
 	var outputFileJson string
 	if userInput.DNSOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.DNSOutputJson)
+		outputFileJson = output.CreateOutputFile(userInput.DNSOutputJson, "json")
 	}
 	// - html output -
 	var outputFileHtml string
 	if userInput.DNSOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.DNSOutputHtml)
+		outputFileHtml = output.CreateOutputFile(userInput.DNSOutputHtml, "html")
 		output.BannerHTML(userInput.DNSTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
 	if userInput.DNSOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.DNSOutputHtml)
+		outputFileTxt = output.CreateOutputFile(userInput.DNSOutputTxt, "txt")
 	}
 
 	enumeration.LookupDNS(target, outputFileJson, outputFileHtml, outputFileTxt, userInput.DNSPlain)
@@ -271,18 +271,18 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	// - json output -
 	var outputFileJson string
 	if userInput.SubdomainOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.SubdomainOutputJson)
+		outputFileJson = output.CreateOutputFile(userInput.SubdomainOutputJson, "json")
 	}
 	// - html output -
 	var outputFileHtml string
 	if userInput.SubdomainOutputJson != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.SubdomainOutputHtml)
+		outputFileHtml = output.CreateOutputFile(userInput.SubdomainOutputHtml, "html")
 		output.BannerHTML(userInput.SubdomainTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
 	if userInput.SubdomainOutputJson != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.SubdomainOutputTxt)
+		outputFileTxt = output.CreateOutputFile(userInput.SubdomainOutputTxt, "txt")
 	}
 	var strings1 []string
 	if !userInput.SubdomainNoCheck {
@@ -372,18 +372,18 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	// - json output -
 	var outputFileJson string
 	if userInput.DirOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.DirOutputJson)
+		outputFileJson = output.CreateOutputFile(userInput.DirOutputJson, "json")
 	}
 	// - html output -
 	var outputFileHtml string
 	if userInput.DirOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.DirOutputHtml)
+		outputFileHtml = output.CreateOutputFile(userInput.DirOutputHtml, "html")
 		output.BannerHTML(userInput.DirTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
 	if userInput.DirOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.DirOutputTxt)
+		outputFileTxt = output.CreateOutputFile(userInput.DirOutputTxt, "txt")
 	}
 	var strings2 = input.CreateUrls(userInput.DirWord, protocolTemp, target)
 	if outputFileHtml != "" {
@@ -417,18 +417,18 @@ func PortSubcommandHandler(userInput input.Input, common []int) {
 	// - json output -
 	var outputFileJson string
 	if userInput.PortOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.PortOutputJson)
+		outputFileJson = output.CreateOutputFile(userInput.PortOutputJson, "json")
 	}
 	// - html output -
 	var outputFileHtml string
 	if userInput.PortOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.PortOutputHtml)
+		outputFileHtml = output.CreateOutputFile(userInput.PortOutputHtml, "html")
 		output.BannerHTML(userInput.PortTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
 	if userInput.PortOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.PortOutputTxt)
+		outputFileTxt = output.CreateOutputFile(userInput.PortOutputTxt, "txt")
 	}
 	if !userInput.PortPlain {
 		fmt.Printf("target: %s\n", target)
