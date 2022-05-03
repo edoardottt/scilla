@@ -45,7 +45,7 @@ type OutputFile struct {
 func AppendOutputToJSON(output string, key string, record string, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	data := OutputFile{}
 
@@ -70,7 +70,10 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	if err != nil {
 		log.Println(err)
 	} else {
-		ioutil.WriteFile(filename, file, 0644)
+		err = ioutil.WriteFile(filename, file, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 }

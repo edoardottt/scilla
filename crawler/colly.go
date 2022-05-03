@@ -29,6 +29,7 @@ package crawler
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -48,6 +49,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 	mutex *sync.Mutex, what string, plain bool) {
 
 	ignoreBool := len(ignore) != 0
+	//nolint:staticcheck // SA4006 ignore this!
 	c := colly.NewCollector()
 	if what == "dir" {
 		c = colly.NewCollector(
@@ -71,12 +73,18 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			}
 		}
@@ -89,12 +97,18 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			}
 		}
@@ -107,12 +121,18 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			}
 		}
@@ -125,12 +145,18 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					e.Request.Visit(url)
+					err := e.Request.Visit(url)
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			}
 		}
@@ -166,5 +192,8 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			}
 		}
 	})
-	c.Visit(scheme + "://" + target)
+	err := c.Visit(scheme + "://" + target)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

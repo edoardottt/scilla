@@ -38,15 +38,21 @@ import (
 func BannerHTML(target string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
-	file.WriteString("<html><body><div style='" + "background-color:#4adeff;color:white" + "'><h1>Scilla - Information Gathering Tool</h1>")
-	file.WriteString("<ul>")
-	file.WriteString("<li><a href='" + "https://github.com/edoardottt/scilla'" + ">github.com/edoardottt/scilla</a></li>")
-	file.WriteString("<li>edoardottt, <a href='" + "https://www.edoardoottavianelli.it'" + ">edoardoottavianelli.it</a></li>")
-	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
-	file.WriteString("<h4>target: " + target + "</h4>")
+	_, err = file.WriteString(`<html><body><div style='background-color:#4adeff;color:white'><h1>Scilla - Information Gathering Tool</h1>
+	<ul>
+	<li><a href='https://github.com/edoardottt/scilla'>github.com/edoardottt/scilla</a></li>
+	<li>edoardottt, <a href='https://www.edoardoottavianelli.it'>edoardoottavianelli.it</a></li>
+	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li></ul></div>`)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = file.WriteString("<h4>target: " + target + "</h4>")
+	if err != nil {
+		log.Fatal(err)
+	}
 	file.Close()
 }
 
@@ -54,7 +60,7 @@ func BannerHTML(target string, filename string) {
 func AppendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
 	var statusColor string
@@ -77,7 +83,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 func HeaderHTML(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	if _, err := file.WriteString("<h3>" + header + "</h3><ul>"); err != nil {
 		log.Fatal(err)
@@ -89,7 +95,7 @@ func HeaderHTML(header string, filename string) {
 func FooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
 	if _, err := file.WriteString("</ul>"); err != nil {
@@ -102,10 +108,13 @@ func FooterHTML(filename string) {
 func BannerFooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
-	file.WriteString("<div style='" + "background-color:#4adeff;color:white" + "'>")
-	file.WriteString("<ul><li><a href='" + "https://github.com/edoardottt/scilla'" + ">Contribute to scilla</a></li>")
-	file.WriteString("<li>Released under <a href='" + "http://www.gnu.org/licenses/gpl-3.0.html'" + ">GPLv3 License</a></li></ul></div>")
+	_, err = file.WriteString(`<div style='background-color:#4adeff;color:white'>
+	<ul><li><a href='https://github.com/edoardottt/scilla'>Contribute to scilla</a></li>
+	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li></ul></div>`)
+	if err != nil {
+		log.Fatal(err)
+	}
 	file.Close()
 }

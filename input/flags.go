@@ -30,6 +30,7 @@ package input
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/edoardottt/scilla/output"
@@ -288,21 +289,42 @@ func ReadArgs() Input {
 	// Parse the flags for appropriate FlagSet
 	switch os.Args[1] {
 	case "report":
-		reportCommand.Parse(os.Args[2:])
+		err := reportCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "dns":
-		dnsCommand.Parse(os.Args[2:])
+		err := dnsCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "subdomain":
-		subdomainCommand.Parse(os.Args[2:])
+		err := subdomainCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "port":
-		portCommand.Parse(os.Args[2:])
+		err := portCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "dir":
-		dirCommand.Parse(os.Args[2:])
+		err := dirCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "help":
 		output.Intro()
-		helpCommand.Parse(os.Args[2:])
+		err := helpCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "examples":
 		output.Intro()
-		examplesCommand.Parse(os.Args[2:])
+		err := examplesCommand.Parse(os.Args[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 	default:
 		output.Intro()
 		output.Help()

@@ -50,7 +50,7 @@ func ThreatcrowdSubdomains(domain string) []string {
 	defer resp.Body.Close()
 	dec := json.NewDecoder(resp.Body)
 
-	dec.Decode(&wrapper)
+	err = dec.Decode(&wrapper)
 	if err != nil {
 		return result
 	}
