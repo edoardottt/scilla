@@ -55,9 +55,23 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 	//output files all different
-	if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml || *reportOutputHtml == *reportOutputTxt {
-		fmt.Println("The output paths must be all different.")
-		os.Exit(1)
+	if *reportOutputJson != "" {
+		if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *reportOutputHtml != "" {
+		if *reportOutputHtml == *reportOutputTxt || *reportOutputJson == *reportOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *reportOutputTxt != "" {
+		if *reportOutputJson == *reportOutputTxt || *reportOutputTxt == *reportOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
 	}
 	//common and p not together
 	if *reportPortsPtr != "" && *reportCommonPtr {
@@ -124,9 +138,23 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 		os.Exit(1)
 	}
 	//output files all different
-	if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml || *dnsOutputHtml == *dnsOutputTxt {
-		fmt.Println("The output paths must be all different.")
-		os.Exit(1)
+	if *dnsOutputJson != "" {
+		if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *dnsOutputHtml != "" {
+		if *dnsOutputHtml == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *dnsOutputTxt != "" {
+		if *dnsOutputJson == *dnsOutputTxt || *dnsOutputTxt == *dnsOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
 	}
 	//Verify good inputs
 	if !utils.IsURL(*dnsTargetPtr) {
@@ -169,9 +197,23 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 	//output files all different
-	if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml || *subdomainOutputHtml == *subdomainOutputTxt {
-		fmt.Println("The output paths must be all different.")
-		os.Exit(1)
+	if *subdomainOutputJson != "" {
+		if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *subdomainOutputHtml != "" {
+		if *subdomainOutputHtml == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *subdomainOutputTxt != "" {
+		if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputTxt == *subdomainOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
 	}
 	if *subdomainSpysePtr && !*subdomainDBPtr {
 		fmt.Println("You can't specify Spyse and not the Open Database option.")
@@ -229,9 +271,23 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		}
 	}
 	//output files all different
-	if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml || *portOutputHtml == *portOutputTxt {
-		fmt.Println("The output paths must be all different.")
-		os.Exit(1)
+	if *portOutputJson != "" {
+		if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *portOutputHtml != "" {
+		if *portOutputHtml == *portOutputTxt || *portOutputJson == *portOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *portOutputTxt != "" {
+		if *portOutputJson == *portOutputTxt || *portOutputTxt == *portOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
 	}
 	//Verify good inputs
 	if !utils.IsURL(*portTargetPtr) {
@@ -261,9 +317,23 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		os.Exit(1)
 	}
 	//output files all different
-	if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml || *dirOutputHtml == *dirOutputTxt {
-		fmt.Println("The output paths must be all different.")
-		os.Exit(1)
+	if *dirOutputJson != "" {
+		if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *dirOutputHtml != "" {
+		if *dirOutputHtml == *dirOutputTxt || *dirOutputJson == *dirOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
+	}
+	if *dirOutputTxt != "" {
+		if *dirOutputJson == *dirOutputTxt || *dirOutputTxt == *dirOutputHtml {
+			fmt.Println("The output paths must be all different.")
+			os.Exit(1)
+		}
 	}
 	var dirIgnore []string
 	if *dirIgnorePtr != "" {
