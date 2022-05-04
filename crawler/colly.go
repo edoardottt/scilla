@@ -29,7 +29,6 @@ package crawler
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -179,8 +178,6 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			}
 		}
 	})
-	err := c.Visit(scheme + "://" + target)
-	if err != nil {
-		log.Fatal(err)
-	}
+	//nolint // ignore err
+	c.Visit(scheme + "://" + target)
 }
