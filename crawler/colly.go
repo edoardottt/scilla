@@ -64,6 +64,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		targetRegex := "([-a-z0-9.]*)" + targetTemp + "([-a-z0-9.]*)"
 		c.URLFilters = []*regexp.Regexp{regexp.MustCompile(targetRegex)}
 	}
+	c.IgnoreRobotsTxt = true
 	c.AllowURLRevisit = false
 
 	// Find and visit all links
@@ -73,18 +74,14 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			}
 		}
@@ -97,18 +94,14 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			}
 		}
@@ -121,18 +114,14 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			}
 		}
@@ -145,33 +134,40 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			url := utils.CleanURL(e.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
-					err := e.Request.Visit(url)
-					if err != nil {
-						log.Println(err)
-					}
+					//nolint // errcheck ignore this!
+					e.Request.Visit(url)
 				}
 			}
 		}
 	})
 
 	c.OnRequest(func(r *colly.Request) {
-		var status = utils.HttpGet(r.URL.String())
-		if ignoreBool {
-			statusArray := strings.Split(status, " ")
-			statusInt, err := strconv.Atoi(statusArray[0])
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Could not get response status %s\n", status)
-				os.Exit(1)
-			}
-			if !utils.IgnoreResponse(statusInt, ignore) {
+		status, err := utils.HttpGet(r.URL.String())
+		if err == nil {
+			if ignoreBool {
+				statusArray := strings.Split(status, " ")
+				statusInt, err := strconv.Atoi(statusArray[0])
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Could not get response status %s\n", status)
+					os.Exit(1)
+				}
+				if !utils.IgnoreResponse(statusInt, ignore) {
+					if what == "dir" {
+						output.AddDirs(r.URL.String(), status, dirs, mutex)
+						output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+					} else {
+						newDomain := utils.RetrieveHost(r.URL.String())
+						output.AddSubs(newDomain, status, subs, mutex)
+						output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+					}
+				}
+			} else {
 				if what == "dir" {
 					output.AddDirs(r.URL.String(), status, dirs, mutex)
 					output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
@@ -180,15 +176,6 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 					output.AddSubs(newDomain, status, subs, mutex)
 					output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 				}
-			}
-		} else {
-			if what == "dir" {
-				output.AddDirs(r.URL.String(), status, dirs, mutex)
-				output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
-			} else {
-				newDomain := utils.RetrieveHost(r.URL.String())
-				output.AddSubs(newDomain, status, subs, mutex)
-				output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 			}
 		}
 	})
