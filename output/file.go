@@ -48,15 +48,13 @@ func CreateOutputFolder(path string) {
 }
 
 //CreateOutputFile creates the output file (txt/json/html)
-func CreateOutputFile(path, extension string) string {
-	// 1. check if separator is present.
-	sepPresent := strings.Contains(path, string(os.PathSeparator))
-	path = AppendExtension(path, extension)
-	dir, file := filepath.Split(path)
+func CreateOutputFile(path string) string {
 
+	dir, file := filepath.Split(path)
 	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
+		sepPresent := strings.Contains(path, string(os.PathSeparator))
 		if _, err := os.Stat(dir); os.IsNotExist(err) && sepPresent {
 			CreateOutputFolder(dir)
 		}
