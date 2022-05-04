@@ -333,6 +333,9 @@ func ReadArgs() Input {
 
 	// REPORT subcommand
 	if reportCommand.Parsed() {
+		*reportOutputJsonPtr = output.AppendExtension(*reportOutputJsonPtr, "json")
+		*reportOutputHtmlPtr = output.AppendExtension(*reportOutputHtmlPtr, "html")
+		*reportOutputTxtPtr = output.AppendExtension(*reportOutputTxtPtr, "txt")
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportPortsPtr, reportCommonPtr,
 			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
@@ -342,11 +345,17 @@ func ReadArgs() Input {
 
 	// DNS subcommand
 	if dnsCommand.Parsed() {
+		*dnsOutputJsonPtr = output.AppendExtension(*dnsOutputJsonPtr, "json")
+		*dnsOutputHtmlPtr = output.AppendExtension(*dnsOutputHtmlPtr, "html")
+		*dnsOutputTxtPtr = output.AppendExtension(*dnsOutputTxtPtr, "txt")
 		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr, dnsOutputJsonPtr, dnsOutputHtmlPtr, dnsOutputTxtPtr)
 	}
 
 	// SUBDOMAIN subcommand
 	if subdomainCommand.Parsed() {
+		*subdomainOutputJsonPtr = output.AppendExtension(*subdomainOutputJsonPtr, "json")
+		*subdomainOutputHtmlPtr = output.AppendExtension(*subdomainOutputHtmlPtr, "html")
+		*subdomainOutputTxtPtr = output.AppendExtension(*subdomainOutputTxtPtr, "txt")
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
 			subdomainCrawlerPtr, subdomainSpysePtr, subdomainVirusTotalPtr,
@@ -355,12 +364,18 @@ func ReadArgs() Input {
 
 	// PORT subcommand
 	if portCommand.Parsed() {
+		*portOutputJsonPtr = output.AppendExtension(*portOutputJsonPtr, "json")
+		*portOutputHtmlPtr = output.AppendExtension(*portOutputHtmlPtr, "html")
+		*portOutputTxtPtr = output.AppendExtension(*portOutputTxtPtr, "txt")
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
 			portCommonPtr, StartPort, EndPort, portTimeoutPtr, portOutputJsonPtr, portOutputHtmlPtr, portOutputTxtPtr)
 	}
 
 	// DIR subcommand
 	if dirCommand.Parsed() {
+		*dirOutputJsonPtr = output.AppendExtension(*dirOutputJsonPtr, "json")
+		*dirOutputHtmlPtr = output.AppendExtension(*dirOutputHtmlPtr, "html")
+		*dirOutputTxtPtr = output.AppendExtension(*dirOutputTxtPtr, "txt")
 		dirIgnore = DirSubcommandCheckFlags(*dirCommand, dirTargetPtr, dirIgnorePtr,
 			dirOutputJsonPtr, dirOutputHtmlPtr, dirOutputTxtPtr)
 	}

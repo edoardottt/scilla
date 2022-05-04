@@ -15,6 +15,9 @@ update:
 	@go mod tidy -v
 	@echo "Done."
 
+lint:
+	@golangci-lint run
+
 linux:
 	@go build -o scilla
 	@sudo mv scilla /usr/bin/

@@ -48,15 +48,13 @@ func CreateOutputFolder(path string) {
 }
 
 //CreateOutputFile creates the output file (txt/json/html)
-func CreateOutputFile(path, extension string) string {
-	dir, _ := filepath.Split(path)
-	// 1. check if separator is present.
-	sepPresent := strings.Contains(path, string(os.PathSeparator))
-	path = AppendExtension(path, extension)
+func CreateOutputFile(path string) string {
 
+	dir, file := filepath.Split(path)
 	_, err := os.Stat(path)
 
 	if os.IsNotExist(err) {
+		sepPresent := strings.Contains(path, string(os.PathSeparator))
 		if _, err := os.Stat(dir); os.IsNotExist(err) && sepPresent {
 			CreateOutputFolder(dir)
 		}
@@ -70,7 +68,7 @@ func CreateOutputFile(path, extension string) string {
 	} else {
 		// The file already exists, check what the user want.
 		reader := bufio.NewReader(os.Stdin)
-		fmt.Print("The output file already esists, do you want to overwrite? (Y/n): ")
+		fmt.Printf("The output file %s already esists, do you want to overwrite? (Y/n): ", file)
 		text, _ := reader.ReadString('\n')
 		answer := strings.ToLower(text)
 		answer = strings.TrimSpace(answer)
