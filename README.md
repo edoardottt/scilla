@@ -238,6 +238,10 @@ Examples 💡
     - Use Spyse as subdomains source `scilla report -db -spyse -target target.domain`
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
 
+Changelog 📌
+-------
+Detailed changes for each release are documented in the [release notes](https://github.com/edoardottt/scilla/releases).
+
 Contributing 🛠
 -------
 
