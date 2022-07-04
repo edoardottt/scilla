@@ -38,7 +38,6 @@ import (
 
 //Keys is a struct representing the format of the keys.yaml file.
 type Keys struct {
-	Spyse      string `yaml:"Spyse,omitempty"`
 	VirusTotal string `yaml:"VirusTotal,omitempty"`
 }
 
@@ -56,31 +55,6 @@ func ReadKeys(filename string) (Keys, error) {
 	}
 
 	return c, nil
-}
-
-//GetSpyseKey reads the Spyse key
-func GetSpyseKey() string {
-	filename := ""
-	if runtime.GOOS == "windows" {
-		filename = "keys.yaml"
-	} else { // linux
-		home, err := os.UserHomeDir()
-		if err != nil {
-			fmt.Println("Cannot read Spyse Api Key.")
-			os.Exit(1)
-		}
-		filename = home + "/.config/scilla/keys.yaml"
-	}
-	keys, err := ReadKeys(filename)
-	if keys.Spyse == "" {
-		fmt.Println("Spyse Api Key is empty.")
-		os.Exit(1)
-	}
-	if err != nil {
-		fmt.Println("Cannot read Spyse Api Key.")
-		os.Exit(1)
-	}
-	return keys.Spyse
 }
 
 //GetVirusTotalKey reads the Virustotal key

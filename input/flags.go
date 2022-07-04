@@ -51,7 +51,6 @@ type Input struct {
 	ReportSubdomainDB   bool
 	ReportCommon        bool
 	ReportRedirect      bool
-	ReportSpyse         bool
 	ReportVirusTotal    bool
 	ReportTimeoutPort   int
 	DNSTarget           string
@@ -69,7 +68,6 @@ type Input struct {
 	SubdomainDB         bool
 	SubdomainPlain      bool
 	SubdomainNoCheck    bool
-	SubdomainSpyse      bool
 	SubdomainVirusTotal bool
 	DirTarget           string
 	DirWord             string
@@ -156,9 +154,6 @@ func ReadArgs() Input {
 	reportRedirectPtr := reportCommand.Bool("nr", false, "No follow redirects")
 
 	// report subcommand flag pointers
-	reportSpysePtr := reportCommand.Bool("spyse", false, "Use Spyse as a subdomain source")
-
-	// report subcommand flag pointers
 	reportVirusTotalPtr := reportCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
 
 	// report subcommand flag pointers
@@ -209,9 +204,6 @@ func ReadArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainNoCheckPtr := subdomainCommand.Bool("no-check", false, "Don't check status codes for subdomains.")
-
-	// subdomains subcommand flag pointers
-	subdomainSpysePtr := subdomainCommand.Bool("spyse", false, "Use Spyse as a subdomain source")
 
 	// subdomains subcommand flag pointers
 	subdomainVirusTotalPtr := subdomainCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
@@ -344,7 +336,7 @@ func ReadArgs() Input {
 		}
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportPortsPtr, reportCommonPtr,
-			reportSpysePtr, reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
+			reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
 			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr,
 			reportOutputJsonPtr, reportOutputHtmlPtr, reportOutputTxtPtr)
 	}
@@ -376,7 +368,7 @@ func ReadArgs() Input {
 		}
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
-			subdomainCrawlerPtr, subdomainSpysePtr, subdomainVirusTotalPtr,
+			subdomainCrawlerPtr, subdomainVirusTotalPtr,
 			subdomainOutputJsonPtr, subdomainOutputHtmlPtr, subdomainOutputTxtPtr)
 	}
 
@@ -438,7 +430,6 @@ func ReadArgs() Input {
 		*reportSubdomainDBPtr,
 		*reportCommonPtr,
 		*reportRedirectPtr,
-		*reportSpysePtr,
 		*reportVirusTotalPtr,
 		*reportTimeoutPortPtr,
 		*dnsTargetPtr,
@@ -456,7 +447,6 @@ func ReadArgs() Input {
 		*subdomainDBPtr,
 		*subdomainPlainPtr,
 		*subdomainNoCheckPtr,
-		*subdomainSpysePtr,
 		*subdomainVirusTotalPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,

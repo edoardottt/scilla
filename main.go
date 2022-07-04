@@ -141,9 +141,6 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
 	if userInput.ReportSubdomainDB {
-		if userInput.ReportSpyse {
-			_ = input.GetSpyseKey()
-		}
 		if userInput.ReportVirusTotal {
 			_ = input.GetVirusTotalKey()
 		}
@@ -157,10 +154,6 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		if userInput.ReportSpyse {
-			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
-			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
-		}
 		if userInput.ReportVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
 			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
@@ -289,9 +282,6 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, utils.CleanProtocol(target))
 	}
 	if userInput.SubdomainDB {
-		if userInput.SubdomainSpyse {
-			_ = input.GetSpyseKey()
-		}
 		if userInput.SubdomainVirusTotal {
 			_ = input.GetVirusTotalKey()
 		}
@@ -305,10 +295,6 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
 		bufferOverrun := opendb.BufferOverrunSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
-		if userInput.SubdomainSpyse {
-			spyseSubs := opendb.SpyseSubdomains(utils.CleanProtocol(target), input.GetSpyseKey())
-			strings1 = opendb.AppendDBSubdomains(spyseSubs, strings1)
-		}
 		if userInput.SubdomainVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(utils.CleanProtocol(target), input.GetVirusTotalKey())
 			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)

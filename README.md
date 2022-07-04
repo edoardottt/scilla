@@ -127,7 +127,6 @@ usage: scilla subcommand { options }
                    [-db use also a public database]
                    [-plain Print only results]
                    [-db -no-check Don't check status codes for subdomains]
-                   [-db -spyse Use Spyse as subdomains source]
                    [-db -vt Use VirusTotal as subdomains source]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
@@ -152,7 +151,6 @@ usage: scilla subcommand { options }
                 [-db use also a public database for subdomains scanning]
                 [-common scan common ports]
                 [-nr No follow redirects]
-                [-db -spyse Use Spyse as subdomains source]
                 [-db -vt Use VirusTotal as subdomains source]
                 -target <target (URL/IP)> REQUIRED
        - help
@@ -184,7 +182,6 @@ Examples 💡
     - `scilla subdomain -db -target target.domain`
     - `scilla subdomain -plain -target target.domain`
     - `scilla subdomain -db -no-check -target target.domain`
-    - `scilla subdomain -db -spyse -target target.domain`
     - `scilla subdomain -db -vt -target target.domain`
 
 - Directories enumeration:
@@ -236,7 +233,6 @@ Examples 💡
     - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
     - Specifying common ports `scilla report -common -target target.domain`
     - No follow redirects `scilla report -nr -target target.domain`
-    - Use Spyse as subdomains source `scilla report -db -spyse -target target.domain`
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
 
 Changelog 📌
@@ -250,7 +246,7 @@ Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull reques
 
 **Help me building this!**
 
-Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSearch](https://github.com/cgboal/sonarsearch), [HackerTarget](https://hackertarget.com/), [BufferOverrun](http://dns.bufferover.run/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [Spyse](https://spyse.com/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
+Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSearch](https://github.com/cgboal/sonarsearch), [HackerTarget](https://hackertarget.com/), [BufferOverrun](http://dns.bufferover.run/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
 
 **To do:**
 
