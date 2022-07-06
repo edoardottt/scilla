@@ -268,13 +268,13 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	// - html output -
 	var outputFileHtml string
-	if userInput.SubdomainOutputJson != "" {
+	if userInput.SubdomainOutputHtml != "" {
 		outputFileHtml = output.CreateOutputFile(userInput.SubdomainOutputHtml)
 		output.BannerHTML(userInput.SubdomainTarget, outputFileHtml)
 	}
 	// - txt output -
 	var outputFileTxt string
-	if userInput.SubdomainOutputJson != "" {
+	if userInput.SubdomainOutputTxt != "" {
 		outputFileTxt = output.CreateOutputFile(userInput.SubdomainOutputTxt)
 	}
 	var strings1 []string
