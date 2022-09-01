@@ -33,10 +33,10 @@ import (
 	"log"
 )
 
-// OutputFile struct helping json output
-type OutputFile struct {
+// File struct helping json output
+type File struct {
 	Port      []string            `json:"port,omitempty"`
-	Dns       map[string][]string `json:"dns,omitempty"`
+	DNS       map[string][]string `json:"dns,omitempty"`
 	Subdomain []string            `json:"subdomain,omitempty"`
 	Dir       []string            `json:"dir,omitempty"`
 }
@@ -47,7 +47,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	if err != nil {
 		log.Fatal(err)
 	}
-	data := OutputFile{}
+	data := File{}
 
 	_ = json.Unmarshal([]byte(file), &data)
 	switch {
@@ -65,13 +65,13 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 		}
 	default:
 		{
-			if data.Dns == nil {
-				data.Dns = make(map[string][]string)
+			if data.DNS == nil {
+				data.DNS = make(map[string][]string)
 			}
-			if _, ok := data.Dns[record]; !ok {
-				data.Dns[record] = make([]string, 0)
+			if _, ok := data.DNS[record]; !ok {
+				data.DNS[record] = make([]string, 0)
 			}
-			data.Dns[record] = append(data.Dns[record], output)
+			data.DNS[record] = append(data.DNS[record], output)
 		}
 	}
 

@@ -170,7 +170,7 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
 	subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
-	subdomainOutputJson, subdomainOutputHtml, subdomainOutputTxt *string) []string {
+	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT *string) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -199,20 +199,20 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 	// output files all different
-	if *subdomainOutputJson != "" {
-		if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml {
+	if *subdomainOutputJSON != "" {
+		if *subdomainOutputJSON == *subdomainOutputTXT || *subdomainOutputJSON == *subdomainOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *subdomainOutputHtml != "" {
-		if *subdomainOutputHtml == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml {
+	if *subdomainOutputHTML != "" {
+		if *subdomainOutputHTML == *subdomainOutputTXT || *subdomainOutputJSON == *subdomainOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *subdomainOutputTxt != "" {
-		if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputTxt == *subdomainOutputHtml {
+	if *subdomainOutputTXT != "" {
+		if *subdomainOutputJSON == *subdomainOutputTXT || *subdomainOutputTXT == *subdomainOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
@@ -236,7 +236,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 // for the port subcommand
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
 	portCommonPtr *bool, startPort int, endPort int, portTimeout *int,
-	portOutputJson, portOutputHtml, portOutputTxt *string) (int, int, []int, bool) {
+	portOutputJSON, portOutputHTML, portOutputTXT *string) (int, int, []int, bool) {
 	// Required Flags
 	if *portTargetPtr == "" {
 		portCommand.PrintDefaults()
@@ -277,20 +277,20 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		}
 	}
 	// output files all different
-	if *portOutputJson != "" {
-		if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml {
+	if *portOutputJSON != "" {
+		if *portOutputJSON == *portOutputTXT || *portOutputJSON == *portOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *portOutputHtml != "" {
-		if *portOutputHtml == *portOutputTxt || *portOutputJson == *portOutputHtml {
+	if *portOutputHTML != "" {
+		if *portOutputHTML == *portOutputTXT || *portOutputJSON == *portOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *portOutputTxt != "" {
-		if *portOutputJson == *portOutputTxt || *portOutputTxt == *portOutputHtml {
+	if *portOutputTXT != "" {
+		if *portOutputJSON == *portOutputTXT || *portOutputTXT == *portOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
@@ -311,7 +311,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 // DirSubcommandCheckFlags performs all the necessary checks on the flags
 // for the dir subcommand
 func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
-	dirIgnorePtr *string, dirOutputJson, dirOutputHtml, dirOutputTxt *string) []string {
+	dirIgnorePtr *string, dirOutputJSON, dirOutputHTML, dirOutputTXT *string) []string {
 	// Required Flags
 	if *dirTargetPtr == "" {
 		dirCommand.PrintDefaults()
@@ -323,20 +323,20 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		os.Exit(1)
 	}
 	// output files all different
-	if *dirOutputJson != "" {
-		if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml {
+	if *dirOutputJSON != "" {
+		if *dirOutputJSON == *dirOutputTXT || *dirOutputJSON == *dirOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *dirOutputHtml != "" {
-		if *dirOutputHtml == *dirOutputTxt || *dirOutputJson == *dirOutputHtml {
+	if *dirOutputHTML != "" {
+		if *dirOutputHTML == *dirOutputTXT || *dirOutputJSON == *dirOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
-	if *dirOutputTxt != "" {
-		if *dirOutputJson == *dirOutputTxt || *dirOutputTxt == *dirOutputHtml {
+	if *dirOutputTXT != "" {
+		if *dirOutputJSON == *dirOutputTXT || *dirOutputTXT == *dirOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}

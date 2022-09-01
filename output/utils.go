@@ -35,9 +35,9 @@ type Asset struct {
 	Printed bool
 }
 
-// OutputFormatIsOk checks if the specified output format is Ok
+// FormatIsOk checks if the specified output format is Ok
 // (txt, html or json)
-func OutputFormatIsOk(input string) bool {
+func FormatIsOk(input string) bool {
 	if input == "" {
 		return true
 	}

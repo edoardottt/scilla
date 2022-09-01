@@ -40,11 +40,11 @@ import (
 
 // AsyncDir performs concurrent requests to the specified
 // urls and prints the results
-func AsyncDir(urls []string, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
+func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
 	ignoreBool := len(ignore) != 0
-	var count int = 0
-	var total int = len(urls)
+	var count int
+	var total = len(urls)
 	client := http.Client{}
 	if !redirect {
 		client = http.Client{
@@ -67,7 +67,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJson, outputFileHtml, ou
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 			}
-			output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+			output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 		}
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
@@ -90,9 +90,9 @@ func AsyncDir(urls []string, ignore []string, outputFileJson, outputFileHtml, ou
 			resp.Body.Close()
 		}(i, domain)
 	}
-	output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
-	output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
 }

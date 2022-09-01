@@ -39,9 +39,9 @@ func IsIP(ip string) bool {
 	return net.ParseIP(ip) != nil
 }
 
-// IpToHostname tries to translate an ip
+// IPToHostname tries to translate an ip
 // address to a hostname.
-func IpToHostname(ip string) string {
+func IPToHostname(ip string) string {
 	addr, err := net.LookupAddr(ip)
 	if err != nil || len(addr) == 0 {
 		log.Fatalf("Failed to resolve ip address %s", ip)

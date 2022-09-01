@@ -44,7 +44,7 @@ import (
 // links with this characteristic:
 // - only http, https or ftp protocols allowed
 func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset,
-	subs map[string]output.Asset, outputFileJson, outputFileHtml, outputFileTxt string,
+	subs map[string]output.Asset, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, what string, plain bool) {
 
 	ignoreBool := len(ignore) != 0
@@ -147,7 +147,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 	})
 
 	collector.OnRequest(func(r *colly.Request) {
-		status, err := utils.HttpGet(r.URL.String())
+		status, err := utils.HTTPGet(r.URL.String())
 		if err == nil {
 			if ignoreBool {
 				statusArray := strings.Split(status, " ")
@@ -159,21 +159,21 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 				if !utils.IgnoreResponse(statusInt, ignore) {
 					if what == "dir" {
 						output.AddDirs(r.URL.String(), status, dirs, mutex)
-						output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+						output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 					} else {
 						newDomain := utils.RetrieveHost(r.URL.String())
 						output.AddSubs(newDomain, status, subs, mutex)
-						output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+						output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 					}
 				}
 			} else {
 				if what == "dir" {
 					output.AddDirs(r.URL.String(), status, dirs, mutex)
-					output.PrintDirs(dirs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+					output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 				} else {
 					newDomain := utils.RetrieveHost(r.URL.String())
 					output.AddSubs(newDomain, status, subs, mutex)
-					output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
+					output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 				}
 			}
 		}

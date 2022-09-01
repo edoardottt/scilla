@@ -108,20 +108,20 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	fmt.Println("================ FULL REPORT ========================")
 
 	// - json output -
-	var outputFileJson string
-	if userInput.ReportOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.ReportOutputJson)
+	var outputFileJSON string
+	if userInput.ReportOutputJSON != "" {
+		outputFileJSON = output.CreateOutputFile(userInput.ReportOutputJSON)
 	}
 	// - html output -
-	var outputFileHtml string
-	if userInput.ReportOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.ReportOutputHtml)
-		output.BannerHTML(userInput.ReportTarget, outputFileHtml)
+	var outputFileHTML string
+	if userInput.ReportOutputHTML != "" {
+		outputFileHTML = output.CreateOutputFile(userInput.ReportOutputHTML)
+		output.BannerHTML(userInput.ReportTarget, outputFileHTML)
 	}
 	// - txt output -
-	var outputFileTxt string
-	if userInput.ReportOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.ReportOutputTxt)
+	var outputFileTXT string
+	if userInput.ReportOutputTXT != "" {
+		outputFileTXT = output.CreateOutputFile(userInput.ReportOutputTXT)
 	}
 
 	fmt.Println("================ SCANNING SUBDOMAINS ================")
@@ -129,15 +129,15 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	// change from ip to Hostname
 	if utils.IsIP(target) {
 		targetIP = target
-		target = utils.IpToHostname(targetIP)
+		target = utils.IPToHostname(targetIP)
 	}
 	target = utils.CleanProtocol(target)
-	if outputFileHtml != "" {
-		output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFileHtml)
+	if outputFileHTML != "" {
+		output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFileHTML)
 	}
 	if userInput.ReportCrawlerSub {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.ReportIgnoreSub, dirs, subs, outputFileJson, outputFileHtml, outputFileTxt, mutex, "sub", false)
+			userInput.ReportIgnoreSub, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT, mutex, "sub", false)
 	}
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
 	if userInput.ReportSubdomainDB {
@@ -161,10 +161,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
-	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFileJson,
-		outputFileHtml, outputFileTxt, subs, mutex, false)
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
+	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFileJSON,
+		outputFileHTML, outputFileTXT, subs, mutex, false)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
 	}
 
 	if targetIP != "" {
@@ -173,26 +173,26 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	fmt.Println("================ SCANNING PORTS =====================")
 
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
-		utils.CleanProtocol(target), outputFileJson, outputFileHtml, outputFileTxt,
+		utils.CleanProtocol(target), outputFileJSON, outputFileHTML, outputFileTXT,
 		userInput.ReportCommon, enumeration.CommonPorts(), false, userInput.ReportTimeoutPort)
 
 	fmt.Println("================ SCANNING DNS =======================")
-	enumeration.LookupDNS(utils.CleanProtocol(target), outputFileJson, outputFileHtml, outputFileTxt, false)
+	enumeration.LookupDNS(utils.CleanProtocol(target), outputFileJSON, outputFileHTML, outputFileTXT, false)
 
 	fmt.Println("================ SCANNING DIRECTORIES ===============")
 	var strings2 = input.CreateUrls(userInput.ReportWordDir, protocolTemp, utils.CleanProtocol(target))
-	if outputFileHtml != "" {
-		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHtml)
+	if outputFileHTML != "" {
+		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHTML)
 	}
 	if userInput.ReportCrawlerDir {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.ReportIgnoreDir, dirs, subs, outputFileJson, outputFileHtml, outputFileTxt, mutex, "dir", false)
+			userInput.ReportIgnoreDir, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT, mutex, "dir", false)
 	}
-	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJson, outputFileHtml, outputFileTxt,
+	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
 		dirs, mutex, false, userInput.ReportRedirect)
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
-		output.BannerFooterHTML(outputFileHtml)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
+		output.BannerFooterHTML(outputFileHTML)
 	}
 }
 
@@ -204,7 +204,7 @@ func DNSSubcommandHandler(userInput input.Input) {
 	target := utils.CleanProtocol(userInput.DNSTarget)
 	// change from ip to Hostname
 	if utils.IsIP(target) {
-		target = utils.IpToHostname(target)
+		target = utils.IPToHostname(target)
 	}
 	if target[len(target)-1] == byte('/') {
 		target = target[:len(target)-1]
@@ -214,25 +214,25 @@ func DNSSubcommandHandler(userInput input.Input) {
 		fmt.Println("================ SCANNING DNS =======================")
 	}
 	// - json output -
-	var outputFileJson string
-	if userInput.DNSOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.DNSOutputJson)
+	var outputFileJSON string
+	if userInput.DNSOutputJSON != "" {
+		outputFileJSON = output.CreateOutputFile(userInput.DNSOutputJSON)
 	}
 	// - html output -
-	var outputFileHtml string
-	if userInput.DNSOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.DNSOutputHtml)
-		output.BannerHTML(userInput.DNSTarget, outputFileHtml)
+	var outputFileHTML string
+	if userInput.DNSOutputHTML != "" {
+		outputFileHTML = output.CreateOutputFile(userInput.DNSOutputHTML)
+		output.BannerHTML(userInput.DNSTarget, outputFileHTML)
 	}
 	// - txt output -
-	var outputFileTxt string
-	if userInput.DNSOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.DNSOutputTxt)
+	var outputFileTXT string
+	if userInput.DNSOutputTXT != "" {
+		outputFileTXT = output.CreateOutputFile(userInput.DNSOutputTXT)
 	}
 
-	enumeration.LookupDNS(target, outputFileJson, outputFileHtml, outputFileTxt, userInput.DNSPlain)
-	if userInput.DNSOutputHtml != "" {
-		output.BannerFooterHTML(outputFileHtml)
+	enumeration.LookupDNS(target, outputFileJSON, outputFileHTML, outputFileTXT, userInput.DNSPlain)
+	if userInput.DNSOutputHTML != "" {
+		output.BannerFooterHTML(outputFileHTML)
 	}
 }
 
@@ -252,7 +252,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 	// change from ip to Hostname
 	if utils.IsIP(target) {
-		target = utils.IpToHostname(target)
+		target = utils.IPToHostname(target)
 	}
 	if target[len(target)-1] == byte('/') {
 		target = target[:len(target)-1]
@@ -262,20 +262,20 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		fmt.Println("================ SCANNING SUBDOMAINS ================")
 	}
 	// - json output -
-	var outputFileJson string
-	if userInput.SubdomainOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.SubdomainOutputJson)
+	var outputFileJSON string
+	if userInput.SubdomainOutputJSON != "" {
+		outputFileJSON = output.CreateOutputFile(userInput.SubdomainOutputJSON)
 	}
 	// - html output -
-	var outputFileHtml string
-	if userInput.SubdomainOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.SubdomainOutputHtml)
-		output.BannerHTML(userInput.SubdomainTarget, outputFileHtml)
+	var outputFileHTML string
+	if userInput.SubdomainOutputHTML != "" {
+		outputFileHTML = output.CreateOutputFile(userInput.SubdomainOutputHTML)
+		output.BannerHTML(userInput.SubdomainTarget, outputFileHTML)
 	}
 	// - txt output -
-	var outputFileTxt string
-	if userInput.SubdomainOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.SubdomainOutputTxt)
+	var outputFileTXT string
+	if userInput.SubdomainOutputTXT != "" {
+		outputFileTXT = output.CreateOutputFile(userInput.SubdomainOutputTXT)
 	}
 	var strings1 []string
 	if !userInput.SubdomainNoCheck {
@@ -301,36 +301,36 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 		}
 
 	}
-	if outputFileHtml != "" {
-		output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFileHtml)
+	if outputFileHTML != "" {
+		output.HeaderHTML("SUBDOMAINS ENUMERATION", outputFileHTML)
 	}
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.SubdomainIgnore, dirs, subs, outputFileJson, outputFileHtml, outputFileTxt,
+			userInput.SubdomainIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
 			mutex, "sub", userInput.SubdomainPlain)
 	}
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
-		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFileJson, outputFileHtml, outputFileTxt,
+		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
 			subs, mutex, userInput.SubdomainPlain)
 	} else {
 		for _, elem := range strings1 {
 			fmt.Println(elem)
-			if outputFileJson != "" {
-				output.AppendOutputToJSON(elem, "SUB", "", outputFileJson)
+			if outputFileJSON != "" {
+				output.AppendOutputToJSON(elem, "SUB", "", outputFileJSON)
 			}
-			if outputFileHtml != "" {
-				output.AppendOutputToHTML(elem, "", outputFileHtml)
+			if outputFileHTML != "" {
+				output.AppendOutputToHTML(elem, "", outputFileHTML)
 			}
-			if outputFileTxt != "" {
-				output.AppendOutputToTxt(elem, outputFileTxt)
+			if outputFileTXT != "" {
+				output.AppendOutputToTxt(elem, outputFileTXT)
 			}
 		}
 	}
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
-		output.BannerFooterHTML(outputFileHtml)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
+		output.BannerFooterHTML(outputFileHTML)
 	}
 }
 
@@ -356,35 +356,35 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	}
 	target = utils.CleanProtocol(target)
 	// - json output -
-	var outputFileJson string
-	if userInput.DirOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.DirOutputJson)
+	var outputFileJSON string
+	if userInput.DirOutputJSON != "" {
+		outputFileJSON = output.CreateOutputFile(userInput.DirOutputJSON)
 	}
 	// - html output -
-	var outputFileHtml string
-	if userInput.DirOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.DirOutputHtml)
-		output.BannerHTML(userInput.DirTarget, outputFileHtml)
+	var outputFileHTML string
+	if userInput.DirOutputHTML != "" {
+		outputFileHTML = output.CreateOutputFile(userInput.DirOutputHTML)
+		output.BannerHTML(userInput.DirTarget, outputFileHTML)
 	}
 	// - txt output -
-	var outputFileTxt string
-	if userInput.DirOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.DirOutputTxt)
+	var outputFileTXT string
+	if userInput.DirOutputTXT != "" {
+		outputFileTXT = output.CreateOutputFile(userInput.DirOutputTXT)
 	}
 	var strings2 = input.CreateUrls(userInput.DirWord, protocolTemp, target)
-	if outputFileHtml != "" {
-		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHtml)
+	if outputFileHTML != "" {
+		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHTML)
 	}
 	if userInput.DirCrawler {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.DirIgnore, dirs, subs, outputFileJson, outputFileHtml, outputFileTxt,
+			userInput.DirIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
 			mutex, "dir", userInput.DirPlain)
 	}
-	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJson, outputFileHtml, outputFileTxt,
+	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
 		dirs, mutex, userInput.DirPlain, userInput.DirRedirect)
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
-		output.BannerFooterHTML(outputFileHtml)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
+		output.BannerFooterHTML(outputFileHTML)
 	}
 }
 
@@ -401,30 +401,30 @@ func PortSubcommandHandler(userInput input.Input, common []int) {
 		target = target[:len(target)-1]
 	}
 	// - json output -
-	var outputFileJson string
-	if userInput.PortOutputJson != "" {
-		outputFileJson = output.CreateOutputFile(userInput.PortOutputJson)
+	var outputFileJSON string
+	if userInput.PortOutputJSON != "" {
+		outputFileJSON = output.CreateOutputFile(userInput.PortOutputJSON)
 	}
 	// - html output -
-	var outputFileHtml string
-	if userInput.PortOutputHtml != "" {
-		outputFileHtml = output.CreateOutputFile(userInput.PortOutputHtml)
-		output.BannerHTML(userInput.PortTarget, outputFileHtml)
+	var outputFileHTML string
+	if userInput.PortOutputHTML != "" {
+		outputFileHTML = output.CreateOutputFile(userInput.PortOutputHTML)
+		output.BannerHTML(userInput.PortTarget, outputFileHTML)
 	}
 	// - txt output -
-	var outputFileTxt string
-	if userInput.PortOutputTxt != "" {
-		outputFileTxt = output.CreateOutputFile(userInput.PortOutputTxt)
+	var outputFileTXT string
+	if userInput.PortOutputTXT != "" {
+		outputFileTXT = output.CreateOutputFile(userInput.PortOutputTXT)
 	}
 	if !userInput.PortPlain {
 		fmt.Printf("target: %s\n", target)
 		fmt.Println("================ SCANNING PORTS =====================")
 	}
 	enumeration.AsyncPort(userInput.PortsArray, userInput.PortArrayBool, userInput.StartPort, userInput.EndPort,
-		target, outputFileJson, outputFileHtml, outputFileTxt,
+		target, outputFileJSON, outputFileHTML, outputFileTXT,
 		userInput.PortCommon, common, userInput.PortPlain, userInput.PortTimeout)
 
-	if userInput.PortOutputHtml != "" {
-		output.BannerFooterHTML(outputFileHtml)
+	if userInput.PortOutputHTML != "" {
+		output.BannerFooterHTML(outputFileHTML)
 	}
 }

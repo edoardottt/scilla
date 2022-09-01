@@ -41,9 +41,9 @@ type Input struct {
 	ReportTarget        string
 	ReportWordDir       string
 	ReportWordSub       string
-	ReportOutputJson    string
-	ReportOutputHtml    string
-	ReportOutputTxt     string
+	ReportOutputJSON    string
+	ReportOutputHTML    string
+	ReportOutputTXT     string
 	ReportIgnoreDir     []string
 	ReportIgnoreSub     []string
 	ReportCrawlerDir    bool
@@ -54,15 +54,15 @@ type Input struct {
 	ReportVirusTotal    bool
 	ReportTimeoutPort   int
 	DNSTarget           string
-	DNSOutputJson       string
-	DNSOutputHtml       string
-	DNSOutputTxt        string
+	DNSOutputJSON       string
+	DNSOutputHTML       string
+	DNSOutputTXT        string
 	DNSPlain            bool
 	SubdomainTarget     string
 	SubdomainWord       string
-	SubdomainOutputJson string
-	SubdomainOutputHtml string
-	SubdomainOutputTxt  string
+	SubdomainOutputJSON string
+	SubdomainOutputHTML string
+	SubdomainOutputTXT  string
 	SubdomainIgnore     []string
 	SubdomainCrawler    bool
 	SubdomainDB         bool
@@ -71,17 +71,17 @@ type Input struct {
 	SubdomainVirusTotal bool
 	DirTarget           string
 	DirWord             string
-	DirOutputJson       string
-	DirOutputHtml       string
-	DirOutputTxt        string
+	DirOutputJSON       string
+	DirOutputHTML       string
+	DirOutputTXT        string
 	DirIgnore           []string
 	DirCrawler          bool
 	DirPlain            bool
 	DirRedirect         bool
 	PortTarget          string
-	PortOutputJson      string
-	PortOutputHtml      string
-	PortOutputTxt       string
+	PortOutputJSON      string
+	PortOutputHTML      string
+	PortOutputTXT       string
 	StartPort           int
 	EndPort             int
 	PortArrayBool       bool
@@ -122,13 +122,13 @@ func ReadArgs() Input {
 	reportWordlistSubdomainPtr := reportCommand.String("ws", "", "wordlist to use for subdomains (default enabled)")
 
 	// report subcommand flag pointers
-	reportOutputJsonPtr := reportCommand.String("oj", "", "JSON output path where save the results to")
+	reportOutputJSONPtr := reportCommand.String("oj", "", "JSON output path where save the results to")
 
 	// report subcommand flag pointers
-	reportOutputHtmlPtr := reportCommand.String("oh", "", "HTML output path where save the results to")
+	reportOutputHTMLPtr := reportCommand.String("oh", "", "HTML output path where save the results to")
 
 	// report subcommand flag pointers
-	reportOutputTxtPtr := reportCommand.String("ot", "", "TXT output path where save the results to")
+	reportOutputTXTPtr := reportCommand.String("ot", "", "TXT output path where save the results to")
 
 	// report subcommand flag pointers
 	reportIgnoreDirPtr := reportCommand.String("id", "", "Ignore response code(s) for directories scanning")
@@ -163,13 +163,13 @@ func ReadArgs() Input {
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// dns subcommand flag pointers
-	dnsOutputJsonPtr := dnsCommand.String("oj", "", "JSON output path where save the results to")
+	dnsOutputJSONPtr := dnsCommand.String("oj", "", "JSON output path where save the results to")
 
 	// dns subcommand flag pointers
-	dnsOutputHtmlPtr := dnsCommand.String("oh", "", "HTML output path where save the results to")
+	dnsOutputHTMLPtr := dnsCommand.String("oh", "", "HTML output path where save the results to")
 
 	// dns subcommand flag pointers
-	dnsOutputTxtPtr := dnsCommand.String("ot", "", "TXT output path where save the results to")
+	dnsOutputTXTPtr := dnsCommand.String("ot", "", "TXT output path where save the results to")
 
 	// dns subcommand flag pointers
 	dnsPlainPtr := dnsCommand.Bool("plain", false, "Print only results")
@@ -181,13 +181,13 @@ func ReadArgs() Input {
 	subdomainWordlistPtr := subdomainCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// subdomains subcommand flag pointers
-	subdomainOutputJsonPtr := subdomainCommand.String("oj", "", "JSON output path where save the results to")
+	subdomainOutputJSONPtr := subdomainCommand.String("oj", "", "JSON output path where save the results to")
 
 	// subdomains subcommand flag pointers
-	subdomainOutputHtmlPtr := subdomainCommand.String("oh", "", "HTML output path where save the results to")
+	subdomainOutputHTMLPtr := subdomainCommand.String("oh", "", "HTML output path where save the results to")
 
 	// subdomains subcommand flag pointers
-	subdomainOutputTxtPtr := subdomainCommand.String("ot", "", "TXT output path where save the results to")
+	subdomainOutputTXTPtr := subdomainCommand.String("ot", "", "TXT output path where save the results to")
 
 	// subdomains subcommand flag pointers
 	subdomainIgnorePtr := subdomainCommand.String("i", "", "Ignore response code(s)")
@@ -215,13 +215,13 @@ func ReadArgs() Input {
 	dirWordlistPtr := dirCommand.String("w", "", "wordlist to use (default enabled)")
 
 	// dir subcommand flag pointers
-	dirOutputJsonPtr := dirCommand.String("oj", "", "JSON output path where save the results to")
+	dirOutputJSONPtr := dirCommand.String("oj", "", "JSON output path where save the results to")
 
 	// dir subcommand flag pointers
-	dirOutputHtmlPtr := dirCommand.String("oh", "", "HTML output path where save the results to")
+	dirOutputHTMLPtr := dirCommand.String("oh", "", "HTML output path where save the results to")
 
 	// dir subcommand flag pointers
-	dirOutputTxtPtr := dirCommand.String("ot", "", "TXT output path where save the results to")
+	dirOutputTXTPtr := dirCommand.String("ot", "", "TXT output path where save the results to")
 
 	// dir subcommand flag pointers
 	dirIgnorePtr := dirCommand.String("i", "", "Ignore response code(s)")
@@ -240,13 +240,13 @@ func ReadArgs() Input {
 	portTargetPtr := portCommand.String("target", "", "Target {URL/IP} (Required)")
 
 	// port subcommand flag pointers
-	portOutputJsonPtr := portCommand.String("oj", "", "JSON output path where save the results to")
+	portOutputJSONPtr := portCommand.String("oj", "", "JSON output path where save the results to")
 
 	// port subcommand flag pointers
-	portOutputHtmlPtr := portCommand.String("oh", "", "HTML output path where save the results to")
+	portOutputHTMLPtr := portCommand.String("oh", "", "HTML output path where save the results to")
 
 	// port subcommand flag pointers
-	portOutputTxtPtr := portCommand.String("ot", "", "TXT output path where save the results to")
+	portOutputTXTPtr := portCommand.String("ot", "", "TXT output path where save the results to")
 
 	// port subcommand flag pointers
 	portsPtr := portCommand.String("p", "", "ports range <start-end>")
@@ -325,81 +325,81 @@ func ReadArgs() Input {
 
 	// REPORT subcommand
 	if reportCommand.Parsed() {
-		if *reportOutputJsonPtr != "" {
-			*reportOutputJsonPtr = output.AppendExtension(*reportOutputJsonPtr, "json")
+		if *reportOutputJSONPtr != "" {
+			*reportOutputJSONPtr = output.AppendExtension(*reportOutputJSONPtr, "json")
 		}
-		if *reportOutputHtmlPtr != "" {
-			*reportOutputHtmlPtr = output.AppendExtension(*reportOutputHtmlPtr, "html")
+		if *reportOutputHTMLPtr != "" {
+			*reportOutputHTMLPtr = output.AppendExtension(*reportOutputHTMLPtr, "html")
 		}
-		if *reportOutputTxtPtr != "" {
-			*reportOutputTxtPtr = output.AppendExtension(*reportOutputTxtPtr, "txt")
+		if *reportOutputTXTPtr != "" {
+			*reportOutputTXTPtr = output.AppendExtension(*reportOutputTXTPtr, "txt")
 		}
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportPortsPtr, reportCommonPtr,
 			reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
 			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr,
-			reportOutputJsonPtr, reportOutputHtmlPtr, reportOutputTxtPtr)
+			reportOutputJSONPtr, reportOutputHTMLPtr, reportOutputTXTPtr)
 	}
 
 	// DNS subcommand
 	if dnsCommand.Parsed() {
-		if *dnsOutputJsonPtr != "" {
-			*dnsOutputJsonPtr = output.AppendExtension(*dnsOutputJsonPtr, "json")
+		if *dnsOutputJSONPtr != "" {
+			*dnsOutputJSONPtr = output.AppendExtension(*dnsOutputJSONPtr, "json")
 		}
-		if *dnsOutputHtmlPtr != "" {
-			*dnsOutputHtmlPtr = output.AppendExtension(*dnsOutputHtmlPtr, "html")
+		if *dnsOutputHTMLPtr != "" {
+			*dnsOutputHTMLPtr = output.AppendExtension(*dnsOutputHTMLPtr, "html")
 		}
-		if *dnsOutputTxtPtr != "" {
-			*dnsOutputTxtPtr = output.AppendExtension(*dnsOutputTxtPtr, "txt")
+		if *dnsOutputTXTPtr != "" {
+			*dnsOutputTXTPtr = output.AppendExtension(*dnsOutputTXTPtr, "txt")
 		}
-		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr, dnsOutputJsonPtr, dnsOutputHtmlPtr, dnsOutputTxtPtr)
+		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr, dnsOutputJSONPtr, dnsOutputHTMLPtr, dnsOutputTXTPtr)
 	}
 
 	// SUBDOMAIN subcommand
 	if subdomainCommand.Parsed() {
-		if *subdomainOutputJsonPtr != "" {
-			*subdomainOutputJsonPtr = output.AppendExtension(*subdomainOutputJsonPtr, "json")
+		if *subdomainOutputJSONPtr != "" {
+			*subdomainOutputJSONPtr = output.AppendExtension(*subdomainOutputJSONPtr, "json")
 		}
-		if *subdomainOutputHtmlPtr != "" {
-			*subdomainOutputHtmlPtr = output.AppendExtension(*subdomainOutputHtmlPtr, "html")
+		if *subdomainOutputHTMLPtr != "" {
+			*subdomainOutputHTMLPtr = output.AppendExtension(*subdomainOutputHTMLPtr, "html")
 		}
-		if *subdomainOutputTxtPtr != "" {
-			*subdomainOutputTxtPtr = output.AppendExtension(*subdomainOutputTxtPtr, "txt")
+		if *subdomainOutputTXTPtr != "" {
+			*subdomainOutputTXTPtr = output.AppendExtension(*subdomainOutputTXTPtr, "txt")
 		}
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
 			subdomainCrawlerPtr, subdomainVirusTotalPtr,
-			subdomainOutputJsonPtr, subdomainOutputHtmlPtr, subdomainOutputTxtPtr)
+			subdomainOutputJSONPtr, subdomainOutputHTMLPtr, subdomainOutputTXTPtr)
 	}
 
 	// PORT subcommand
 	if portCommand.Parsed() {
-		if *portOutputJsonPtr != "" {
-			*portOutputJsonPtr = output.AppendExtension(*portOutputJsonPtr, "json")
+		if *portOutputJSONPtr != "" {
+			*portOutputJSONPtr = output.AppendExtension(*portOutputJSONPtr, "json")
 		}
-		if *portOutputHtmlPtr != "" {
-			*portOutputHtmlPtr = output.AppendExtension(*portOutputHtmlPtr, "html")
+		if *portOutputHTMLPtr != "" {
+			*portOutputHTMLPtr = output.AppendExtension(*portOutputHTMLPtr, "html")
 		}
-		if *portOutputTxtPtr != "" {
-			*portOutputTxtPtr = output.AppendExtension(*portOutputTxtPtr, "txt")
+		if *portOutputTXTPtr != "" {
+			*portOutputTXTPtr = output.AppendExtension(*portOutputTXTPtr, "txt")
 		}
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
-			portCommonPtr, StartPort, EndPort, portTimeoutPtr, portOutputJsonPtr, portOutputHtmlPtr, portOutputTxtPtr)
+			portCommonPtr, StartPort, EndPort, portTimeoutPtr, portOutputJSONPtr, portOutputHTMLPtr, portOutputTXTPtr)
 	}
 
 	// DIR subcommand
 	if dirCommand.Parsed() {
-		if *dirOutputJsonPtr != "" {
-			*dirOutputJsonPtr = output.AppendExtension(*dirOutputJsonPtr, "json")
+		if *dirOutputJSONPtr != "" {
+			*dirOutputJSONPtr = output.AppendExtension(*dirOutputJSONPtr, "json")
 		}
-		if *dirOutputHtmlPtr != "" {
-			*dirOutputHtmlPtr = output.AppendExtension(*dirOutputHtmlPtr, "html")
+		if *dirOutputHTMLPtr != "" {
+			*dirOutputHTMLPtr = output.AppendExtension(*dirOutputHTMLPtr, "html")
 		}
-		if *dirOutputTxtPtr != "" {
-			*dirOutputTxtPtr = output.AppendExtension(*dirOutputTxtPtr, "txt")
+		if *dirOutputTXTPtr != "" {
+			*dirOutputTXTPtr = output.AppendExtension(*dirOutputTXTPtr, "txt")
 		}
 		dirIgnore = DirSubcommandCheckFlags(*dirCommand, dirTargetPtr, dirIgnorePtr,
-			dirOutputJsonPtr, dirOutputHtmlPtr, dirOutputTxtPtr)
+			dirOutputJSONPtr, dirOutputHTMLPtr, dirOutputTXTPtr)
 	}
 
 	// HELP subcommand
@@ -420,9 +420,9 @@ func ReadArgs() Input {
 		*reportTargetPtr,
 		*reportWordlistDirPtr,
 		*reportWordlistSubdomainPtr,
-		*reportOutputJsonPtr,
-		*reportOutputHtmlPtr,
-		*reportOutputTxtPtr,
+		*reportOutputJSONPtr,
+		*reportOutputHTMLPtr,
+		*reportOutputTXTPtr,
 		reportIgnoreDir,
 		reportIgnoreSub,
 		*reportCrawlerDirPtr,
@@ -433,15 +433,15 @@ func ReadArgs() Input {
 		*reportVirusTotalPtr,
 		*reportTimeoutPortPtr,
 		*dnsTargetPtr,
-		*dnsOutputJsonPtr,
-		*dnsOutputHtmlPtr,
-		*dnsOutputTxtPtr,
+		*dnsOutputJSONPtr,
+		*dnsOutputHTMLPtr,
+		*dnsOutputTXTPtr,
 		*dnsPlainPtr,
 		*subdomainTargetPtr,
 		*subdomainWordlistPtr,
-		*subdomainOutputJsonPtr,
-		*subdomainOutputHtmlPtr,
-		*subdomainOutputTxtPtr,
+		*subdomainOutputJSONPtr,
+		*subdomainOutputHTMLPtr,
+		*subdomainOutputTXTPtr,
 		subdomainIgnore,
 		*subdomainCrawlerPtr,
 		*subdomainDBPtr,
@@ -450,17 +450,17 @@ func ReadArgs() Input {
 		*subdomainVirusTotalPtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
-		*dirOutputJsonPtr,
-		*dirOutputHtmlPtr,
-		*dirOutputTxtPtr,
+		*dirOutputJSONPtr,
+		*dirOutputHTMLPtr,
+		*dirOutputTXTPtr,
 		dirIgnore,
 		*dirCrawlerPtr,
 		*dirPlainPtr,
 		*dirRedirectPtr,
 		*portTargetPtr,
-		*portOutputJsonPtr,
-		*portOutputHtmlPtr,
-		*portOutputTxtPtr,
+		*portOutputJSONPtr,
+		*portOutputHTMLPtr,
+		*portOutputTXTPtr,
 		StartPort,
 		EndPort,
 		portArrayBool,

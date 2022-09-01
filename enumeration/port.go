@@ -93,10 +93,10 @@ func IsOpenPort(host string, port string, timeout int) bool {
 // AsyncPort performs concurrent requests to the specified
 // ports range and, if someone is open it prints the results
 func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int,
-	host string, outputFileJson, outputFileHtml, outputFileTxt string, common bool,
+	host string, outputFileJSON, outputFileHTML, outputFileTXT string, common bool,
 	commonPorts []int, plain bool, timeout int) {
-	var count int = 0
-	var total int = (EndingPort - StartingPort) + 1
+	var count int
+	var total = (EndingPort - StartingPort) + 1
 	if portsArrayBool {
 		total = len(portsArray)
 	}
@@ -105,8 +105,8 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 	}
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	waitgroup := sync.WaitGroup{}     // Needed to not prematurely exit before all requests have been finished
-	if outputFileHtml != "" {
-		output.HeaderHTML("PORT ENUMERATION", outputFileHtml)
+	if outputFileHTML != "" {
+		output.HeaderHTML("PORT ENUMERATION", outputFileHTML)
 	}
 	ports := []int{}
 	if !common {
@@ -141,14 +141,14 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 				} else {
 					fmt.Printf("%s:%s\n", host, portStr)
 				}
-				if outputFileJson != "" {
-					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "json", outputFileJson)
+				if outputFileJSON != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "json", outputFileJSON)
 				}
-				if outputFileHtml != "" {
-					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "html", outputFileHtml)
+				if outputFileHTML != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "html", outputFileHTML)
 				}
-				if outputFileTxt != "" {
-					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "txt", outputFileTxt)
+				if outputFileTXT != "" {
+					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "txt", outputFileTXT)
 				}
 			}
 		}(portStr, host)
@@ -156,7 +156,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 	waitgroup.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
 	}
 }
