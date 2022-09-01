@@ -41,13 +41,16 @@ func FormatIsOk(input string) bool {
 	if input == "" {
 		return true
 	}
+
 	acceptedOutput := [3]string{"txt", "html", "json"}
 	input = strings.ToLower(input)
+
 	for _, output := range acceptedOutput {
 		if output == input {
 			return true
 		}
 	}
+
 	return false
 }
 

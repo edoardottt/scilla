@@ -46,5 +46,6 @@ func IPToHostname(ip string) string {
 	if err != nil || len(addr) == 0 {
 		log.Fatalf("Failed to resolve ip address %s", ip)
 	}
+
 	return strings.TrimSuffix(addr[0], ".")
 }

@@ -307,12 +307,14 @@ func ReadArgs() Input {
 		}
 	case "help":
 		output.Intro()
+
 		err := helpCommand.Parse(os.Args[2:])
 		if err != nil {
 			log.Fatal(err)
 		}
 	case "examples":
 		output.Intro()
+
 		err := examplesCommand.Parse(os.Args[2:])
 		if err != nil {
 			log.Fatal(err)
@@ -328,12 +330,15 @@ func ReadArgs() Input {
 		if *reportOutputJSONPtr != "" {
 			*reportOutputJSONPtr = output.AppendExtension(*reportOutputJSONPtr, "json")
 		}
+
 		if *reportOutputHTMLPtr != "" {
 			*reportOutputHTMLPtr = output.AppendExtension(*reportOutputHTMLPtr, "html")
 		}
+
 		if *reportOutputTXTPtr != "" {
 			*reportOutputTXTPtr = output.AppendExtension(*reportOutputTXTPtr, "txt")
 		}
+
 		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
 			reportTargetPtr, reportPortsPtr, reportCommonPtr,
 			reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
@@ -346,12 +351,15 @@ func ReadArgs() Input {
 		if *dnsOutputJSONPtr != "" {
 			*dnsOutputJSONPtr = output.AppendExtension(*dnsOutputJSONPtr, "json")
 		}
+
 		if *dnsOutputHTMLPtr != "" {
 			*dnsOutputHTMLPtr = output.AppendExtension(*dnsOutputHTMLPtr, "html")
 		}
+
 		if *dnsOutputTXTPtr != "" {
 			*dnsOutputTXTPtr = output.AppendExtension(*dnsOutputTXTPtr, "txt")
 		}
+
 		DNSSubcommandCheckFlags(*dnsCommand, dnsTargetPtr, dnsOutputJSONPtr, dnsOutputHTMLPtr, dnsOutputTXTPtr)
 	}
 
@@ -360,12 +368,15 @@ func ReadArgs() Input {
 		if *subdomainOutputJSONPtr != "" {
 			*subdomainOutputJSONPtr = output.AppendExtension(*subdomainOutputJSONPtr, "json")
 		}
+
 		if *subdomainOutputHTMLPtr != "" {
 			*subdomainOutputHTMLPtr = output.AppendExtension(*subdomainOutputHTMLPtr, "html")
 		}
+
 		if *subdomainOutputTXTPtr != "" {
 			*subdomainOutputTXTPtr = output.AppendExtension(*subdomainOutputTXTPtr, "txt")
 		}
+
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
 			subdomainCrawlerPtr, subdomainVirusTotalPtr,
@@ -377,12 +388,15 @@ func ReadArgs() Input {
 		if *portOutputJSONPtr != "" {
 			*portOutputJSONPtr = output.AppendExtension(*portOutputJSONPtr, "json")
 		}
+
 		if *portOutputHTMLPtr != "" {
 			*portOutputHTMLPtr = output.AppendExtension(*portOutputHTMLPtr, "html")
 		}
+
 		if *portOutputTXTPtr != "" {
 			*portOutputTXTPtr = output.AppendExtension(*portOutputTXTPtr, "txt")
 		}
+
 		StartPort, EndPort, portsArray, portArrayBool = PortSubcommandCheckFlags(*portCommand, portTargetPtr, portsPtr,
 			portCommonPtr, StartPort, EndPort, portTimeoutPtr, portOutputJSONPtr, portOutputHTMLPtr, portOutputTXTPtr)
 	}
@@ -392,12 +406,15 @@ func ReadArgs() Input {
 		if *dirOutputJSONPtr != "" {
 			*dirOutputJSONPtr = output.AppendExtension(*dirOutputJSONPtr, "json")
 		}
+
 		if *dirOutputHTMLPtr != "" {
 			*dirOutputHTMLPtr = output.AppendExtension(*dirOutputHTMLPtr, "html")
 		}
+
 		if *dirOutputTXTPtr != "" {
 			*dirOutputTXTPtr = output.AppendExtension(*dirOutputTXTPtr, "txt")
 		}
+
 		dirIgnore = DirSubcommandCheckFlags(*dirCommand, dirTargetPtr, dirIgnorePtr,
 			dirOutputJSONPtr, dirOutputHTMLPtr, dirOutputTXTPtr)
 	}
@@ -469,5 +486,6 @@ func ReadArgs() Input {
 		*portPlainPtr,
 		*portTimeoutPtr,
 	}
+
 	return result
 }

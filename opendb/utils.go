@@ -41,10 +41,13 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 	if len(dbsubs) == 0 {
 		return urls
 	}
+
 	dbsubs = utils.RemoveDuplicateValues(dbsubs)
 	dbsubs = append(dbsubs, urls...)
+
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(dbsubs), func(i, j int) { dbsubs[i], dbsubs[j] = dbsubs[j], dbsubs[i] })
+
 	return dbsubs
 }
 
@@ -53,6 +56,7 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 // - ".domain.tld" at the end
 func CleanSubdomainsOk(target string, input []string) []string {
 	var result []string
+
 	for _, elem := range input {
 		if strings.Contains(elem, "."+target) && elem[len(elem)-len(target):] == target {
 			if strings.Contains(elem, "\n") {
@@ -62,5 +66,6 @@ func CleanSubdomainsOk(target string, input []string) []string {
 			result = append(result, elem)
 		}
 	}
+
 	return result
 }

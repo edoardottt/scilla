@@ -47,9 +47,10 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	if err != nil {
 		log.Fatal(err)
 	}
-	data := File{}
 
-	_ = json.Unmarshal([]byte(file), &data)
+	data := File{}
+	json.Unmarshal([]byte(file), &data)
+
 	switch {
 	case key == "PORT":
 		{
@@ -84,5 +85,4 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 			log.Fatal(err)
 		}
 	}
-
 }

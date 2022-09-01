@@ -47,23 +47,31 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 				Value:   asset.Value,
 				Printed: true,
 			}
+
 			subs[domain] = sub
+
 			var resp = asset.Value
+
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
+
 				if resp[:3] != "404" {
 					subDomainFound := utils.CleanProtocol(domain)
 					fmt.Printf("[+]FOUND: %s ", subDomainFound)
+
 					if string(resp[0]) == "2" {
 						if outputFileJson != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
 						}
+
 						if outputFileHtml != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
 						}
+
 						if outputFileTxt != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
 						}
+
 						color.Green("%s\n", resp)
 					} else {
 						if outputFileJson != "" {
@@ -102,6 +110,7 @@ func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 		Value:   value,
 		Printed: false,
 	}
+
 	target = utils.CleanProtocol(target)
 	if !PresentSubs(target, subs, mutex) {
 		mutex.Lock()
@@ -115,5 +124,6 @@ func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := subs[input]
 	mutex.Unlock()
+
 	return ok
 }

@@ -63,6 +63,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		targetRegex := "([-a-z0-9.]*)" + targetTemp + "([-a-z0-9.]*)"
 		collector.URLFilters = []*regexp.Regexp{regexp.MustCompile(targetRegex)}
 	}
+
 	collector.IgnoreRobotsTxt = true
 	collector.AllowURLRevisit = false
 

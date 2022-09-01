@@ -45,6 +45,7 @@ func BufferOverrunSubdomains(domain string) []string {
 		Records []string `json:"FDNS_A"`
 	}{}
 	resp, err := client.Get(url)
+
 	if err != nil {
 		return result
 	}
@@ -55,6 +56,7 @@ func BufferOverrunSubdomains(domain string) []string {
 	if err != nil {
 		return result
 	}
+
 	for _, r := range wrapper.Records {
 		parts := strings.SplitN(r, ",", 2)
 		if len(parts) != 2 {
@@ -62,5 +64,6 @@ func BufferOverrunSubdomains(domain string) []string {
 		}
 		result = append(result, parts[1])
 	}
+
 	return result
 }

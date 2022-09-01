@@ -43,9 +43,9 @@ import (
 func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
 	ignoreBool := len(ignore) != 0
-	var count int
-	var total = len(urls)
+	total := len(urls)
 	client := http.Client{}
+
 	if !redirect {
 		client = http.Client{
 			Timeout: 10 * time.Second,
@@ -58,38 +58,53 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 			},
 		}
 	}
+
 	limiter := make(chan string, 30) // Limits simultaneous requests
 	waitgroup := sync.WaitGroup{}    // Needed to not prematurely exit before all requests have been finished
+
+	var count int
+
 	for i, domain := range urls {
 		limiter <- domain
+
 		waitgroup.Add(1)
+
 		if count%50 == 0 { // update counter
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 			}
+
 			output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 		}
+
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
+
 		go func(i int, domain string) {
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
+
 			resp, err := client.Get(domain)
+
 			count++
+
 			if err != nil {
 				return
 			}
+
 			if ignoreBool {
 				if utils.IgnoreResponse(resp.StatusCode, ignore) {
 					return
 				}
 			}
+
 			output.AddDirs(domain, resp.Status, dirs, mutex)
 			resp.Body.Close()
 		}(i, domain)
 	}
+
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)

@@ -43,15 +43,20 @@ func HackerTargetSubdomains(domain string) []string {
 	}
 	result := make([]string, 0)
 	raw, err := client.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
+
 	if err != nil {
 		return result
 	}
+
 	res, err := ioutil.ReadAll(raw.Body)
 	if err != nil {
 		return result
 	}
+
 	raw.Body.Close()
+
 	sc := bufio.NewScanner(bytes.NewReader(res))
+
 	for sc.Scan() {
 		parts := strings.SplitN(sc.Text(), ",", 2)
 		if len(parts) != 2 {
@@ -59,5 +64,6 @@ func HackerTargetSubdomains(domain string) []string {
 		}
 		result = append(result, parts[0])
 	}
+
 	return result
 }

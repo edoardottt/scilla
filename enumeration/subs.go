@@ -43,43 +43,59 @@ import (
 func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
 	ignoreBool := len(ignore) != 0
+
 	var count int
+
 	var total = len(urls)
+
 	client := http.Client{
 		Timeout: 10 * time.Second,
 	}
+
 	limiter := make(chan string, 10) // Limits simultaneous requests
 	waitgroup := sync.WaitGroup{}    // Needed to not prematurely exit before all requests have been finished
+
 	for i, domain := range urls {
 		limiter <- domain
+
 		waitgroup.Add(1)
+
 		if count%50 == 0 { // update counter
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 			}
+
 			output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 		}
+
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
+
 		go func(i int, domain string) {
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
+
 			resp, err := client.Get(protocol + "://" + domain)
+
 			count++
+
 			if err != nil {
 				return
 			}
+
 			if ignoreBool {
 				if utils.IgnoreResponse(resp.StatusCode, ignore) {
 					return
 				}
 			}
+
 			output.AddSubs(domain, resp.Status, subs, mutex)
 			resp.Body.Close()
 		}(i, domain)
 	}
+
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)

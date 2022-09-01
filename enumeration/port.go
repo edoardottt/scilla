@@ -83,10 +83,12 @@ func IsOpenPort(host string, port string, timeout int) bool {
 	if err != nil {
 		return false
 	}
+
 	if conn != nil {
 		defer conn.Close()
 		return true
 	}
+
 	return false
 }
 
@@ -96,19 +98,25 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 	host string, outputFileJSON, outputFileHTML, outputFileTXT string, common bool,
 	commonPorts []int, plain bool, timeout int) {
 	var count int
+
 	var total = (EndingPort - StartingPort) + 1
 	if portsArrayBool {
 		total = len(portsArray)
 	}
+
 	if common {
 		total = len(commonPorts)
 	}
+
 	limiter := make(chan string, 200) // Limits simultaneous requests
 	waitgroup := sync.WaitGroup{}     // Needed to not prematurely exit before all requests have been finished
+
 	if outputFileHTML != "" {
 		output.HeaderHTML("PORT ENUMERATION", outputFileHTML)
 	}
+
 	ports := []int{}
+
 	if !common {
 		if portsArrayBool {
 			ports = portsArray
@@ -120,17 +128,24 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 	} else {
 		ports = commonPorts
 	}
+
 	for _, port := range ports {
 		waitgroup.Add(1)
+
 		portStr := fmt.Sprint(port)
+
 		limiter <- portStr
+
 		if !plain && count%100 == 0 { // update counter
 			fmt.Fprint(os.Stdout, "\r \r")
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
+
 		go func(portStr string, host string) {
+
 			defer func() { <-limiter }()
 			defer waitgroup.Done()
+
 			resp := IsOpenPort(host, portStr, timeout)
 			count++
 			if resp {
@@ -141,21 +156,26 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 				} else {
 					fmt.Printf("%s:%s\n", host, portStr)
 				}
+
 				if outputFileJSON != "" {
 					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "json", outputFileJSON)
 				}
+
 				if outputFileHTML != "" {
 					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "html", outputFileHTML)
 				}
+
 				if outputFileTXT != "" {
 					output.AppendWhere("http://"+host+":"+portStr, "", "PORT", "", "txt", outputFileTXT)
 				}
 			}
 		}(portStr, host)
 	}
+
 	waitgroup.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
+
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
 	}

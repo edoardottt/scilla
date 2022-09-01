@@ -47,18 +47,23 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJson, outputFil
 				Printed: true,
 			}
 			dirs[domain] = dir
+
 			var resp = asset.Value
+
 			if !plain {
 				if string(resp[0]) == "2" || string(resp[0]) == "3" {
 					fmt.Fprint(os.Stdout, "\r \r")
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Green("%s\n", resp)
+
 					if outputFileJson != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJson)
 					}
+
 					if outputFileHtml != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHtml)
 					}
+
 					if outputFileTxt != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTxt)
 					}
@@ -102,6 +107,7 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 		Value:   value,
 		Printed: false,
 	}
+
 	if !PresentDirs(target, dirs, mutex) {
 		mutex.Lock()
 		dirs[target] = dir
@@ -114,5 +120,6 @@ func PresentDirs(input string, dirs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := dirs[input]
 	mutex.Unlock()
+
 	return ok
 }

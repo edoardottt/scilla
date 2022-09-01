@@ -64,6 +64,7 @@ func CreateOutputFile(path string) string {
 			fmt.Println("Can't create output file.")
 			os.Exit(1)
 		}
+
 		f.Close()
 	} else {
 		// The file already exists, check what the user want.
@@ -89,6 +90,7 @@ func CreateOutputFile(path string) string {
 			os.Exit(1)
 		}
 	}
+
 	return path
 }
 
@@ -115,8 +117,10 @@ func AppendExtension(path, extension string) string {
 	if len(path) < len(extension)+1 {
 		return path + "." + extension
 	}
+
 	if path[len(path)-len(extension)-1:] != "."+extension {
 		return path + "." + extension
 	}
+
 	return path
 }

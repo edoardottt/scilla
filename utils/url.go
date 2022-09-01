@@ -47,6 +47,7 @@ func CleanProtocol(target string) string {
 	if res >= 0 {
 		return target[res+3:]
 	}
+
 	return target
 }
 
@@ -59,6 +60,7 @@ func CleanURL(input string) string {
 	if err != nil {
 		return input
 	}
+
 	return u.Scheme + "://" + u.Host + u.Path
 }
 
@@ -67,7 +69,9 @@ func IsURL(str string) bool {
 	if !ProtocolExists(str) {
 		str = "http://" + str
 	}
+
 	u, err := url.Parse(str)
+
 	return err == nil && u.Host != ""
 }
 
@@ -85,6 +89,7 @@ func AppendDir(scheme string, domain string, dir string) (string, string) {
 // from the input slice all the 'wrong' subdomains.
 func CleanSubdomainsOk(target string, input []string) []string {
 	var result []string
+
 	for _, elem := range input {
 		if strings.Contains(elem, "."+target) && elem[len(elem)-len(target):] == target {
 			if strings.Contains(elem, "\n") {
@@ -94,15 +99,18 @@ func CleanSubdomainsOk(target string, input []string) []string {
 			result = append(result, CleanProtocol(elem))
 		}
 	}
+
 	return result
 }
 
 // RetrieveProtocol remove from the url the protocol scheme
 func RetrieveProtocol(target string) string {
 	res := strings.Index(target, "://")
+
 	if res >= 0 {
 		return target[:res]
 	}
+
 	return target
 }
 
@@ -114,9 +122,11 @@ func AbsoluteURL(protocol string, target string, path string) string {
 	if ProtocolExists(path) {
 		return path
 	}
+
 	if path[0] == '/' {
 		return protocol + "://" + target + path
 	}
+
 	return protocol + "://" + target + "/" + path
 }
 
@@ -124,17 +134,21 @@ func AbsoluteURL(protocol string, target string, path string) string {
 // as output the domain (host)
 func RetrieveHost(input string) string {
 	u, err := url.Parse(input)
+
 	if err != nil {
 		return input
 	}
+
 	return u.Host
 }
 
 // GetRootHost returns the root host (domain.tld)
 func GetRootHost(input string) string {
 	_, err := url.Parse(input)
+
 	if err != nil {
 		return ""
 	}
+
 	return domainutil.Domain(input)
 }

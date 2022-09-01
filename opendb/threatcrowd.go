@@ -44,16 +44,21 @@ func ThreatcrowdSubdomains(domain string) []string {
 		Records []string `json:"subdomains"`
 	}{}
 	resp, err := client.Get(url)
-	if err != nil {
-		return result
-	}
-	defer resp.Body.Close()
-	dec := json.NewDecoder(resp.Body)
 
-	err = dec.Decode(&wrapper)
 	if err != nil {
 		return result
 	}
+
+	defer resp.Body.Close()
+
+	dec := json.NewDecoder(resp.Body)
+	err = dec.Decode(&wrapper)
+
+	if err != nil {
+		return result
+	}
+
 	result = append(result, wrapper.Records...)
+
 	return result
 }

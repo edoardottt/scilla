@@ -42,13 +42,18 @@ func ReadDictSubs(inputFile string) []string {
 	if err != nil {
 		log.Fatalf("failed to open %s ", inputFile)
 	}
+
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
+
 	var text []string
+
 	for scanner.Scan() {
 		text = append(text, scanner.Text())
 	}
+
 	file.Close()
+
 	return text
 }
 
@@ -56,6 +61,7 @@ func ReadDictSubs(inputFile string) []string {
 // from the default file lists/subdomains.txt.
 func CreateSubdomains(filename string, scheme string, url string) []string {
 	var subs []string
+
 	if filename == "" {
 		if runtime.GOOS == "windows" {
 			subs = ReadDictSubs("lists/subdomains.txt")
@@ -65,10 +71,13 @@ func CreateSubdomains(filename string, scheme string, url string) []string {
 	} else {
 		subs = ReadDictSubs(filename)
 	}
+
 	result := []string{}
+
 	for _, sub := range subs {
 		path := utils.BuildURL(scheme, sub, url)
 		result = append(result, path)
 	}
+
 	return result
 }

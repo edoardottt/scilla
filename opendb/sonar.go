@@ -39,22 +39,29 @@ func SonarSubdomains(target string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
 	}
+
 	var arr []string
+
 	resp, err := client.Get("https://sonar.omnisint.io/subdomains/" + target)
 	if err != nil {
 		return arr
 	}
+
 	defer resp.Body.Close()
+
 	if resp.StatusCode == http.StatusOK {
 		bodyBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return arr
 		}
+
 		bodyString := string(bodyBytes)
-		_ = json.Unmarshal([]byte(bodyString), &arr)
+		json.Unmarshal([]byte(bodyString), &arr)
 	}
+
 	for index, elem := range arr {
 		arr[index] = "http://" + elem
 	}
+
 	return arr
 }

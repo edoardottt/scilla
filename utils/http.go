@@ -37,6 +37,8 @@ func HTTPGet(input string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	defer resp.Body.Close()
+
 	return resp.Status, nil
 }

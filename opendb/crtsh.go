@@ -45,16 +45,18 @@ func CrtshSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
 	}
+
 	var results []CrtShResult
+
 	url := "https://crt.sh/?q=%25." + domain + "&output=json"
 	resp, err := client.Get(url)
+
 	if err != nil {
 		return []string{}
 	}
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-
 	body, _ := ioutil.ReadAll(resp.Body)
 
 	if err := json.Unmarshal(body, &results); err != nil {
@@ -66,5 +68,6 @@ func CrtshSubdomains(domain string) []string {
 		out = strings.ReplaceAll(out, "}", "")
 		output = append(output, out)
 	}
+
 	return output
 }

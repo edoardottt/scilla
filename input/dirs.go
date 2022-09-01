@@ -42,10 +42,14 @@ func ReadDictDirs(inputFile string) []string {
 	if err != nil {
 		log.Fatalf("failed to open %s ", inputFile)
 	}
+
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
+
 	var text []string
+
 	var dir = ""
+
 	for scanner.Scan() {
 		dir = scanner.Text()
 		if len(dir) > 0 {
@@ -55,8 +59,11 @@ func ReadDictDirs(inputFile string) []string {
 			text = append(text, dir)
 		}
 	}
+
 	file.Close()
+
 	text = utils.RemoveDuplicateValues(text)
+
 	return text
 }
 
@@ -64,6 +71,7 @@ func ReadDictDirs(inputFile string) []string {
 // from the default file lists/dirs.txt.
 func CreateUrls(filename string, scheme string, url string) []string {
 	var dirs []string
+
 	if filename == "" {
 		if runtime.GOOS == "windows" {
 			dirs = ReadDictDirs("lists/dirs.txt")
@@ -73,11 +81,14 @@ func CreateUrls(filename string, scheme string, url string) []string {
 	} else {
 		dirs = ReadDictDirs(filename)
 	}
+
 	result := []string{}
+
 	for _, dir := range dirs {
 		path, path2 := utils.AppendDir(scheme, url, dir)
 		result = append(result, path)
 		result = append(result, path2)
 	}
+
 	return result
 }

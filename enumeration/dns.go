@@ -46,6 +46,7 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
 	}
+
 	for _, ip := range ips {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN A: ", domain)
@@ -53,12 +54,15 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		} else {
 			fmt.Printf("%s\n", ip.String())
 		}
+
 		if outputFileJson != "" {
 			output.AppendWhere(ip.String(), "", "DNS", "A", "json", outputFileJson)
 		}
+
 		if outputFileHtml != "" {
 			output.AppendWhere(ip.String(), "", "DNS", "A", "html", outputFileHtml)
 		}
+
 		if outputFileTxt != "" {
 			output.AppendWhere(ip.String(), "", "DNS", "A", "txt", outputFileTxt)
 		}
@@ -68,26 +72,32 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get CNAME: %v\n", err)
 	}
+
 	if !plain {
 		fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
 		color.Green("%s\n", cname)
 	} else {
 		fmt.Printf("%s\n", cname)
 	}
+
 	if outputFileJson != "" {
 		output.AppendWhere(cname, "", "DNS", "CNAME", "json", outputFileJson)
 	}
+
 	if outputFileHtml != "" {
 		output.AppendWhere(cname, "", "DNS", "CNAME", "html", outputFileHtml)
 	}
+
 	if outputFileTxt != "" {
 		output.AppendWhere(cname, "", "DNS", "CNAME", "txt", outputFileTxt)
 	}
+
 	// -- NS RECORDS --
 	nameserver, err := net.LookupNS(domain)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get NSs: %v\n", err)
 	}
+
 	for _, ns := range nameserver {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN NS: ", domain)
@@ -95,21 +105,26 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		} else {
 			fmt.Printf("%s\n", ns.Host)
 		}
+
 		if outputFileJson != "" {
 			output.AppendWhere(ns.Host, "", "DNS", "NS", "json", outputFileJson)
 		}
+
 		if outputFileHtml != "" {
 			output.AppendWhere(ns.Host, "", "DNS", "NS", "html", outputFileHtml)
 		}
+
 		if outputFileTxt != "" {
 			output.AppendWhere(ns.Host, "", "DNS", "NS", "txt", outputFileTxt)
 		}
 	}
+
 	// -- MX RECORDS --
 	mxrecords, err := net.LookupMX(domain)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get MXs: %v\n", err)
 	}
+
 	for _, mx := range mxrecords {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN MX: ", domain)
@@ -117,21 +132,26 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		} else {
 			fmt.Printf("%s %v\n", mx.Host, mx.Pref)
 		}
+
 		if outputFileJson != "" {
 			output.AppendWhere(mx.Host, "", "DNS", "MX", "json", outputFileJson)
 		}
+
 		if outputFileHtml != "" {
 			output.AppendWhere(mx.Host, "", "DNS", "MX", "html", outputFileHtml)
 		}
+
 		if outputFileTxt != "" {
 			output.AppendWhere(mx.Host, "", "DNS", "MX", "txt", outputFileTxt)
 		}
 	}
+
 	// -- SRV SERVICE --
 	_, srvs, err := net.LookupSRV("xmpp-server", "tcp", domain)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get SRVs: %v\n", err)
 	}
+
 	for _, srv := range srvs {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN SRV: ", domain)
@@ -139,16 +159,20 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		} else {
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		}
+
 		if outputFileJson != "" {
 			output.AppendWhere(srv.Target, "", "DNS", "SRV", "json", outputFileJson)
 		}
+
 		if outputFileHtml != "" {
 			output.AppendWhere(srv.Target, "", "DNS", "SRV", "html", outputFileHtml)
 		}
+
 		if outputFileTxt != "" {
 			output.AppendWhere(srv.Target, "", "DNS", "SRV", "txt", outputFileTxt)
 		}
 	}
+
 	// -- TXT RECORDS --
 	txtrecords, _ := net.LookupTXT(domain)
 	for _, txt := range txtrecords {
@@ -158,18 +182,23 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		} else {
 			fmt.Printf("%s\n", txt)
 		}
+
 		if outputFileJson != "" {
 			output.AppendWhere(txt, "", "DNS", "TXT", "json", outputFileJson)
 		}
+
 		if outputFileHtml != "" {
 			output.AppendWhere(txt, "", "DNS", "TXT", "html", outputFileHtml)
 		}
+
 		if outputFileTxt != "" {
 			output.AppendWhere(txt, "", "DNS", "TXT", "txt", outputFileTxt)
 		}
 	}
+
 	if outputFileHtml != "" {
 		output.FooterHTML(outputFileHtml)
 	}
+
 	fmt.Println()
 }

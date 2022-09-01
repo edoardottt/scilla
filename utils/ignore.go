@@ -41,6 +41,7 @@ func CheckIgnore(input string) []string {
 	result := []string{}
 	temp := strings.Split(input, ",")
 	temp = RemoveDuplicateValues(temp)
+
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
 		if len(elem) != 3 {
@@ -65,8 +66,10 @@ func CheckIgnore(input string) []string {
 			}
 		}
 	}
+
 	result = RemoveDuplicateValues(result)
 	result = DeleteUnusefulIgnoreresponses(result)
+
 	return result
 }
 
@@ -74,13 +77,16 @@ func CheckIgnore(input string) []string {
 // the responses already included with * as classes
 func DeleteUnusefulIgnoreresponses(input []string) []string {
 	var result []string
+
 	toberemoved := []string{}
 	classes := []string{}
+
 	for _, elem := range input {
 		if strings.Contains(elem, "*") {
 			classes = append(classes, elem)
 		}
 	}
+
 	for _, class := range classes {
 		for _, elem := range input {
 			if class[0] == elem[0] && elem[1] != '*' {
@@ -88,7 +94,9 @@ func DeleteUnusefulIgnoreresponses(input []string) []string {
 			}
 		}
 	}
+
 	result = Difference(input, toberemoved)
+
 	return result
 }
 
@@ -103,6 +111,7 @@ func IgnoreClassOk(input string) bool {
 				fmt.Println(err)
 				os.Exit(2)
 			}
+
 			if i >= 1 && i <= 5 {
 				if input[1] == byte('*') && input[2] == byte('*') {
 					return true
@@ -110,6 +119,7 @@ func IgnoreClassOk(input string) bool {
 			}
 		}
 	}
+
 	return false
 }
 
@@ -121,15 +131,19 @@ func IgnoreResponse(response int, ignore []string) bool {
 	if len(ignore) == 0 {
 		return false
 	}
+
 	for _, ignorePort := range ignore {
 		if strings.Contains(ignorePort, "*") {
+
 			if responseString[0] == ignorePort[0] {
 				return true
 			}
 		}
+
 		if responseString == ignorePort {
 			return true
 		}
 	}
+
 	return false
 }

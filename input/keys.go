@@ -50,6 +50,7 @@ func ReadKeys(filename string) (Keys, error) {
 
 	keys := Keys{}
 	err = yaml.Unmarshal(buf, &keys)
+
 	if err != nil {
 		return Keys{}, fmt.Errorf("in file %q: %v", filename, err)
 	}
@@ -70,14 +71,17 @@ func GetVirusTotalKey() string {
 		}
 		filename = home + "/.config/scilla/keys.yaml"
 	}
+
 	keys, err := ReadKeys(filename)
 	if keys.VirusTotal == "" {
 		fmt.Println("VirusTotal Api Key is empty.")
 		os.Exit(1)
 	}
+
 	if err != nil {
 		fmt.Println("Cannot read VirusTotal Api Key.")
 		os.Exit(1)
 	}
+
 	return keys.VirusTotal
 }

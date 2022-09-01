@@ -36,8 +36,8 @@ import (
 
 // VirusTotalSubdomains retrieves from the url below some known subdomains.
 func VirusTotalSubdomains(target string, apikey string) []string {
-
 	var result []string
+
 	client := http.Client{
 		Timeout: 30 * time.Second,
 	}
@@ -61,6 +61,8 @@ func VirusTotalSubdomains(target string, apikey string) []string {
 	if err != nil {
 		return result
 	}
+
 	result = append(result, wrapper.Subdomains...)
+
 	return result
 }
