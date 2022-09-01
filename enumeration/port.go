@@ -39,7 +39,7 @@ import (
 	"github.com/fatih/color"
 )
 
-//CommonPorts is a slice of integers containing the common ports.
+// CommonPorts is a slice of integers containing the common ports.
 func CommonPorts() []int {
 	return []int{13, 20, 21, 22, 23, 25, 42, 50, 51, 53, 67, 68,
 		69, 70, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 90, 102,
@@ -77,7 +77,7 @@ func CommonPorts() []int {
 		25999, 28017, 30000, 40000, 50000, 54321}
 }
 
-//IsOpenPort checks if a port is open (listening)
+// IsOpenPort checks if a port is open (listening)
 func IsOpenPort(host string, port string, timeout int) bool {
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), time.Duration(timeout)*time.Second)
 	if err != nil {
@@ -90,8 +90,8 @@ func IsOpenPort(host string, port string, timeout int) bool {
 	return false
 }
 
-//AsyncPort performs concurrent requests to the specified
-//ports range and, if someone is open it prints the results
+// AsyncPort performs concurrent requests to the specified
+// ports range and, if someone is open it prints the results
 func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int,
 	host string, outputFileJson, outputFileHtml, outputFileTxt string, common bool,
 	commonPorts []int, plain bool, timeout int) {

@@ -29,7 +29,7 @@ package output
 
 import "fmt"
 
-//Examples prints some examples
+// Examples prints some examples
 func Examples() {
 	fmt.Println("	Examples:")
 	fmt.Println("		- scilla dns -target target.domain")

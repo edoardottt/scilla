@@ -36,7 +36,7 @@ import (
 	"github.com/fatih/color"
 )
 
-//LookupDNS prints the DNS informations for the inputted domain
+// LookupDNS prints the DNS informations for the inputted domain
 func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt string, plain bool) {
 	if outputFileHtml != "" {
 		output.HeaderHTML("DNS ENUMERATION", outputFileHtml)

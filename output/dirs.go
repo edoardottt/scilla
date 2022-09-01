@@ -35,8 +35,8 @@ import (
 	"github.com/fatih/color"
 )
 
-//PrintDirs prints the results (only the resources not already printed).
-//Also performs the checks based on the response status codes.
+// PrintDirs prints the results (only the resources not already printed).
+// Also performs the checks based on the response status codes.
 func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
@@ -96,7 +96,7 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJson, outputFil
 	mutex.Unlock()
 }
 
-//AddDirs adds the target found to the dirs map
+// AddDirs adds the target found to the dirs map
 func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mutex) {
 	dir := Asset{
 		Value:   value,
@@ -109,7 +109,7 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 	}
 }
 
-//PresentDirs checks if a directory is present inside the dirs map
+// PresentDirs checks if a directory is present inside the dirs map
 func PresentDirs(input string, dirs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := dirs[input]

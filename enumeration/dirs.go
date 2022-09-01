@@ -38,8 +38,8 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//AsyncDir performs concurrent requests to the specified
-//urls and prints the results
+// AsyncDir performs concurrent requests to the specified
+// urls and prints the results
 func AsyncDir(urls []string, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
 	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
 	ignoreBool := len(ignore) != 0

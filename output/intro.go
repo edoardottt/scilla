@@ -33,7 +33,7 @@ import (
 	"github.com/fatih/color"
 )
 
-//Intro prints the banner when the program starts
+// Intro prints the banner when the program starts
 func Intro() {
 	banner1 := "                  _ _ _\n"
 	banner2 := "         ___  ___(_) | | __ _\n"

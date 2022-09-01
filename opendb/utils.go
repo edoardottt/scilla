@@ -35,21 +35,20 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//AppendDBSubdomains appends to the subdomains in the list
-//the subdomains found with the open DBs.
+// AppendDBSubdomains appends to the subdomains in the list
+// the subdomains found with the open DBs.
 func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 	if len(dbsubs) == 0 {
 		return urls
 	}
-	var result []string
 	dbsubs = utils.RemoveDuplicateValues(dbsubs)
-	result = append(dbsubs, urls...)
+	dbsubs = append(dbsubs, urls...)
 	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(result), func(i, j int) { result[i], result[j] = result[j], result[i] })
-	return result
+	rand.Shuffle(len(dbsubs), func(i, j int) { dbsubs[i], dbsubs[j] = dbsubs[j], dbsubs[i] })
+	return dbsubs
 }
 
-//CleanSubdomainsOk checks if the subdomains found are well formatted:
+// CleanSubdomainsOk checks if the subdomains found are well formatted:
 // - contain ".domain.tld"
 // - ".domain.tld" at the end
 func CleanSubdomainsOk(target string, input []string) []string {

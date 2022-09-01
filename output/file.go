@@ -35,9 +35,9 @@ import (
 	"strings"
 )
 
-//CreateOutputFolder creates the output folder
+// CreateOutputFolder creates the output folder
 func CreateOutputFolder(path string) {
-	//Create a folder/directory at a full qualified path
+	// Create a folder/directory at a full qualified path
 	if strings.Trim(path, " ") != "" {
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
@@ -47,7 +47,7 @@ func CreateOutputFolder(path string) {
 	}
 }
 
-//CreateOutputFile creates the output file (txt/json/html)
+// CreateOutputFile creates the output file (txt/json/html)
 func CreateOutputFile(path string) string {
 
 	dir, file := filepath.Split(path)
@@ -92,18 +92,25 @@ func CreateOutputFile(path string) string {
 	return path
 }
 
-//AppendWhere checks which format the output should be (html, json or txt)
+// AppendWhere checks which format the output should be (html, json or txt)
 func AppendWhere(what string, status string, key string, record string, format string, outputFile string) {
-	if format == "html" {
-		AppendOutputToHTML(what, status, outputFile)
-	} else if format == "json" {
-		AppendOutputToJSON(what, key, record, outputFile)
-	} else {
-		AppendOutputToTxt(what, outputFile)
+	switch {
+	case format == "html":
+		{
+			AppendOutputToHTML(what, status, outputFile)
+		}
+	case format == "json":
+		{
+			AppendOutputToJSON(what, key, record, outputFile)
+		}
+	default:
+		{
+			AppendOutputToTxt(what, outputFile)
+		}
 	}
 }
 
-//AppendExtension appends to the path the given extension
+// AppendExtension appends to the path the given extension
 func AppendExtension(path, extension string) string {
 	if len(path) < len(extension)+1 {
 		return path + "." + extension

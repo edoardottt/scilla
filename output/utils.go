@@ -29,14 +29,14 @@ package output
 
 import "strings"
 
-//Asset gives information about the asset found
+// Asset gives information about the asset found
 type Asset struct {
 	Value   string
 	Printed bool
 }
 
-//OutputFormatIsOk checks if the specified output format is Ok
-//(txt, html or json)
+// OutputFormatIsOk checks if the specified output format is Ok
+// (txt, html or json)
 func OutputFormatIsOk(input string) bool {
 	if input == "" {
 		return true
@@ -51,7 +51,7 @@ func OutputFormatIsOk(input string) bool {
 	return false
 }
 
-//ReplaceBadCharacterOutput replaces slashes with dots
+// ReplaceBadCharacterOutput replaces slashes with dots
 func ReplaceBadCharacterOutput(input string) string {
 	result := strings.ReplaceAll(input, "/", "-")
 	return result

@@ -34,7 +34,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//BannerHTML writes in the input file the HTML banner
+// BannerHTML writes in the input file the HTML banner
 func BannerHTML(target string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -47,16 +47,18 @@ func BannerHTML(target string, filename string) {
 	<li>edoardottt, <a href='https://www.edoardoottavianelli.it'>edoardoottavianelli.it</a></li>
 	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li></ul></div>`)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf(err.Error())
+		return
 	}
 	_, err = file.WriteString("<h4>target: " + target + "</h4>")
 	if err != nil {
-		log.Fatal(err)
+		log.Printf(err.Error())
+		return
 	}
 	file.Close()
 }
 
-//AppendOutputToHTML appends a (html) row in the HTML output file
+// AppendOutputToHTML appends a (html) row in the HTML output file
 func AppendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -74,12 +76,13 @@ func AppendOutputToHTML(output string, status string, filename string) {
 		statusColor = status
 	}
 	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + utils.CleanProtocol(output) + "</a> " + statusColor + "</li>"); err != nil {
-		log.Fatal(err)
+		log.Printf(err.Error())
+		return
 	}
 	file.Close()
 }
 
-//HeaderHTML writes in the (html) output file the header (directories, dns ...)
+// HeaderHTML writes in the (html) output file the header (directories, dns ...)
 func HeaderHTML(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -91,7 +94,7 @@ func HeaderHTML(header string, filename string) {
 	file.Close()
 }
 
-//FooterHTML closes the HTML list
+// FooterHTML closes the HTML list
 func FooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
@@ -99,16 +102,18 @@ func FooterHTML(filename string) {
 	}
 	defer file.Close()
 	if _, err := file.WriteString("</ul>"); err != nil {
-		log.Fatal(err)
+		log.Printf(err.Error())
+		return
 	}
 	file.Close()
 }
 
-//BannerFooterHTML writes in the (html) output file the HTML footer
+// BannerFooterHTML writes in the (html) output file the HTML footer
 func BannerFooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 	_, err = file.WriteString(`<div style='background-color:#4adeff;color:white'>
 	<ul><li><a href='https://github.com/edoardottt/scilla'>Contribute to scilla</a></li>

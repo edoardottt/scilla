@@ -34,7 +34,7 @@ import (
 	"time"
 )
 
-//VirusTotalSubdomains retrieves from the url below some known subdomains.
+// VirusTotalSubdomains retrieves from the url below some known subdomains.
 func VirusTotalSubdomains(target string, apikey string) []string {
 
 	var result []string

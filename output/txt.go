@@ -32,7 +32,7 @@ import (
 	"os"
 )
 
-//AppendOutputToTxt appends a (txt) row in the TXT output file
+// AppendOutputToTxt appends a (txt) row in the TXT output file
 func AppendOutputToTxt(output string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {

@@ -36,12 +36,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-//Keys is a struct representing the format of the keys.yaml file.
+// Keys is a struct representing the format of the keys.yaml file.
 type Keys struct {
 	VirusTotal string `yaml:"VirusTotal,omitempty"`
 }
 
-//ReadKeys gets as input a filename (keys.yaml) and returns a Keys object.
+// ReadKeys gets as input a filename (keys.yaml) and returns a Keys object.
 func ReadKeys(filename string) (Keys, error) {
 	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -57,7 +57,7 @@ func ReadKeys(filename string) (Keys, error) {
 	return keys, nil
 }
 
-//GetVirusTotalKey reads the Virustotal key
+// GetVirusTotalKey reads the Virustotal key
 func GetVirusTotalKey() string {
 	filename := ""
 	if runtime.GOOS == "windows" {

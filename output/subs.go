@@ -36,8 +36,8 @@ import (
 	"github.com/fatih/color"
 )
 
-//PrintSubs prints the results (only the resources not already printed).
-//Also performs the checks based on the response status codes.
+// PrintSubs prints the results (only the resources not already printed).
+// Also performs the checks based on the response status codes.
 func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
@@ -78,19 +78,17 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 						color.Red("%s\n", resp)
 					}
 				}
-			} else {
-				if resp[:3] != "404" {
-					subDomainFound := utils.CleanProtocol(domain)
-					fmt.Printf("%s\n", subDomainFound)
-					if outputFileJson != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
-					}
-					if outputFileHtml != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
-					}
-					if outputFileTxt != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
-					}
+			} else if resp[:3] != "404" {
+				subDomainFound := utils.CleanProtocol(domain)
+				fmt.Printf("%s\n", subDomainFound)
+				if outputFileJson != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
+				}
+				if outputFileHtml != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
+				}
+				if outputFileTxt != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
 				}
 			}
 		}
@@ -98,7 +96,7 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 	mutex.Unlock()
 }
 
-//AddSubs adds the target found to the subs map
+// AddSubs adds the target found to the subs map
 func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mutex) {
 	sub := Asset{
 		Value:   value,
@@ -112,7 +110,7 @@ func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 	}
 }
 
-//PresentSubs checks if a subdomain is present inside the subs map
+// PresentSubs checks if a subdomain is present inside the subs map
 func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := subs[input]

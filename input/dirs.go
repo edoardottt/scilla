@@ -36,7 +36,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReadDictDirs reads all the possible dirs from input file
+// ReadDictDirs reads all the possible dirs from input file
 func ReadDictDirs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {
@@ -60,8 +60,8 @@ func ReadDictDirs(inputFile string) []string {
 	return text
 }
 
-//CreateUrls returns a list of directories
-//from the default file lists/dirs.txt.
+// CreateUrls returns a list of directories
+// from the default file lists/dirs.txt.
 func CreateUrls(filename string, scheme string, url string) []string {
 	var dirs []string
 	if filename == "" {

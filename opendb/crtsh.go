@@ -35,12 +35,12 @@ import (
 	"time"
 )
 
-//CrtShResult is the struct containing crt.sh results
+// CrtShResult is the struct containing crt.sh results
 type CrtShResult struct {
 	Name string `json:"name_value"`
 }
 
-//CrtshSubdomains retrieves from the url below some known subdomains.
+// CrtshSubdomains retrieves from the url below some known subdomains.
 func CrtshSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,
@@ -62,8 +62,8 @@ func CrtshSubdomains(domain string) []string {
 	}
 
 	for _, res := range results {
-		out := strings.Replace(res.Name, "{", "", -1)
-		out = strings.Replace(out, "}", "", -1)
+		out := strings.ReplaceAll(res.Name, "{", "")
+		out = strings.ReplaceAll(out, "}", "")
 		output = append(output, out)
 	}
 	return output

@@ -29,7 +29,7 @@ package output
 
 import "fmt"
 
-//Help prints in stdout scilla usage
+// Help prints in stdout scilla usage
 func Help() {
 	fmt.Println("Information Gathering tool - DNS / Subdomain / Ports / Directories enumeration")
 	fmt.Println("")

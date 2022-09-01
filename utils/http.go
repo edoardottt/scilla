@@ -29,9 +29,9 @@ package utils
 
 import "net/http"
 
-//HttpGet performs a GET request (HTTP)
-//and returns ERROR if it's not possible,
-//the status string otherwise (e.g. "200 OK")
+// HttpGet performs a GET request (HTTP)
+// and returns ERROR if it's not possible,
+// the status string otherwise (e.g. "200 OK")
 func HttpGet(input string) (string, error) {
 	resp, err := http.Get(input)
 	if err != nil {

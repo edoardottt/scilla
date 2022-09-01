@@ -34,7 +34,7 @@ import (
 	"time"
 )
 
-//BufferOverrunSubdomains retrieves from the url below some known subdomains.
+// BufferOverrunSubdomains retrieves from the url below some known subdomains.
 func BufferOverrunSubdomains(domain string) []string {
 	client := http.Client{
 		Timeout: 30 * time.Second,

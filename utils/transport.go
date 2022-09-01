@@ -34,8 +34,8 @@ import (
 	"strings"
 )
 
-//CheckPortsArray checks the basic rules to
-//be valid and then returns the ports array to scan.
+// CheckPortsArray checks the basic rules to
+// be valid and then returns the ports array to scan.
 // - remove duplicates
 // - check if they can be converted to integers
 // - check if they are in the port array (1 - 65535)
@@ -57,67 +57,83 @@ func CheckPortsArray(input string) []int {
 	return result
 }
 
-//CheckPortsRange checks the basic rules to
-//be valid and then returns the starting port and the ending port.
-func CheckPortsRange(portsRange string, StartPort int, EndPort int) (int, int) {
+// CheckPortsRange checks the basic rules to
+// be valid and then returns the starting port and the ending port.
+func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int) {
 	// If there's ports range, define it as inputs for the struct
 	delimiter := byte('-')
-	//If there is only one number
+	// If there is only one number
 
 	// If starting port isn't specified
-	if portsRange[0] == delimiter {
-		maybeEnd, err := strconv.Atoi(portsRange[1:])
-		if err != nil {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
+	switch {
+	case portsRange[0] == delimiter:
+		{
+			maybeEnd, err := strconv.Atoi(portsRange[1:])
+			if err != nil {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			if maybeEnd >= 1 && maybeEnd <= endPort {
+				endPort = maybeEnd
+			}
+			break
 		}
-		if maybeEnd >= 1 && maybeEnd <= EndPort {
-			EndPort = maybeEnd
+
+	case portsRange[len(portsRange)-1] == delimiter:
+		{
+			// If ending port isn't specified
+			maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)-1])
+			if err != nil {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			if maybeStart > 0 && maybeStart < endPort {
+				startPort = maybeStart
+			}
+			break
 		}
-	} else if portsRange[len(portsRange)-1] == delimiter {
-		// If ending port isn't specified
-		maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)-1])
-		if err != nil {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
+
+	case !strings.Contains(portsRange, string(delimiter)):
+		{
+			// If a single port is specified
+			maybePort, err := strconv.Atoi(portsRange)
+			if err != nil {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			if maybePort > 0 && maybePort < endPort {
+				startPort = maybePort
+				endPort = maybePort
+			}
+			break
 		}
-		if maybeStart > 0 && maybeStart < EndPort {
-			StartPort = maybeStart
+
+	default:
+		{
+			// If a range is specified
+			sliceOfPorts := strings.Split(portsRange, string(delimiter))
+			if len(sliceOfPorts) != 2 {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			maybeStart, err := strconv.Atoi(sliceOfPorts[0])
+			if err != nil {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
+			if err != nil {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > endPort {
+				fmt.Println("The inputted port range is not valid.")
+				os.Exit(1)
+			}
+			startPort = maybeStart
+			endPort = maybeEnd
 		}
-	} else if !strings.Contains(portsRange, string(delimiter)) {
-		// If a single port is specified
-		maybePort, err := strconv.Atoi(portsRange)
-		if err != nil {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
-		}
-		if maybePort > 0 && maybePort < EndPort {
-			StartPort = maybePort
-			EndPort = maybePort
-		}
-	} else {
-		// If a range is specified
-		sliceOfPorts := strings.Split(portsRange, string(delimiter))
-		if len(sliceOfPorts) != 2 {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
-		}
-		maybeStart, err := strconv.Atoi(sliceOfPorts[0])
-		if err != nil {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
-		}
-		maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
-		if err != nil {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
-		}
-		if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > EndPort {
-			fmt.Println("The inputted port range is not valid.")
-			os.Exit(1)
-		}
-		StartPort = maybeStart
-		EndPort = maybeEnd
 	}
-	return StartPort, EndPort
+
+	return startPort, endPort
 }

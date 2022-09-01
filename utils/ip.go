@@ -33,14 +33,14 @@ import (
 	"strings"
 )
 
-//IsIP checks if the input is a
-//proper ip address (formatted in a good manner)
+// IsIP checks if the input is a
+// proper ip address (formatted in a good manner)
 func IsIP(ip string) bool {
 	return net.ParseIP(ip) != nil
 }
 
-//IpToHostname tries to translate an ip
-//address to a hostname.
+// IpToHostname tries to translate an ip
+// address to a hostname.
 func IpToHostname(ip string) string {
 	addr, err := net.LookupAddr(ip)
 	if err != nil || len(addr) == 0 {

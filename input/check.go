@@ -36,11 +36,11 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReportSubcommandCheckFlags performs all the necessary checks on the flags
-//for the report subcommand
+// ReportSubcommandCheckFlags performs all the necessary checks on the flags
+// for the report subcommand
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
 	reportPortsPtr *string, reportCommonPtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
-	StartPort int, EndPort int, reportIgnoreDirPtr *string,
+	startPort int, endPort int, reportIgnoreDirPtr *string,
 	reportIgnoreSubPtr *string, reportTimeoutPort *int,
 	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int, []int, bool, []string, []string) {
 	// Required Flags
@@ -48,12 +48,12 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		reportCommand.PrintDefaults()
 		os.Exit(1)
 	}
-	//Verify good inputs
+	// Verify good inputs
 	if !utils.IsURL(*reportTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	//output files all different
+	// output files all different
 	if *reportOutputJson != "" {
 		if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml {
 			fmt.Println("The output paths must be all different.")
@@ -72,7 +72,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 			os.Exit(1)
 		}
 	}
-	//common and p not together
+	// common and p not together
 	if *reportPortsPtr != "" && *reportCommonPtr {
 		fmt.Println("You can't specify a port range and common option together.")
 		os.Exit(1)
@@ -91,17 +91,26 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 			fmt.Println("You can specify a ports range or an array, not both.")
 			os.Exit(1)
 		}
-		if strings.Contains(*reportPortsPtr, "-") {
-			portsRange := string(*reportPortsPtr)
-			StartPort, EndPort = utils.CheckPortsRange(portsRange, StartPort, EndPort)
-			portArrayBool = false
-		} else if strings.Contains(*reportPortsPtr, ",") {
-			portsArray = utils.CheckPortsArray(*reportPortsPtr)
-			portArrayBool = true
-		} else {
-			portsRange := string(*reportPortsPtr)
-			StartPort, EndPort = utils.CheckPortsRange(portsRange, StartPort, EndPort)
-			portArrayBool = false
+		switch {
+		case strings.Contains(*reportPortsPtr, "-"):
+			{
+				portsRange := string(*reportPortsPtr)
+				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
+				portArrayBool = false
+				break
+			}
+		case strings.Contains(*reportPortsPtr, ","):
+			{
+				portsArray = utils.CheckPortsArray(*reportPortsPtr)
+				portArrayBool = true
+				break
+			}
+		default:
+			{
+				portsRange := string(*reportPortsPtr)
+				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
+				portArrayBool = false
+			}
 		}
 	}
 	var reportIgnoreDir []string
@@ -119,18 +128,18 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 
-	return StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub
+	return startPort, endPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub
 }
 
-//DNSSubcommandCheckFlags performs all the necessary checks on the flags
-//for the dns subcommand
+// DNSSubcommandCheckFlags performs all the necessary checks on the flags
+// for the dns subcommand
 func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJson, dnsOutputHtml, dnsOutputTxt *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
 		dnsCommand.PrintDefaults()
 		os.Exit(1)
 	}
-	//output files all different
+	// output files all different
 	if *dnsOutputJson != "" {
 		if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml {
 			fmt.Println("The output paths must be all different.")
@@ -149,15 +158,15 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 			os.Exit(1)
 		}
 	}
-	//Verify good inputs
+	// Verify good inputs
 	if !utils.IsURL(*dnsTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
 }
 
-//SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
-//for the subdomain subcommand
+// SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
+// for the subdomain subcommand
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
 	subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
@@ -167,12 +176,12 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		subdomainCommand.PrintDefaults()
 		os.Exit(1)
 	}
-	//Verify good inputs
+	// Verify good inputs
 	if !utils.IsURL(*subdomainTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	//no-check checks
+	// no-check checks
 	if *subdomainNoCheckPtr && !*subdomainDBPtr {
 		fmt.Println("You can use no-check only with db option.")
 		os.Exit(1)
@@ -189,7 +198,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		fmt.Println("You can't use no-check with crawler option.")
 		os.Exit(1)
 	}
-	//output files all different
+	// output files all different
 	if *subdomainOutputJson != "" {
 		if *subdomainOutputJson == *subdomainOutputTxt || *subdomainOutputJson == *subdomainOutputHtml {
 			fmt.Println("The output paths must be all different.")
@@ -223,17 +232,17 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	return subdomainIgnore
 }
 
-//PortSubcommandCheckFlags performs all the necessary checks on the flags
-//for the port subcommand
+// PortSubcommandCheckFlags performs all the necessary checks on the flags
+// for the port subcommand
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
-	portCommonPtr *bool, StartPort int, EndPort int, portTimeout *int,
+	portCommonPtr *bool, startPort int, endPort int, portTimeout *int,
 	portOutputJson, portOutputHtml, portOutputTxt *string) (int, int, []int, bool) {
 	// Required Flags
 	if *portTargetPtr == "" {
 		portCommand.PrintDefaults()
 		os.Exit(1)
 	}
-	//common and p not together
+	// common and p not together
 	if *portsPtr != "" && *portCommonPtr {
 		fmt.Println("You can't specify a port range and common option together.")
 		os.Exit(1)
@@ -245,20 +254,29 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 			fmt.Println("You can specify a ports range or an array, not both.")
 			os.Exit(1)
 		}
-		if strings.Contains(*portsPtr, "-") {
-			portsRange := string(*portsPtr)
-			StartPort, EndPort = utils.CheckPortsRange(portsRange, StartPort, EndPort)
-			portArrayBool = false
-		} else if strings.Contains(*portsPtr, ",") {
-			portsArray = utils.CheckPortsArray(*portsPtr)
-			portArrayBool = true
-		} else {
-			portsRange := string(*portsPtr)
-			StartPort, EndPort = utils.CheckPortsRange(portsRange, StartPort, EndPort)
-			portArrayBool = false
+		switch {
+		case strings.Contains(*portsPtr, "-"):
+			{
+				portsRange := string(*portsPtr)
+				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
+				portArrayBool = false
+				break
+			}
+		case strings.Contains(*portsPtr, ","):
+			{
+				portsArray = utils.CheckPortsArray(*portsPtr)
+				portArrayBool = true
+				break
+			}
+		default:
+			{
+				portsRange := string(*portsPtr)
+				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
+				portArrayBool = false
+			}
 		}
 	}
-	//output files all different
+	// output files all different
 	if *portOutputJson != "" {
 		if *portOutputJson == *portOutputTxt || *portOutputJson == *portOutputHtml {
 			fmt.Println("The output paths must be all different.")
@@ -277,7 +295,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 			os.Exit(1)
 		}
 	}
-	//Verify good inputs
+	// Verify good inputs
 	if !utils.IsURL(*portTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
@@ -287,11 +305,11 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		os.Exit(1)
 	}
 
-	return StartPort, EndPort, portsArray, portArrayBool
+	return startPort, endPort, portsArray, portArrayBool
 }
 
-//DirSubcommandCheckFlags performs all the necessary checks on the flags
-//for the dir subcommand
+// DirSubcommandCheckFlags performs all the necessary checks on the flags
+// for the dir subcommand
 func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 	dirIgnorePtr *string, dirOutputJson, dirOutputHtml, dirOutputTxt *string) []string {
 	// Required Flags
@@ -299,12 +317,12 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		dirCommand.PrintDefaults()
 		os.Exit(1)
 	}
-	//Verify good inputs
+	// Verify good inputs
 	if !utils.IsURL(*dirTargetPtr) {
 		fmt.Println("The inputted target is not valid.")
 		os.Exit(1)
 	}
-	//output files all different
+	// output files all different
 	if *dirOutputJson != "" {
 		if *dirOutputJson == *dirOutputTxt || *dirOutputJson == *dirOutputHtml {
 			fmt.Println("The output paths must be all different.")

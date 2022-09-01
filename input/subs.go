@@ -36,7 +36,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//ReadDictSubs reads all the possible subdomains from file
+// ReadDictSubs reads all the possible subdomains from file
 func ReadDictSubs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {
@@ -52,8 +52,8 @@ func ReadDictSubs(inputFile string) []string {
 	return text
 }
 
-//CreateSubdomains returns a list of subdomains
-//from the default file lists/subdomains.txt.
+// CreateSubdomains returns a list of subdomains
+// from the default file lists/subdomains.txt.
 func CreateSubdomains(filename string, scheme string, url string) []string {
 	var subs []string
 	if filename == "" {

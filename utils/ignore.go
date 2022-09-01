@@ -34,9 +34,9 @@ import (
 	"strings"
 )
 
-//CheckIgnore checks the inputted status code(s) to be ignored.
-//It can be a list e.g. 301,302,400,404,500
-//It can be a 'class' of codes e.g. 3**
+// CheckIgnore checks the inputted status code(s) to be ignored.
+// It can be a list e.g. 301,302,400,404,500
+// It can be a 'class' of codes e.g. 3**
 func CheckIgnore(input string) []string {
 	result := []string{}
 	temp := strings.Split(input, ",")
@@ -70,8 +70,8 @@ func CheckIgnore(input string) []string {
 	return result
 }
 
-//DeleteUnusefulIgnoreresponses removes from to-be-ignored arrays
-//the responses already included with * as classes
+// DeleteUnusefulIgnoreresponses removes from to-be-ignored arrays
+// the responses already included with * as classes
 func DeleteUnusefulIgnoreresponses(input []string) []string {
 	var result []string
 	toberemoved := []string{}
@@ -92,8 +92,8 @@ func DeleteUnusefulIgnoreresponses(input []string) []string {
 	return result
 }
 
-//IgnoreClassOk states if the class of ignored status codes
-//is correct or not (4**,2**...)
+// IgnoreClassOk states if the class of ignored status codes
+// is correct or not (4**,2**...)
 func IgnoreClassOk(input string) bool {
 	if strings.Contains(input, "*") {
 		if _, err := strconv.Atoi(string(input[0])); err == nil {
@@ -113,8 +113,8 @@ func IgnoreClassOk(input string) bool {
 	return false
 }
 
-//IgnoreResponse returns a boolean if the response
-//should be ignored or not.
+// IgnoreResponse returns a boolean if the response
+// should be ignored or not.
 func IgnoreResponse(response int, ignore []string) bool {
 	responseString := strconv.Itoa(response)
 	// if I don't have to ignore responses, just return true

@@ -33,7 +33,7 @@ import (
 	"log"
 )
 
-//OutputFile struct helping json output
+// OutputFile struct helping json output
 type OutputFile struct {
 	Port      []string            `json:"port,omitempty"`
 	Dns       map[string][]string `json:"dns,omitempty"`
@@ -41,7 +41,7 @@ type OutputFile struct {
 	Dir       []string            `json:"dir,omitempty"`
 }
 
-//AppendOutputToJSON appends a (json) row in the JSON output file
+// AppendOutputToJSON appends a (json) row in the JSON output file
 func AppendOutputToJSON(output string, key string, record string, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -50,20 +50,29 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	data := OutputFile{}
 
 	_ = json.Unmarshal([]byte(file), &data)
-	if key == "PORT" {
-		data.Port = append(data.Port, output)
-	} else if key == "SUB" {
-		data.Subdomain = append(data.Subdomain, output)
-	} else if key == "DIR" {
-		data.Dir = append(data.Dir, output)
-	} else if key == "DNS" {
-		if data.Dns == nil {
-			data.Dns = make(map[string][]string)
+	switch {
+	case key == "PORT":
+		{
+			data.Port = append(data.Port, output)
 		}
-		if _, ok := data.Dns[record]; !ok {
-			data.Dns[record] = make([]string, 0)
+	case key == "SUB":
+		{
+			data.Subdomain = append(data.Subdomain, output)
 		}
-		data.Dns[record] = append(data.Dns[record], output)
+	case key == "DIR":
+		{
+			data.Dir = append(data.Dir, output)
+		}
+	default:
+		{
+			if data.Dns == nil {
+				data.Dns = make(map[string][]string)
+			}
+			if _, ok := data.Dns[record]; !ok {
+				data.Dns[record] = make([]string, 0)
+			}
+			data.Dns[record] = append(data.Dns[record], output)
+		}
 	}
 
 	file, err = json.MarshalIndent(data, "", " ")

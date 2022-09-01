@@ -38,8 +38,8 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-//AsyncGet performs concurrent requests to the specified
-//urls and prints the results
+// AsyncGet performs concurrent requests to the specified
+// urls and prints the results
 func AsyncGet(protocol string, urls []string, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
 	subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
 	ignoreBool := len(ignore) != 0

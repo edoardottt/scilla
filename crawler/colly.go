@@ -40,9 +40,9 @@ import (
 	"github.com/gocolly/colly"
 )
 
-//SpawnCrawler spawn a crawler that search for
-//links with this characteristic:
-//- only http, https or ftp protocols allowed
+// SpawnCrawler spawn a crawler that search for
+// links with this characteristic:
+// - only http, https or ftp protocols allowed
 func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset,
 	subs map[string]output.Asset, outputFileJson, outputFileHtml, outputFileTxt string,
 	mutex *sync.Mutex, what string, plain bool) {
