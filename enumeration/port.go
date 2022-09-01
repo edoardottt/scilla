@@ -104,7 +104,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		total = len(commonPorts)
 	}
 	limiter := make(chan string, 200) // Limits simultaneous requests
-	wg := sync.WaitGroup{}            // Needed to not prematurely exit before all requests have been finished
+	waitgroup := sync.WaitGroup{}     // Needed to not prematurely exit before all requests have been finished
 	if outputFileHtml != "" {
 		output.HeaderHTML("PORT ENUMERATION", outputFileHtml)
 	}
@@ -121,7 +121,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		ports = commonPorts
 	}
 	for _, port := range ports {
-		wg.Add(1)
+		waitgroup.Add(1)
 		portStr := fmt.Sprint(port)
 		limiter <- portStr
 		if !plain && count%100 == 0 { // update counter
@@ -130,7 +130,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		}
 		go func(portStr string, host string) {
 			defer func() { <-limiter }()
-			defer wg.Done()
+			defer waitgroup.Done()
 			resp := IsOpenPort(host, portStr, timeout)
 			count++
 			if resp {
@@ -153,7 +153,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 			}
 		}(portStr, host)
 	}
-	wg.Wait()
+	waitgroup.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()
 	if outputFileHtml != "" {

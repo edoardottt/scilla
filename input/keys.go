@@ -48,13 +48,13 @@ func ReadKeys(filename string) (Keys, error) {
 		return Keys{}, err
 	}
 
-	c := Keys{}
-	err = yaml.Unmarshal(buf, &c)
+	keys := Keys{}
+	err = yaml.Unmarshal(buf, &keys)
 	if err != nil {
 		return Keys{}, fmt.Errorf("in file %q: %v", filename, err)
 	}
 
-	return c, nil
+	return keys, nil
 }
 
 //GetVirusTotalKey reads the Virustotal key

@@ -49,10 +49,10 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJson, o
 		Timeout: 10 * time.Second,
 	}
 	limiter := make(chan string, 10) // Limits simultaneous requests
-	wg := sync.WaitGroup{}           // Needed to not prematurely exit before all requests have been finished
+	waitgroup := sync.WaitGroup{}    // Needed to not prematurely exit before all requests have been finished
 	for i, domain := range urls {
 		limiter <- domain
-		wg.Add(1)
+		waitgroup.Add(1)
 		if count%50 == 0 { // update counter
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
@@ -64,7 +64,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJson, o
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
 		go func(i int, domain string) {
-			defer wg.Done()
+			defer waitgroup.Done()
 			defer func() { <-limiter }()
 			resp, err := client.Get(protocol + "://" + domain)
 			count++
@@ -81,7 +81,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJson, o
 		}(i, domain)
 	}
 	output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
-	wg.Wait()
+	waitgroup.Wait()
 	output.PrintSubs(subs, ignore, outputFileJson, outputFileHtml, outputFileTxt, mutex, plain)
 	fmt.Fprint(os.Stdout, "\r \r")
 	fmt.Println()

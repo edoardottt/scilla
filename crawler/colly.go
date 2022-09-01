@@ -49,104 +49,104 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 
 	ignoreBool := len(ignore) != 0
 	//nolint:staticcheck // SA4006 ignore this!
-	c := colly.NewCollector()
+	collector := colly.NewCollector()
 	if what == "dir" {
-		c = colly.NewCollector(
+		collector = colly.NewCollector(
 			colly.URLFilters(
 				regexp.MustCompile("(http://|https://|ftp://)" + "(www.)?" + target + "*"),
 			),
 		)
 	} else {
-		c = colly.NewCollector()
+		collector = colly.NewCollector()
 		targetTemp := "." + utils.GetRootHost(target)
 		targetTemp = strings.ReplaceAll(targetTemp, ".", "\\.")
 		targetRegex := "([-a-z0-9.]*)" + targetTemp + "([-a-z0-9.]*)"
-		c.URLFilters = []*regexp.Regexp{regexp.MustCompile(targetRegex)}
+		collector.URLFilters = []*regexp.Regexp{regexp.MustCompile(targetRegex)}
 	}
-	c.IgnoreRobotsTxt = true
-	c.AllowURLRevisit = false
+	collector.IgnoreRobotsTxt = true
+	collector.AllowURLRevisit = false
 
 	// Find and visit all links
-	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+	collector.OnHTML("a[href]", func(element *colly.HTMLElement) {
+		link := element.Attr("href")
 		if link != "" {
-			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			url := utils.CleanURL(element.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			}
 		}
 	})
 
 	// On every script element which has src attribute call callback
-	c.OnHTML("script[src]", func(e *colly.HTMLElement) {
-		link := e.Attr("src")
+	collector.OnHTML("script[src]", func(element *colly.HTMLElement) {
+		link := element.Attr("src")
 		if len(link) != 0 {
-			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			url := utils.CleanURL(element.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			}
 		}
 	})
 
 	// On every link element which has href attribute call callback
-	c.OnHTML("link[href]", func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+	collector.OnHTML("link[href]", func(element *colly.HTMLElement) {
+		link := element.Attr("href")
 		if len(link) != 0 {
-			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			url := utils.CleanURL(element.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			}
 		}
 	})
 
 	// On every iframe element which has src attribute call callback
-	c.OnHTML("iframe[src]", func(e *colly.HTMLElement) {
-		link := e.Attr("src")
+	collector.OnHTML("iframe[src]", func(element *colly.HTMLElement) {
+		link := element.Attr("src")
 		if len(link) != 0 {
-			url := utils.CleanURL(e.Request.AbsoluteURL(link))
+			url := utils.CleanURL(element.Request.AbsoluteURL(link))
 			if what == "dir" {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			} else {
 				newDomain := utils.RetrieveHost(url)
 				if !output.PresentSubs(newDomain, subs, mutex) && newDomain != target {
 					//nolint // errcheck ignore this!
-					e.Request.Visit(url)
+					element.Request.Visit(url)
 				}
 			}
 		}
 	})
 
-	c.OnRequest(func(r *colly.Request) {
+	collector.OnRequest(func(r *colly.Request) {
 		status, err := utils.HttpGet(r.URL.String())
 		if err == nil {
 			if ignoreBool {
@@ -179,5 +179,5 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		}
 	})
 	//nolint // ignore err
-	c.Visit(scheme + "://" + target)
+	collector.Visit(scheme + "://" + target)
 }
