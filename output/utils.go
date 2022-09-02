@@ -57,5 +57,6 @@ func FormatIsOk(input string) bool {
 // ReplaceBadCharacterOutput replaces slashes with dots
 func ReplaceBadCharacterOutput(input string) string {
 	result := strings.ReplaceAll(input, "/", "-")
+
 	return result
 }

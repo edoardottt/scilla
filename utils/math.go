@@ -34,5 +34,6 @@ const (
 // Percentage calculates the % done/total
 func Percentage(done, total int) float64 {
 	result := (float64(done) / float64(total)) * percentage
+
 	return result
 }

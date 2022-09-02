@@ -83,6 +83,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int) {
 			if maybeEnd >= 1 && maybeEnd <= endPort {
 				endPort = maybeEnd
 			}
+
 			break
 		}
 
@@ -97,6 +98,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int) {
 			if maybeStart > 0 && maybeStart < endPort {
 				startPort = maybeStart
 			}
+
 			break
 		}
 
@@ -112,6 +114,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int) {
 				startPort = maybePort
 				endPort = maybePort
 			}
+
 			break
 		}
 

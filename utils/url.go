@@ -38,6 +38,7 @@ import (
 // taken as input
 func ProtocolExists(target string) bool {
 	res := strings.Index(target, "://")
+
 	return res >= 0
 }
 

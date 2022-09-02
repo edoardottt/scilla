@@ -86,6 +86,7 @@ func IsOpenPort(host string, port string, timeout int) bool {
 
 	if conn != nil {
 		defer conn.Close()
+
 		return true
 	}
 

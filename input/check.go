@@ -106,12 +106,14 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 				portsRange := *reportPortsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
+
 				break
 			}
 		case strings.Contains(*reportPortsPtr, ","):
 			{
 				portsArray = utils.CheckPortsArray(*reportPortsPtr)
 				portArrayBool = true
+
 				break
 			}
 		default:
@@ -293,12 +295,14 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 				portsRange := *portsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
+
 				break
 			}
 		case strings.Contains(*portsPtr, ","):
 			{
 				portsArray = utils.CheckPortsArray(*portsPtr)
 				portArrayBool = true
+
 				break
 			}
 		default:

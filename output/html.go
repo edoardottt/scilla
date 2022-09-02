@@ -52,12 +52,14 @@ func BannerHTML(target string, filename string) {
 
 	if err != nil {
 		log.Printf(err.Error())
+
 		return
 	}
 
 	_, err = file.WriteString("<h4>target: " + target + "</h4>")
 	if err != nil {
 		log.Printf(err.Error())
+
 		return
 	}
 
@@ -89,6 +91,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 		utils.CleanProtocol(output) +
 		"</a> " + statusColor + "</li>"); err != nil {
 		log.Printf(err.Error())
+
 		return
 	}
 
@@ -121,6 +124,7 @@ func FooterHTML(filename string) {
 
 	if _, err := file.WriteString("</ul>"); err != nil {
 		log.Printf(err.Error())
+
 		return
 	}
 
@@ -133,6 +137,7 @@ func BannerFooterHTML(filename string) {
 
 	if err != nil {
 		log.Fatal(err)
+
 		return
 	}
 
