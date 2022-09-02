@@ -45,7 +45,7 @@ type Keys struct {
 func ReadKeys(filename string) (Keys, error) {
 	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return Keys{}, err
+		return Keys{}, fmt.Errorf("error while reading file %s: %w", filename, err)
 	}
 
 	keys := Keys{}

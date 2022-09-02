@@ -28,6 +28,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package utils
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -43,7 +44,7 @@ const (
 func HTTPGet(input string) (string, error) {
 	resp, err := http.Get(input)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error while getting %s: %w", input, err)
 	}
 
 	defer resp.Body.Close()
