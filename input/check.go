@@ -42,7 +42,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	reportPortsPtr *string, reportCommonPtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	startPort int, endPort int, reportIgnoreDirPtr *string,
 	reportIgnoreSubPtr *string, reportTimeoutPort *int,
-	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int,
+	reportOutputJSON *string, reportOutputHTML *string, reportOutputTXT *string) (int, int,
 	[]int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
@@ -57,22 +57,22 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	}
 
 	// output files all different
-	if *reportOutputJson != "" {
-		if *reportOutputJson == *reportOutputTxt || *reportOutputJson == *reportOutputHtml {
+	if *reportOutputJSON != "" {
+		if *reportOutputJSON == *reportOutputTXT || *reportOutputJSON == *reportOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
 
-	if *reportOutputHtml != "" {
-		if *reportOutputHtml == *reportOutputTxt || *reportOutputJson == *reportOutputHtml {
+	if *reportOutputHTML != "" {
+		if *reportOutputHTML == *reportOutputTXT || *reportOutputJSON == *reportOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
 
-	if *reportOutputTxt != "" {
-		if *reportOutputJson == *reportOutputTxt || *reportOutputTxt == *reportOutputHtml {
+	if *reportOutputTXT != "" {
+		if *reportOutputJSON == *reportOutputTXT || *reportOutputTXT == *reportOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
@@ -145,8 +145,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 // DNSSubcommandCheckFlags performs all the necessary checks on the flags
 // for the dns subcommand
-func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJson,
-	dnsOutputHtml, dnsOutputTxt *string) {
+func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJSON,
+	dnsOutputHTML, dnsOutputTXT *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
 		dnsCommand.PrintDefaults()
@@ -154,22 +154,22 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 	}
 
 	// output files all different
-	if *dnsOutputJson != "" {
-		if *dnsOutputJson == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml {
+	if *dnsOutputJSON != "" {
+		if *dnsOutputJSON == *dnsOutputTXT || *dnsOutputJSON == *dnsOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
 
-	if *dnsOutputHtml != "" {
-		if *dnsOutputHtml == *dnsOutputTxt || *dnsOutputJson == *dnsOutputHtml {
+	if *dnsOutputHTML != "" {
+		if *dnsOutputHTML == *dnsOutputTXT || *dnsOutputJSON == *dnsOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
 	}
 
-	if *dnsOutputTxt != "" {
-		if *dnsOutputJson == *dnsOutputTxt || *dnsOutputTxt == *dnsOutputHtml {
+	if *dnsOutputTXT != "" {
+		if *dnsOutputJSON == *dnsOutputTXT || *dnsOutputTXT == *dnsOutputHTML {
 			fmt.Println("The output paths must be all different.")
 			os.Exit(1)
 		}
