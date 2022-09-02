@@ -102,7 +102,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		switch {
 		case strings.Contains(*reportPortsPtr, "-"):
 			{
-				portsRange := string(*reportPortsPtr)
+				portsRange := *reportPortsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
 				break
@@ -115,7 +115,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 			}
 		default:
 			{
-				portsRange := string(*reportPortsPtr)
+				portsRange := *reportPortsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
 			}
@@ -125,12 +125,12 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	var reportIgnoreDir, reportIgnoreSub []string
 
 	if *reportIgnoreDirPtr != "" {
-		toBeIgnored := string(*reportIgnoreDirPtr)
+		toBeIgnored := *reportIgnoreDirPtr
 		reportIgnoreDir = utils.CheckIgnore(toBeIgnored)
 	}
 
 	if *reportIgnoreSubPtr != "" {
-		toBeIgnored := string(*reportIgnoreSubPtr)
+		toBeIgnored := *reportIgnoreSubPtr
 		reportIgnoreSub = utils.CheckIgnore(toBeIgnored)
 	}
 
@@ -251,7 +251,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	var subdomainIgnore []string
 
 	if *subdomainIgnorePtr != "" {
-		toBeIgnored := string(*subdomainIgnorePtr)
+		toBeIgnored := *subdomainIgnorePtr
 		subdomainIgnore = utils.CheckIgnore(toBeIgnored)
 	}
 
@@ -288,7 +288,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		switch {
 		case strings.Contains(*portsPtr, "-"):
 			{
-				portsRange := string(*portsPtr)
+				portsRange := *portsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
 				break
@@ -301,7 +301,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 			}
 		default:
 			{
-				portsRange := string(*portsPtr)
+				portsRange := *portsPtr
 				startPort, endPort = utils.CheckPortsRange(portsRange, startPort, endPort)
 				portArrayBool = false
 			}
@@ -385,7 +385,7 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 	var dirIgnore []string
 
 	if *dirIgnorePtr != "" {
-		toBeIgnored := string(*dirIgnorePtr)
+		toBeIgnored := *dirIgnorePtr
 		dirIgnore = utils.CheckIgnore(toBeIgnored)
 	}
 

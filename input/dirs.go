@@ -53,7 +53,7 @@ func ReadDictDirs(inputFile string) []string {
 	for scanner.Scan() {
 		dir = scanner.Text()
 		if len(dir) > 0 {
-			if string(dir[len(dir)-1:]) == "/" {
+			if dir[len(dir)-1:] == "/" {
 				dir = dir[:len(dir)-1]
 			}
 			text = append(text, dir)
