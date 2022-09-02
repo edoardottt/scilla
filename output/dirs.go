@@ -37,7 +37,7 @@ import (
 
 // PrintDirs prints the results (only the resources not already printed).
 // Also performs the checks based on the response status codes.
-func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
+func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
 	for domain, asset := range dirs {
@@ -56,43 +56,43 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJson, outputFil
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Green("%s\n", resp)
 
-					if outputFileJson != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJson)
+					if outputFileJSON != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
 					}
 
-					if outputFileHtml != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHtml)
+					if outputFileHTML != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
 					}
 
-					if outputFileTxt != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTxt)
+					if outputFileTXT != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				} else if (resp[:3] != "404") || string(resp[0]) == "5" {
 					fmt.Fprint(os.Stdout, "\r \r")
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Red("%s\n", resp)
 
-					if outputFileJson != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJson)
+					if outputFileJSON != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
 					}
-					if outputFileHtml != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHtml)
+					if outputFileHTML != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
 					}
-					if outputFileTxt != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTxt)
+					if outputFileTXT != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				}
 			} else {
 				if resp[:3] != "404" {
 					fmt.Printf("%s\n", domain)
-					if outputFileJson != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJson)
+					if outputFileJSON != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
 					}
-					if outputFileHtml != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHtml)
+					if outputFileHTML != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
 					}
-					if outputFileTxt != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTxt)
+					if outputFileTXT != "" {
+						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				}
 			}

@@ -37,9 +37,9 @@ import (
 )
 
 // LookupDNS prints the DNS informations for the inputted domain.
-func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt string, plain bool) {
-	if outputFileHtml != "" {
-		output.HeaderHTML("DNS ENUMERATION", outputFileHtml)
+func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT string, plain bool) {
+	if outputFileHTML != "" {
+		output.HeaderHTML("DNS ENUMERATION", outputFileHTML)
 	}
 	// -- A RECORDS --
 	ips, err := net.LookupIP(domain)
@@ -55,16 +55,16 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 			fmt.Printf("%s\n", ip.String())
 		}
 
-		if outputFileJson != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "json", outputFileJson)
+		if outputFileJSON != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "json", outputFileJSON)
 		}
 
-		if outputFileHtml != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "html", outputFileHtml)
+		if outputFileHTML != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "html", outputFileHTML)
 		}
 
-		if outputFileTxt != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "txt", outputFileTxt)
+		if outputFileTXT != "" {
+			output.AppendWhere(ip.String(), "", "DNS", "A", "txt", outputFileTXT)
 		}
 	}
 	// -- CNAME RECORD --
@@ -80,16 +80,16 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		fmt.Printf("%s\n", cname)
 	}
 
-	if outputFileJson != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "json", outputFileJson)
+	if outputFileJSON != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "json", outputFileJSON)
 	}
 
-	if outputFileHtml != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "html", outputFileHtml)
+	if outputFileHTML != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "html", outputFileHTML)
 	}
 
-	if outputFileTxt != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "txt", outputFileTxt)
+	if outputFileTXT != "" {
+		output.AppendWhere(cname, "", "DNS", "CNAME", "txt", outputFileTXT)
 	}
 
 	// -- NS RECORDS --
@@ -106,16 +106,16 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 			fmt.Printf("%s\n", nsRecord.Host)
 		}
 
-		if outputFileJson != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "json", outputFileJson)
+		if outputFileJSON != "" {
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "json", outputFileJSON)
 		}
 
-		if outputFileHtml != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "html", outputFileHtml)
+		if outputFileHTML != "" {
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "html", outputFileHTML)
 		}
 
-		if outputFileTxt != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "txt", outputFileTxt)
+		if outputFileTXT != "" {
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "txt", outputFileTXT)
 		}
 	}
 
@@ -133,16 +133,16 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 			fmt.Printf("%s %v\n", mxRecord.Host, mxRecord.Pref)
 		}
 
-		if outputFileJson != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "json", outputFileJson)
+		if outputFileJSON != "" {
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "json", outputFileJSON)
 		}
 
-		if outputFileHtml != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "html", outputFileHtml)
+		if outputFileHTML != "" {
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "html", outputFileHTML)
 		}
 
-		if outputFileTxt != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "txt", outputFileTxt)
+		if outputFileTXT != "" {
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "txt", outputFileTXT)
 		}
 	}
 
@@ -160,16 +160,16 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		}
 
-		if outputFileJson != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "json", outputFileJson)
+		if outputFileJSON != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "json", outputFileJSON)
 		}
 
-		if outputFileHtml != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "html", outputFileHtml)
+		if outputFileHTML != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "html", outputFileHTML)
 		}
 
-		if outputFileTxt != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "txt", outputFileTxt)
+		if outputFileTXT != "" {
+			output.AppendWhere(srv.Target, "", "DNS", "SRV", "txt", outputFileTXT)
 		}
 	}
 
@@ -183,21 +183,21 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 			fmt.Printf("%s\n", txt)
 		}
 
-		if outputFileJson != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "json", outputFileJson)
+		if outputFileJSON != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "json", outputFileJSON)
 		}
 
-		if outputFileHtml != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "html", outputFileHtml)
+		if outputFileHTML != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "html", outputFileHTML)
 		}
 
-		if outputFileTxt != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "txt", outputFileTxt)
+		if outputFileTXT != "" {
+			output.AppendWhere(txt, "", "DNS", "TXT", "txt", outputFileTXT)
 		}
 	}
 
-	if outputFileHtml != "" {
-		output.FooterHTML(outputFileHtml)
+	if outputFileHTML != "" {
+		output.FooterHTML(outputFileHTML)
 	}
 
 	fmt.Println()

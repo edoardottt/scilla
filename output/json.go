@@ -31,6 +31,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // File struct helping json output.
@@ -49,7 +51,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	}
 
 	data := File{}
-	err = json.Unmarshal([]byte(file), &data)
+	err = json.Unmarshal(file, &data)
 
 	if err != nil {
 		log.Fatal(err)
@@ -84,7 +86,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	if err != nil {
 		log.Println(err)
 	} else {
-		err = ioutil.WriteFile(filename, file, 0644)
+		err = ioutil.WriteFile(filename, file, utils.Permission0644)
 		if err != nil {
 			log.Fatal(err)
 		}

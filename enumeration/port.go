@@ -95,12 +95,12 @@ func IsOpenPort(host string, port string, timeout int) bool {
 
 // AsyncPort performs concurrent requests to the specified
 // ports range and, if someone is open it prints the results.
-func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPort int,
+func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPort int,
 	host string, outputFileJSON, outputFileHTML, outputFileTXT string, common bool,
 	commonPorts []int, plain bool, timeout int) {
 	var count int
 
-	var total = (EndingPort - StartingPort) + 1
+	var total = (endingPort - startingPort) + 1
 	if portsArrayBool {
 		total = len(portsArray)
 	}
@@ -123,7 +123,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		if portsArrayBool {
 			ports = portsArray
 		} else {
-			for port := StartingPort; port <= EndingPort; port++ {
+			for port := startingPort; port <= endingPort; port++ {
 				ports = append(ports, port)
 			}
 		}
@@ -149,6 +149,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 
 			resp := IsOpenPort(host, portStr, timeout)
 			count++
+
 			if resp {
 				if !plain {
 					fmt.Fprint(os.Stdout, "\r \r")

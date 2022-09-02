@@ -52,6 +52,7 @@ func CheckIgnore(input string) []string {
 			fmt.Println("The status code you entered is invalid (It should consist of three digits).")
 			os.Exit(1)
 		}
+
 		if ignoreInt, err := strconv.Atoi(elem); err == nil {
 			// if it is a valid status code without * (e.g. 404)
 			if 100 <= ignoreInt && ignoreInt <= 599 {

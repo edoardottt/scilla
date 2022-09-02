@@ -38,7 +38,7 @@ import (
 
 // PrintSubs prints the results (only the resources not already printed).
 // Also performs the checks based on the response status codes.
-func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFileHtml, outputFileTxt string,
+func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
 	for domain, asset := range subs {
@@ -60,28 +60,28 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 					fmt.Printf("[+]FOUND: %s ", subDomainFound)
 
 					if string(resp[0]) == "2" {
-						if outputFileJson != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
+						if outputFileJSON != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 						}
 
-						if outputFileHtml != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
+						if outputFileHTML != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
 						}
 
-						if outputFileTxt != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
+						if outputFileTXT != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
 						}
 
 						color.Green("%s\n", resp)
 					} else {
-						if outputFileJson != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
+						if outputFileJSON != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 						}
-						if outputFileHtml != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
+						if outputFileHTML != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
 						}
-						if outputFileTxt != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
+						if outputFileTXT != "" {
+							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
 						}
 						color.Red("%s\n", resp)
 					}
@@ -89,14 +89,14 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 			} else if resp[:3] != "404" {
 				subDomainFound := utils.CleanProtocol(domain)
 				fmt.Printf("%s\n", subDomainFound)
-				if outputFileJson != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJson)
+				if outputFileJSON != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 				}
-				if outputFileHtml != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHtml)
+				if outputFileHTML != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
 				}
-				if outputFileTxt != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTxt)
+				if outputFileTXT != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
 				}
 			}
 		}

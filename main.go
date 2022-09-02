@@ -99,7 +99,8 @@ func execute(userInput input.Input, subs map[string]output.Asset, dirs map[strin
 }
 
 // ReportSubcommandHandler.
-func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
+func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
+	dirs map[string]output.Asset, subs map[string]output.Asset) {
 	output.Intro()
 
 	target := userInput.ReportTarget
@@ -156,7 +157,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 
 	if userInput.ReportCrawlerSub {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.ReportIgnoreSub, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT, mutex, "sub", false)
+			userInput.ReportIgnoreSub, dirs, subs, outputFileJSON, outputFileHTML,
+			outputFileTXT, mutex, "sub", false)
 	}
 
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
@@ -275,7 +277,8 @@ func DNSSubcommandHandler(userInput input.Input) {
 }
 
 // SubdomainSubcommandHandler.
-func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
+func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
+	dirs map[string]output.Asset, subs map[string]output.Asset) {
 	if !userInput.SubdomainPlain {
 		output.Intro()
 	}
@@ -387,7 +390,8 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 }
 
 // DirSubcommandHandler.
-func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
+func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
+	dirs map[string]output.Asset, subs map[string]output.Asset) {
 	if !userInput.DirPlain {
 		output.Intro()
 	}

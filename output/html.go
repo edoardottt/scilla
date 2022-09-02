@@ -51,14 +51,14 @@ func BannerHTML(target string, filename string) {
 	</ul></div>`)
 
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 
 		return
 	}
 
 	_, err = file.WriteString("<h4>target: " + target + "</h4>")
 	if err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 
 		return
 	}
@@ -90,7 +90,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" +
 		utils.CleanProtocol(output) +
 		"</a> " + statusColor + "</li>"); err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 
 		return
 	}
@@ -123,7 +123,7 @@ func FooterHTML(filename string) {
 	defer file.Close()
 
 	if _, err := file.WriteString("</ul>"); err != nil {
-		log.Printf(err.Error())
+		log.Println(err.Error())
 
 		return
 	}
