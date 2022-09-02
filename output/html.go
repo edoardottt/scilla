@@ -41,11 +41,14 @@ func BannerHTML(target string, filename string) {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	_, err = file.WriteString(`<html><body><div style='background-color:#4adeff;color:white'><h1>Scilla - Information Gathering Tool</h1>
+	_, err = file.WriteString(`<html><body>
+	<div style='background-color:#4adeff;color:white'>
+	<h1>Scilla - Information Gathering Tool</h1>
 	<ul>
 	<li><a href='https://github.com/edoardottt/scilla'>github.com/edoardottt/scilla</a></li>
 	<li>edoardottt, <a href='https://www.edoardoottavianelli.it'>edoardoottavianelli.it</a></li>
-	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li></ul></div>`)
+	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li>
+	</ul></div>`)
 
 	if err != nil {
 		log.Printf(err.Error())
@@ -81,7 +84,9 @@ func AppendOutputToHTML(output string, status string, filename string) {
 	} else {
 		statusColor = status
 	}
-	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" + utils.CleanProtocol(output) + "</a> " + statusColor + "</li>"); err != nil {
+	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" +
+		utils.CleanProtocol(output) +
+		"</a> " + statusColor + "</li>"); err != nil {
 		log.Printf(err.Error())
 		return
 	}

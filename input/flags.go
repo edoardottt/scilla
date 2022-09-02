@@ -339,11 +339,12 @@ func ReadArgs() Input {
 			*reportOutputTXTPtr = output.AppendExtension(*reportOutputTXTPtr, "txt")
 		}
 
-		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub = ReportSubcommandCheckFlags(*reportCommand,
-			reportTargetPtr, reportPortsPtr, reportCommonPtr,
-			reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
-			EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr,
-			reportOutputJSONPtr, reportOutputHTMLPtr, reportOutputTXTPtr)
+		StartPort, EndPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub =
+			ReportSubcommandCheckFlags(*reportCommand,
+				reportTargetPtr, reportPortsPtr, reportCommonPtr,
+				reportVirusTotalPtr, reportSubdomainDBPtr, StartPort,
+				EndPort, reportIgnoreDirPtr, reportIgnoreSubPtr, reportTimeoutPortPtr,
+				reportOutputJSONPtr, reportOutputHTMLPtr, reportOutputTXTPtr)
 	}
 
 	// DNS subcommand

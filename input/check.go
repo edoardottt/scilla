@@ -42,7 +42,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	reportPortsPtr *string, reportCommonPtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	startPort int, endPort int, reportIgnoreDirPtr *string,
 	reportIgnoreSubPtr *string, reportTimeoutPort *int,
-	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int, []int, bool, []string, []string) {
+	reportOutputJson *string, reportOutputHtml *string, reportOutputTxt *string) (int, int,
+	[]int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -144,7 +145,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 // DNSSubcommandCheckFlags performs all the necessary checks on the flags
 // for the dns subcommand
-func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJson, dnsOutputHtml, dnsOutputTxt *string) {
+func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJson,
+	dnsOutputHtml, dnsOutputTxt *string) {
 	// Required Flags
 	if *dnsTargetPtr == "" {
 		dnsCommand.PrintDefaults()
@@ -183,8 +185,8 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJso
 // SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
 // for the subdomain subcommand
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
-	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string, subdomainIgnorePtr *string,
-	subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
+	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
+	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
 	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT *string) []string {
 
 	// Required Flags
