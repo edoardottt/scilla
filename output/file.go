@@ -33,13 +33,15 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // CreateOutputFolder creates the output folder
 func CreateOutputFolder(path string) {
 	// Create a folder/directory at a full qualified path
 	if strings.Trim(path, " ") != "" {
-		err := os.MkdirAll(path, 0755)
+		err := os.MkdirAll(path, utils.Permission0755)
 		if err != nil {
 			fmt.Println("Can't create output folder.")
 			os.Exit(1)
@@ -59,7 +61,7 @@ func CreateOutputFile(path string) string {
 			CreateOutputFolder(dir)
 		}
 		// If the file doesn't exist, create it.
-		f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
+		f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
 		if err != nil {
 			fmt.Println("Can't create output file.")
 			os.Exit(1)
@@ -75,7 +77,7 @@ func CreateOutputFile(path string) string {
 		answer = strings.TrimSpace(answer)
 
 		if answer == "y" || answer == "yes" || answer == "" {
-			f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
+			f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)

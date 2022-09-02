@@ -36,7 +36,7 @@ import (
 
 // BannerHTML writes in the input file the HTML banner
 func BannerHTML(target string, filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func BannerHTML(target string, filename string) {
 
 // AppendOutputToHTML appends a (html) row in the HTML output file
 func AppendOutputToHTML(output string, status string, filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,6 +84,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 	} else {
 		statusColor = status
 	}
+
 	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" +
 		utils.CleanProtocol(output) +
 		"</a> " + statusColor + "</li>"); err != nil {
@@ -96,7 +97,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 
 // HeaderHTML writes in the (html) output file the header (directories, dns ...)
 func HeaderHTML(header string, filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -110,7 +111,7 @@ func HeaderHTML(header string, filename string) {
 
 // FooterHTML closes the HTML list
 func FooterHTML(filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 
 	if err != nil {
 		log.Fatal(err)
@@ -128,7 +129,7 @@ func FooterHTML(filename string) {
 
 // BannerFooterHTML writes in the (html) output file the HTML footer
 func BannerFooterHTML(filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 
 	if err != nil {
 		log.Fatal(err)

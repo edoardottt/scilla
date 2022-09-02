@@ -32,7 +32,6 @@ import (
 	"net/http"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/edoardottt/scilla/output"
 	"github.com/edoardottt/scilla/utils"
@@ -48,19 +47,20 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 
 	if !redirect {
 		client = http.Client{
-			Timeout: 10 * time.Second,
+			Timeout: utils.Seconds10,
 		}
 	} else {
 		client = http.Client{
-			Timeout: 10 * time.Second,
+			Timeout: utils.Seconds10,
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse
 			},
 		}
 	}
 
-	limiter := make(chan string, 30) // Limits simultaneous requests
-	waitgroup := sync.WaitGroup{}    // Needed to not prematurely exit before all requests have been finished
+	channels := 30
+	limiter := make(chan string, channels) // Limits simultaneous requests
+	waitgroup := sync.WaitGroup{}          // Needed to not prematurely exit before all requests have been finished
 
 	var count int
 

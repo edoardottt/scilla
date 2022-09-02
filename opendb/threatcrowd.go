@@ -30,13 +30,14 @@ package opendb
 import (
 	"encoding/json"
 	"net/http"
-	"time"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // ThreatcrowdSubdomains retrieves from the url below some known subdomains.
 func ThreatcrowdSubdomains(domain string) []string {
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: utils.Seconds30,
 	}
 	result := make([]string, 0)
 	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain

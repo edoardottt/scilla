@@ -25,46 +25,9 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package opendb
+package utils
 
-import (
-	"bufio"
-	"bytes"
-	"io/ioutil"
-	"net/http"
-	"strings"
-
-	"github.com/edoardottt/scilla/utils"
+const (
+	Permission0644 = 0644
+	Permission0755 = 0755
 )
-
-// HackerTargetSubdomains retrieves from the url below some known subdomains.
-func HackerTargetSubdomains(domain string) []string {
-	client := http.Client{
-		Timeout: utils.Seconds30,
-	}
-	result := make([]string, 0)
-	raw, err := client.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
-
-	if err != nil {
-		return result
-	}
-
-	res, err := ioutil.ReadAll(raw.Body)
-	if err != nil {
-		return result
-	}
-
-	raw.Body.Close()
-
-	sc := bufio.NewScanner(bytes.NewReader(res))
-
-	for sc.Scan() {
-		parts := strings.SplitN(sc.Text(), ",", twoParts)
-		if len(parts) != twoParts {
-			continue
-		}
-		result = append(result, parts[0])
-	}
-
-	return result
-}

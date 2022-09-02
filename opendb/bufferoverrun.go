@@ -31,13 +31,14 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-	"time"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // BufferOverrunSubdomains retrieves from the url below some known subdomains.
 func BufferOverrunSubdomains(domain string) []string {
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: utils.Seconds30,
 	}
 	result := make([]string, 0)
 	url := "https://dns.bufferover.run/dns?q=" + domain
@@ -58,8 +59,8 @@ func BufferOverrunSubdomains(domain string) []string {
 	}
 
 	for _, r := range wrapper.Records {
-		parts := strings.SplitN(r, ",", 2)
-		if len(parts) != 2 {
+		parts := strings.SplitN(r, ",", twoParts)
+		if len(parts) != twoParts {
 			continue
 		}
 		result = append(result, parts[1])

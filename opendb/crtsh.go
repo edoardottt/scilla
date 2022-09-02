@@ -32,7 +32,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"time"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // CrtShResult is the struct containing crt.sh results
@@ -43,7 +44,7 @@ type CrtShResult struct {
 // CrtshSubdomains retrieves from the url below some known subdomains.
 func CrtshSubdomains(domain string) []string {
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: utils.Seconds30,
 	}
 
 	var results []CrtShResult

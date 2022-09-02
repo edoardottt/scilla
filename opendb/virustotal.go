@@ -31,7 +31,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // VirusTotalSubdomains retrieves from the url below some known subdomains.
@@ -39,7 +40,7 @@ func VirusTotalSubdomains(target string, apikey string) []string {
 	var result []string
 
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: utils.Seconds30,
 	}
 	fetchURL := fmt.Sprintf(
 		"https://www.virustotal.com/vtapi/v2/domain/report?domain=%s&apikey=%s",

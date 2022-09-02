@@ -34,6 +34,10 @@ import (
 	"strings"
 )
 
+const (
+	portsNumberOk = 2
+)
+
 // CheckPortsArray checks the basic rules to
 // be valid and then returns the ports array to scan.
 // - remove duplicates
@@ -115,7 +119,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int) {
 		{
 			// If a range is specified
 			sliceOfPorts := strings.Split(portsRange, string(delimiter))
-			if len(sliceOfPorts) != 2 {
+			if len(sliceOfPorts) != portsNumberOk {
 				fmt.Println("The inputted port range is not valid.")
 				os.Exit(1)
 			}

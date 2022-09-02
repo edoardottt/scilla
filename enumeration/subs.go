@@ -32,7 +32,6 @@ import (
 	"net/http"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/edoardottt/scilla/output"
 	"github.com/edoardottt/scilla/utils"
@@ -49,11 +48,12 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 	var total = len(urls)
 
 	client := http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: utils.Seconds10,
 	}
 
-	limiter := make(chan string, 10) // Limits simultaneous requests
-	waitgroup := sync.WaitGroup{}    // Needed to not prematurely exit before all requests have been finished
+	channels := 10
+	limiter := make(chan string, channels) // Limits simultaneous requests
+	waitgroup := sync.WaitGroup{}          // Needed to not prematurely exit before all requests have been finished
 
 	for i, domain := range urls {
 		limiter <- domain

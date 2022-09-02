@@ -27,7 +27,15 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package utils
 
-import "net/http"
+import (
+	"net/http"
+	"time"
+)
+
+const (
+	Seconds10 = 10 * time.Second
+	Seconds30 = 30 * time.Second
+)
 
 // HTTPGet performs a GET request (HTTP)
 // and returns ERROR if it's not possible,

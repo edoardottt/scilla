@@ -30,11 +30,13 @@ package output
 import (
 	"log"
 	"os"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // AppendOutputToTxt appends a (txt) row in the TXT output file
 func AppendOutputToTxt(output string, filename string) {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
 		log.Println(err)
 	}

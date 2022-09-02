@@ -35,6 +35,10 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
+const (
+	twoParts = 2
+)
+
 // AppendDBSubdomains appends to the subdomains in the list
 // the subdomains found with the open DBs.
 func AppendDBSubdomains(dbsubs []string, urls []string) []string {

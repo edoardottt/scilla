@@ -31,13 +31,14 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"time"
+
+	"github.com/edoardottt/scilla/utils"
 )
 
 // SonarSubdomains retrieves from the url below some known subdomains.
 func SonarSubdomains(target string) []string {
 	client := http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: utils.Seconds30,
 	}
 
 	var arr []string

@@ -36,6 +36,11 @@ import (
 	"github.com/edoardottt/scilla/output"
 )
 
+const (
+	PortScanTimeout = 3
+	ArgsNumber      = 2
+)
+
 // Input is the struct containing the input parameters
 type Input struct {
 	ReportTarget        string
@@ -157,7 +162,7 @@ func ReadArgs() Input {
 	reportVirusTotalPtr := reportCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
 
 	// report subcommand flag pointers
-	reportTimeoutPortPtr := reportCommand.Int("tp", 3, "Scan Port timeout")
+	reportTimeoutPortPtr := reportCommand.Int("tp", PortScanTimeout, "Port Scan timeout")
 
 	// dns subcommand flag pointers
 	dnsTargetPtr := dnsCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -258,7 +263,7 @@ func ReadArgs() Input {
 	portPlainPtr := portCommand.Bool("plain", false, "Print only results")
 
 	// port subcommand flag pointers
-	portTimeoutPtr := portCommand.Int("t", 3, "Port scan timeout")
+	portTimeoutPtr := portCommand.Int("t", PortScanTimeout, "Port scan timeout")
 
 	// Default ports
 	StartPort := 1
@@ -267,9 +272,9 @@ func ReadArgs() Input {
 	portArrayBool := false
 
 	// Verify that a subcommand has been provided
-	// os.Arg[0] is the main command
-	// os.Arg[1] will be the subcommand
-	if len(os.Args) < 2 {
+	// os.Args[0] is the main command
+	// os.Args[1] will be the subcommand
+	if len(os.Args) < ArgsNumber {
 		output.Intro()
 		fmt.Println("[ERROR] subcommand is required.")
 		fmt.Println("	Type: scilla help      - Full overview of the commands.")

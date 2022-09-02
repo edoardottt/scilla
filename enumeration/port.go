@@ -108,8 +108,9 @@ func AsyncPort(portsArray []int, portsArrayBool bool, StartingPort int, EndingPo
 		total = len(commonPorts)
 	}
 
-	limiter := make(chan string, 200) // Limits simultaneous requests
-	waitgroup := sync.WaitGroup{}     // Needed to not prematurely exit before all requests have been finished
+	channels := 200
+	limiter := make(chan string, channels) // Limits simultaneous requests
+	waitgroup := sync.WaitGroup{}          // Needed to not prematurely exit before all requests have been finished
 
 	if outputFileHTML != "" {
 		output.HeaderHTML("PORT ENUMERATION", outputFileHTML)

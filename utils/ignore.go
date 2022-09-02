@@ -34,6 +34,10 @@ import (
 	"strings"
 )
 
+const (
+	statusCodeLength = 3
+)
+
 // CheckIgnore checks the inputted status code(s) to be ignored.
 // It can be a list e.g. 301,302,400,404,500
 // It can be a 'class' of codes e.g. 3**
@@ -44,7 +48,7 @@ func CheckIgnore(input string) []string {
 
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
-		if len(elem) != 3 {
+		if len(elem) != statusCodeLength {
 			fmt.Println("The status code you entered is invalid (It should consist of three digits).")
 			os.Exit(1)
 		}
@@ -109,7 +113,7 @@ func IgnoreClassOk(input string) bool {
 			if err != nil {
 				// handle error
 				fmt.Println(err)
-				os.Exit(2)
+				os.Exit(1)
 			}
 
 			if i >= 1 && i <= 5 {
