@@ -133,13 +133,13 @@ func AbsoluteURL(protocol string, target string, path string) string {
 // RetrieveHost takes as input a URL and returns
 // as output the domain (host)
 func RetrieveHost(input string) string {
-	u, err := url.Parse(input)
+	url, err := url.Parse(input)
 
 	if err != nil {
 		return input
 	}
 
-	return u.Host
+	return url.Host
 }
 
 // GetRootHost returns the root host (domain.tld)

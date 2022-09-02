@@ -46,14 +46,14 @@ func RemoveDuplicateValues(strSlice []string) []string {
 // Difference computes the difference between
 // two slices of string (A - B)
 func Difference(a, b []string) (diff []string) {
-	m := make(map[string]bool)
+	mapDiff := make(map[string]bool)
 
 	for _, item := range b {
-		m[item] = true
+		mapDiff[item] = true
 	}
 
 	for _, item := range a {
-		if _, ok := m[item]; !ok {
+		if _, ok := mapDiff[item]; !ok {
 			diff = append(diff, item)
 		}
 	}

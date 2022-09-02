@@ -98,24 +98,24 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		fmt.Fprintf(os.Stderr, "Could not get NSs: %v\n", err)
 	}
 
-	for _, ns := range nameserver {
+	for _, nsRecord := range nameserver {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN NS: ", domain)
-			color.Green("%s\n", ns.Host)
+			color.Green("%s\n", nsRecord.Host)
 		} else {
-			fmt.Printf("%s\n", ns.Host)
+			fmt.Printf("%s\n", nsRecord.Host)
 		}
 
 		if outputFileJson != "" {
-			output.AppendWhere(ns.Host, "", "DNS", "NS", "json", outputFileJson)
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "json", outputFileJson)
 		}
 
 		if outputFileHtml != "" {
-			output.AppendWhere(ns.Host, "", "DNS", "NS", "html", outputFileHtml)
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "html", outputFileHtml)
 		}
 
 		if outputFileTxt != "" {
-			output.AppendWhere(ns.Host, "", "DNS", "NS", "txt", outputFileTxt)
+			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "txt", outputFileTxt)
 		}
 	}
 
@@ -125,24 +125,24 @@ func LookupDNS(domain string, outputFileJson, outputFileHtml, outputFileTxt stri
 		fmt.Fprintf(os.Stderr, "Could not get MXs: %v\n", err)
 	}
 
-	for _, mx := range mxrecords {
+	for _, mxRecord := range mxrecords {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN MX: ", domain)
-			color.Green("%s %v\n", mx.Host, mx.Pref)
+			color.Green("%s %v\n", mxRecord.Host, mxRecord.Pref)
 		} else {
-			fmt.Printf("%s %v\n", mx.Host, mx.Pref)
+			fmt.Printf("%s %v\n", mxRecord.Host, mxRecord.Pref)
 		}
 
 		if outputFileJson != "" {
-			output.AppendWhere(mx.Host, "", "DNS", "MX", "json", outputFileJson)
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "json", outputFileJson)
 		}
 
 		if outputFileHtml != "" {
-			output.AppendWhere(mx.Host, "", "DNS", "MX", "html", outputFileHtml)
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "html", outputFileHtml)
 		}
 
 		if outputFileTxt != "" {
-			output.AppendWhere(mx.Host, "", "DNS", "MX", "txt", outputFileTxt)
+			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "txt", outputFileTxt)
 		}
 	}
 
