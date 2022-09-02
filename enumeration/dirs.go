@@ -64,7 +64,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 
 	var count int
 
-	for i, domain := range urls {
+	for _, domain := range urls {
 		limiter <- domain
 
 		waitgroup.Add(1)
@@ -82,7 +82,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
 
-		go func(i int, domain string) {
+		go func(domain string) {
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
@@ -102,7 +102,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 
 			output.AddDirs(domain, resp.Status, dirs, mutex)
 			resp.Body.Close()
-		}(i, domain)
+		}(domain)
 	}
 
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)

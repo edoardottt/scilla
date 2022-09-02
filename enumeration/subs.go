@@ -55,7 +55,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 	limiter := make(chan string, channels) // Limits simultaneous requests
 	waitgroup := sync.WaitGroup{}          // Needed to not prematurely exit before all requests have been finished
 
-	for i, domain := range urls {
+	for _, domain := range urls {
 		limiter <- domain
 
 		waitgroup.Add(1)
@@ -73,7 +73,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 			fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 		}
 
-		go func(i int, domain string) {
+		go func(domain string) {
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
@@ -93,7 +93,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 
 			output.AddSubs(domain, resp.Status, subs, mutex)
 			resp.Body.Close()
-		}(i, domain)
+		}(domain)
 	}
 
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)

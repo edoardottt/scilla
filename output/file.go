@@ -61,13 +61,13 @@ func CreateOutputFile(path string) string {
 			CreateOutputFolder(dir)
 		}
 		// If the file doesn't exist, create it.
-		f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
+		fOpen, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
 		if err != nil {
 			fmt.Println("Can't create output file.")
 			os.Exit(1)
 		}
 
-		f.Close()
+		fOpen.Close()
 	} else {
 		// The file already exists, check what the user want.
 		reader := bufio.NewReader(os.Stdin)
@@ -77,17 +77,17 @@ func CreateOutputFile(path string) string {
 		answer = strings.TrimSpace(answer)
 
 		if answer == "y" || answer == "yes" || answer == "" {
-			f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
+			fOpen, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, utils.Permission0644)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
 			}
-			err = f.Truncate(0)
+			err = fOpen.Truncate(0)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
 			}
-			f.Close()
+			fOpen.Close()
 		} else {
 			os.Exit(1)
 		}

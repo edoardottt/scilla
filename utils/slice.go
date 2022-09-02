@@ -45,8 +45,9 @@ func RemoveDuplicateValues(strSlice []string) []string {
 
 // Difference computes the difference between
 // two slices of string (A - B)
-func Difference(a, b []string) (diff []string) {
+func Difference(a, b []string) []string {
 	mapDiff := make(map[string]bool)
+	diff := []string{}
 
 	for _, item := range b {
 		mapDiff[item] = true
@@ -58,5 +59,5 @@ func Difference(a, b []string) (diff []string) {
 		}
 	}
 
-	return
+	return diff
 }
