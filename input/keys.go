@@ -61,7 +61,7 @@ func ReadKeys(filename string) (Keys, error) {
 // GetVirusTotalKey reads the Virustotal key
 func GetVirusTotalKey() string {
 	filename := ""
-	if runtime.GOOS == "windows" {
+	if runtime.GOOS == windows {
 		filename = "keys.yaml"
 	} else { // linux
 		home, err := os.UserHomeDir()

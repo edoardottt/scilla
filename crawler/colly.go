@@ -40,6 +40,10 @@ import (
 	"github.com/gocolly/colly"
 )
 
+const (
+	directory = "dir"
+)
+
 // SpawnCrawler spawn a crawler that search for
 // links with this characteristic:
 // - only http, https or ftp protocols allowed
@@ -50,7 +54,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 	ignoreBool := len(ignore) != 0
 	//nolint:staticcheck // SA4006 ignore this!
 	collector := colly.NewCollector()
-	if what == "dir" {
+	if what == directory {
 		collector = colly.NewCollector(
 			colly.URLFilters(
 				regexp.MustCompile("(http://|https://|ftp://)" + "(www.)?" + target + "*"),
@@ -72,7 +76,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		link := element.Attr("href")
 		if link != "" {
 			url := utils.CleanURL(element.Request.AbsoluteURL(link))
-			if what == "dir" {
+			if what == directory {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
 					element.Request.Visit(url)
@@ -92,7 +96,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		link := element.Attr("src")
 		if len(link) != 0 {
 			url := utils.CleanURL(element.Request.AbsoluteURL(link))
-			if what == "dir" {
+			if what == directory {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
 					element.Request.Visit(url)
@@ -112,7 +116,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		link := element.Attr("href")
 		if len(link) != 0 {
 			url := utils.CleanURL(element.Request.AbsoluteURL(link))
-			if what == "dir" {
+			if what == directory {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
 					element.Request.Visit(url)
@@ -132,7 +136,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 		link := element.Attr("src")
 		if len(link) != 0 {
 			url := utils.CleanURL(element.Request.AbsoluteURL(link))
-			if what == "dir" {
+			if what == directory {
 				if !output.PresentDirs(url, dirs, mutex) && url != target {
 					//nolint // errcheck ignore this!
 					element.Request.Visit(url)
@@ -158,7 +162,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 					os.Exit(1)
 				}
 				if !utils.IgnoreResponse(statusInt, ignore) {
-					if what == "dir" {
+					if what == directory {
 						output.AddDirs(r.URL.String(), status, dirs, mutex)
 						output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 					} else {
@@ -168,7 +172,7 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 					}
 				}
 			} else {
-				if what == "dir" {
+				if what == directory {
 					output.AddDirs(r.URL.String(), status, dirs, mutex)
 					output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 				} else {

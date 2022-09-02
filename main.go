@@ -39,6 +39,10 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
+const (
+	httpProtocol = "http"
+)
+
 // main function
 func main() {
 	input := input.ReadArgs()
@@ -107,7 +111,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	var protocolTemp string
 	// if there isn't a scheme use http.
 	if !utils.ProtocolExists(target) {
-		protocolTemp = "http"
+		protocolTemp = httpProtocol
 	} else {
 		protocolTemp = utils.RetrieveProtocol(target)
 	}
@@ -282,7 +286,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	var protocolTemp string
 	// if there isn't a scheme use http.
 	if !utils.ProtocolExists(target) {
-		protocolTemp = "http"
+		protocolTemp = httpProtocol
 	} else {
 		protocolTemp = utils.RetrieveProtocol(target)
 	}
@@ -395,7 +399,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 
 	// if there isn't a scheme use http.
 	if !utils.ProtocolExists(target) {
-		protocolTemp = "http"
+		protocolTemp = httpProtocol
 	} else {
 		protocolTemp = utils.RetrieveProtocol(target)
 	}

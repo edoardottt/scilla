@@ -36,6 +36,10 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
+const (
+	windows = "windows"
+)
+
 // ReadDictDirs reads all the possible dirs from input file
 func ReadDictDirs(inputFile string) []string {
 	file, err := os.Open(inputFile)
@@ -73,7 +77,7 @@ func CreateUrls(filename string, scheme string, url string) []string {
 	var dirs []string
 
 	if filename == "" {
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == windows {
 			dirs = ReadDictDirs("lists/dirs.txt")
 		} else { // linux
 			dirs = ReadDictDirs("/usr/bin/lists/dirs.txt")

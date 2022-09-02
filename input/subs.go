@@ -63,7 +63,7 @@ func CreateSubdomains(filename string, scheme string, url string) []string {
 	var subs []string
 
 	if filename == "" {
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == windows {
 			subs = ReadDictSubs("lists/subdomains.txt")
 		} else { // linux
 			subs = ReadDictSubs("/usr/bin/lists/subdomains.txt")
