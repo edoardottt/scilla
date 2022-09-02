@@ -37,7 +37,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-// CreateOutputFolder creates the output folder
+// CreateOutputFolder creates the output folder.
 func CreateOutputFolder(path string) {
 	// Create a folder/directory at a full qualified path
 	if strings.Trim(path, " ") != "" {
@@ -49,9 +49,8 @@ func CreateOutputFolder(path string) {
 	}
 }
 
-// CreateOutputFile creates the output file (txt/json/html)
+// CreateOutputFile creates the output file (txt/json/html).
 func CreateOutputFile(path string) string {
-
 	dir, file := filepath.Split(path)
 	_, err := os.Stat(path)
 
@@ -96,7 +95,7 @@ func CreateOutputFile(path string) string {
 	return path
 }
 
-// AppendWhere checks which format the output should be (html, json or txt)
+// AppendWhere checks which format the output should be (html, json or txt).
 func AppendWhere(what string, status string, key string, record string, format string, outputFile string) {
 	switch {
 	case format == "html":
@@ -114,7 +113,7 @@ func AppendWhere(what string, status string, key string, record string, format s
 	}
 }
 
-// AppendExtension appends to the path the given extension
+// AppendExtension appends to the path the given extension.
 func AppendExtension(path, extension string) string {
 	if len(path) < len(extension)+1 {
 		return path + "." + extension

@@ -38,7 +38,7 @@ import (
 )
 
 // AsyncGet performs concurrent requests to the specified
-// urls and prints the results
+// urls and prints the results.
 func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
 	ignoreBool := len(ignore) != 0

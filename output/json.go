@@ -33,7 +33,7 @@ import (
 	"log"
 )
 
-// File struct helping json output
+// File struct helping json output.
 type File struct {
 	Port      []string            `json:"port,omitempty"`
 	DNS       map[string][]string `json:"dns,omitempty"`
@@ -41,7 +41,7 @@ type File struct {
 	Dir       []string            `json:"dir,omitempty"`
 }
 
-// AppendOutputToJSON appends a (json) row in the JSON output file
+// AppendOutputToJSON appends a (json) row in the JSON output file.
 func AppendOutputToJSON(output string, key string, record string, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -49,7 +49,11 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	}
 
 	data := File{}
-	json.Unmarshal([]byte(file), &data)
+	err = json.Unmarshal([]byte(file), &data)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	switch {
 	case key == "PORT":

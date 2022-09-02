@@ -37,7 +37,7 @@ import (
 )
 
 // ReportSubcommandCheckFlags performs all the necessary checks on the flags
-// for the report subcommand
+// for the report subcommand.
 func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *string,
 	reportPortsPtr *string, reportCommonPtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	startPort int, endPort int, reportIgnoreDirPtr *string,
@@ -146,7 +146,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 }
 
 // DNSSubcommandCheckFlags performs all the necessary checks on the flags
-// for the dns subcommand
+// for the dns subcommand.
 func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJSON,
 	dnsOutputHTML, dnsOutputTXT *string) {
 	// Required Flags
@@ -185,12 +185,11 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJSO
 }
 
 // SubdomainSubcommandCheckFlags performs all the necessary checks on the flags
-// for the subdomain subcommand
+// for the subdomain subcommand.
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
 	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
 	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT *string) []string {
-
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -263,7 +262,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 }
 
 // PortSubcommandCheckFlags performs all the necessary checks on the flags
-// for the port subcommand
+// for the port subcommand.
 func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, portsPtr *string,
 	portCommonPtr *bool, startPort int, endPort int, portTimeout *int,
 	portOutputJSON, portOutputHTML, portOutputTXT *string) (int, int, []int, bool) {
@@ -351,7 +350,7 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 }
 
 // DirSubcommandCheckFlags performs all the necessary checks on the flags
-// for the dir subcommand
+// for the dir subcommand.
 func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 	dirIgnorePtr *string, dirOutputJSON, dirOutputHTML, dirOutputTXT *string) []string {
 	// Required Flags

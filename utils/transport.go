@@ -40,9 +40,9 @@ const (
 
 // CheckPortsArray checks the basic rules to
 // be valid and then returns the ports array to scan.
-// - remove duplicates
-// - check if they can be converted to integers
-// - check if they are in the port array (1 - 65535)
+// - remove duplicates.
+// - check if they can be converted to integers.
+// - check if they are in the port array (1 - 65535).
 func CheckPortsArray(input string) []int {
 	delimiter := byte(',')
 	sliceOfPorts := strings.Split(input, string(delimiter))

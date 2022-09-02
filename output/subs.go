@@ -104,7 +104,7 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJson, outputFil
 	mutex.Unlock()
 }
 
-// AddSubs adds the target found to the subs map
+// AddSubs adds the target found to the subs map.
 func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mutex) {
 	sub := Asset{
 		Value:   value,
@@ -119,7 +119,7 @@ func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mut
 	}
 }
 
-// PresentSubs checks if a subdomain is present inside the subs map
+// PresentSubs checks if a subdomain is present inside the subs map.
 func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
 	_, ok := subs[input]

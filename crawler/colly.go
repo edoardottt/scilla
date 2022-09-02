@@ -46,14 +46,14 @@ const (
 
 // SpawnCrawler spawn a crawler that search for
 // links with this characteristic:
-// - only http, https or ftp protocols allowed
+// - only http, https or ftp protocols allowed.
 func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset,
 	subs map[string]output.Asset, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, what string, plain bool) {
-
 	ignoreBool := len(ignore) != 0
 	//nolint:staticcheck // SA4006 ignore this!
 	collector := colly.NewCollector()
+
 	if what == directory {
 		collector = colly.NewCollector(
 			colly.URLFilters(

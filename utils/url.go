@@ -35,14 +35,14 @@ import (
 )
 
 // ProtocolExists checks if the protocol is present in the URL
-// taken as input
+// taken as input.
 func ProtocolExists(target string) bool {
 	res := strings.Index(target, "://")
 
 	return res >= 0
 }
 
-// CleanProtocol removes the protocol from the url
+// CleanProtocol removes the protocol from the url.
 func CleanProtocol(target string) string {
 	res := strings.Index(target, "://")
 	if res >= 0 {
@@ -53,7 +53,7 @@ func CleanProtocol(target string) string {
 }
 
 // CleanURL takes as input a string and it tries to
-// remove the fragment and the query
+// remove the fragment and the query.
 // Example: https://example.com/directory1/?id=abcdef&path=ok#fragment1
 // Output: https://example.com/directory1/
 func CleanURL(input string) string {
@@ -65,7 +65,7 @@ func CleanURL(input string) string {
 	return u.Scheme + "://" + u.Host + u.Path
 }
 
-// IsURL checks if the inputted url is valid
+// IsURL checks if the inputted url is valid.
 func IsURL(str string) bool {
 	if !ProtocolExists(str) {
 		str = "http://" + str
@@ -76,12 +76,12 @@ func IsURL(str string) bool {
 	return err == nil && u.Host != ""
 }
 
-// BuildURL returns full URL with the subdomain
+// BuildURL returns full URL with the subdomain.
 func BuildURL(scheme string, subdomain string, domain string) string {
 	return scheme + "://" + subdomain + "." + domain
 }
 
-// AppendDir returns full URL with the directory
+// AppendDir returns full URL with the directory.
 func AppendDir(scheme string, domain string, dir string) (string, string) {
 	return scheme + "://" + domain + "/" + dir + "/", scheme + "://" + domain + "/" + dir
 }
@@ -104,7 +104,7 @@ func CleanSubdomainsOk(target string, input []string) []string {
 	return result
 }
 
-// RetrieveProtocol remove from the url the protocol scheme
+// RetrieveProtocol remove from the url the protocol scheme.
 func RetrieveProtocol(target string) string {
 	res := strings.Index(target, "://")
 
@@ -116,7 +116,7 @@ func RetrieveProtocol(target string) string {
 }
 
 // AbsoluteURL takes as input a path and returns the full
-// absolute URL with protocol + host + path
+// absolute URL with protocol + host + path.
 func AbsoluteURL(protocol string, target string, path string) string {
 	// if the path variable starts with a scheme, it means that the
 	// path is itself an absolute path.
@@ -132,7 +132,7 @@ func AbsoluteURL(protocol string, target string, path string) string {
 }
 
 // RetrieveHost takes as input a URL and returns
-// as output the domain (host)
+// as output the domain (host).
 func RetrieveHost(input string) string {
 	url, err := url.Parse(input)
 
@@ -143,7 +143,7 @@ func RetrieveHost(input string) string {
 	return url.Host
 }
 
-// GetRootHost returns the root host (domain.tld)
+// GetRootHost returns the root host (domain.tld).
 func GetRootHost(input string) string {
 	_, err := url.Parse(input)
 

@@ -38,7 +38,7 @@ import (
 )
 
 // AsyncDir performs concurrent requests to the specified
-// urls and prints the results
+// urls and prints the results.
 func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
 	ignoreBool := len(ignore) != 0

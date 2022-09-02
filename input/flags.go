@@ -41,7 +41,7 @@ const (
 	ArgsNumber      = 2
 )
 
-// Input is the struct containing the input parameters
+// Input is the struct containing the input parameters.
 type Input struct {
 	ReportTarget        string
 	ReportWordDir       string
@@ -96,7 +96,7 @@ type Input struct {
 	PortTimeout         int
 }
 
-// ReadArgs reads arguments/options from stdin
+// ReadArgs reads arguments/options from stdin.
 // Subcommands:
 // 		report		==> Full report
 // 		dns			==> Dns records enumeration

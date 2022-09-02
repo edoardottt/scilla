@@ -36,7 +36,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-// CrtShResult is the struct containing crt.sh results
+// CrtShResult is the struct containing crt.sh results.
 type CrtShResult struct {
 	Name string `json:"name_value"`
 }

@@ -40,7 +40,7 @@ const (
 	windows = "windows"
 )
 
-// ReadDictDirs reads all the possible dirs from input file
+// ReadDictDirs reads all the possible dirs from input file.
 func ReadDictDirs(inputFile string) []string {
 	file, err := os.Open(inputFile)
 	if err != nil {

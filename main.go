@@ -43,7 +43,7 @@ const (
 	httpProtocol = "http"
 )
 
-// main function
+// main function.
 func main() {
 	input := input.ReadArgs()
 	// common assets found (only subdomain and dir)
@@ -52,9 +52,8 @@ func main() {
 	execute(input, subs, dirs, enumeration.CommonPorts())
 }
 
-// execute reads inputs and starts the correct procedure
+// execute reads inputs and starts the correct procedure.
 func execute(userInput input.Input, subs map[string]output.Asset, dirs map[string]output.Asset, common []int) {
-
 	var mutex = &sync.Mutex{}
 
 	var commandProvided = false
@@ -99,7 +98,7 @@ func execute(userInput input.Input, subs map[string]output.Asset, dirs map[strin
 	}
 }
 
-// ReportSubcommandHandler >
+// ReportSubcommandHandler.
 func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
 	output.Intro()
 
@@ -228,7 +227,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[
 	}
 }
 
-// DNSSubcommandHandler >
+// DNSSubcommandHandler.
 func DNSSubcommandHandler(userInput input.Input) {
 	if !userInput.DNSPlain {
 		output.Intro()
@@ -275,7 +274,7 @@ func DNSSubcommandHandler(userInput input.Input) {
 	}
 }
 
-// SubdomainSubcommandHandler >
+// SubdomainSubcommandHandler.
 func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
 	if !userInput.SubdomainPlain {
 		output.Intro()
@@ -387,7 +386,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs m
 	}
 }
 
-// DirSubcommandHandler >
+// DirSubcommandHandler.
 func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[string]output.Asset, subs map[string]output.Asset) {
 	if !userInput.DirPlain {
 		output.Intro()
@@ -455,7 +454,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex, dirs map[str
 	}
 }
 
-// PortSubcommandHandler >
+// PortSubcommandHandler.
 func PortSubcommandHandler(userInput input.Input, common []int) {
 	if !userInput.PortPlain {
 		output.Intro()

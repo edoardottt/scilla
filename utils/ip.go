@@ -34,7 +34,7 @@ import (
 )
 
 // IsIP checks if the input is a
-// proper ip address (formatted in a good manner)
+// proper ip address (formatted in a good manner).
 func IsIP(ip string) bool {
 	return net.ParseIP(ip) != nil
 }

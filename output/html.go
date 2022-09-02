@@ -34,7 +34,7 @@ import (
 	"github.com/edoardottt/scilla/utils"
 )
 
-// BannerHTML writes in the input file the HTML banner
+// BannerHTML writes in the input file the HTML banner.
 func BannerHTML(target string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
@@ -66,7 +66,7 @@ func BannerHTML(target string, filename string) {
 	file.Close()
 }
 
-// AppendOutputToHTML appends a (html) row in the HTML output file
+// AppendOutputToHTML appends a (html) row in the HTML output file.
 func AppendOutputToHTML(output string, status string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
@@ -98,7 +98,7 @@ func AppendOutputToHTML(output string, status string, filename string) {
 	file.Close()
 }
 
-// HeaderHTML writes in the (html) output file the header (directories, dns ...)
+// HeaderHTML writes in the (html) output file the header (directories, dns ...).
 func HeaderHTML(header string, filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 	if err != nil {
@@ -112,7 +112,7 @@ func HeaderHTML(header string, filename string) {
 	file.Close()
 }
 
-// FooterHTML closes the HTML list
+// FooterHTML closes the HTML list.
 func FooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 
@@ -131,7 +131,7 @@ func FooterHTML(filename string) {
 	file.Close()
 }
 
-// BannerFooterHTML writes in the (html) output file the HTML footer
+// BannerFooterHTML writes in the (html) output file the HTML footer.
 func BannerFooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, utils.Permission0644)
 

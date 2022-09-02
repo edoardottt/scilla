@@ -57,7 +57,11 @@ func SonarSubdomains(target string) []string {
 		}
 
 		bodyString := string(bodyBytes)
-		json.Unmarshal([]byte(bodyString), &arr)
+		err = json.Unmarshal([]byte(bodyString), &arr)
+
+		if err != nil {
+			return arr
+		}
 	}
 
 	for index, elem := range arr {

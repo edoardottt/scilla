@@ -58,7 +58,7 @@ func ReadKeys(filename string) (Keys, error) {
 	return keys, nil
 }
 
-// GetVirusTotalKey reads the Virustotal key
+// GetVirusTotalKey reads the Virustotal key.
 func GetVirusTotalKey() string {
 	filename := ""
 	if runtime.GOOS == windows {
