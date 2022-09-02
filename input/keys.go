@@ -52,7 +52,7 @@ func ReadKeys(filename string) (Keys, error) {
 	err = yaml.Unmarshal(buf, &keys)
 
 	if err != nil {
-		return Keys{}, fmt.Errorf("in file %q: %v", filename, err)
+		return Keys{}, fmt.Errorf("in file %q: %w", filename, err)
 	}
 
 	return keys, nil
