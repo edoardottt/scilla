@@ -176,6 +176,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 
 	waitgroup.Wait()
 	fmt.Fprint(os.Stdout, "\r \r")
+	fmt.Printf("%0.2f%% : %d / %d", utils.Percentage(count, total), count, total)
 	fmt.Println()
 
 	if outputFileHTML != "" {

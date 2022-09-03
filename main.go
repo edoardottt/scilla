@@ -332,10 +332,6 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	if userInput.SubdomainDB {
-		if userInput.SubdomainVirusTotal {
-			_ = input.GetVirusTotalKey()
-		}
-
 		sonar := opendb.SonarSubdomains(utils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
 		crtsh := opendb.CrtshSubdomains(utils.CleanProtocol(target))
