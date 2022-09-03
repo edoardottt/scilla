@@ -38,7 +38,6 @@ import (
 
 const (
 	PortScanTimeout = 3
-	ArgsNumber      = 2
 )
 
 // Input is the struct containing the input parameters.
@@ -274,7 +273,7 @@ func ReadArgs() Input {
 	// Verify that a subcommand has been provided
 	// os.Args[0] is the main command
 	// os.Args[1] will be the subcommand
-	if len(os.Args) < ArgsNumber {
+	if len(os.Args) < 2 {
 		output.Intro()
 		fmt.Println("[ERROR] subcommand is required.")
 		fmt.Println("	Type: scilla help      - Full overview of the commands.")
