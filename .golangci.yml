@@ -1,73 +1,48 @@
 linters:
   # Enable all available linters.
   # Default: false
-  enable-all: true
-  disable:
-    - structcheck
-    - maligned
-    - deadcode
-    - scopelint
-    - nosnakecase
-    - varcheck
-    - exhaustivestruct
-    - interfacer
-    - golint
-    - ifshort
-    - gocyclo
-    - maintidx
-    - gofumpt
-    - exhaustruct
-    - forbidigo
-    - nestif
-    - noctx
-    - cyclop
-    - gosec
-    - funlen
-    - tagliatelle
-    - gocognit
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exhaustive
+    - exportloopref
+    - gochecknoglobals
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - godot
+    - godox
+    - goerr113
+    - goheader
+    - gomnd
+    - gomodguard
+    - goprintffuncname
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - nolintlint
+    - prealloc
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - stylecheck
+    - testpackage
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+    - wsl
 
 linters-settings:
-  varnamelen:
-    # The longest distance, in source lines, that is being considered a "small scope." (defaults to 5)
-    # Variables used in at most this many lines will be ignored.
-    max-distance: 5
-    # The minimum length of a variable's name that is considered "long." (defaults to 3)
-    # Variable names that are at least this long will be ignored.
-    min-name-length: 3
-    # Check method receivers. (defaults to false)
-    check-receiver: false
-    # Check named return values. (defaults to false)
-    check-return: false
-    # Check type parameters. (defaults to false)
-    check-type-param: false
-    # Ignore "ok" variables that hold the bool return value of a type assertion. (defaults to false)
-    ignore-type-assert-ok: false
-    # Ignore "ok" variables that hold the bool return value of a map index. (defaults to false)
-    ignore-map-index-ok: false
-    # Ignore "ok" variables that hold the bool return value of a channel receive. (defaults to false)
-    ignore-chan-recv-ok: false
-    # Optional list of variable names that should be ignored completely. (defaults to empty list)
-    ignore-names:
-      - err, ip, id, lt, gt
-    # Optional list of variable declarations that should be ignored completely. (defaults to empty list)
-    # Entries must be in one of the following forms (see below for examples):
-    # - for variables, parameters, named return values, method receivers, or type parameters:
-    #   <name> <type>  (<type> can also be a pointer/slice/map/chan/...)
-    # - for constants: const <name>
-    ignore-decls:
-      - c echo.Context
-      - t testing.T
-      - f *foo.Bar
-      - e error
-      - i int
-      - const C
-      - T any
-      - m map[string]int
-      - w http.ResponseWriter
-      - n int64
-      - i int64
-      - r *colly.Request
-
   wsl:
     strict-append: false
     enforce-err-cuddling: true

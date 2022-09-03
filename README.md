@@ -244,6 +244,12 @@ Contributing 🛠
 
 Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls). See also [CONTRIBUTING.md](https://github.com/edoardottt/scilla/blob/master/CONTRIBUTING.md) and [CODE OF CONDUCT.md](https://github.com/edoardottt/scilla/blob/master/CODE_OF_CONDUCT.md)
 
+Before opening a pull request, download [golangci-lint](https://golangci-lint.run/usage/install/) and run
+```bash
+golangci-lint run
+```
+If there aren't errors, go ahead :)
+
 **Help me building this!**
 
 Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSearch](https://github.com/cgboal/sonarsearch), [HackerTarget](https://hackertarget.com/), [BufferOverrun](http://dns.bufferover.run/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
