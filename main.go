@@ -158,7 +158,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.ReportCrawlerSub {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.ReportIgnoreSub, dirs, subs, outputFileJSON, outputFileHTML,
-			outputFileTXT, mutex, "sub", false)
+			outputFileTXT, mutex, "sub", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
@@ -217,7 +217,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	if userInput.ReportCrawlerDir {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.ReportIgnoreDir, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT, mutex, "dir", false)
+			userInput.ReportIgnoreDir, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
+			mutex, "dir", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
 	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
@@ -356,7 +357,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.SubdomainIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
-			mutex, "sub", userInput.SubdomainPlain)
+			mutex, "sub", userInput.SubdomainPlain, userInput.SubdomainUserAgent, userInput.SubdomainRandomUserAgent)
 	}
 
 	// be sure to not scan duplicate values
@@ -442,7 +443,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.DirCrawler {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.DirIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
-			mutex, "dir", userInput.DirPlain)
+			mutex, "dir", userInput.DirPlain, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 	}
 
 	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
