@@ -128,6 +128,8 @@ usage: scilla subcommand { options }
                    [-plain Print only results]
                    [-db -no-check Don't check status codes for subdomains]
                    [-db -vt Use VirusTotal as subdomains source]
+                   [-ua Set the User Agent]
+                   [-rua Generate a random user agent for each request]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-oj JSON output file]
@@ -137,6 +139,8 @@ usage: scilla subcommand { options }
              [-c use also a web crawler]
              [-plain Print only results]
              [-nr No follow redirects]
+             [-ua Set the User Agent]
+             [-rua Generate a random user agent for each request]
              -target <target (URL)> REQUIRED
        - report [-p <start-end> or ports divided by comma]
                 [-ws subdomains wordlist]
@@ -152,6 +156,8 @@ usage: scilla subcommand { options }
                 [-common scan common ports]
                 [-nr No follow redirects]
                 [-db -vt Use VirusTotal as subdomains source]
+                [-ua Set the User Agent]
+                [-rua Generate a random user agent for each request]
                 -target <target (URL/IP)> REQUIRED
        - help
        - examples
@@ -183,6 +189,8 @@ Examples 💡
     - `scilla subdomain -plain -target target.domain`
     - `scilla subdomain -db -no-check -target target.domain`
     - `scilla subdomain -db -vt -target target.domain`
+    - `scilla subdomain -ua "CustomUA" -target target.domain`
+    - `scilla subdomain -rua -target target.domain`
 
 - Directories enumeration:
 
@@ -196,6 +204,8 @@ Examples 💡
     - `scilla dir -c -target target.domain`
     - `scilla dir -plain -target target.domain`
     - `scilla dir -nr -target target.domain`
+    - `scilla dir -ua "CustomUA" -target target.domain`
+    - `scilla dir -rua -target target.domain`
 
 - Ports enumeration:
       
@@ -234,6 +244,8 @@ Examples 💡
     - Specifying common ports `scilla report -common -target target.domain`
     - No follow redirects `scilla report -nr -target target.domain`
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
+    - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
+    - Generate a random user agent for each request `scilla report -rua -target target.domain`
 
 Changelog 📌
 -------
