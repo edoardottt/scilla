@@ -38,6 +38,7 @@ import (
 	"github.com/edoardottt/scilla/output"
 	"github.com/edoardottt/scilla/utils"
 	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/extensions"
 )
 
 const (
@@ -49,7 +50,7 @@ const (
 // - only http, https or ftp protocols allowed.
 func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string]output.Asset,
 	subs map[string]output.Asset, outputFileJSON, outputFileHTML, outputFileTXT string,
-	mutex *sync.Mutex, what string, plain bool) {
+	mutex *sync.Mutex, what string, plain bool, ua string, rua bool) {
 	ignoreBool := len(ignore) != 0
 	//nolint:staticcheck // SA4006 ignore this!
 	collector := colly.NewCollector()
@@ -70,6 +71,18 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 
 	collector.IgnoreRobotsTxt = true
 	collector.AllowURLRevisit = false
+
+	if ua != "Go http/Client" {
+		collector.UserAgent = ua
+	} else {
+		// Avoid using the default colly user agent
+		collector.UserAgent = utils.GenerateRandomUserAgent()
+	}
+
+	// Use a Random User Agent for each request if needed
+	if rua {
+		extensions.RandomUserAgent(collector)
+	}
 
 	// Find and visit all links
 	collector.OnHTML("a[href]", func(element *colly.HTMLElement) {

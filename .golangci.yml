@@ -52,3 +52,5 @@ linters-settings:
     # Default: []
     ignored-numbers:
       - '2'
+    ignored-files:
+      - 'utils/http.go'

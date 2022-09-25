@@ -158,7 +158,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.ReportCrawlerSub {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.ReportIgnoreSub, dirs, subs, outputFileJSON, outputFileHTML,
-			outputFileTXT, mutex, "sub", false)
+			outputFileTXT, mutex, "sub", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
 	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, utils.CleanProtocol(target))
@@ -188,7 +188,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFileJSON,
-		outputFileHTML, outputFileTXT, subs, mutex, false)
+		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
@@ -217,11 +217,12 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	if userInput.ReportCrawlerDir {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
-			userInput.ReportIgnoreDir, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT, mutex, "dir", false)
+			userInput.ReportIgnoreDir, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
+			mutex, "dir", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
 	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
-		dirs, mutex, false, userInput.ReportRedirect)
+		dirs, mutex, false, userInput.ReportRedirect, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
@@ -356,14 +357,14 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.SubdomainCrawler && !userInput.SubdomainNoCheck {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.SubdomainIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
-			mutex, "sub", userInput.SubdomainPlain)
+			mutex, "sub", userInput.SubdomainPlain, userInput.SubdomainUserAgent, userInput.SubdomainRandomUserAgent)
 	}
 
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
 		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
-			subs, mutex, userInput.SubdomainPlain)
+			subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent, userInput.SubdomainRandomUserAgent)
 	} else {
 		for _, elem := range strings1 {
 			fmt.Println(elem)
@@ -442,11 +443,11 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if userInput.DirCrawler {
 		go crawler.SpawnCrawler(utils.CleanProtocol(target), protocolTemp,
 			userInput.DirIgnore, dirs, subs, outputFileJSON, outputFileHTML, outputFileTXT,
-			mutex, "dir", userInput.DirPlain)
+			mutex, "dir", userInput.DirPlain, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 	}
 
 	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
-		dirs, mutex, userInput.DirPlain, userInput.DirRedirect)
+		dirs, mutex, userInput.DirPlain, userInput.DirRedirect, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
