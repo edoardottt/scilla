@@ -40,7 +40,7 @@ import (
 // AsyncDir performs concurrent requests to the specified
 // urls and prints the results.
 func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
-	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool) {
+	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool, ua string, rua bool) {
 	ignoreBool := len(ignore) != 0
 	total := len(urls)
 	client := http.Client{}
@@ -86,7 +86,23 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
-			resp, err := client.Get(domain)
+			req, err := http.NewRequest("GET", domain, nil)
+			if err != nil {
+				return
+			}
+
+			if ua != "Go http/Client" {
+				req.Header.Set("User-Agent", ua)
+			}
+
+			if rua {
+				req.Header.Set("User-Agent", utils.GenerateRandomUserAgent())
+			}
+
+			resp, err := client.Do(req)
+			if err != nil {
+				return
+			}
 
 			count++
 

@@ -40,7 +40,7 @@ import (
 // AsyncGet performs concurrent requests to the specified
 // urls and prints the results.
 func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
-	subs map[string]output.Asset, mutex *sync.Mutex, plain bool) {
+	subs map[string]output.Asset, mutex *sync.Mutex, plain bool, ua string, rua bool) {
 	ignoreBool := len(ignore) != 0
 
 	var count int
@@ -77,7 +77,23 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
-			resp, err := client.Get(protocol + "://" + domain)
+			req, err := http.NewRequest("GET", protocol+"://"+domain, nil)
+			if err != nil {
+				return
+			}
+
+			if ua != "Go http/Client" {
+				req.Header.Set("User-Agent", ua)
+			}
+
+			if rua {
+				req.Header.Set("User-Agent", utils.GenerateRandomUserAgent())
+			}
+
+			resp, err := client.Do(req)
+			if err != nil {
+				return
+			}
 
 			count++
 

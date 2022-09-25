@@ -188,7 +188,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	// be sure to not scan duplicate values
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFileJSON,
-		outputFileHTML, outputFileTXT, subs, mutex, false)
+		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
@@ -221,7 +221,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
-		dirs, mutex, false, userInput.ReportRedirect)
+		dirs, mutex, false, userInput.ReportRedirect, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
@@ -363,7 +363,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	strings1 = utils.RemoveDuplicateValues(utils.CleanSubdomainsOk(utils.CleanProtocol(target), strings1))
 	if !userInput.SubdomainNoCheck {
 		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
-			subs, mutex, userInput.SubdomainPlain)
+			subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent, userInput.SubdomainRandomUserAgent)
 	} else {
 		for _, elem := range strings1 {
 			fmt.Println(elem)
@@ -446,7 +446,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
-		dirs, mutex, userInput.DirPlain, userInput.DirRedirect)
+		dirs, mutex, userInput.DirPlain, userInput.DirRedirect, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)

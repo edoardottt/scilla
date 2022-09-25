@@ -42,8 +42,8 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	reportPortsPtr *string, reportCommonPtr *bool, reportVirusTotalPtr *bool, reportSubdomainDBPtr *bool,
 	startPort int, endPort int, reportIgnoreDirPtr *string,
 	reportIgnoreSubPtr *string, reportTimeoutPort *int,
-	reportOutputJSON *string, reportOutputHTML *string, reportOutputTXT *string) (int, int,
-	[]int, bool, []string, []string) {
+	reportOutputJSON, reportOutputHTML, reportOutputTXT, reportUserAgentPtr *string,
+	reportRandomUserAgentPtr *bool) (int, int, []int, bool, []string, []string) {
 	// Required Flags
 	if *reportTargetPtr == "" {
 		reportCommand.PrintDefaults()
@@ -142,6 +142,11 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 
+	if *reportUserAgentPtr != "Go http/Client" && *reportRandomUserAgentPtr {
+		fmt.Println("You cannot specify both ua and rua.")
+		os.Exit(1)
+	}
+
 	return startPort, endPort, portsArray, portArrayBool, reportIgnoreDir, reportIgnoreSub
 }
 
@@ -189,7 +194,8 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJSO
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
 	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
-	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT *string) []string {
+	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT, subdomainUserAgentPtr *string,
+	subdomainRandomUserAgentPtr *bool) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -256,6 +262,11 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	if *subdomainIgnorePtr != "" {
 		toBeIgnored := *subdomainIgnorePtr
 		subdomainIgnore = utils.CheckIgnore(toBeIgnored)
+	}
+
+	if *subdomainUserAgentPtr != "Go http/Client" && *subdomainRandomUserAgentPtr {
+		fmt.Println("You cannot specify both ua and rua.")
+		os.Exit(1)
 	}
 
 	return subdomainIgnore
@@ -352,7 +363,8 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 // DirSubcommandCheckFlags performs all the necessary checks on the flags
 // for the dir subcommand.
 func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
-	dirIgnorePtr *string, dirOutputJSON, dirOutputHTML, dirOutputTXT *string) []string {
+	dirIgnorePtr *string, dirOutputJSON, dirOutputHTML, dirOutputTXT, dirUserAgentPtr *string,
+	dirRandomUserAgentPtr *bool) []string {
 	// Required Flags
 	if *dirTargetPtr == "" {
 		dirCommand.PrintDefaults()
@@ -392,6 +404,11 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 	if *dirIgnorePtr != "" {
 		toBeIgnored := *dirIgnorePtr
 		dirIgnore = utils.CheckIgnore(toBeIgnored)
+	}
+
+	if *dirUserAgentPtr != "Go http/Client" && *dirRandomUserAgentPtr {
+		fmt.Println("You cannot specify both ua and rua.")
+		os.Exit(1)
 	}
 
 	return dirIgnore
