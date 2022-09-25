@@ -37,7 +37,8 @@ import (
 )
 
 const (
-	PortScanTimeout = 3
+	PortScanTimeout  = 3
+	DefaultUserAgent = "Go http/Client"
 )
 
 // Input is the struct containing the input parameters.
@@ -170,7 +171,7 @@ func ReadArgs() Input {
 	reportTimeoutPortPtr := reportCommand.Int("tp", PortScanTimeout, "Port Scan timeout")
 
 	// report subcommand flag pointers
-	reportUserAgentPtr := reportCommand.String("ua", "Go http/Client", "Set the User Agent")
+	reportUserAgentPtr := reportCommand.String("ua", DefaultUserAgent, "Set the User Agent")
 
 	// report subcommand flag pointers
 	reportRandomUserAgentPtr := reportCommand.Bool("rua", false, "Generate a random user agent for each request")
@@ -225,7 +226,7 @@ func ReadArgs() Input {
 	subdomainVirusTotalPtr := subdomainCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
 
 	// subdomains subcommand flag pointers
-	subdomainUserAgentPtr := subdomainCommand.String("ua", "Go http/Client", "Set the User Agent")
+	subdomainUserAgentPtr := subdomainCommand.String("ua", DefaultUserAgent, "Set the User Agent")
 
 	// subdomains subcommand flag pointers
 	subdomainRandomUserAgentPtr := subdomainCommand.Bool("rua", false, "Generate a random user agent for each request")
@@ -259,7 +260,7 @@ func ReadArgs() Input {
 	dirRedirectPtr := dirCommand.Bool("nr", false, "No follow redirects")
 
 	// dir subcommand flag pointers
-	dirUserAgentPtr := dirCommand.String("ua", "Go http/Client", "Set the User Agent")
+	dirUserAgentPtr := dirCommand.String("ua", DefaultUserAgent, "Set the User Agent")
 
 	// dir subcommand flag pointers
 	dirRandomUserAgentPtr := dirCommand.Bool("rua", false, "Generate a random user agent for each request")
@@ -409,7 +410,8 @@ func ReadArgs() Input {
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
 			subdomainCrawlerPtr, subdomainVirusTotalPtr,
-			subdomainOutputJSONPtr, subdomainOutputHTMLPtr, subdomainOutputTXTPtr, subdomainUserAgentPtr, subdomainRandomUserAgentPtr)
+			subdomainOutputJSONPtr, subdomainOutputHTMLPtr, subdomainOutputTXTPtr,
+			subdomainUserAgentPtr, subdomainRandomUserAgentPtr)
 	}
 
 	// PORT subcommand

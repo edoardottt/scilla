@@ -142,7 +142,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 
-	if *reportUserAgentPtr != "Go http/Client" && *reportRandomUserAgentPtr {
+	if *reportUserAgentPtr != DefaultUserAgent && *reportRandomUserAgentPtr {
 		fmt.Println("You cannot specify both ua and rua.")
 		os.Exit(1)
 	}
@@ -264,7 +264,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		subdomainIgnore = utils.CheckIgnore(toBeIgnored)
 	}
 
-	if *subdomainUserAgentPtr != "Go http/Client" && *subdomainRandomUserAgentPtr {
+	if *subdomainUserAgentPtr != DefaultUserAgent && *subdomainRandomUserAgentPtr {
 		fmt.Println("You cannot specify both ua and rua.")
 		os.Exit(1)
 	}
@@ -406,7 +406,7 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		dirIgnore = utils.CheckIgnore(toBeIgnored)
 	}
 
-	if *dirUserAgentPtr != "Go http/Client" && *dirRandomUserAgentPtr {
+	if *dirUserAgentPtr != DefaultUserAgent && *dirRandomUserAgentPtr {
 		fmt.Println("You cannot specify both ua and rua.")
 		os.Exit(1)
 	}
