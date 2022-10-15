@@ -33,16 +33,19 @@ import (
 	"time"
 )
 
+// SimpleDNSLookup performs a DNS lookup using the default system DNS.
 func SimpleDNSLookup(domain string) bool {
 	ips, err := net.LookupIP(domain)
 	return err == nil && len(ips) != 0 && !ips[0].IsLoopback()
 }
 
+// CustomDNSLookup performs a DNS lookup using the provided custom DNS.
 func CustomDNSLookup(r *net.Resolver, domain string) bool {
 	ips, err := r.LookupHost(context.Background(), domain)
 	return err == nil && len(ips) != 0 && !net.ParseIP(ips[0]).IsLoopback()
 }
 
+// NewCustomResolver returns a DNS resolver using the provided DNS IP.
 func NewCustomResolver(customDNS string) *net.Resolver {
 	r := &net.Resolver{
 		PreferGo: true,
