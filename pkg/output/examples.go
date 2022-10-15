@@ -52,6 +52,8 @@ func Examples() {
 	fmt.Println("		- scilla subdomain -db -vt -target target.domain")
 	fmt.Println("		- scilla subdomain -ua \"CustomUA\" -target target.domain")
 	fmt.Println("		- scilla subdomain -rua -target target.domain")
+	fmt.Println("		- scilla subdomain -dns 8.8.8.8 -target target.domain")
+	fmt.Println("		- scilla subdomain -alive -target target.domain")
 	fmt.Println()
 	fmt.Println("		- scilla port -p -450 -target target.domain")
 	fmt.Println("		- scilla port -p 90- -target target.domain")
@@ -98,5 +100,7 @@ func Examples() {
 	fmt.Println("		- scilla report -tp 2 -target target.domain")
 	fmt.Println("		- scilla report -ua \"CustomUA\" -target target.domain")
 	fmt.Println("		- scilla report -rua -target target.domain")
+	fmt.Println("		- scilla report -dns 8.8.8.8 -target target.domain")
+	fmt.Println("		- scilla report -alive -target target.domain")
 	fmt.Println("")
 }

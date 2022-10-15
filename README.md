@@ -137,7 +137,7 @@ usage: scilla subcommand { options }
              [-nr No follow redirects]
              [-ua Set the User Agent]
              [-rua Generate a random user agent for each request]
-             -target <target (URL)> REQUIRED
+             -target <target (URL/IP)> REQUIRED
        - report [-p <start-end> or ports divided by comma]
                 [-ws subdomains wordlist]
                 [-wd directories wordlist]
@@ -156,7 +156,7 @@ usage: scilla subcommand { options }
                 [-rua Generate a random user agent for each request]
                 [-dns Set DNS IP to resolve the subdomains]
                 [-alive Check also if the subdomains are alive]
-                -target <target (URL/IP)> REQUIRED
+                -target <target (URL)> REQUIRED
        - help
        - examples
 ```
