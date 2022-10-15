@@ -33,6 +33,10 @@ import (
 	"time"
 )
 
+const (
+	DNSTimeout = 10000
+)
+
 // SimpleDNSLookup performs a DNS lookup using the default system DNS.
 func SimpleDNSLookup(domain string) bool {
 	ips, err := net.LookupIP(domain)
@@ -51,10 +55,11 @@ func NewCustomResolver(customDNS string) *net.Resolver {
 		PreferGo: true,
 		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
 			d := net.Dialer{
-				Timeout: time.Millisecond * time.Duration(10000),
+				Timeout: time.Millisecond * time.Duration(DNSTimeout),
 			}
 			return d.DialContext(ctx, network, customDNS+":53")
 		},
 	}
+
 	return r
 }
