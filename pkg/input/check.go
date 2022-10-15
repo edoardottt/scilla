@@ -123,16 +123,28 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		}
 	}
 
-	var reportIgnoreDir, reportIgnoreSub []string
+	var (
+		reportIgnoreDir []string
+		reportIgnoreSub []string
+		err             error
+	)
 
 	if *reportIgnoreDirPtr != "" {
 		toBeIgnored := *reportIgnoreDirPtr
-		reportIgnoreDir = ignoreUtils.CheckIgnore(toBeIgnored)
+		reportIgnoreDir, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *reportIgnoreSubPtr != "" {
 		toBeIgnored := *reportIgnoreSubPtr
-		reportIgnoreSub = ignoreUtils.CheckIgnore(toBeIgnored)
+		reportIgnoreSub, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *reportTimeoutPort < 1 || *reportTimeoutPort > 100 {
@@ -255,11 +267,18 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 
-	var subdomainIgnore []string
+	var (
+		subdomainIgnore []string
+		err             error
+	)
 
 	if *subdomainIgnorePtr != "" {
 		toBeIgnored := *subdomainIgnorePtr
-		subdomainIgnore = ignoreUtils.CheckIgnore(toBeIgnored)
+		subdomainIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *subdomainUserAgentPtr != DefaultUserAgent && *subdomainRandomUserAgentPtr {
@@ -408,11 +427,18 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		}
 	}
 
-	var dirIgnore []string
+	var (
+		dirIgnore []string
+		err       error
+	)
 
 	if *dirIgnorePtr != "" {
 		toBeIgnored := *dirIgnorePtr
-		dirIgnore = ignoreUtils.CheckIgnore(toBeIgnored)
+		dirIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *dirUserAgentPtr != DefaultUserAgent && *dirRandomUserAgentPtr {

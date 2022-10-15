@@ -28,6 +28,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -43,7 +44,7 @@ const (
 // CheckIgnore checks the inputted status code(s) to be ignored.
 // It can be a list e.g. 301,302,400,404,500
 // It can be a 'class' of codes e.g. 3**.
-func CheckIgnore(input string) []string {
+func CheckIgnore(input string) ([]string, error) {
 	result := []string{}
 	temp := strings.Split(input, ",")
 	temp = sliceUtils.RemoveDuplicateValues(temp)
@@ -51,8 +52,7 @@ func CheckIgnore(input string) []string {
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
 		if len(elem) != statusCodeLength {
-			fmt.Println("The status code you entered is invalid (It should consist of three digits).")
-			os.Exit(1)
+			return nil, errors.New("The status code you entered is invalid (It should consist of three digits).")
 		}
 
 		if ignoreInt, err := strconv.Atoi(elem); err == nil {
@@ -60,29 +60,27 @@ func CheckIgnore(input string) []string {
 			if 100 <= ignoreInt && ignoreInt <= 599 {
 				result = append(result, elem)
 			} else {
-				fmt.Println("The status code you entered is invalid (100 <= code <= 599).")
-				os.Exit(1)
+				return nil, errors.New("The status code you entered is invalid (100 <= code <= 599).")
 			}
 		} else if strings.Contains(elem, "*") {
 			// if it is a valid status code without * (e.g. 4**)
-			if IgnoreClassOk(elem) {
+			if ignoreClassOk(elem) {
 				result = append(result, elem)
 			} else {
-				fmt.Println("The status code you entered is invalid. You can enter * only as 1**,2**,3**,4**,5**.")
-				os.Exit(1)
+				return nil, errors.New("The status code you entered is invalid. You can enter * only as 1**,2**,3**,4**,5**.")
 			}
 		}
 	}
 
 	result = sliceUtils.RemoveDuplicateValues(result)
-	result = DeleteUnusefulIgnoreresponses(result)
+	result = deleteUnusefulIgnoreresponses(result)
 
-	return result
+	return result, nil
 }
 
-// DeleteUnusefulIgnoreresponses removes from to-be-ignored arrays
+// deleteUnusefulIgnoreresponses removes from to-be-ignored arrays
 // the responses already included with * as classes.
-func DeleteUnusefulIgnoreresponses(input []string) []string {
+func deleteUnusefulIgnoreresponses(input []string) []string {
 	var result []string
 
 	toberemoved := []string{}
@@ -107,9 +105,9 @@ func DeleteUnusefulIgnoreresponses(input []string) []string {
 	return result
 }
 
-// IgnoreClassOk states if the class of ignored status codes
+// ignoreClassOk states if the class of ignored status codes
 // is correct or not (4**,2**...)
-func IgnoreClassOk(input string) bool {
+func ignoreClassOk(input string) bool {
 	if strings.Contains(input, "*") {
 		if _, err := strconv.Atoi(string(input[0])); err == nil {
 			i, err := strconv.Atoi(string(input[0]))
