@@ -58,8 +58,11 @@ func New() *Runner {
 
 // Execute reads the input and starts the correct procedure.
 func (r *Runner) Execute(dirs, subs map[string]output.Asset) {
-	var mutex = &sync.Mutex{}
-	var commandProvided = false
+	var (
+		mutex           = &sync.Mutex{}
+		commandProvided = false
+	)
+
 	// :::::::: REPORT SUBCOMMAND HANDLER ::::::::
 	if r.Input.ReportTarget != "" {
 		commandProvided = true
