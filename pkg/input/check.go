@@ -92,9 +92,11 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 
-	var portsArray []int
-
-	var portArrayBool bool
+	var (
+		portsArray    []int
+		portArrayBool bool
+		err           error
+	)
 
 	if *reportPortsPtr != "" {
 		if strings.Contains(*reportPortsPtr, "-") && strings.Contains(*reportPortsPtr, ",") {
@@ -106,18 +108,33 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		case strings.Contains(*reportPortsPtr, "-"):
 			{
 				portsRange := *reportPortsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				startPort, endPort, err = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = false
 			}
 		case strings.Contains(*reportPortsPtr, ","):
 			{
-				portsArray = transportUtils.CheckPortsArray(*reportPortsPtr)
+				portsArray, err = transportUtils.CheckPortsArray(*reportPortsPtr)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = true
 			}
 		default:
 			{
 				portsRange := *reportPortsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				startPort, endPort, err = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = false
 			}
 		}
@@ -126,7 +143,6 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 	var (
 		reportIgnoreDir []string
 		reportIgnoreSub []string
-		err             error
 	)
 
 	if *reportIgnoreDirPtr != "" {
@@ -324,9 +340,11 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		os.Exit(1)
 	}
 
-	var portArrayBool bool
-
-	var portsArray []int
+	var (
+		portArrayBool bool
+		portsArray    []int
+		err           error
+	)
 
 	if *portsPtr != "" {
 		if strings.Contains(*portsPtr, "-") && strings.Contains(*portsPtr, ",") {
@@ -338,18 +356,33 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		case strings.Contains(*portsPtr, "-"):
 			{
 				portsRange := *portsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				startPort, endPort, err = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = false
 			}
 		case strings.Contains(*portsPtr, ","):
 			{
-				portsArray = transportUtils.CheckPortsArray(*portsPtr)
+				portsArray, err = transportUtils.CheckPortsArray(*portsPtr)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = true
 			}
 		default:
 			{
 				portsRange := *portsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				startPort, endPort, err = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
 				portArrayBool = false
 			}
 		}
