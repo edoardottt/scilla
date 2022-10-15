@@ -124,6 +124,8 @@ usage: scilla subcommand { options }
                    [-db -vt Use VirusTotal as subdomains source]
                    [-ua Set the User Agent]
                    [-rua Generate a random user agent for each request]
+                   [-dns Set DNS IP to resolve the subdomains]
+                   [-alive Check also if the subdomains are alive]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-oj JSON output file]
@@ -152,6 +154,8 @@ usage: scilla subcommand { options }
                 [-db -vt Use VirusTotal as subdomains source]
                 [-ua Set the User Agent]
                 [-rua Generate a random user agent for each request]
+                [-dns Set DNS IP to resolve the subdomains]
+                [-alive Check also if the subdomains are alive]
                 -target <target (URL/IP)> REQUIRED
        - help
        - examples
@@ -185,6 +189,8 @@ Examples 💡
     - `scilla subdomain -db -vt -target target.domain`
     - `scilla subdomain -ua "CustomUA" -target target.domain`
     - `scilla subdomain -rua -target target.domain`
+    - `scilla subdomain -dns 8.8.8.8 -target target.domain`
+    - `scilla subdomain -alive -target target.domain`
 
 - Directories enumeration:
 
@@ -239,6 +245,8 @@ Examples 💡
     - No follow redirects `scilla report -nr -target target.domain`
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
     - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
+    - Set DNS IP to resolve the subdomains `scilla report -dns 8.8.8.8 -target target.domain`
+    - Check also if the subdomains are alive `scilla report -alive -target target.domain`
     - Generate a random user agent for each request `scilla report -rua -target target.domain`
 
 Changelog 📌
