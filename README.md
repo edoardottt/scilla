@@ -18,13 +18,13 @@
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/win10.svg" alt="win10-build" />
   </a>
+
+  <br>
+  
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/pr-welcome.svg" alt="pr-welcome" />
   </a>
-
-  <br>
-  
   <!-- mainteinance -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/maintained-yes.svg" alt="Mainteinance yes" />
@@ -32,10 +32,6 @@
   <!-- ask-me-anything -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/ask-me-anything.svg" alt="ask me anything" />
-  </a>
-  <!-- gobadge -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/gobadge" alt="gobadge" />
   </a>
   <!-- license GPLv3.0 -->
   <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
@@ -68,13 +64,6 @@ Preview :bar_chart:
 Installation 📡
 ----------
 
-### Using Docker
-
-```shell
-docker build -t scilla .
-docker run scilla help
-```
-
 ### Building from source
 
 You need [Go](https://golang.org/).
@@ -83,19 +72,24 @@ You need [Go](https://golang.org/).
 
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
-  - `go get`
   - `make linux` (to install)
-  - Edit the `~/.config/scilla/keys.yaml` file if you want to use api keys
+  - Edit the `~/.config/scilla/keys.yaml` file if you want to use API keys
   - `make unlinux` (to uninstall)
 
 - **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
-  - `go get`
   - `.\make.bat windows` (to install)
   - Create a `keys.yaml` file  if you want to use api keys 
   - `.\make.bat unwindows` (to uninstall)
+
+### Using Docker
+
+```shell
+docker build -t scilla .
+docker run scilla help
+```
 
 Get Started 🎉
 ----------
@@ -254,7 +248,7 @@ Detailed changes for each release are documented in the [release notes](https://
 Contributing 🛠
 -------
 
-Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls). See also [CONTRIBUTING.md](https://github.com/edoardottt/scilla/blob/master/CONTRIBUTING.md) and [CODE OF CONDUCT.md](https://github.com/edoardottt/scilla/blob/master/CODE_OF_CONDUCT.md)
+Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls).
 
 Before opening a pull request, download [golangci-lint](https://golangci-lint.run/usage/install/) and run
 ```bash

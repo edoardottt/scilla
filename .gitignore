@@ -24,5 +24,7 @@ output-scilla/
 
 keys.yaml
 
+scilla
+
 # VScode Debugging folder
 .vscode/
