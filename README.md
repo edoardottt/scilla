@@ -254,7 +254,7 @@ Detailed changes for each release are documented in the [release notes](https://
 Contributing 🛠
 -------
 
-Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls). See also [CONTRIBUTING.md](https://github.com/edoardottt/scilla/blob/master/CONTRIBUTING.md) and [CODE OF CONDUCT.md](https://github.com/edoardottt/scilla/blob/master/CODE_OF_CONDUCT.md)
+Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls).
 
 Before opening a pull request, download [golangci-lint](https://golangci-lint.run/usage/install/) and run
 ```bash
