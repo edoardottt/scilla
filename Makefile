@@ -19,11 +19,11 @@ lint:
 	@golangci-lint run
 
 linux:
-	@go build -o scilla
+	@go build ./cmd/scilla
 	@sudo mv scilla /usr/bin/
 	@sudo cp -r lists/ /usr/bin/
-	@chmod +x config.sh
-	@./config.sh
+	@chmod +x scripts/config.sh
+	@./scripts/config.sh
 	@echo "Done."
 
 unlinux:

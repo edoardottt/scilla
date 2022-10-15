@@ -53,4 +53,4 @@ linters-settings:
     ignored-numbers:
       - '2'
     ignored-files:
-      - 'utils/http.go'
+      - 'internal/http/http.go'
