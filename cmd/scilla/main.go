@@ -195,7 +195,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	subdomains = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), subdomains))
 
 	enumeration.AsyncGet(protocolTemp, subdomains, userInput.ReportIgnoreSub, outputFileJSON,
-		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
+		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent,
+		userInput.ReportAlive, userInput.ReportDNS)
 
 	if outputFileHTML != "" {
 		output.FooterHTML(outputFileHTML)
@@ -380,7 +381,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	if !userInput.SubdomainNoCheck {
 		enumeration.AsyncGet(protocolTemp, subdomains, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML,
 			outputFileTXT, subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent,
-			userInput.SubdomainRandomUserAgent)
+			userInput.SubdomainRandomUserAgent, userInput.SubdomainAlive, userInput.SubdomainDNS)
 	} else {
 		for _, elem := range subdomains {
 			fmt.Println(elem)

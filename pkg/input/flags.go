@@ -60,6 +60,8 @@ type Input struct {
 	ReportTimeoutPort        int
 	ReportUserAgent          string
 	ReportRandomUserAgent    bool
+	ReportDNS                string
+	ReportAlive              bool
 	DNSTarget                string
 	DNSOutputJSON            string
 	DNSOutputHTML            string
@@ -78,6 +80,8 @@ type Input struct {
 	SubdomainVirusTotal      bool
 	SubdomainUserAgent       string
 	SubdomainRandomUserAgent bool
+	SubdomainDNS             string
+	SubdomainAlive           bool
 	DirTarget                string
 	DirWord                  string
 	DirOutputJSON            string
@@ -174,6 +178,12 @@ func ReadArgs() Input {
 	reportUserAgentPtr := reportCommand.String("ua", DefaultUserAgent, "Set the User Agent")
 
 	// report subcommand flag pointers
+	reportDNSPtr := reportCommand.String("dns", "", "Set DNS IP to resolve the subdomains")
+
+	// report subcommand flag pointers
+	reportAlivePtr := reportCommand.Bool("alive", false, "Check also if the subdomains are alive")
+
+	// report subcommand flag pointers
 	reportRandomUserAgentPtr := reportCommand.Bool("rua", false, "Generate a random user agent for each request")
 
 	// dns subcommand flag pointers
@@ -230,6 +240,12 @@ func ReadArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainRandomUserAgentPtr := subdomainCommand.Bool("rua", false, "Generate a random user agent for each request")
+
+	// subdomains subcommand flag pointers
+	subdomainDNSPtr := subdomainCommand.String("dns", "", "Set DNS IP to resolve the subdomains")
+
+	// subdomains subcommand flag pointers
+	subdomainAlivePtr := subdomainCommand.Bool("alive", false, "Check also if the subdomains are alive")
 
 	// dir subcommand flag pointers
 	dirTargetPtr := dirCommand.String("target", "", "Target {URL/IP} (Required)")
@@ -411,7 +427,7 @@ func ReadArgs() Input {
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
 			subdomainCrawlerPtr, subdomainVirusTotalPtr,
 			subdomainOutputJSONPtr, subdomainOutputHTMLPtr, subdomainOutputTXTPtr,
-			subdomainUserAgentPtr, subdomainRandomUserAgentPtr)
+			subdomainUserAgentPtr, subdomainRandomUserAgentPtr, subdomainDNSPtr, subdomainAlivePtr)
 	}
 
 	// PORT subcommand
@@ -482,6 +498,8 @@ func ReadArgs() Input {
 		*reportTimeoutPortPtr,
 		*reportUserAgentPtr,
 		*reportRandomUserAgentPtr,
+		*reportDNSPtr,
+		*reportAlivePtr,
 		*dnsTargetPtr,
 		*dnsOutputJSONPtr,
 		*dnsOutputHTMLPtr,
@@ -500,6 +518,8 @@ func ReadArgs() Input {
 		*subdomainVirusTotalPtr,
 		*subdomainUserAgentPtr,
 		*subdomainRandomUserAgentPtr,
+		*subdomainDNSPtr,
+		*subdomainAlivePtr,
 		*dirTargetPtr,
 		*dirWordlistPtr,
 		*dirOutputJSONPtr,

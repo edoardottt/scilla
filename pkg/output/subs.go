@@ -55,11 +55,11 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			if !plain {
 				fmt.Fprint(os.Stdout, "\r \r")
 
-				if resp[:3] != "404" {
+				if resp == "" || resp[:3] != "404" {
 					subDomainFound := urlUtils.CleanProtocol(domain)
 					fmt.Printf("[+]FOUND: %s ", subDomainFound)
 
-					if string(resp[0]) == "2" {
+					if resp == "" || string(resp[0]) == "2" {
 						if outputFileJSON != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 						}

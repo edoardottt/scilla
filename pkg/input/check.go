@@ -193,7 +193,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
 	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
 	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT, subdomainUserAgentPtr *string,
-	subdomainRandomUserAgentPtr *bool) []string {
+	subdomainRandomUserAgentPtr *bool, subdomainDNSPtr *string, subdomainAlivePtr *bool) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -264,6 +264,21 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 
 	if *subdomainUserAgentPtr != DefaultUserAgent && *subdomainRandomUserAgentPtr {
 		fmt.Println("You cannot specify both ua and rua.")
+		os.Exit(1)
+	}
+
+	if *subdomainNoCheckPtr && *subdomainDNSPtr != "" {
+		fmt.Println("You can't use no-check with DNS option.")
+		os.Exit(1)
+	}
+
+	if *subdomainNoCheckPtr && *subdomainAlivePtr {
+		fmt.Println("You can't use no-check with alive option.")
+		os.Exit(1)
+	}
+
+	if *subdomainDNSPtr != "" && *subdomainAlivePtr {
+		fmt.Println("You can't use DNS with alive option.")
 		os.Exit(1)
 	}
 
