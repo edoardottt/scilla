@@ -178,8 +178,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		strings1 = opendb.AppendDBSubdomains(threatcrowd, strings1)
 		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
-		bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
+
+		// Seems Not Working
+		//bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
+		//strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
 
 		if userInput.ReportVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey())
@@ -343,8 +345,10 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		strings1 = opendb.AppendDBSubdomains(threatcrowd, strings1)
 		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target))
 		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
-		bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
+
+		// Seems Not Working
+		//bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
+		//strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
 
 		if userInput.SubdomainVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey())
