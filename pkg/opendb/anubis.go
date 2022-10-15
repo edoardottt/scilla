@@ -25,39 +25,53 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package utils
+package opendb
 
-// RemoveDuplicateValues removes from a slice of string the
-// duplicate values.
-func RemoveDuplicateValues(strSlice []string) []string {
-	keys := make(map[string]bool)
-	list := []string{}
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 
-	for _, entry := range strSlice {
-		if ok := keys[entry]; !ok {
-			keys[entry] = true
-			list = append(list, entry)
+	httpUtils "github.com/edoardottt/scilla/internal/http"
+)
+
+// AnubisSubdomains retrieves from the url below some known subdomains.
+func AnubisSubdomains(target string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from AnubisDB")
+	}
+
+	client := http.Client{
+		Timeout: httpUtils.Seconds30,
+	}
+
+	var arr []string
+
+	resp, err := client.Get("https://jonlu.ca/anubis/subdomains/" + target)
+	if err != nil {
+		return arr
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return arr
+		}
+
+		bodyString := string(bodyBytes)
+		err = json.Unmarshal([]byte(bodyString), &arr)
+
+		if err != nil {
+			return arr
 		}
 	}
 
-	return list
-}
-
-// Difference computes the difference between
-// two slices of string (A - B).
-func Difference(stringA, stringB []string) []string {
-	mapDiff := make(map[string]bool)
-	diff := []string{}
-
-	for _, item := range stringB {
-		mapDiff[item] = true
+	for index, elem := range arr {
+		arr[index] = "http://" + elem
 	}
 
-	for _, item := range stringA {
-		if _, ok := mapDiff[item]; !ok {
-			diff = append(diff, item)
-		}
-	}
-
-	return diff
+	return arr
 }

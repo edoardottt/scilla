@@ -36,38 +36,42 @@ import (
 	httpUtils "github.com/edoardottt/scilla/internal/http"
 )
 
-// SonarSubdomains retrieves from the url below some known subdomains.
-func SonarSubdomains(target string, plain bool) []string {
+// ThreatMinerResult is the struct containing ThreatMiner results.
+type ThreatMinerResult struct {
+	StatusCode    string   `json:"status_code"`
+	StatusMessage string   `json:"status_message"`
+	Results       []string `json:"results"`
+}
+
+// ThreatMinerSubdomains retrieves from the url below some known subdomains.
+func ThreatMinerSubdomains(domain string, plain bool) []string {
 	if !plain {
-		fmt.Println("Pulling data from SonarDB")
+		fmt.Println("Pulling data from ThreatMiner.org")
 	}
 
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
 
-	var arr []string
+	var result ThreatMinerResult
 
-	resp, err := client.Get("https://sonar.omnisint.io/subdomains/" + target)
+	url := "https://api.threatminer.org/v2/domain.php?q=" + domain + "&rt=5"
+
+	resp, err := client.Get(url)
+
 	if err != nil {
-		return arr
+		return []string{}
 	}
-
 	defer resp.Body.Close()
 
-	if resp.StatusCode == http.StatusOK {
-		bodyBytes, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return arr
-		}
+	output := make([]string, 0)
+	body, _ := ioutil.ReadAll(resp.Body)
 
-		bodyString := string(bodyBytes)
-		err = json.Unmarshal([]byte(bodyString), &arr)
-
-		if err != nil {
-			return arr
-		}
+	if err := json.Unmarshal(body, &result); err != nil {
+		return []string{}
 	}
 
-	return arr
+	output = append(output, result.Results...)
+
+	return output
 }

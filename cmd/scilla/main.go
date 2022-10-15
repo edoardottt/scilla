@@ -174,6 +174,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(threatcrowd, subdomains)
 		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(hackerTarget, subdomains)
+		anubis := opendb.AnubisSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
+		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
 
 		// Seems Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), false)
@@ -189,6 +193,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	// be sure to not scan duplicate values
 	subdomains = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), subdomains))
+
 	enumeration.AsyncGet(protocolTemp, subdomains, userInput.ReportIgnoreSub, outputFileJSON,
 		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
@@ -343,6 +348,10 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(threatcrowd, subdomains)
 		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		subdomains = opendb.AppendDBSubdomains(hackerTarget, subdomains)
+		anubis := opendb.AnubisSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
+		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
 
 		// Seems Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
@@ -367,6 +376,7 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	// be sure to not scan duplicate values
 	subdomains = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), subdomains))
+
 	if !userInput.SubdomainNoCheck {
 		enumeration.AsyncGet(protocolTemp, subdomains, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML,
 			outputFileTXT, subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent,
