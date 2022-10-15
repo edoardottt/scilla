@@ -28,7 +28,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package utils_test
 
 import (
-	"errors"
 	"testing"
 
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
@@ -52,7 +51,7 @@ func TestCheckIgnore(t *testing.T) {
 			name:  "empty value",
 			input: "",
 			want:  nil,
-			erro:  errors.New("The status code you entered is invalid (It should consist of three digits)."),
+			erro:  ignoreUtils.ErrWrongStatusCodeLength,
 		},
 		{
 			name:  "withous duplicates",

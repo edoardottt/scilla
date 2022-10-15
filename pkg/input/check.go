@@ -131,6 +131,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 	if *reportIgnoreDirPtr != "" {
 		toBeIgnored := *reportIgnoreDirPtr
+
 		reportIgnoreDir, err = ignoreUtils.CheckIgnore(toBeIgnored)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -140,6 +141,7 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 
 	if *reportIgnoreSubPtr != "" {
 		toBeIgnored := *reportIgnoreSubPtr
+
 		reportIgnoreSub, err = ignoreUtils.CheckIgnore(toBeIgnored)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -274,6 +276,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 
 	if *subdomainIgnorePtr != "" {
 		toBeIgnored := *subdomainIgnorePtr
+
 		subdomainIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -434,6 +437,7 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 
 	if *dirIgnorePtr != "" {
 		toBeIgnored := *dirIgnorePtr
+
 		dirIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
 		if err != nil {
 			fmt.Println(err.Error())

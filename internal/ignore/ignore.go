@@ -41,6 +41,12 @@ const (
 	statusCodeLength = 3
 )
 
+var (
+	ErrWrongStatusCodeLength  = errors.New("invalid status code: It should consist of three digits")
+	ErrInvalidStatusCode      = errors.New("invalid status code: 100 <= code <= 599")
+	ErrInvalidStatusCodeClass = errors.New("invalid status code: You can use * only in 1**,2**,3**,4**,5**")
+)
+
 // CheckIgnore checks the inputted status code(s) to be ignored.
 // It can be a list e.g. 301,302,400,404,500
 // It can be a 'class' of codes e.g. 3**.
@@ -52,7 +58,7 @@ func CheckIgnore(input string) ([]string, error) {
 	for _, elem := range temp {
 		elem := strings.TrimSpace(elem)
 		if len(elem) != statusCodeLength {
-			return nil, errors.New("The status code you entered is invalid (It should consist of three digits).")
+			return nil, fmt.Errorf("%w", ErrWrongStatusCodeLength)
 		}
 
 		if ignoreInt, err := strconv.Atoi(elem); err == nil {
@@ -60,14 +66,14 @@ func CheckIgnore(input string) ([]string, error) {
 			if 100 <= ignoreInt && ignoreInt <= 599 {
 				result = append(result, elem)
 			} else {
-				return nil, errors.New("The status code you entered is invalid (100 <= code <= 599).")
+				return nil, fmt.Errorf("%w", ErrInvalidStatusCode)
 			}
 		} else if strings.Contains(elem, "*") {
 			// if it is a valid status code without * (e.g. 4**)
 			if ignoreClassOk(elem) {
 				result = append(result, elem)
 			} else {
-				return nil, errors.New("The status code you entered is invalid. You can enter * only as 1**,2**,3**,4**,5**.")
+				return nil, fmt.Errorf("%w", ErrInvalidStatusCodeClass)
 			}
 		}
 	}
