@@ -68,13 +68,6 @@ Preview :bar_chart:
 Installation 📡
 ----------
 
-### Using Docker
-
-```shell
-docker build -t scilla .
-docker run scilla help
-```
-
 ### Building from source
 
 You need [Go](https://golang.org/).
@@ -83,19 +76,25 @@ You need [Go](https://golang.org/).
 
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
-  - `go get`
   - `make linux` (to install)
-  - Edit the `~/.config/scilla/keys.yaml` file if you want to use api keys
+  - Edit the `~/.config/scilla/keys.yaml` file if you want to use API keys
   - `make unlinux` (to uninstall)
 
 - **Windows** (executable works only in scilla folder. [Alias?](https://github.com/edoardottt/scilla/issues/10))
 
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
-  - `go get`
   - `.\make.bat windows` (to install)
   - Create a `keys.yaml` file  if you want to use api keys 
   - `.\make.bat unwindows` (to uninstall)
+
+### Using Docker
+
+```shell
+docker build -t scilla .
+docker run scilla help
+```
+
 
 Get Started 🎉
 ----------
