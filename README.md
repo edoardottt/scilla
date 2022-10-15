@@ -18,13 +18,13 @@
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/win10.svg" alt="win10-build" />
   </a>
+
+  <br>
+  
   <!-- pr-welcome -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/pr-welcome.svg" alt="pr-welcome" />
   </a>
-
-  <br>
-  
   <!-- mainteinance -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/maintained-yes.svg" alt="Mainteinance yes" />
@@ -32,10 +32,6 @@
   <!-- ask-me-anything -->
   <a href="https://edoardoottavianelli.it">
     <img src="https://github.com/edoardottt/images/blob/main/scilla/ask-me-anything.svg" alt="ask me anything" />
-  </a>
-  <!-- gobadge -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/gobadge" alt="gobadge" />
   </a>
   <!-- license GPLv3.0 -->
   <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
