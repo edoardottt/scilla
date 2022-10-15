@@ -32,7 +32,6 @@ import (
 	"github.com/edoardottt/scilla/pkg/runner"
 )
 
-// main function.
 func main() {
 	r := runner.New()
 	subs := make(map[string]output.Asset)
