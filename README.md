@@ -95,7 +95,6 @@ docker build -t scilla .
 docker run scilla help
 ```
 
-
 Get Started 🎉
 ----------
 
