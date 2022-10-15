@@ -126,6 +126,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
+
 	if !plain {
 		fmt.Fprint(os.Stdout, "\r \r")
 		fmt.Println()
