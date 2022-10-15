@@ -245,9 +245,9 @@ Examples 💡
     - No follow redirects `scilla report -nr -target target.domain`
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
     - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
+    - Generate a random user agent for each request `scilla report -rua -target target.domain`
     - Set DNS IP to resolve the subdomains `scilla report -dns 8.8.8.8 -target target.domain`
     - Check also if the subdomains are alive `scilla report -alive -target target.domain`
-    - Generate a random user agent for each request `scilla report -rua -target target.domain`
 
 Changelog 📌
 -------
