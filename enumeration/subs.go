@@ -115,6 +115,8 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
-	fmt.Fprint(os.Stdout, "\r \r")
-	fmt.Println()
+	if !plain {
+		fmt.Fprint(os.Stdout, "\r \r")
+		fmt.Println()
+	}
 }
