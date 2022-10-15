@@ -28,6 +28,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package utils_test
 
 import (
+	"fmt"
 	"testing"
 
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
@@ -51,7 +52,7 @@ func TestCheckIgnore(t *testing.T) {
 			name:  "empty value",
 			input: "",
 			want:  nil,
-			erro:  ignoreUtils.ErrWrongStatusCodeLength,
+			erro:  fmt.Errorf("%w", ignoreUtils.ErrWrongStatusCodeLength),
 		},
 		{
 			name:  "withous duplicates",
