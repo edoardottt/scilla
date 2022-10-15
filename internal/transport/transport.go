@@ -30,6 +30,7 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -141,4 +142,53 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 	}
 
 	return startPort, endPort, nil
+}
+
+func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int,
+	portArrayBool bool) (int, int, []int, bool) {
+	var err error
+
+	if *portsPtr != "" {
+		if strings.Contains(*portsPtr, "-") && strings.Contains(*portsPtr, ",") {
+			fmt.Println("you can specify a ports range or an array, not both")
+			os.Exit(1)
+		}
+
+		switch {
+		case strings.Contains(*portsPtr, "-"):
+			{
+				portsRange := *portsPtr
+				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
+				portArrayBool = false
+			}
+		case strings.Contains(*portsPtr, ","):
+			{
+				portsArray, err = CheckPortsArray(*portsPtr)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
+				portArrayBool = true
+			}
+		default:
+			{
+				portsRange := *portsPtr
+				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(1)
+				}
+
+				portArrayBool = false
+			}
+		}
+	}
+
+	return startPort, endPort, portsArray, portArrayBool
 }
