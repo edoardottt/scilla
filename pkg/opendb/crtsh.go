@@ -29,6 +29,7 @@ package opendb
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -42,7 +43,11 @@ type CrtShResult struct {
 }
 
 // CrtshSubdomains retrieves from the url below some known subdomains.
-func CrtshSubdomains(domain string) []string {
+func CrtshSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from crt.sh")
+	}
+
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}

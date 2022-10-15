@@ -144,7 +144,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	fmt.Println("================ SCANNING SUBDOMAINS ================")
 
-	var strings1 []string
+	var subdomains []string
 	// change from ip to Hostname
 	if ipUtils.IsIP(target) {
 		targetIP = target
@@ -163,35 +163,33 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 			outputFileTXT, mutex, "sub", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
-	strings1 = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, urlUtils.CleanProtocol(target))
+	subdomains = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, urlUtils.CleanProtocol(target))
 
 	if userInput.ReportSubdomainDB {
-		if userInput.ReportVirusTotal {
-			_ = input.GetVirusTotalKey()
-		}
-
-		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
-		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(crtsh, strings1)
-		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(threatcrowd, strings1)
-		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
+		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
+		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(threatcrowd, subdomains)
+		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(hackerTarget, subdomains)
 
 		// Seems Not Working
-		//bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
-		//strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
+		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(bufferOverrun, subdomains)
 
 		if userInput.ReportVirusTotal {
-			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey())
-			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(), false)
+			subdomains = opendb.AppendDBSubdomains(vtSubs, subdomains)
 		}
+
+		subdomains = opendb.ShuffleSubdomains(subdomains)
 	}
 
 	// be sure to not scan duplicate values
-	strings1 = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), strings1))
-	enumeration.AsyncGet(protocolTemp, strings1, userInput.ReportIgnoreSub, outputFileJSON,
+	subdomains = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), subdomains))
+	enumeration.AsyncGet(protocolTemp, subdomains, userInput.ReportIgnoreSub, outputFileJSON,
 		outputFileHTML, outputFileTXT, subs, mutex, false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
@@ -331,28 +329,29 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		outputFileTXT = output.CreateOutputFile(userInput.SubdomainOutputTXT)
 	}
 
-	var strings1 []string
+	var subdomains []string
 	if !userInput.SubdomainNoCheck {
-		strings1 = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, urlUtils.CleanProtocol(target))
+		subdomains = input.CreateSubdomains(userInput.SubdomainWord, protocolTemp, urlUtils.CleanProtocol(target))
 	}
 
 	if userInput.SubdomainDB {
-		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(sonar, strings1)
-		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(crtsh, strings1)
-		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(threatcrowd, strings1)
-		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target))
-		strings1 = opendb.AppendDBSubdomains(hackerTarget, strings1)
+		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
+		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		subdomains = opendb.AppendDBSubdomains(threatcrowd, subdomains)
+		hackerTarget := opendb.HackerTargetSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		subdomains = opendb.AppendDBSubdomains(hackerTarget, subdomains)
 
 		// Seems Not Working
-		//bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target))
-		//strings1 = opendb.AppendDBSubdomains(bufferOverrun, strings1)
+		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		// subdomains = opendb.AppendDBSubdomains(bufferOverrun, subdomains)
 
 		if userInput.SubdomainVirusTotal {
-			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey())
-			strings1 = opendb.AppendDBSubdomains(vtSubs, strings1)
+			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(),
+				userInput.SubdomainPlain)
+			subdomains = opendb.AppendDBSubdomains(vtSubs, subdomains)
 		}
 	}
 
@@ -367,12 +366,13 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	// be sure to not scan duplicate values
-	strings1 = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), strings1))
+	subdomains = sliceUtils.RemoveDuplicateValues(urlUtils.CleanSubdomainsOk(urlUtils.CleanProtocol(target), subdomains))
 	if !userInput.SubdomainNoCheck {
-		enumeration.AsyncGet(protocolTemp, strings1, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
-			subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent, userInput.SubdomainRandomUserAgent)
+		enumeration.AsyncGet(protocolTemp, subdomains, userInput.SubdomainIgnore, outputFileJSON, outputFileHTML,
+			outputFileTXT, subs, mutex, userInput.SubdomainPlain, userInput.SubdomainUserAgent,
+			userInput.SubdomainRandomUserAgent)
 	} else {
-		for _, elem := range strings1 {
+		for _, elem := range subdomains {
 			fmt.Println(elem)
 			if outputFileJSON != "" {
 				output.AppendOutputToJSON(elem, "SUB", "", outputFileJSON)

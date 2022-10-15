@@ -30,6 +30,7 @@ package opendb
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -38,7 +39,11 @@ import (
 )
 
 // HackerTargetSubdomains retrieves from the url below some known subdomains.
-func HackerTargetSubdomains(domain string) []string {
+func HackerTargetSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from HackerTarget")
+	}
+
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}

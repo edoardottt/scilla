@@ -36,8 +36,12 @@ import (
 )
 
 // VirusTotalSubdomains retrieves from the url below some known subdomains.
-func VirusTotalSubdomains(target string, apikey string) []string {
+func VirusTotalSubdomains(target, apikey string, plain bool) []string {
 	var result []string
+
+	if !plain {
+		fmt.Println("Pulling data from VirusTotal")
+	}
 
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,

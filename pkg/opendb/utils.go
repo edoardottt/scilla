@@ -49,10 +49,14 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 	dbsubs = sliceUtils.RemoveDuplicateValues(dbsubs)
 	dbsubs = append(dbsubs, urls...)
 
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(dbsubs), func(i, j int) { dbsubs[i], dbsubs[j] = dbsubs[j], dbsubs[i] })
-
 	return dbsubs
+}
+
+func ShuffleSubdomains(input []string) []string {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(input), func(i, j int) { input[i], input[j] = input[j], input[i] })
+
+	return input
 }
 
 // CleanSubdomainsOk checks if the subdomains found are well formatted:
