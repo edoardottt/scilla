@@ -220,7 +220,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 
 	fmt.Println("================ SCANNING DIRECTORIES ===============")
 
-	var strings2 = input.CreateUrls(userInput.ReportWordDir, protocolTemp, urlUtils.CleanProtocol(target))
+	var urls = input.CreateUrls(userInput.ReportWordDir, protocolTemp, urlUtils.CleanProtocol(target))
 
 	if outputFileHTML != "" {
 		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHTML)
@@ -232,7 +232,7 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 			mutex, "dir", false, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 	}
 
-	enumeration.AsyncDir(strings2, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
+	enumeration.AsyncDir(urls, userInput.ReportIgnoreDir, outputFileJSON, outputFileHTML, outputFileTXT,
 		dirs, mutex, false, userInput.ReportRedirect, userInput.ReportUserAgent, userInput.ReportRandomUserAgent)
 
 	if outputFileHTML != "" {
@@ -454,7 +454,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		outputFileTXT = output.CreateOutputFile(userInput.DirOutputTXT)
 	}
 
-	var strings2 = input.CreateUrls(userInput.DirWord, protocolTemp, target)
+	var urls = input.CreateUrls(userInput.DirWord, protocolTemp, target)
 
 	if outputFileHTML != "" {
 		output.HeaderHTML("DIRECTORIES ENUMERATION", outputFileHTML)
@@ -466,7 +466,7 @@ func DirSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 			mutex, "dir", userInput.DirPlain, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 	}
 
-	enumeration.AsyncDir(strings2, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
+	enumeration.AsyncDir(urls, userInput.DirIgnore, outputFileJSON, outputFileHTML, outputFileTXT,
 		dirs, mutex, userInput.DirPlain, userInput.DirRedirect, userInput.DirUserAgent, userInput.DirRandomUserAgent)
 
 	if outputFileHTML != "" {
