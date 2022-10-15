@@ -22,8 +22,8 @@ linux:
 	@go build -o scilla
 	@sudo mv scilla /usr/bin/
 	@sudo cp -r lists/ /usr/bin/
-	@chmod +x config.sh
-	@./config.sh
+	@chmod +x scripts/config.sh
+	@./scripts/config.sh
 	@echo "Done."
 
 unlinux:

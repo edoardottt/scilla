@@ -3,6 +3,7 @@
 # check if HOME env var is set
 if [ -z $HOME ]; then
     echo "Please set the HOME environment variable."
+    exit 1
 fi
 
 # check if scilla configuration folder exists 
