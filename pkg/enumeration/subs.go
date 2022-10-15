@@ -87,6 +87,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 			defer func() { <-limiter }()
 
 			count++
+
 			if !alive {
 				found := false
 				if custom != "" {
@@ -94,6 +95,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 				} else {
 					found = dnsUtils.SimpleDNSLookup(domain)
 				}
+
 				if found {
 					output.AddSubs(domain, "", subs, mutex)
 				}
@@ -125,7 +127,6 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 				output.AddSubs(domain, resp.Status, subs, mutex)
 				resp.Body.Close()
 			}
-
 		}(domain)
 	}
 
