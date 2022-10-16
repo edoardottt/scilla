@@ -50,9 +50,13 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 		log.Fatal(err)
 	}
 
-	data := File{}
-	err = json.Unmarshal(file, &data)
+	if len(file) == 0 {
+		file = []byte(`{}`)
+	}
 
+	data := File{}
+
+	err = json.Unmarshal(file, &data)
 	if err != nil {
 		log.Fatal(err)
 	}
