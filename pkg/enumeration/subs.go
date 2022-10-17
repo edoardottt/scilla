@@ -121,6 +121,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 				resp.Body.Close()
 			}
 		}(domain)
+
 		if !plain { // update counter
 			fmt.Fprint(os.Stdout, "\r")
 			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
