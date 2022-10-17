@@ -270,43 +270,11 @@ Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSe
 
 **To do:**
 
-  - [ ] Tests (😂)
+  - [ ] Add more tests
   
   - [ ] Tor support
   
   - [ ] Proxy support
-  
-  - [x] JSON output
-
-  - [x] Dockerfile
-
-  - [x] Plain output (print only results)
-
-  - [x] Scan only common ports
-
-  - [x] Add option to use a public database of known subdomains
-
-  - [x] Recursive Web crawling for subdomains and directories
-
-  - [x] Check input and if it's an IP try to change to hostname when dns or subdomain is active
-  
-  - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
-  
-  - [x] HTML output
-  
-  - [x] Build an Input Struct and use it as parameter
-
-  - [x] Output color
-  
-  - [x] Subdomains enumeration
-  
-  - [x] DNS enumeration
-
-  - [x] Port enumeration
-
-  - [x] Directories enumeration
-  
-  - [x] TXT output
   
 License 📝
 -------
