@@ -69,18 +69,11 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 
 		waitgroup.Add(1)
 
-		if count%50 == 0 { // update counter
-			if !plain {
-				fmt.Fprint(os.Stdout, "\r \r")
-			}
-
-			output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
+		if !plain {
+			fmt.Fprint(os.Stdout, "\r")
 		}
 
-		if !plain && count%10 == 0 { // update counter
-			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
-		}
+		output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 		go func(domain string) {
 			defer waitgroup.Done()
@@ -128,13 +121,16 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 				resp.Body.Close()
 			}
 		}(domain)
+		if !plain { // update counter
+			fmt.Fprint(os.Stdout, "\r")
+			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+		}
 	}
 
 	waitgroup.Wait()
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-		fmt.Println()
+		fmt.Fprint(os.Stdout, "\r")
 	}
 }

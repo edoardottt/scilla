@@ -52,7 +52,7 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 
 			if !plain {
 				if string(resp[0]) == "2" || string(resp[0]) == "3" {
-					fmt.Fprint(os.Stdout, "\r \r")
+					fmt.Fprint(os.Stdout, "\r")
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Green("%s\n", resp)
 
@@ -68,7 +68,7 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				} else if (resp[:3] != "404") || string(resp[0]) == "5" {
-					fmt.Fprint(os.Stdout, "\r \r")
+					fmt.Fprint(os.Stdout, "\r")
 					fmt.Printf("[+]FOUND: %s ", domain)
 					color.Red("%s\n", resp)
 

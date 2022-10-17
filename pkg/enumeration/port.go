@@ -138,11 +138,6 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 
 		limiter <- portStr
 
-		if !plain && count%100 == 0 { // update counter
-			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
-		}
-
 		go func(portStr string, host string) {
 			defer func() { <-limiter }()
 			defer waitgroup.Done()
@@ -152,7 +147,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 
 			if resp {
 				if !plain {
-					fmt.Fprint(os.Stdout, "\r \r")
+					fmt.Fprint(os.Stdout, "\r")
 					fmt.Printf("[+]FOUND: %s ", host)
 					color.Green("%s\n", portStr)
 				} else {
@@ -172,14 +167,17 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 				}
 			}
 		}(portStr, host)
+
+		if !plain { // update counter
+			fmt.Fprint(os.Stdout, "\r")
+			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+		}
 	}
 
 	waitgroup.Wait()
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-		fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
-		fmt.Println()
+		fmt.Fprint(os.Stdout, "\r")
 	}
 
 	if outputFileHTML != "" {

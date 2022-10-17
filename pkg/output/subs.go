@@ -53,7 +53,7 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			var resp = asset.Value
 
 			if !plain {
-				fmt.Fprint(os.Stdout, "\r \r")
+				fmt.Fprint(os.Stdout, "\r")
 
 				if resp == "" || resp[:3] != "404" {
 					subDomainFound := urlUtils.CleanProtocol(domain)

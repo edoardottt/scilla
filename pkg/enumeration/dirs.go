@@ -71,18 +71,11 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 
 		waitgroup.Add(1)
 
-		if count%50 == 0 { // update counter
-			if !plain {
-				fmt.Fprint(os.Stdout, "\r \r")
-			}
-
-			output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
+		if !plain {
+			fmt.Fprint(os.Stdout, "\r")
 		}
 
-		if !plain && count%100 == 0 { // update counter
-			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
-		}
+		output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 		go func(domain string) {
 			defer waitgroup.Done()
@@ -121,14 +114,17 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 			output.AddDirs(domain, resp.Status, dirs, mutex)
 			resp.Body.Close()
 		}(domain)
+
+		if !plain { // update counter
+			fmt.Fprint(os.Stdout, "\r")
+			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+		}
 	}
 
-	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-		fmt.Println()
+		fmt.Fprint(os.Stdout, "\r")
 	}
 }
