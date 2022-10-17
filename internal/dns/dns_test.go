@@ -25,16 +25,25 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package main
+package utils_test
 
 import (
-	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/edoardottt/scilla/pkg/runner"
+	"testing"
+
+	dnsUtils "github.com/edoardottt/scilla/internal/dns"
+	"github.com/stretchr/testify/require"
 )
 
-func main() {
-	r := runner.New()
-	subs := make(map[string]output.Asset)
-	dirs := make(map[string]output.Asset)
-	r.Execute(subs, dirs)
+func TestSimpleDNSLookup(t *testing.T) {
+	require.Equal(t, false, dnsUtils.SimpleDNSLookup("whtbiwvuwivtytyiethiubwixfniqf.wefbywf.com"))
+}
+
+func TestNewCustomResolver(t *testing.T) {
+	r := dnsUtils.NewCustomResolver("8.8.8.8")
+	require.NotNil(t, dnsUtils.CustomDNSLookup(r, "whtbiwvuwivtytyiethiubwixfniqf.wefbywf.com"))
+}
+
+func TestCustomDNSLookup(t *testing.T) {
+	r := dnsUtils.NewCustomResolver("8.8.8.8")
+	require.Equal(t, false, dnsUtils.CustomDNSLookup(r, "whtbiwvuwivtytyiethiubwixfniqf.wefbywf.com"))
 }

@@ -25,16 +25,15 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package main
+package utils_test
 
 import (
-	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/edoardottt/scilla/pkg/runner"
+	"testing"
+
+	httpUtils "github.com/edoardottt/scilla/internal/http"
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-	r := runner.New()
-	subs := make(map[string]output.Asset)
-	dirs := make(map[string]output.Asset)
-	r.Execute(subs, dirs)
+func TestGenerateRandomUserAgent(t *testing.T) {
+	assert.NotNil(t, httpUtils.GenerateRandomUserAgent())
 }

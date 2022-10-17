@@ -29,6 +29,7 @@ package opendb
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -36,7 +37,11 @@ import (
 )
 
 // BufferOverrunSubdomains retrieves from the url below some known subdomains.
-func BufferOverrunSubdomains(domain string) []string {
+func BufferOverrunSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from dns.bufferover.run")
+	}
+
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}

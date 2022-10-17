@@ -124,6 +124,8 @@ usage: scilla subcommand { options }
                    [-db -vt Use VirusTotal as subdomains source]
                    [-ua Set the User Agent]
                    [-rua Generate a random user agent for each request]
+                   [-dns Set DNS IP to resolve the subdomains]
+                   [-alive Check also if the subdomains are alive]
                    -target <target (URL)> REQUIRED
        - dir [-w wordlist]
              [-oj JSON output file]
@@ -135,7 +137,7 @@ usage: scilla subcommand { options }
              [-nr No follow redirects]
              [-ua Set the User Agent]
              [-rua Generate a random user agent for each request]
-             -target <target (URL)> REQUIRED
+             -target <target (URL/IP)> REQUIRED
        - report [-p <start-end> or ports divided by comma]
                 [-ws subdomains wordlist]
                 [-wd directories wordlist]
@@ -152,7 +154,9 @@ usage: scilla subcommand { options }
                 [-db -vt Use VirusTotal as subdomains source]
                 [-ua Set the User Agent]
                 [-rua Generate a random user agent for each request]
-                -target <target (URL/IP)> REQUIRED
+                [-dns Set DNS IP to resolve the subdomains]
+                [-alive Check also if the subdomains are alive]
+                -target <target (URL)> REQUIRED
        - help
        - examples
 ```
@@ -185,6 +189,8 @@ Examples 💡
     - `scilla subdomain -db -vt -target target.domain`
     - `scilla subdomain -ua "CustomUA" -target target.domain`
     - `scilla subdomain -rua -target target.domain`
+    - `scilla subdomain -dns 8.8.8.8 -target target.domain`
+    - `scilla subdomain -alive -target target.domain`
 
 - Directories enumeration:
 
@@ -240,6 +246,8 @@ Examples 💡
     - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
     - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
     - Generate a random user agent for each request `scilla report -rua -target target.domain`
+    - Set DNS IP to resolve the subdomains `scilla report -dns 8.8.8.8 -target target.domain`
+    - Check also if the subdomains are alive `scilla report -alive -target target.domain`
 
 Changelog 📌
 -------
@@ -262,43 +270,11 @@ Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSe
 
 **To do:**
 
-  - [ ] Tests (😂)
+  - [ ] Add more tests
   
   - [ ] Tor support
   
   - [ ] Proxy support
-  
-  - [x] JSON output
-
-  - [x] Dockerfile
-
-  - [x] Plain output (print only results)
-
-  - [x] Scan only common ports
-
-  - [x] Add option to use a public database of known subdomains
-
-  - [x] Recursive Web crawling for subdomains and directories
-
-  - [x] Check input and if it's an IP try to change to hostname when dns or subdomain is active
-  
-  - [x] Ignore responses by status codes (partially done, to do with `*`, e.g. `-i 4**`)
-  
-  - [x] HTML output
-  
-  - [x] Build an Input Struct and use it as parameter
-
-  - [x] Output color
-  
-  - [x] Subdomains enumeration
-  
-  - [x] DNS enumeration
-
-  - [x] Port enumeration
-
-  - [x] Directories enumeration
-  
-  - [x] TXT output
   
 License 📝
 -------

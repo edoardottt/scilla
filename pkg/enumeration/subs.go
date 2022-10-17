@@ -29,10 +29,12 @@ package enumeration
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"sync"
 
+	dnsUtils "github.com/edoardottt/scilla/internal/dns"
 	httpUtils "github.com/edoardottt/scilla/internal/http"
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
 	mathUtils "github.com/edoardottt/scilla/internal/math"
@@ -42,7 +44,7 @@ import (
 // AsyncGet performs concurrent requests to the specified
 // urls and prints the results.
 func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
-	subs map[string]output.Asset, mutex *sync.Mutex, plain bool, ua string, rua bool) {
+	subs map[string]output.Asset, mutex *sync.Mutex, plain bool, ua string, rua bool, alive bool, custom string) {
 	ignoreBool := len(ignore) != 0
 
 	var count int
@@ -51,6 +53,11 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 
 	client := http.Client{
 		Timeout: httpUtils.Seconds10,
+	}
+
+	var r *net.Resolver
+	if custom != "" {
+		r = dnsUtils.NewCustomResolver(custom)
 	}
 
 	channels := 10
@@ -62,64 +69,69 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 
 		waitgroup.Add(1)
 
-		if count%50 == 0 { // update counter
-			if !plain {
-				fmt.Fprint(os.Stdout, "\r \r")
-			}
-
-			output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
+		if !plain {
+			fmt.Fprint(os.Stdout, "\r")
 		}
 
-		if !plain && count%100 == 0 { // update counter
-			fmt.Fprint(os.Stdout, "\r \r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
-		}
+		output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 		go func(domain string) {
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
-			req, err := http.NewRequest("GET", protocol+"://"+domain, nil)
-			if err != nil {
-				return
-			}
-
-			if ua != "Go http/Client" {
-				req.Header.Set("User-Agent", ua)
-			}
-
-			if rua {
-				req.Header.Set("User-Agent", httpUtils.GenerateRandomUserAgent())
-			}
-
-			resp, err := client.Do(req)
-			if err != nil {
-				return
-			}
-
 			count++
 
-			if err != nil {
-				return
-			}
+			if !alive {
+				found := false
+				if custom != "" {
+					found = dnsUtils.CustomDNSLookup(r, domain)
+				} else {
+					found = dnsUtils.SimpleDNSLookup(domain)
+				}
 
-			if ignoreBool {
-				if ignoreUtils.IgnoreResponse(resp.StatusCode, ignore) {
+				if found {
+					output.AddSubs(domain, "", subs, mutex)
+				}
+			} else {
+				req, err := http.NewRequest("GET", protocol+"://"+domain, nil)
+				if err != nil {
 					return
 				}
-			}
 
-			output.AddSubs(domain, resp.Status, subs, mutex)
-			resp.Body.Close()
+				if ua != "Go http/Client" {
+					req.Header.Set("User-Agent", ua)
+				}
+
+				if rua {
+					req.Header.Set("User-Agent", httpUtils.GenerateRandomUserAgent())
+				}
+
+				resp, err := client.Do(req)
+				if err != nil {
+					return
+				}
+
+				if ignoreBool {
+					if ignoreUtils.IgnoreResponse(resp.StatusCode, ignore) {
+						return
+					}
+				}
+
+				output.AddSubs(domain, resp.Status, subs, mutex)
+				resp.Body.Close()
+			}
 		}(domain)
+
+		if !plain { // update counter
+			fmt.Fprint(os.Stdout, "\r")
+			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+		}
 	}
 
-	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 	waitgroup.Wait()
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r \r")
-		fmt.Println()
+		fmt.Fprint(os.Stdout, "\r")
 	}
 }

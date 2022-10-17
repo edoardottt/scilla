@@ -31,7 +31,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
 	transportUtils "github.com/edoardottt/scilla/internal/transport"
@@ -92,47 +91,38 @@ func ReportSubcommandCheckFlags(reportCommand flag.FlagSet, reportTargetPtr *str
 		os.Exit(1)
 	}
 
-	var portsArray []int
+	var (
+		portsArray    []int
+		portArrayBool bool
+		err           error
+	)
 
-	var portArrayBool bool
+	startPort, endPort, portsArray, portArrayBool = transportUtils.PortsInputHelper(reportPortsPtr,
+		startPort, endPort, portsArray, portArrayBool)
 
-	if *reportPortsPtr != "" {
-		if strings.Contains(*reportPortsPtr, "-") && strings.Contains(*reportPortsPtr, ",") {
-			fmt.Println("You can specify a ports range or an array, not both.")
-			os.Exit(1)
-		}
-
-		switch {
-		case strings.Contains(*reportPortsPtr, "-"):
-			{
-				portsRange := *reportPortsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
-				portArrayBool = false
-			}
-		case strings.Contains(*reportPortsPtr, ","):
-			{
-				portsArray = transportUtils.CheckPortsArray(*reportPortsPtr)
-				portArrayBool = true
-			}
-		default:
-			{
-				portsRange := *reportPortsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
-				portArrayBool = false
-			}
-		}
-	}
-
-	var reportIgnoreDir, reportIgnoreSub []string
+	var (
+		reportIgnoreDir []string
+		reportIgnoreSub []string
+	)
 
 	if *reportIgnoreDirPtr != "" {
 		toBeIgnored := *reportIgnoreDirPtr
-		reportIgnoreDir = ignoreUtils.CheckIgnore(toBeIgnored)
+
+		reportIgnoreDir, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *reportIgnoreSubPtr != "" {
 		toBeIgnored := *reportIgnoreSubPtr
-		reportIgnoreSub = ignoreUtils.CheckIgnore(toBeIgnored)
+
+		reportIgnoreSub, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *reportTimeoutPort < 1 || *reportTimeoutPort > 100 {
@@ -193,7 +183,7 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
 	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
 	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT, subdomainUserAgentPtr *string,
-	subdomainRandomUserAgentPtr *bool) []string {
+	subdomainRandomUserAgentPtr *bool, subdomainDNSPtr *string, subdomainAlivePtr *bool) []string {
 	// Required Flags
 	if *subdomainTargetPtr == "" {
 		subdomainCommand.PrintDefaults()
@@ -255,15 +245,38 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 
-	var subdomainIgnore []string
+	var (
+		subdomainIgnore []string
+		err             error
+	)
 
 	if *subdomainIgnorePtr != "" {
 		toBeIgnored := *subdomainIgnorePtr
-		subdomainIgnore = ignoreUtils.CheckIgnore(toBeIgnored)
+
+		subdomainIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *subdomainUserAgentPtr != DefaultUserAgent && *subdomainRandomUserAgentPtr {
 		fmt.Println("You cannot specify both ua and rua.")
+		os.Exit(1)
+	}
+
+	if *subdomainNoCheckPtr && *subdomainDNSPtr != "" {
+		fmt.Println("You can't use no-check with DNS option.")
+		os.Exit(1)
+	}
+
+	if *subdomainNoCheckPtr && *subdomainAlivePtr {
+		fmt.Println("You can't use no-check with alive option.")
+		os.Exit(1)
+	}
+
+	if *subdomainDNSPtr != "" && *subdomainAlivePtr {
+		fmt.Println("You can't use DNS with alive option.")
 		os.Exit(1)
 	}
 
@@ -287,36 +300,13 @@ func PortSubcommandCheckFlags(portCommand flag.FlagSet, portTargetPtr *string, p
 		os.Exit(1)
 	}
 
-	var portArrayBool bool
+	var (
+		portArrayBool bool
+		portsArray    []int
+	)
 
-	var portsArray []int
-
-	if *portsPtr != "" {
-		if strings.Contains(*portsPtr, "-") && strings.Contains(*portsPtr, ",") {
-			fmt.Println("You can specify a ports range or an array, not both.")
-			os.Exit(1)
-		}
-
-		switch {
-		case strings.Contains(*portsPtr, "-"):
-			{
-				portsRange := *portsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
-				portArrayBool = false
-			}
-		case strings.Contains(*portsPtr, ","):
-			{
-				portsArray = transportUtils.CheckPortsArray(*portsPtr)
-				portArrayBool = true
-			}
-		default:
-			{
-				portsRange := *portsPtr
-				startPort, endPort = transportUtils.CheckPortsRange(portsRange, startPort, endPort)
-				portArrayBool = false
-			}
-		}
-	}
+	startPort, endPort, portsArray, portArrayBool = transportUtils.PortsInputHelper(portsPtr,
+		startPort, endPort, portsArray, portArrayBool)
 
 	// output files all different
 	if *portOutputJSON != "" {
@@ -393,11 +383,19 @@ func DirSubcommandCheckFlags(dirCommand flag.FlagSet, dirTargetPtr *string,
 		}
 	}
 
-	var dirIgnore []string
+	var (
+		dirIgnore []string
+		err       error
+	)
 
 	if *dirIgnorePtr != "" {
 		toBeIgnored := *dirIgnorePtr
-		dirIgnore = ignoreUtils.CheckIgnore(toBeIgnored)
+
+		dirIgnore, err = ignoreUtils.CheckIgnore(toBeIgnored)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if *dirUserAgentPtr != DefaultUserAgent && *dirRandomUserAgentPtr {

@@ -88,6 +88,10 @@ func AppendOutputToHTML(output string, status string, filename string) {
 		statusColor = status
 	}
 
+	if !urlUtils.ProtocolExists(output) {
+		output = "http://" + output
+	}
+
 	if _, err := file.WriteString("<li><a target='_blank' href='" + output + "'>" +
 		urlUtils.CleanProtocol(output) +
 		"</a> " + statusColor + "</li>"); err != nil {

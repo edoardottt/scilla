@@ -30,44 +30,48 @@ package opendb
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
 )
 
-// VirusTotalSubdomains retrieves from the url below some known subdomains.
-func VirusTotalSubdomains(target, apikey string, plain bool) []string {
-	var result []string
+// ThreatMinerResult is the struct containing ThreatMiner results.
+type ThreatMinerResult struct {
+	StatusCode    string   `json:"status_code"`
+	StatusMessage string   `json:"status_message"`
+	Results       []string `json:"results"`
+}
 
+// ThreatMinerSubdomains retrieves from the url below some known subdomains.
+func ThreatMinerSubdomains(domain string, plain bool) []string {
 	if !plain {
-		fmt.Println("Pulling data from VirusTotal")
+		fmt.Println("Pulling data from ThreatMiner.org")
 	}
 
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
-	fetchURL := fmt.Sprintf(
-		"https://www.virustotal.com/vtapi/v2/domain/report?domain=%s&apikey=%s",
-		target, apikey,
-	)
 
-	wrapper := struct {
-		Subdomains []string `json:"subdomains"`
-	}{}
+	var result ThreatMinerResult
 
-	resp, err := client.Get(fetchURL)
+	url := "https://api.threatminer.org/v2/domain.php?q=" + domain + "&rt=5"
+
+	resp, err := client.Get(url)
+
 	if err != nil {
-		return result
+		return []string{}
 	}
 	defer resp.Body.Close()
-	dec := json.NewDecoder(resp.Body)
 
-	err = dec.Decode(&wrapper)
-	if err != nil {
-		return result
+	output := make([]string, 0)
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	if err := json.Unmarshal(body, &result); err != nil {
+		return []string{}
 	}
 
-	result = append(result, wrapper.Subdomains...)
+	output = append(output, result.Results...)
 
-	return result
+	return output
 }

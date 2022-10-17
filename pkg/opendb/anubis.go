@@ -25,16 +25,53 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package main
+package opendb
 
 import (
-	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/edoardottt/scilla/pkg/runner"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
+	httpUtils "github.com/edoardottt/scilla/internal/http"
 )
 
-func main() {
-	r := runner.New()
-	subs := make(map[string]output.Asset)
-	dirs := make(map[string]output.Asset)
-	r.Execute(subs, dirs)
+// AnubisSubdomains retrieves from the url below some known subdomains.
+func AnubisSubdomains(target string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from AnubisDB")
+	}
+
+	client := http.Client{
+		Timeout: httpUtils.Seconds30,
+	}
+
+	var arr []string
+
+	resp, err := client.Get("https://jonlu.ca/anubis/subdomains/" + target)
+	if err != nil {
+		return arr
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return arr
+		}
+
+		bodyString := string(bodyBytes)
+		err = json.Unmarshal([]byte(bodyString), &arr)
+
+		if err != nil {
+			return arr
+		}
+	}
+
+	for index, elem := range arr {
+		arr[index] = "http://" + elem
+	}
+
+	return arr
 }

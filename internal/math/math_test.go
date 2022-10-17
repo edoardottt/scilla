@@ -25,16 +25,17 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package main
+package utils_test
 
 import (
-	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/edoardottt/scilla/pkg/runner"
+	"testing"
+
+	mathUtils "github.com/edoardottt/scilla/internal/math"
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-	r := runner.New()
-	subs := make(map[string]output.Asset)
-	dirs := make(map[string]output.Asset)
-	r.Execute(subs, dirs)
+func TestPercentage(t *testing.T) {
+	result := mathUtils.Percentage(50, 1000)
+	assert.NotNil(t, result)
+	assert.Equal(t, result, float64(5))
 }

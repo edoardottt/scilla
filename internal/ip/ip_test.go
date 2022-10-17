@@ -25,16 +25,17 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 */
 
-package main
+package utils_test
 
 import (
-	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/edoardottt/scilla/pkg/runner"
+	"testing"
+
+	ipUtils "github.com/edoardottt/scilla/internal/ip"
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-	r := runner.New()
-	subs := make(map[string]output.Asset)
-	dirs := make(map[string]output.Asset)
-	r.Execute(subs, dirs)
+func TestIPToHostname(t *testing.T) {
+	hostname := ipUtils.IPToHostname("8.8.8.8")
+	assert.NotNil(t, hostname)
+	assert.Equal(t, hostname, "dns.google")
 }

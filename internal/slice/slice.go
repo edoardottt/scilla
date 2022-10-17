@@ -34,7 +34,7 @@ func RemoveDuplicateValues(strSlice []string) []string {
 	list := []string{}
 
 	for _, entry := range strSlice {
-		if _, value := keys[entry]; !value {
+		if ok := keys[entry]; !ok {
 			keys[entry] = true
 			list = append(list, entry)
 		}

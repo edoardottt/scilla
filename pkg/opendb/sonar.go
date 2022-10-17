@@ -29,6 +29,7 @@ package opendb
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -36,7 +37,11 @@ import (
 )
 
 // SonarSubdomains retrieves from the url below some known subdomains.
-func SonarSubdomains(target string) []string {
+func SonarSubdomains(target string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from SonarDB")
+	}
+
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
@@ -62,10 +67,6 @@ func SonarSubdomains(target string) []string {
 		if err != nil {
 			return arr
 		}
-	}
-
-	for index, elem := range arr {
-		arr[index] = "http://" + elem
 	}
 
 	return arr

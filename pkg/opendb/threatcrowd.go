@@ -29,13 +29,18 @@ package opendb
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
 )
 
 // ThreatcrowdSubdomains retrieves from the url below some known subdomains.
-func ThreatcrowdSubdomains(domain string) []string {
+func ThreatcrowdSubdomains(domain string, plain bool) []string {
+	if !plain {
+		fmt.Println("Pulling data from ThreatCrowd")
+	}
+
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
