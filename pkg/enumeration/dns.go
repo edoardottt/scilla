@@ -30,7 +30,6 @@ package enumeration
 import (
 	"fmt"
 	"net"
-	"os"
 
 	"github.com/edoardottt/scilla/pkg/output"
 	"github.com/fatih/color"
@@ -42,10 +41,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 		output.HeaderHTML("DNS ENUMERATION", outputFileHTML)
 	}
 	// -- A RECORDS --
-	ips, err := net.LookupIP(domain)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
-	}
+	ips, _ := net.LookupIP(domain)
 
 	for _, ip := range ips {
 		if !plain {
@@ -68,10 +64,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 		}
 	}
 	// -- CNAME RECORD --
-	cname, err := net.LookupCNAME(domain)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get CNAME: %v\n", err)
-	}
+	cname, _ := net.LookupCNAME(domain)
 
 	if !plain {
 		fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
@@ -93,10 +86,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	}
 
 	// -- NS RECORDS --
-	nameserver, err := net.LookupNS(domain)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get NSs: %v\n", err)
-	}
+	nameserver, _ := net.LookupNS(domain)
 
 	for _, nsRecord := range nameserver {
 		if !plain {
@@ -120,10 +110,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	}
 
 	// -- MX RECORDS --
-	mxrecords, err := net.LookupMX(domain)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get MXs: %v\n", err)
-	}
+	mxrecords, _ := net.LookupMX(domain)
 
 	for _, mxRecord := range mxrecords {
 		if !plain {
@@ -147,12 +134,15 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	}
 
 	// -- SRV SERVICE --
-	_, srvs, err := net.LookupSRV("xmpp-server", "tcp", domain)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get SRVs: %v\n", err)
+	services := []string{"ldap", "xmpp", "smpp-server", "xmpp-client"}
+	srvResults := []*net.SRV{}
+
+	for _, service := range services {
+		_, srvs, _ := net.LookupSRV(service, "tcp", domain)
+		srvResults = append(srvResults, srvs...)
 	}
 
-	for _, srv := range srvs {
+	for _, srv := range srvResults {
 		if !plain {
 			fmt.Printf("[+]FOUND %s IN SRV: ", domain)
 			color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
