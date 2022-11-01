@@ -280,6 +280,11 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 		os.Exit(1)
 	}
 
+	if !*subdomainAlivePtr && (*subdomainUserAgentPtr != DefaultUserAgent || *subdomainRandomUserAgentPtr) {
+		fmt.Println("User Agent options are available only with -alive.")
+		os.Exit(1)
+	}
+
 	return subdomainIgnore
 }
 
