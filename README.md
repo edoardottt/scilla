@@ -275,6 +275,14 @@ Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSe
   - [ ] Tor support
   
   - [ ] Proxy support
+
+In the news 📰
+-------
+
+- [Kali Linux Tutorials](https://kalilinuxtutorials.com/scilla/)
+- [GeeksForGeeks.org](https://www.geeksforgeeks.org/scilla-information-gathering-dns-subdomain-port-enumeration/)
+- [Brisk Infosec](https://www.briskinfosec.com/tooloftheday/toolofthedaydetail/Scilla)
+- [Kalitut](https://kalitut.com/scilla-nformation-gathering-tool/)
   
 License 📝
 -------
