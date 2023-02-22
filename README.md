@@ -7,7 +7,7 @@
     <img src="https://goreportcard.com/badge/github.com/edoardottt/scilla" alt="go-report-card" />
   </a>
   <!-- workflows -->
-  <a href="https://edoardoottavianelli.it">
+  <a href="https://github.com/edoardottt/scilla/actions">
     <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=main" alt="workflows" />
   </a>
   <!-- ubuntu-build -->
