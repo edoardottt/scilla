@@ -56,7 +56,7 @@
   <a href="#license-">License</a>
 </p>
 
-Preview :bar_chart:
+Preview :bar_chart
 ----------
 
 <!--[![asciicast](https://asciinema.org/a/406707.svg)](https://asciinema.org/a/406707)-->
@@ -85,7 +85,7 @@ You need [Go](https://golang.org/).
   - `git clone https://github.com/edoardottt/scilla.git`
   - `cd scilla`
   - `.\make.bat windows` (to install)
-  - Create a `keys.yaml` file  if you want to use api keys 
+  - Create a `keys.yaml` file  if you want to use api keys
   - `.\make.bat unwindows` (to uninstall)
 
 ### Using Docker
@@ -165,96 +165,96 @@ usage: scilla subcommand { options }
        - examples
 ```
 
-
 Examples 💡
 ----------
 
 - DNS enumeration:
-    
-    - `scilla dns -target target.domain`
-    - `scilla dns -oj output -target target.domain`
-    - `scilla dns -oh output -target target.domain`
-    - `scilla dns -ot output -target target.domain`
-    - `scilla dns -plain -target target.domain`
+
+  - `scilla dns -target target.domain`
+  - `scilla dns -oj output -target target.domain`
+  - `scilla dns -oh output -target target.domain`
+  - `scilla dns -ot output -target target.domain`
+  - `scilla dns -plain -target target.domain`
 
 - Subdomains enumeration:
 
-    - `scilla subdomain -target target.domain`
-    - `scilla subdomain -w wordlist.txt -target target.domain`
-    - `scilla subdomain -oj output -target target.domain`
-    - `scilla subdomain -oh output -target target.domain`
-    - `scilla subdomain -ot output -target target.domain`
-    - `scilla subdomain -i 400 -target target.domain`
-    - `scilla subdomain -i 4** -target target.domain`
-    - `scilla subdomain -c -target target.domain`
-    - `scilla subdomain -db -target target.domain`
-    - `scilla subdomain -plain -target target.domain`
-    - `scilla subdomain -db -no-check -target target.domain`
-    - `scilla subdomain -db -vt -target target.domain`
-    - `scilla subdomain -ua "CustomUA" -target target.domain`
-    - `scilla subdomain -rua -target target.domain`
-    - `scilla subdomain -dns 8.8.8.8 -target target.domain`
-    - `scilla subdomain -alive -target target.domain`
+  - `scilla subdomain -target target.domain`
+  - `scilla subdomain -w wordlist.txt -target target.domain`
+  - `scilla subdomain -oj output -target target.domain`
+  - `scilla subdomain -oh output -target target.domain`
+  - `scilla subdomain -ot output -target target.domain`
+  - `scilla subdomain -i 400 -target target.domain`
+  - `scilla subdomain -i 4** -target target.domain`
+  - `scilla subdomain -c -target target.domain`
+  - `scilla subdomain -db -target target.domain`
+  - `scilla subdomain -plain -target target.domain`
+  - `scilla subdomain -db -no-check -target target.domain`
+  - `scilla subdomain -db -vt -target target.domain`
+  - `scilla subdomain -ua "CustomUA" -target target.domain`
+  - `scilla subdomain -rua -target target.domain`
+  - `scilla subdomain -dns 8.8.8.8 -target target.domain`
+  - `scilla subdomain -alive -target target.domain`
 
 - Directories enumeration:
 
-    - `scilla dir -target target.domain`
-    - `scilla dir -w wordlist.txt -target target.domain`
-    - `scilla dir -oj output -target target.domain`
-    - `scilla dir -oh output -target target.domain`
-    - `scilla dir -ot output -target target.domain`
-    - `scilla dir -i 500,401 -target target.domain`
-    - `scilla dir -i 5**,401 -target target.domain`
-    - `scilla dir -c -target target.domain`
-    - `scilla dir -plain -target target.domain`
-    - `scilla dir -nr -target target.domain`
-    - `scilla dir -ua "CustomUA" -target target.domain`
-    - `scilla dir -rua -target target.domain`
+  - `scilla dir -target target.domain`
+  - `scilla dir -w wordlist.txt -target target.domain`
+  - `scilla dir -oj output -target target.domain`
+  - `scilla dir -oh output -target target.domain`
+  - `scilla dir -ot output -target target.domain`
+  - `scilla dir -i 500,401 -target target.domain`
+  - `scilla dir -i 5**,401 -target target.domain`
+  - `scilla dir -c -target target.domain`
+  - `scilla dir -plain -target target.domain`
+  - `scilla dir -nr -target target.domain`
+  - `scilla dir -ua "CustomUA" -target target.domain`
+  - `scilla dir -rua -target target.domain`
 
 - Ports enumeration:
-      
-    - Default (all ports, so 1-65635) `scilla port -target target.domain`
-    - Specifying ports range `scilla port -p 20-90 -target target.domain`
-    - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
-    - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
-    - Specifying single port `scilla port -p 80 -target target.domain`
-    - Specifying output format (json)`scilla port -oj output -target target.domain`
-    - Specifying output format (html)`scilla port -oh output -target target.domain`
-    - Specifying output format (txt)`scilla port -ot output -target target.domain`
-    - Specifying multiple ports `scilla port -p 21,25,80 -target target.domain`
-    - Specifying common ports `scilla port -common -target target.domain`
-    - Print only results `scilla port -plain -target target.domain`
+
+  - Default (all ports, so 1-65635) `scilla port -target target.domain`
+  - Specifying ports range `scilla port -p 20-90 -target target.domain`
+  - Specifying starting port (until the last one) `scilla port -p 20- -target target.domain`
+  - Specifying ending port (from the first one) `scilla port -p -90 -target target.domain`
+  - Specifying single port `scilla port -p 80 -target target.domain`
+  - Specifying output format (json)`scilla port -oj output -target target.domain`
+  - Specifying output format (html)`scilla port -oh output -target target.domain`
+  - Specifying output format (txt)`scilla port -ot output -target target.domain`
+  - Specifying multiple ports `scilla port -p 21,25,80 -target target.domain`
+  - Specifying common ports `scilla port -common -target target.domain`
+  - Print only results `scilla port -plain -target target.domain`
 
 - Full report:
-      
-    - Default (all ports, so 1-65635) `scilla report -target target.domain`
-    - Specifying ports range `scilla report -p 20-90 -target target.domain`
-    - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
-    - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
-    - Specifying single port `scilla report -p 80 -target target.domain`
-    - Specifying output format (json)`scilla report -oj output -target target.domain`
-    - Specifying output format (html)`scilla report -oh output -target target.domain`
-    - Specifying output format (txt)`scilla report -ot output -target target.domain`
-    - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
-    - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
-    - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
-    - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
-    - Specifying status codes classes to be ignored in directories scanning `scilla report -id 5**,4** -target target.domain`
-    - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
-    - Use also a web crawler for directories enumeration `scilla report -cd -target target.domain`
-    - Use also a web crawler for subdomains enumeration `scilla report -cs -target target.domain`
-    - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
-    - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
-    - Specifying common ports `scilla report -common -target target.domain`
-    - No follow redirects `scilla report -nr -target target.domain`
-    - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
-    - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
-    - Generate a random user agent for each request `scilla report -rua -target target.domain`
-    - Set DNS IP to resolve the subdomains `scilla report -dns 8.8.8.8 -target target.domain`
-    - Check also if the subdomains are alive `scilla report -alive -target target.domain`
+
+  - Default (all ports, so 1-65635) `scilla report -target target.domain`
+  - Specifying ports range `scilla report -p 20-90 -target target.domain`
+  - Specifying starting port (until the last one) `scilla report -p 20- -target target.domain`
+  - Specifying ending port (from the first one) `scilla report -p -90 -target target.domain`
+  - Specifying single port `scilla report -p 80 -target target.domain`
+  - Specifying output format (json)`scilla report -oj output -target target.domain`
+  - Specifying output format (html)`scilla report -oh output -target target.domain`
+  - Specifying output format (txt)`scilla report -ot output -target target.domain`
+  - Specifying directories wordlist `scilla report -wd dirs.txt -target target.domain`
+  - Specifying subdomains wordlist `scilla report -ws subdomains.txt -target target.domain`
+  - Specifying status codes to be ignored in directories scanning `scilla report -id 500,501,502 -target target.domain`
+  - Specifying status codes to be ignored in subdomains scanning `scilla report -is 500,501,502 -target target.domain`
+  - Specifying status codes classes to be ignored in directories scanning `scilla report -id 5**,4** -target target.domain`
+  - Specifying status codes classes to be ignored in subdomains scanning `scilla report -is 5**,4** -target target.domain`
+  - Use also a web crawler for directories enumeration `scilla report -cd -target target.domain`
+  - Use also a web crawler for subdomains enumeration `scilla report -cs -target target.domain`
+  - Use also a public database for subdomains enumeration `scilla report -db -target target.domain`
+  - Specifying multiple ports `scilla report -p 21,25,80 -target target.domain`
+  - Specifying common ports `scilla report -common -target target.domain`
+  - No follow redirects `scilla report -nr -target target.domain`
+  - Use VirusTotal as subdomains source `scilla report -db -vt -target target.domain`
+  - Set the User Agent `scilla report -ua "CustomUA" -target target.domain`
+  - Generate a random user agent for each request `scilla report -rua -target target.domain`
+  - Set DNS IP to resolve the subdomains `scilla report -dns 8.8.8.8 -target target.domain`
+  - Check also if the subdomains are alive `scilla report -alive -target target.domain`
 
 Changelog 📌
 -------
+
 Detailed changes for each release are documented in the [release notes](https://github.com/edoardottt/scilla/releases).
 
 Contributing 🛠
@@ -263,9 +263,11 @@ Contributing 🛠
 Just open an [issue](https://github.com/edoardottt/scilla/issues) / [pull request](https://github.com/edoardottt/scilla/pulls).
 
 Before opening a pull request, download [golangci-lint](https://golangci-lint.run/usage/install/) and run
+
 ```bash
 golangci-lint run
 ```
+
 If there aren't errors, go ahead :)
 
 **Help me building this!**
@@ -274,11 +276,11 @@ Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSe
 
 **To do:**
 
-  - [ ] Add more tests
+- [ ] Add more tests
   
-  - [ ] Tor support
+- [ ] Tor support
   
-  - [ ] Proxy support
+- [ ] Proxy support
 
 In the news 📰
 -------
