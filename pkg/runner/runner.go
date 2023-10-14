@@ -169,10 +169,6 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	subdomains = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, urlUtils.CleanProtocol(target))
 
 	if userInput.ReportSubdomainDB {
-		// Service not working
-		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
-		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
-
 		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
 		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), false)
@@ -184,9 +180,13 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
 
-		// Seems Not Working
+		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), false)
 		// subdomains = opendb.AppendDBSubdomains(bufferOverrun, subdomains)
+
+		// Service not working
+		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
 
 		if userInput.ReportVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(), false)
@@ -346,10 +346,6 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	if userInput.SubdomainDB {
-		// Service not working
-		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
-		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
-		
 		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
 		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
@@ -361,9 +357,13 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
 
-		// Seems Not Working
+		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		// subdomains = opendb.AppendDBSubdomains(bufferOverrun, subdomains)
+
+		// Service not working
+		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
 
 		if userInput.SubdomainVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(),
