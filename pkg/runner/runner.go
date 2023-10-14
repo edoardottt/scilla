@@ -169,8 +169,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	subdomains = input.CreateSubdomains(userInput.ReportWordSub, protocolTemp, urlUtils.CleanProtocol(target))
 
 	if userInput.ReportSubdomainDB {
-		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
-		subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+		// Service not working
+		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+
 		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
 		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), false)
@@ -344,8 +346,10 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	}
 
 	if userInput.SubdomainDB {
-		sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
-		subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+		// Service not working
+		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
+		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+		
 		crtsh := opendb.CrtshSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		subdomains = opendb.AppendDBSubdomains(crtsh, subdomains)
 		threatcrowd := opendb.ThreatcrowdSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
