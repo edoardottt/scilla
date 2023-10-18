@@ -30,6 +30,7 @@ package opendb
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
@@ -38,33 +39,36 @@ import (
 // SubdomainCenter retrieves from the url below some known subdomains.
 func SubdomainCenter(domain string, plain bool) []string {
 	if !plain {
-		fmt.Println("Pulling data from ThreatCrowd")
+		fmt.Println("Pulling data from Subdomain")
 	}
 
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
+
 	result := make([]string, 0)
 	url := "http://api.subdomain.center/?domain=" + domain
-	wrapper := struct {
-		Records []string `json:"subdomains"`
-	}{}
-	resp, err := client.Get(url)
 
+	resp, err := client.Get(url)
 	if err != nil {
 		return result
 	}
-
 	defer resp.Body.Close()
 
-	dec := json.NewDecoder(resp.Body)
-	err = dec.Decode(&wrapper)
-
+	// read the response body
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return result
 	}
 
-	result = append(result, wrapper.Records...)
+	// Decode the response body as list of string
+	var response []string
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return result
+	}
+
+	result = append(result, response...)
 
 	return result
 }
