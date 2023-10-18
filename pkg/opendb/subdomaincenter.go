@@ -37,9 +37,9 @@ import (
 )
 
 // SubdomainCenter retrieves from the url below some known subdomains.
-func SubdomainCenter(domain string, plain bool) []string {
+func SubdomainCenterSubdomains(domain string, plain bool) []string {
 	if !plain {
-		fmt.Println("Pulling data from Subdomain")
+		fmt.Println("Pulling data from Subdomain Center")
 	}
 
 	client := http.Client{
@@ -64,6 +64,7 @@ func SubdomainCenter(domain string, plain bool) []string {
 	// Decode the response body as list of string
 	var response []string
 	err = json.Unmarshal(body, &response)
+
 	if err != nil {
 		return result
 	}
