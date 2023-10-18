@@ -268,7 +268,7 @@ If there aren't errors, go ahead :)
 
 **Help me building this!**
 
-Special thanks to: [danielmiessler](https://github.com/danielmiessler), [sonarSearch](https://github.com/cgboal/sonarsearch), [HackerTarget](https://hackertarget.com/), [BufferOverrun](http://dns.bufferover.run/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
+Special thanks to: [danielmiessler](https://github.com/danielmiessler), [HackerTarget](https://hackertarget.com/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
 
 **To do:**
 
