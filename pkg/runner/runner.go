@@ -188,6 +188,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
 		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
 
+		// Service not working
+		// subdomaincenter := opendb.SubdomainCenterSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(subdomaincenter, subdomains)
+
 		if userInput.ReportVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(), false)
 			subdomains = opendb.AppendDBSubdomains(vtSubs, subdomains)
@@ -364,6 +368,10 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		// Service not working
 		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+
+		// Service not working
+		// subdomaincenter := opendb.SubdomainCenterSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(subdomaincenter, subdomains)
 
 		if userInput.SubdomainVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetVirusTotalKey(),
