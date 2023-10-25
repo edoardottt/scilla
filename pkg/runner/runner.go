@@ -179,6 +179,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
+		dnsreponoc := opendb.DNSRepoNocSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(dnsreponoc, subdomains)
 
 		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), false)
@@ -360,6 +362,8 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
+		dnsreponoc := opendb.DNSRepoNocSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(dnsreponoc, subdomains)
 
 		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
