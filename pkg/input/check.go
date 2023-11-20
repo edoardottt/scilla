@@ -181,7 +181,7 @@ func DNSSubcommandCheckFlags(dnsCommand flag.FlagSet, dnsTargetPtr, dnsOutputJSO
 // for the subdomain subcommand.
 func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTargetPtr *string,
 	subdomainNoCheckPtr *bool, subdomainDBPtr *bool, subdomainWordlistPtr *string,
-	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool,
+	subdomainIgnorePtr *string, subdomainCrawlerPtr *bool, subdomainVirusTotalPtr *bool, subdomainBuiltWithPtr *bool,
 	subdomainOutputJSON, subdomainOutputHTML, subdomainOutputTXT, subdomainUserAgentPtr *string,
 	subdomainRandomUserAgentPtr *bool, subdomainDNSPtr *string, subdomainAlivePtr *bool) []string {
 	// Required Flags
@@ -242,6 +242,12 @@ func SubdomainSubcommandCheckFlags(subdomainCommand flag.FlagSet, subdomainTarge
 	if *subdomainVirusTotalPtr && !*subdomainDBPtr {
 		fmt.Println("You can't specify VirusTotal and not the Open Database option.")
 		fmt.Println("If you want to use VirusTotal Api, set also -db option.")
+		os.Exit(1)
+	}
+
+	if *subdomainBuiltWithPtr && !*subdomainDBPtr {
+		fmt.Println("You can't specify BuiltWith and not the Open Database option.")
+		fmt.Println("If you want to use BuiltWith Api, set also -db option.")
 		os.Exit(1)
 	}
 
