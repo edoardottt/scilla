@@ -59,62 +59,6 @@ func ReadKeys(filename string) (Keys, error) {
 	return keys, nil
 }
 
-// GetVirusTotalKey reads the Virustotal key.
-func GetVirusTotalKey() string {
-	filename := ""
-	if runtime.GOOS == windows {
-		filename = "keys.yaml"
-	} else { // linux
-		home, err := os.UserHomeDir()
-		if err != nil {
-			fmt.Println("Cannot read VirusTotal Api Key.")
-			os.Exit(1)
-		}
-		filename = home + "/.config/scilla/keys.yaml"
-	}
-
-	keys, err := ReadKeys(filename)
-	if keys.VirusTotal == "" {
-		fmt.Println("VirusTotal Api Key is empty.")
-		os.Exit(1)
-	}
-
-	if err != nil {
-		fmt.Println("Cannot read VirusTotal Api Key.")
-		os.Exit(1)
-	}
-
-	return keys.VirusTotal
-}
-
-// GetBuiltWithKey reads the BuiltWith key.
-func GetBuiltWithKey() string {
-	filename := ""
-	if runtime.GOOS == windows {
-		filename = "keys.yaml"
-	} else { // linux
-		home, err := os.UserHomeDir()
-		if err != nil {
-			fmt.Println("Cannot read BuiltWith Api Key.")
-			os.Exit(1)
-		}
-		filename = home + "/.config/scilla/keys.yaml"
-	}
-
-	keys, err := ReadKeys(filename)
-	if keys.BuiltWith == "" {
-		fmt.Println("BuiltWith Api Key is empty.")
-		os.Exit(1)
-	}
-
-	if err != nil {
-		fmt.Println("Cannot read BuiltWith Api Key.")
-		os.Exit(1)
-	}
-
-	return keys.BuiltWith
-}
-
 // GetKey reads the key for the given api.
 func GetKey(api string) string {
 	filename := ""
@@ -144,7 +88,7 @@ func GetKey(api string) string {
 			fmt.Println("VirusTotal Api Key is empty.")
 			os.Exit(1)
 		}
-		
+
 		key = keys.VirusTotal
 	case "builtwith":
 		if keys.BuiltWith == "" {
