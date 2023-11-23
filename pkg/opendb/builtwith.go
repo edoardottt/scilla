@@ -71,7 +71,7 @@ type builtWithResultWrapper struct {
 			Social      []string `json:"Social"`
 			CompanyName string   `json:"CompanyName"`
 			Telephones  []string `json:"Telephones"`
-			Emails      []any    `json:"Emails"`
+			Emails      []string    `json:"Emails"`
 			City        string   `json:"City"`
 			State       string   `json:"State"`
 			Postcode    string   `json:"Postcode"`
@@ -106,8 +106,12 @@ type builtWithResultWrapper struct {
 		Lookup       string `json:"Lookup"`
 		SalesRevenue int    `json:"SalesRevenue"`
 	} `json:"Results"`
-	Errors []any `json:"Errors"`
-	Trust  any   `json:"Trust"`
+	Errors []struct {
+		Code	int    `json:"Code"`
+		Message string `json:"Message"`
+		Lookup  string `json:"Lookup"`
+	} `json:"Errors"`
+	Trust  string   `json:"Trust"`
 }
 
 // Builtwith retrieves from the url below some known subdomains.
