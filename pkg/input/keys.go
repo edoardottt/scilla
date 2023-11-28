@@ -29,7 +29,6 @@ package input
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"runtime"
 
@@ -44,7 +43,7 @@ type Keys struct {
 
 // ReadKeys gets as input a filename (keys.yaml) and returns a Keys object.
 func ReadKeys(filename string) (Keys, error) {
-	buf, err := ioutil.ReadFile(filename)
+	buf, err := os.ReadFile(filename)
 	if err != nil {
 		return Keys{}, fmt.Errorf("error while reading file %s: %w", filename, err)
 	}
