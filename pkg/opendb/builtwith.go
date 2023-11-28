@@ -148,6 +148,10 @@ func BuiltWithSubdomains(target, apikey string, plain bool) []string {
 		return result
 	}
 
+	if len(bwrWrapper.Results) == 0 {
+		return result
+	}
+
 	for _, elem := range bwrWrapper.Results[0].Result.Paths {
 		if elem.SubDomain == "" {
 			continue
