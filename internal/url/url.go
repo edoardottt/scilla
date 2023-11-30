@@ -28,6 +28,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 package utils
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -71,7 +72,7 @@ func CleanURL(input string) string {
 		u.Scheme = "http"
 	}
 
-	return u.Scheme + "://" + u.Host + u.Path
+	return fmt.Sprintf("%s://%s%s", u.Scheme, u.Host, u.Path)
 }
 
 // IsURL checks if the inputted url is valid.
@@ -87,12 +88,12 @@ func IsURL(str string) bool {
 
 // BuildURL returns full URL with the subdomain.
 func BuildURL(scheme string, subdomain string, domain string) string {
-	return scheme + "://" + subdomain + "." + domain
+	return fmt.Sprintf("%s://%s.%s", scheme, subdomain, domain)
 }
 
 // AppendDir returns full URL with the directory.
 func AppendDir(scheme string, domain string, dir string) (string, string) {
-	return scheme + "://" + domain + "/" + dir + "/", scheme + "://" + domain + "/" + dir
+	return fmt.Sprintf("%s://%s/%s/", scheme, domain, dir), fmt.Sprintf("%s://%s/%s", scheme, domain, dir)
 }
 
 // CleanSubdomainsOk takes as input a slice of subdomains and remove

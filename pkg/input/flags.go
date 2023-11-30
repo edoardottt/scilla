@@ -78,6 +78,7 @@ type Input struct {
 	SubdomainPlain           bool
 	SubdomainNoCheck         bool
 	SubdomainVirusTotal      bool
+	SubdomainBuiltWith          bool
 	SubdomainUserAgent       string
 	SubdomainRandomUserAgent bool
 	SubdomainDNS             string
@@ -234,6 +235,9 @@ func ReadArgs() Input {
 
 	// subdomains subcommand flag pointers
 	subdomainVirusTotalPtr := subdomainCommand.Bool("vt", false, "Use VirusTotal as a subdomain source")
+
+	// subdomains subcommand flag pointers
+	subdomainBuiltWithPtr := subdomainCommand.Bool("bw", false, "Use BuiltWith as a subdomain source")
 
 	// subdomains subcommand flag pointers
 	subdomainUserAgentPtr := subdomainCommand.String("ua", DefaultUserAgent, "Set the User Agent")
@@ -425,7 +429,7 @@ func ReadArgs() Input {
 
 		subdomainIgnore = SubdomainSubcommandCheckFlags(*subdomainCommand, subdomainTargetPtr,
 			subdomainNoCheckPtr, subdomainDBPtr, subdomainWordlistPtr, subdomainIgnorePtr,
-			subdomainCrawlerPtr, subdomainVirusTotalPtr,
+			subdomainCrawlerPtr, subdomainVirusTotalPtr, subdomainBuiltWithPtr,
 			subdomainOutputJSONPtr, subdomainOutputHTMLPtr, subdomainOutputTXTPtr,
 			subdomainUserAgentPtr, subdomainRandomUserAgentPtr, subdomainDNSPtr, subdomainAlivePtr)
 	}
@@ -516,6 +520,7 @@ func ReadArgs() Input {
 		*subdomainPlainPtr,
 		*subdomainNoCheckPtr,
 		*subdomainVirusTotalPtr,
+		*subdomainBuiltWithPtr,
 		*subdomainUserAgentPtr,
 		*subdomainRandomUserAgentPtr,
 		*subdomainDNSPtr,
