@@ -30,7 +30,7 @@ package opendb
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
@@ -56,7 +56,7 @@ func SonarSubdomains(target string, plain bool) []string {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK {
-		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return arr
 		}

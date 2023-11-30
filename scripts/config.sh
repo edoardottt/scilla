@@ -39,7 +39,7 @@ fi
 # check if scilla keys file exists 
 if [[ ! -e "$HOME/.config/scilla/keys.yaml" ]]; then
     touch $HOME/.config/scilla/keys.yaml
-    echo -n "VirusTotal: " > $HOME/.config/scilla/keys.yaml
+    echo -en "VirusTotal: \nBuiltWith:" > $HOME/.config/scilla/keys.yaml
     echo "Remember to add your keys in $HOME/.config/scilla/keys.yaml!"
 fi
 
