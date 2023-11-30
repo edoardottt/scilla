@@ -29,7 +29,6 @@ package input
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"runtime"
 
@@ -39,11 +38,12 @@ import (
 // Keys is a struct representing the format of the keys.yaml file.
 type Keys struct {
 	VirusTotal string `yaml:"VirusTotal,omitempty"`
+	BuiltWith  string `yaml:"BuiltWith,omitempty"`
 }
 
 // ReadKeys gets as input a filename (keys.yaml) and returns a Keys object.
 func ReadKeys(filename string) (Keys, error) {
-	buf, err := ioutil.ReadFile(filename)
+	buf, err := os.ReadFile(filename)
 	if err != nil {
 		return Keys{}, fmt.Errorf("error while reading file %s: %w", filename, err)
 	}
@@ -58,30 +58,45 @@ func ReadKeys(filename string) (Keys, error) {
 	return keys, nil
 }
 
-// GetVirusTotalKey reads the Virustotal key.
-func GetVirusTotalKey() string {
+// GetKey reads the key for the given api.
+func GetKey(api string) string {
 	filename := ""
+	key := ""
+
 	if runtime.GOOS == windows {
 		filename = "keys.yaml"
 	} else { // linux
 		home, err := os.UserHomeDir()
 		if err != nil {
-			fmt.Println("Cannot read VirusTotal Api Key.")
+			fmt.Println("Cannot read api key.")
 			os.Exit(1)
 		}
 		filename = home + "/.config/scilla/keys.yaml"
 	}
 
 	keys, err := ReadKeys(filename)
-	if keys.VirusTotal == "" {
-		fmt.Println("VirusTotal Api Key is empty.")
-		os.Exit(1)
-	}
 
 	if err != nil {
-		fmt.Println("Cannot read VirusTotal Api Key.")
+		fmt.Println("Cannot read api key.")
 		os.Exit(1)
 	}
 
-	return keys.VirusTotal
+	switch api {
+	case "virustotal":
+		if keys.VirusTotal == "" {
+			fmt.Println("VirusTotal Api Key is empty.")
+			os.Exit(1)
+		}
+
+		key = keys.VirusTotal
+	case "builtwith":
+		if keys.BuiltWith == "" {
+			fmt.Println("BuiltWith Api Key is empty.")
+			os.Exit(1)
+		}
+
+		key = keys.BuiltWith
+	}
+
+	return key
 }
