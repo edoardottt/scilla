@@ -78,7 +78,7 @@ type Input struct {
 	SubdomainPlain           bool
 	SubdomainNoCheck         bool
 	SubdomainVirusTotal      bool
-	SubdomainBuiltWith          bool
+	SubdomainBuiltWith       bool
 	SubdomainUserAgent       string
 	SubdomainRandomUserAgent bool
 	SubdomainDNS             string
@@ -109,13 +109,14 @@ type Input struct {
 
 // ReadArgs reads arguments/options from stdin.
 // Subcommands:
-// 		report		==> Full report
-// 		dns			==> Dns records enumeration
-// 		subdomains	==> Subdomains enumeration
-// 		port		==> ports enumeration
-//		dir			==> directiories enumeration
-// 		help		==> doc
-//		examples	==> examples
+//
+//	report		==> Full report
+//	dns			==> Dns records enumeration
+//	subdomains	==> Subdomains enumeration
+//	port		==> ports enumeration
+//	dir			==> directiories enumeration
+//	help		==> doc
+//	examples	==> examples
 func ReadArgs() Input {
 	reportCommand := flag.NewFlagSet("report", flag.ExitOnError)
 	dnsCommand := flag.NewFlagSet("dns", flag.ExitOnError)

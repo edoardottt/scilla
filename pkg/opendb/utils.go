@@ -30,7 +30,6 @@ package opendb
 import (
 	"math/rand"
 	"strings"
-	"time"
 
 	sliceUtils "github.com/edoardottt/scilla/internal/slice"
 )
@@ -53,7 +52,6 @@ func AppendDBSubdomains(dbsubs []string, urls []string) []string {
 }
 
 func ShuffleSubdomains(input []string) []string {
-	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(input), func(i, j int) { input[i], input[j] = input[j], input[i] })
 
 	return input

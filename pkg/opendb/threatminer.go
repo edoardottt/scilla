@@ -30,7 +30,7 @@ package opendb
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
@@ -65,7 +65,7 @@ func ThreatMinerSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 
 	if err := json.Unmarshal(body, &result); err != nil {
 		return []string{}

@@ -71,7 +71,7 @@ type builtWithResultWrapper struct {
 			Social      []string `json:"Social"`
 			CompanyName string   `json:"CompanyName"`
 			Telephones  []string `json:"Telephones"`
-			Emails      []string    `json:"Emails"`
+			Emails      []string `json:"Emails"`
 			City        string   `json:"City"`
 			State       string   `json:"State"`
 			Postcode    string   `json:"Postcode"`
@@ -107,11 +107,11 @@ type builtWithResultWrapper struct {
 		SalesRevenue int    `json:"SalesRevenue"`
 	} `json:"Results"`
 	Errors []struct {
-		Code	int    `json:"Code"`
+		Code    int    `json:"Code"`
 		Message string `json:"Message"`
 		Lookup  string `json:"Lookup"`
 	} `json:"Errors"`
-	Trust  string   `json:"Trust"`
+	Trust string `json:"Trust"`
 }
 
 // Builtwith retrieves from the url below some known subdomains.
@@ -156,7 +156,7 @@ func BuiltWithSubdomains(target, apikey string, plain bool) []string {
 		if elem.SubDomain == "" {
 			continue
 		}
-		
+
 		fullDomain := elem.SubDomain + "." + target
 		result = append(result, fullDomain)
 	}

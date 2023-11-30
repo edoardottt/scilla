@@ -31,7 +31,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -54,7 +54,7 @@ func HackerTargetSubdomains(domain string, plain bool) []string {
 		return result
 	}
 
-	res, err := ioutil.ReadAll(raw.Body)
+	res, err := io.ReadAll(raw.Body)
 	if err != nil {
 		return result
 	}

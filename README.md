@@ -268,10 +268,6 @@ golangci-lint run
 
 If there aren't errors, go ahead :)
 
-**Help me building this!**
-
-Special thanks to: [danielmiessler](https://github.com/danielmiessler), [HackerTarget](https://hackertarget.com/), [Threatcrowd](https://www.threatcrowd.org/), [Crt.sh](https://crt.sh/), [VirusTotal](https://www.virustotal.com/), [tomnomnom](https://github.com/tomnomnom/assetfinder).
-
 **To do:**
 
 - [ ] Add more tests
