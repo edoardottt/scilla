@@ -59,6 +59,7 @@ func Help() {
 	fmt.Println("                   [-plain Print only results]")
 	fmt.Println("                   [-db -no-check Don't check status codes for subdomains]")
 	fmt.Println("                   [-db -vt Use VirusTotal as subdomains source]")
+	fmt.Println("                   [-db -bw Use BuiltWith as subdomains source]")
 	fmt.Println("                   [-ua Set the User Agent]")
 	fmt.Println("                   [-rua Generate a random user agent for each request]")
 	fmt.Println("                   [-dns Set DNS IP to resolve the subdomains]")

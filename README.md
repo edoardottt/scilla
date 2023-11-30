@@ -122,6 +122,7 @@ usage: scilla subcommand { options }
                    [-plain Print only results]
                    [-db -no-check Don't check status codes for subdomains]
                    [-db -vt Use VirusTotal as subdomains source]
+                   [-db -bw Use BuiltWith as subdomains source]
                    [-ua Set the User Agent]
                    [-rua Generate a random user agent for each request]
                    [-dns Set DNS IP to resolve the subdomains]
@@ -186,6 +187,7 @@ Examples 💡
   - `scilla subdomain -plain -target target.domain`
   - `scilla subdomain -db -no-check -target target.domain`
   - `scilla subdomain -db -vt -target target.domain`
+  - `scilla subdomain -db -bw -target target.domain`
   - `scilla subdomain -ua "CustomUA" -target target.domain`
   - `scilla subdomain -rua -target target.domain`
   - `scilla subdomain -dns 8.8.8.8 -target target.domain`
