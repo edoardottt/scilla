@@ -179,6 +179,8 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
+		dnsreponoc := opendb.DNSRepoNocSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(dnsreponoc, subdomains)
 
 		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), false)
@@ -187,6 +189,10 @@ func ReportSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		// Service not working
 		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), false)
 		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+
+		// Service not working
+		// subdomaincenter := opendb.SubdomainCenterSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(subdomaincenter, subdomains)
 
 		if userInput.ReportVirusTotal {
 			vtSubs := opendb.VirusTotalSubdomains(urlUtils.CleanProtocol(target), input.GetKey("virustotal"), false)
@@ -356,6 +362,8 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		subdomains = opendb.AppendDBSubdomains(anubis, subdomains)
 		threatminer := opendb.ThreatMinerSubdomains(urlUtils.CleanProtocol(target), false)
 		subdomains = opendb.AppendDBSubdomains(threatminer, subdomains)
+		dnsreponoc := opendb.DNSRepoNocSubdomains(urlUtils.CleanProtocol(target), false)
+		subdomains = opendb.AppendDBSubdomains(dnsreponoc, subdomains)
 
 		// Service Not Working
 		// bufferOverrun := opendb.BufferOverrunSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
@@ -364,6 +372,10 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 		// Service not working
 		// sonar := opendb.SonarSubdomains(urlUtils.CleanProtocol(target), userInput.SubdomainPlain)
 		// subdomains = opendb.AppendDBSubdomains(sonar, subdomains)
+
+		// Service not working
+		// subdomaincenter := opendb.SubdomainCenterSubdomains(urlUtils.CleanProtocol(target), false)
+		// subdomains = opendb.AppendDBSubdomains(subdomaincenter, subdomains)
 
 		// Service not fully reliable yet
 		// if userInput.SubdomainBuiltWith {
