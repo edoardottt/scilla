@@ -75,9 +75,11 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 					if outputFileJSON != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
 					}
+
 					if outputFileHTML != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
 					}
+
 					if outputFileTXT != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
@@ -85,12 +87,15 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			} else {
 				if resp[:3] != "404" {
 					fmt.Printf("%s\n", domain)
+
 					if outputFileJSON != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
 					}
+
 					if outputFileHTML != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
 					}
+
 					if outputFileTXT != "" {
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}

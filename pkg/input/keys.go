@@ -71,6 +71,7 @@ func GetKey(api string) string {
 			fmt.Println("Cannot read api key.")
 			os.Exit(1)
 		}
+
 		filename = home + "/.config/scilla/keys.yaml"
 	}
 

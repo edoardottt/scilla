@@ -172,10 +172,12 @@ func SpawnCrawler(target string, scheme string, ignore []string, dirs map[string
 			if ignoreBool {
 				statusArray := strings.Split(status, " ")
 				statusInt, err := strconv.Atoi(statusArray[0])
+
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Could not get response status %s\n", status)
 					os.Exit(1)
 				}
+
 				if !ignoreUtils.IgnoreResponse(statusInt, ignore) {
 					if what == directory {
 						output.AddDirs(r.URL.String(), status, dirs, mutex)

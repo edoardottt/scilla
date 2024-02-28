@@ -82,6 +82,7 @@ func DNSRepoNocSubdomains(domain string, plain bool) []string {
 	if err != nil {
 		return []string{}
 	}
+
 	defer resp.Body.Close()
 
 	output := scrape(resp.Body)

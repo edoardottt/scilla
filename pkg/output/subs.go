@@ -77,24 +77,30 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFil
 						if outputFileJSON != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 						}
+
 						if outputFileHTML != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
 						}
+
 						if outputFileTXT != "" {
 							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
 						}
+
 						color.Red("%s\n", resp)
 					}
 				}
 			} else if resp[:3] != "404" {
 				subDomainFound := urlUtils.CleanProtocol(domain)
 				fmt.Printf("%s\n", subDomainFound)
+
 				if outputFileJSON != "" {
 					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
 				}
+
 				if outputFileHTML != "" {
 					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
 				}
+
 				if outputFileTXT != "" {
 					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
 				}

@@ -70,7 +70,9 @@ func CreateOutputFile(path string) string {
 	} else {
 		// The file already exists, check what the user want.
 		reader := bufio.NewReader(os.Stdin)
+
 		fmt.Printf("The output file %s already esists, do you want to overwrite? (Y/n): ", file)
+
 		text, _ := reader.ReadString('\n')
 		answer := strings.ToLower(text)
 		answer = strings.TrimSpace(answer)
@@ -81,11 +83,13 @@ func CreateOutputFile(path string) string {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
 			}
+
 			err = fOpen.Truncate(0)
 			if err != nil {
 				fmt.Println("Can't create output file.")
 				os.Exit(1)
 			}
+
 			fOpen.Close()
 		} else {
 			os.Exit(1)
