@@ -41,6 +41,7 @@ func BannerHTML(target string, filename string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer file.Close()
 	_, err = file.WriteString(`<html><body>
 	<div style='background-color:#4adeff;color:white'>

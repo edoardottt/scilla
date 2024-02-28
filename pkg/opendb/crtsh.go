@@ -60,6 +60,7 @@ func CrtshSubdomains(domain string, plain bool) []string {
 	if err != nil {
 		return []string{}
 	}
+
 	defer resp.Body.Close()
 
 	output := make([]string, 0)

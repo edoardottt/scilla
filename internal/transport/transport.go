@@ -82,6 +82,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			if err != nil {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			if maybeEnd >= 1 && maybeEnd <= endPort {
 				endPort = maybeEnd
 			}
@@ -96,6 +97,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			if err != nil {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			if maybeStart > 0 && maybeStart < endPort {
 				startPort = maybeStart
 			}
@@ -110,6 +112,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			if err != nil {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			if maybePort > 0 && maybePort < endPort {
 				startPort = maybePort
 				endPort = maybePort
@@ -125,17 +128,21 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			if len(sliceOfPorts) != 2 {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			maybeStart, err := strconv.Atoi(sliceOfPorts[0])
 			if err != nil {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			maybeEnd, err := strconv.Atoi(sliceOfPorts[1])
 			if err != nil {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			if maybeStart > maybeEnd || maybeStart < 1 || maybeEnd > endPort {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
+
 			startPort = maybeStart
 			endPort = maybeEnd
 		}
@@ -159,6 +166,7 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 			{
 				portsRange := *portsPtr
 				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
+
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -169,6 +177,7 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 		case strings.Contains(*portsPtr, ","):
 			{
 				portsArray, err = CheckPortsArray(*portsPtr)
+
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -180,6 +189,7 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 			{
 				portsRange := *portsPtr
 				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
+
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)

@@ -55,6 +55,7 @@ func BufferOverrunSubdomains(domain string, plain bool) []string {
 	if err != nil {
 		return result
 	}
+
 	defer resp.Body.Close()
 	dec := json.NewDecoder(resp.Body)
 

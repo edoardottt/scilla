@@ -29,8 +29,8 @@ package output
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
+	"os"
 
 	fileUtils "github.com/edoardottt/scilla/internal/file"
 )
@@ -45,7 +45,7 @@ type File struct {
 
 // AppendOutputToJSON appends a (json) row in the JSON output file.
 func AppendOutputToJSON(output string, key string, record string, filename string) {
-	file, err := ioutil.ReadFile(filename)
+	file, err := os.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -79,6 +79,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 			if data.DNS == nil {
 				data.DNS = make(map[string][]string)
 			}
+
 			if _, ok := data.DNS[record]; !ok {
 				data.DNS[record] = make([]string, 0)
 			}
@@ -90,7 +91,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 	if err != nil {
 		log.Println(err)
 	} else {
-		err = ioutil.WriteFile(filename, file, fileUtils.Permission0644)
+		err = os.WriteFile(filename, file, fileUtils.Permission0644)
 		if err != nil {
 			log.Fatal(err)
 		}

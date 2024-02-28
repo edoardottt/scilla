@@ -411,12 +411,15 @@ func SubdomainSubcommandHandler(userInput input.Input, mutex *sync.Mutex,
 	} else {
 		for _, elem := range subdomains {
 			fmt.Println(elem)
+
 			if outputFileJSON != "" {
 				output.AppendOutputToJSON(elem, "SUB", "", outputFileJSON)
 			}
+
 			if outputFileHTML != "" {
 				output.AppendOutputToHTML(elem, "", outputFileHTML)
 			}
+
 			if outputFileTXT != "" {
 				output.AppendOutputToTxt(elem, outputFileTXT)
 			}
