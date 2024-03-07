@@ -3,7 +3,7 @@ module github.com/edoardottt/scilla
 go 1.21
 
 require (
-	github.com/PuerkitoBio/goquery v1.9.0
+	github.com/PuerkitoBio/goquery v1.9.1
 	github.com/bobesa/go-domain-util v0.0.0-20190911083921-4033b5f7dd89
 	github.com/fatih/color v1.16.0
 	github.com/gocolly/colly v1.2.0
