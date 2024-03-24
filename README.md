@@ -10,33 +10,6 @@
   <a href="https://github.com/edoardottt/scilla/actions">
     <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=main" alt="workflows" />
   </a>
-  <!-- ubuntu-build -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/ubuntu-build.svg" alt="ubuntu-build" />
-  </a>
-  <!-- win10-build -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/win10.svg" alt="win10-build" />
-  </a>
-
-  <br>
-  
-  <!-- pr-welcome -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/pr-welcome.svg" alt="pr-welcome" />
-  </a>
-  <!-- mainteinance -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/maintained-yes.svg" alt="Mainteinance yes" />
-  </a>
-  <!-- ask-me-anything -->
-  <a href="https://edoardoottavianelli.it">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/ask-me-anything.svg" alt="ask me anything" />
-  </a>
-  <!-- license GPLv3.0 -->
-  <a href="https://github.com/edoardottt/scilla/blob/master/LICENSE">
-    <img src="https://github.com/edoardottt/images/blob/main/scilla/license-GPL3.svg" alt="license-GPL3" />
-  </a>
   <br>
   <sub>
     Coded with 💙 by edoardottt
