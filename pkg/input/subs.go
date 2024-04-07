@@ -31,9 +31,16 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"runtime"
+	"strings"
+
+	_ "embed"
 
 	urlUtils "github.com/edoardottt/scilla/internal/url"
+)
+
+var (
+	//go:embed subdomains.txt
+	defaultSubdomainsWordlist string
 )
 
 // ReadDictSubs reads all the possible subdomains from file.
@@ -58,18 +65,14 @@ func ReadDictSubs(inputFile string) []string {
 }
 
 // CreateSubdomains returns a list of subdomains
-// from the default file lists/subdomains.txt.
+// from the default file subdomains.txt.
 func CreateSubdomains(filename string, scheme string, url string) []string {
 	var subs []string
 
-	if filename == "" {
-		if runtime.GOOS == windows {
-			subs = ReadDictSubs("lists/subdomains.txt")
-		} else { // linux
-			subs = ReadDictSubs("/usr/bin/lists/subdomains.txt")
-		}
-	} else {
+	if filename != "" {
 		subs = ReadDictSubs(filename)
+	} else {
+		subs = strings.Fields(defaultSubdomainsWordlist)
 	}
 
 	result := []string{}

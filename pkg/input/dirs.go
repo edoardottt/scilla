@@ -31,7 +31,9 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"runtime"
+	"strings"
+
+	_ "embed"
 
 	sliceUtils "github.com/edoardottt/scilla/internal/slice"
 	urlUtils "github.com/edoardottt/scilla/internal/url"
@@ -39,6 +41,11 @@ import (
 
 const (
 	windows = "windows"
+)
+
+var (
+	//go:embed dirs.txt
+	defaultDirsWordlist string
 )
 
 // ReadDictDirs reads all the possible dirs from input file.
@@ -73,18 +80,14 @@ func ReadDictDirs(inputFile string) []string {
 }
 
 // CreateUrls returns a list of directories
-// from the default file lists/dirs.txt.
+// from the default file dirs.txt.
 func CreateUrls(filename string, scheme string, url string) []string {
 	var dirs []string
 
-	if filename == "" {
-		if runtime.GOOS == windows {
-			dirs = ReadDictDirs("lists/dirs.txt")
-		} else { // linux
-			dirs = ReadDictDirs("/usr/bin/lists/dirs.txt")
-		}
-	} else {
+	if filename != "" {
 		dirs = ReadDictDirs(filename)
+	} else {
+		dirs = strings.Fields(defaultDirsWordlist)
 	}
 
 	result := []string{}
