@@ -37,6 +37,11 @@
 Installation 📡
 ----------
 
+### Homebrew
+```
+brew install scilla
+```
+
 ### Building from source
 
 You need [Go](https://golang.org/).
