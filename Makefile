@@ -24,14 +24,12 @@ lint:
 linux:
 	@go build ./cmd/scilla
 	@sudo mv scilla /usr/bin/
-	@sudo cp -r lists/ /usr/bin/
 	@chmod +x scripts/config.sh
 	@./scripts/config.sh
 	@echo "Done."
 
 unlinux:
 	@sudo rm -rf /usr/bin/scilla
-	@sudo rm -rf /usr/bin/lists/
 	@rm -rf ~/.config/scilla
 	@echo "Done."
 

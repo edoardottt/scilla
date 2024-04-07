@@ -1,3 +1,7 @@
+output-scilla/
+keys.yaml
+scilla
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -13,18 +17,9 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-
 build
-
 coverage.txt
-
 .idea
-
-output-scilla/
-
-keys.yaml
-
-scilla
 
 # VScode Debugging folder
 .vscode/
