@@ -9,14 +9,14 @@ base: core20
 confinement: strict
 
 apps:
-  cariddi:
+  scilla:
     command: bin/scilla
     plugs:
       - home
       - network
 
 parts:
-  cariddi:
+  scilla:
     plugin: go
     source-type: git
     source: https://github.com/edoardottt/scilla
