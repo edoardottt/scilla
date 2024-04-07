@@ -38,8 +38,13 @@ Installation 📡
 ----------
 
 ### Homebrew
-```
+```console
 brew install scilla
+```
+
+### Go
+```console
+go install -v github.com/edoardottt/scilla/cmd/scilla@latest
 ```
 
 ### Building from source
