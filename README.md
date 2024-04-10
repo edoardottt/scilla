@@ -42,6 +42,11 @@ Installation 📡
 brew install scilla
 ```
 
+### Snap
+```console
+sudo snap install scilla
+```
+
 ### Go
 ```console
 go install -v github.com/edoardottt/scilla/cmd/scilla@latest
