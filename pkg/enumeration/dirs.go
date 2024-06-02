@@ -101,10 +101,6 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 
 			count++
 
-			if err != nil {
-				return
-			}
-
 			if ignoreBool {
 				if ignoreUtils.IgnoreResponse(resp.StatusCode, ignore) {
 					return
