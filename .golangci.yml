@@ -2,8 +2,6 @@ linters:
   # Enable all available linters.
   # Default: false
   disable-all: true
-  disable:
-    - typecheck
   enable:
     - asciicheck
     - bodyclose
