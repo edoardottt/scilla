@@ -19,7 +19,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 	@Repository:  https://github.com/edoardottt/scilla
 
-	@Author:      edoardottt, https://www.edoardoottavianelli.it
+	@Author:      edoardottt, https://edoardottt.com
 
 	@License: https://github.com/edoardottt/scilla/blob/main/LICENSE
 
@@ -48,7 +48,7 @@ func BannerHTML(target string, filename string) {
 	<h1>Scilla - Information Gathering Tool</h1>
 	<ul>
 	<li><a href='https://github.com/edoardottt/scilla'>github.com/edoardottt/scilla</a></li>
-	<li>edoardottt, <a href='https://www.edoardoottavianelli.it'>edoardoottavianelli.it</a></li>
+	<li>edoardottt, <a href='https://edoardottt.com'>edoardottt.com</a></li>
 	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li>
 	</ul></div>`)
 
