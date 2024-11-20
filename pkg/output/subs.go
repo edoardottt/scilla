@@ -57,7 +57,7 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFil
 
 				if resp == "" || resp[:3] != "404" {
 					subDomainFound := urlUtils.CleanProtocol(domain)
-					fmt.Printf("[+]FOUND: %s ", subDomainFound)
+					fmt.Printf("%s ", subDomainFound)
 
 					if resp == "" || string(resp[0]) == "2" {
 						if outputFileJSON != "" {

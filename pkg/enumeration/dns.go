@@ -45,7 +45,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 
 	for _, ip := range ips {
 		if !plain {
-			fmt.Printf("[+]FOUND %s IN A: ", domain)
+			fmt.Print("A: ")
 			color.Green("%s\n", ip.String())
 		} else {
 			fmt.Printf("%s\n", ip.String())
@@ -67,7 +67,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	cname, _ := net.LookupCNAME(domain)
 
 	if !plain {
-		fmt.Printf("[+]FOUND %s IN CNAME: ", domain)
+		fmt.Print("CNAME: ")
 		color.Green("%s\n", cname)
 	} else {
 		fmt.Printf("%s\n", cname)
@@ -90,7 +90,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 
 	for _, nsRecord := range nameserver {
 		if !plain {
-			fmt.Printf("[+]FOUND %s IN NS: ", domain)
+			fmt.Print("NS: ")
 			color.Green("%s\n", nsRecord.Host)
 		} else {
 			fmt.Printf("%s\n", nsRecord.Host)
@@ -114,7 +114,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 
 	for _, mxRecord := range mxrecords {
 		if !plain {
-			fmt.Printf("[+]FOUND %s IN MX: ", domain)
+			fmt.Print("MX: ")
 			color.Green("%s %v\n", mxRecord.Host, mxRecord.Pref)
 		} else {
 			fmt.Printf("%s %v\n", mxRecord.Host, mxRecord.Pref)
@@ -144,7 +144,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 
 	for _, srv := range srvResults {
 		if !plain {
-			fmt.Printf("[+]FOUND %s IN SRV: ", domain)
+			fmt.Print("SRV: ")
 			color.Green("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		} else {
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
@@ -167,7 +167,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	txtrecords, _ := net.LookupTXT(domain)
 	for _, txt := range txtrecords {
 		if !plain {
-			fmt.Printf("[+]FOUND %s IN TXT: ", domain)
+			fmt.Print("TXT: ")
 			color.Green("%s\n", txt)
 		} else {
 			fmt.Printf("%s\n", txt)
