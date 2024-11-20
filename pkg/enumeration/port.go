@@ -148,7 +148,7 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 			if resp {
 				if !plain {
 					fmt.Fprint(os.Stdout, "\r")
-					fmt.Printf("[+]FOUND: %s ", host)
+					fmt.Printf("%s ", host)
 					color.Green("%s\n", portStr)
 				} else {
 					fmt.Printf("%s:%s\n", host, portStr)
