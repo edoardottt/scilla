@@ -27,4 +27,4 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package output
 
-const version = "v1.3.0"
+const version = "v1.3.1"
