@@ -5,26 +5,26 @@ linters:
   enable:
     - asciicheck
     - bodyclose
+    - copyloopvar
     - dogsled
     - dupl
+    - err113
     - errcheck
     - exhaustive
-    - exportloopref
     - gochecknoglobals
     - gochecknoinits
     - goconst
     - gocritic
     - godot
     - godox
-    - goerr113
     - goheader
-    - gomnd
     - gomodguard
     - goprintffuncname
     - gosimple
     - govet
     - ineffassign
     - lll
+    - mnd
     - misspell
     - nakedret
     - nolintlint
@@ -45,7 +45,7 @@ linters-settings:
     strict-append: false
     enforce-err-cuddling: true
 
-  gomnd:
+  mnd:
     # Values always ignored: "1", "1.0", "0" and "0.0"
     # Default: []
     ignored-numbers:
