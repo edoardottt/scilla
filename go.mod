@@ -1,6 +1,9 @@
 module github.com/edoardottt/scilla
 
-go 1.23
+go 1.23.0
+
+toolchain go1.23.2
+
 require (
 	github.com/PuerkitoBio/goquery v1.10.2
 	github.com/bobesa/go-domain-util v0.0.0-20190911083921-4033b5f7dd89
