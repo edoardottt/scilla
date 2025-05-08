@@ -8,7 +8,7 @@
   </a>
   <!-- workflows -->
   <a href="https://github.com/edoardottt/scilla/actions">
-    <img src="https://github.com/edoardottt/scilla/workflows/Go/badge.svg?branch=main" alt="workflows" />
+    <img src="https://github.com/edoardottt/scilla/actions/workflows/go.yml/badge.svg" alt="workflows" />
   </a>
   <br>
   <sub>
