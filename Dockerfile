@@ -1,4 +1,4 @@
-FROM golang:1.19
+FROM golang:1.23
 
 WORKDIR $GOPATH/src/github.com/edoardottt/scilla
 
