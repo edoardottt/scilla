@@ -62,8 +62,8 @@ func AnubisSubdomains(target string, plain bool) []string {
 		}
 
 		bodyString := string(bodyBytes)
-		err = json.Unmarshal([]byte(bodyString), &arr)
 
+		err = json.Unmarshal([]byte(bodyString), &arr)
 		if err != nil {
 			return arr
 		}

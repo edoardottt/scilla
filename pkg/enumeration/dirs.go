@@ -32,11 +32,17 @@ import (
 	"net/http"
 	"os"
 	"sync"
+	"sync/atomic"
 
 	httpUtils "github.com/edoardottt/scilla/internal/http"
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
 	mathUtils "github.com/edoardottt/scilla/internal/math"
 	"github.com/edoardottt/scilla/pkg/output"
+)
+
+const (
+	defaultChannels    = 30
+	DefaultGoUserAgent = "Go http/Client"
 )
 
 // AsyncDir performs concurrent requests to the specified
@@ -45,26 +51,20 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 	dirs map[string]output.Asset, mutex *sync.Mutex, plain bool, redirect bool, ua string, rua bool) {
 	ignoreBool := len(ignore) != 0
 	total := len(urls)
-	client := http.Client{}
 
-	if !redirect {
-		client = http.Client{
-			Timeout: httpUtils.Seconds10,
-		}
-	} else {
-		client = http.Client{
-			Timeout: httpUtils.Seconds10,
-			CheckRedirect: func(req *http.Request, via []*http.Request) error {
-				return http.ErrUseLastResponse
-			},
+	client := http.Client{
+		Timeout: httpUtils.Seconds10,
+	}
+	if redirect {
+		client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
 		}
 	}
 
-	channels := 30
-	limiter := make(chan string, channels) // Limits simultaneous requests
-	waitgroup := sync.WaitGroup{}          // Needed to not prematurely exit before all requests have been finished
+	limiter := make(chan string, defaultChannels) // Limits simultaneous requests
+	waitgroup := sync.WaitGroup{}                 // Needed to not prematurely exit before all requests have been finished
 
-	var count int
+	var count int32
 
 	for _, domain := range urls {
 		limiter <- domain
@@ -86,7 +86,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 				return
 			}
 
-			if ua != "Go http/Client" {
+			if ua != DefaultGoUserAgent {
 				req.Header.Set("User-Agent", ua)
 			}
 
@@ -99,12 +99,10 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 				return
 			}
 
-			count++
+			atomic.AddInt32(&count, 1)
 
-			if ignoreBool {
-				if ignoreUtils.IgnoreResponse(resp.StatusCode, ignore) {
-					return
-				}
+			if ignoreBool && ignoreUtils.IgnoreResponse(resp.StatusCode, ignore) {
+				return
 			}
 
 			output.AddDirs(domain, resp.Status, dirs, mutex)
@@ -112,8 +110,10 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 		}(domain)
 
 		if !plain { // update counter
+			current := atomic.LoadInt32(&count)
+
 			fmt.Fprint(os.Stdout, "\r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+			fmt.Printf("\r%0.2f%% : %d / %d", mathUtils.Percentage(int(current), total), current, total)
 		}
 	}
 

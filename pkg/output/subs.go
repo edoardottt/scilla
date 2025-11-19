@@ -36,100 +36,107 @@ import (
 	"github.com/fatih/color"
 )
 
-// PrintSubs prints the results (only the resources not already printed).
-// Also performs the checks based on the response status codes.
 func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
+
 	for domain, asset := range subs {
 		if !asset.Printed {
 			sub := Asset{
 				Value:   asset.Value,
 				Printed: true,
 			}
-
 			subs[domain] = sub
+			resp := asset.Value
 
-			var resp = asset.Value
+			// Skip if 404
+			if len(resp) >= 3 && resp[:3] == "404" {
+				continue
+			}
 
-			if !plain {
-				fmt.Fprint(os.Stdout, "\r")
+			subDomainFound := urlUtils.CleanProtocol(domain)
 
-				if resp == "" || resp[:3] != "404" {
-					subDomainFound := urlUtils.CleanProtocol(domain)
-					fmt.Printf("%s ", subDomainFound)
+			// Save to files
+			if outputFileJSON != "" {
+				AppendWhere(domain, resp, "SUB", "", "json", outputFileJSON)
+			}
 
-					if resp == "" || string(resp[0]) == "2" {
-						if outputFileJSON != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
-						}
+			if outputFileHTML != "" {
+				AppendWhere(domain, resp, "SUB", "", "html", outputFileHTML)
+			}
 
-						if outputFileHTML != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
-						}
+			if outputFileTXT != "" {
+				AppendWhere(domain, resp, "SUB", "", "txt", outputFileTXT)
+			}
 
-						if outputFileTXT != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
-						}
+			// Terminal output
+			PrintMutex.Lock()
 
-						color.Green("%s\n", resp)
-					} else {
-						if outputFileJSON != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
-						}
-
-						if outputFileHTML != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
-						}
-
-						if outputFileTXT != "" {
-							AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
-						}
-
-						color.Red("%s\n", resp)
-					}
-				}
-			} else if resp[:3] != "404" {
-				subDomainFound := urlUtils.CleanProtocol(domain)
+			if plain {
 				fmt.Printf("%s\n", subDomainFound)
+			} else {
+				fmt.Fprint(os.Stdout, "\r")
+				fmt.Printf("%s ", subDomainFound)
 
-				if outputFileJSON != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "json", outputFileJSON)
-				}
-
-				if outputFileHTML != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "html", outputFileHTML)
-				}
-
-				if outputFileTXT != "" {
-					AppendWhere(domain, fmt.Sprint(resp), "SUB", "", "txt", outputFileTXT)
+				if len(resp) > 0 && resp[0] == '2' {
+					color.Green("%s\n", resp)
+				} else {
+					color.Red("%s\n", resp)
 				}
 			}
+
+			PrintMutex.Unlock()
 		}
 	}
+
 	mutex.Unlock()
 }
 
 // AddSubs adds the target found to the subs map.
 func AddSubs(target string, value string, subs map[string]Asset, mutex *sync.Mutex) {
-	sub := Asset{
-		Value:   value,
-		Printed: false,
-	}
-
 	target = urlUtils.CleanProtocol(target)
+
 	if !PresentSubs(target, subs, mutex) {
 		mutex.Lock()
-		subs[target] = sub
-		mutex.Unlock()
+		defer mutex.Unlock()
+
+		subs[target] = Asset{
+			Value:   value,
+			Printed: false,
+		}
 	}
 }
 
 // PresentSubs checks if a subdomain is present inside the subs map.
 func PresentSubs(input string, subs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
+	defer mutex.Unlock()
+
 	_, ok := subs[input]
-	mutex.Unlock()
 
 	return ok
+}
+
+// --- Helpers ---
+
+func printColoredResponse(resp string) {
+	if len(resp) > 0 && resp[0] == '2' {
+		color.Green("%s\n", resp)
+	} else {
+		color.Red("%s\n", resp)
+	}
+}
+
+func writeToAllOutputs(domain, resp, category, subType, jsonPath, htmlPath, txtPath string) {
+	if jsonPath != "" {
+		AppendWhere(domain, resp, category, subType, "json", jsonPath)
+	}
+
+	if htmlPath != "" {
+		AppendWhere(domain, resp, category, subType, "html", htmlPath)
+	}
+
+	if txtPath != "" {
+		AppendWhere(domain, resp, category, subType, "txt", txtPath)
+	}
 }

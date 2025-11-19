@@ -27,7 +27,14 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 package output
 
-import "strings"
+import (
+	"strings"
+	"sync"
+)
+
+var (
+	PrintMutex sync.Mutex
+)
 
 // Asset gives information about the asset found.
 type Asset struct {

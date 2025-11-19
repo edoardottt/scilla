@@ -61,6 +61,7 @@ func VirusTotalSubdomains(target, apikey string, plain bool) []string {
 	}
 
 	defer resp.Body.Close()
+
 	dec := json.NewDecoder(resp.Body)
 
 	err = dec.Decode(&wrapper)

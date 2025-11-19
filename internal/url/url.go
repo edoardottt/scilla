@@ -108,6 +108,7 @@ func CleanSubdomainsOk(target string, input []string) []string {
 				splits := strings.Split(elem, "\n")
 				elem = splits[1]
 			}
+
 			result = append(result, CleanProtocol(elem))
 		}
 	}
@@ -145,7 +146,6 @@ func AbsoluteURL(scheme string, target string, path string) string {
 // as output the domain (host).
 func RetrieveHost(input string) string {
 	u, err := url.Parse(input)
-
 	if err != nil {
 		return input
 	}
@@ -156,7 +156,6 @@ func RetrieveHost(input string) string {
 // GetRootHost returns the root host (domain.tld).
 func GetRootHost(input string) string {
 	_, err := url.Parse(input)
-
 	if err != nil {
 		return ""
 	}

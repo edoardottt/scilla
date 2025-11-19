@@ -49,8 +49,8 @@ func ReadKeys(filename string) (Keys, error) {
 	}
 
 	keys := Keys{}
-	err = yaml.Unmarshal(buf, &keys)
 
+	err = yaml.Unmarshal(buf, &keys)
 	if err != nil {
 		return Keys{}, fmt.Errorf("in file %q: %w", filename, err)
 	}
@@ -76,7 +76,6 @@ func GetKey(api string) string {
 	}
 
 	keys, err := ReadKeys(filename)
-
 	if err != nil {
 		fmt.Println("Cannot read api key.")
 		os.Exit(1)

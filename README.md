@@ -150,12 +150,12 @@ Examples 💡
   - Specifying ports range `scilla port -p 20-90 -target example.com`
   - Specifying starting port (until the last one) `scilla port -p 20- -target example.com`
   - Specifying ending port (from the first one) `scilla port -p -90 -target example.com`
+  - Specifying multiple ports `scilla port -p 21,25,80 -target example.com`
+  - Specifying common ports `scilla port -common -target example.com`
   - Specifying single port `scilla port -p 80 -target example.com`
   - Specifying output format (json)`scilla port -oj output -target example.com`
   - Specifying output format (html)`scilla port -oh output -target example.com`
   - Specifying output format (txt)`scilla port -ot output -target example.com`
-  - Specifying multiple ports `scilla port -p 21,25,80 -target example.com`
-  - Specifying common ports `scilla port -common -target example.com`
   - Print only results `scilla port -plain -target example.com`
 
 - Full report:
@@ -165,6 +165,7 @@ Examples 💡
   - Specifying starting port (until the last one) `scilla report -p 20- -target example.com`
   - Specifying ending port (from the first one) `scilla report -p -90 -target example.com`
   - Specifying single port `scilla report -p 80 -target example.com`
+  - Specifying multiple ports `scilla report -p 21,25,80 -target example.com`
   - Specifying output format (json)`scilla report -oj output -target example.com`
   - Specifying output format (html)`scilla report -oh output -target example.com`
   - Specifying output format (txt)`scilla report -ot output -target example.com`
@@ -177,7 +178,6 @@ Examples 💡
   - Use also a web crawler for directories enumeration `scilla report -cd -target example.com`
   - Use also a web crawler for subdomains enumeration `scilla report -cs -target example.com`
   - Use also a public database for subdomains enumeration `scilla report -db -target example.com`
-  - Specifying multiple ports `scilla report -p 21,25,80 -target example.com`
   - Specifying common ports `scilla report -common -target example.com`
   - No follow redirects `scilla report -nr -target example.com`
   - Use VirusTotal as subdomains source `scilla report -db -vt -target example.com`

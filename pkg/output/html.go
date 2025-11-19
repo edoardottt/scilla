@@ -43,6 +43,7 @@ func BannerHTML(target string, filename string) {
 	}
 
 	defer file.Close()
+
 	_, err = file.WriteString(`<html><body>
 	<div style='background-color:#4adeff;color:white'>
 	<h1>Scilla - Information Gathering Tool</h1>
@@ -51,7 +52,6 @@ func BannerHTML(target string, filename string) {
 	<li>edoardottt, <a href='https://edoardottt.com'>edoardottt.com</a></li>
 	<li>Released under <a href='http://www.gnu.org/licenses/gpl-3.0.html'>GPLv3 License</a></li>
 	</ul></div>`)
-
 	if err != nil {
 		log.Println(err.Error())
 
@@ -121,7 +121,6 @@ func HeaderHTML(header string, filename string) {
 // FooterHTML closes the HTML list.
 func FooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, fileUtils.Permission0644)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -140,7 +139,6 @@ func FooterHTML(filename string) {
 // BannerFooterHTML writes in the (html) output file the HTML footer.
 func BannerFooterHTML(filename string) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, fileUtils.Permission0644)
-
 	if err != nil {
 		log.Fatal(err)
 
