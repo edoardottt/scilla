@@ -50,13 +50,14 @@ func BufferOverrunSubdomains(domain string, plain bool) []string {
 	wrapper := struct {
 		Records []string `json:"FDNS_A"`
 	}{}
-	resp, err := client.Get(url)
 
+	resp, err := client.Get(url)
 	if err != nil {
 		return result
 	}
 
 	defer resp.Body.Close()
+
 	dec := json.NewDecoder(resp.Body)
 
 	err = dec.Decode(&wrapper)
@@ -69,6 +70,7 @@ func BufferOverrunSubdomains(domain string, plain bool) []string {
 		if len(parts) != twoParts {
 			continue
 		}
+
 		result = append(result, parts[1])
 	}
 

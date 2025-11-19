@@ -40,6 +40,7 @@ import (
 func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFileHTML, outputFileTXT string,
 	mutex *sync.Mutex, plain bool) {
 	mutex.Lock()
+
 	for domain, asset := range dirs {
 		if !asset.Printed {
 			dir := Asset{
@@ -51,8 +52,9 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			var resp = asset.Value
 
 			if !plain {
+				fmt.Fprint(os.Stdout, "\r")
+
 				if string(resp[0]) == "2" || string(resp[0]) == "3" {
-					fmt.Fprint(os.Stdout, "\r")
 					fmt.Printf("%s ", domain)
 					color.Green("%s\n", resp)
 
@@ -68,7 +70,6 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				} else if (resp[:3] != "404") || string(resp[0]) == "5" {
-					fmt.Fprint(os.Stdout, "\r")
 					fmt.Printf("%s ", domain)
 					color.Red("%s\n", resp)
 
@@ -84,25 +85,24 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 					}
 				}
-			} else {
-				if resp[:3] != "404" {
-					fmt.Printf("%s\n", domain)
+			} else if resp[:3] != "404" {
+				fmt.Printf("%s\n", domain)
 
-					if outputFileJSON != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
-					}
+				if outputFileJSON != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "json", outputFileJSON)
+				}
 
-					if outputFileHTML != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
-					}
+				if outputFileHTML != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "html", outputFileHTML)
+				}
 
-					if outputFileTXT != "" {
-						AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
-					}
+				if outputFileTXT != "" {
+					AppendWhere(domain, fmt.Sprint(resp), "DIR", "", "txt", outputFileTXT)
 				}
 			}
 		}
 	}
+
 	mutex.Unlock()
 }
 
@@ -115,7 +115,9 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 
 	if !PresentDirs(target, dirs, mutex) {
 		mutex.Lock()
+
 		dirs[target] = dir
+
 		mutex.Unlock()
 	}
 }
@@ -123,7 +125,9 @@ func AddDirs(target string, value string, dirs map[string]Asset, mutex *sync.Mut
 // PresentDirs checks if a directory is present inside the dirs map.
 func PresentDirs(input string, dirs map[string]Asset, mutex *sync.Mutex) bool {
 	mutex.Lock()
+
 	_, ok := dirs[input]
+
 	mutex.Unlock()
 
 	return ok

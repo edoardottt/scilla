@@ -58,7 +58,6 @@ func ThreatMinerSubdomains(domain string, plain bool) []string {
 	url := "https://api.threatminer.org/v2/domain.php?q=" + domain + "&rt=5"
 
 	resp, err := client.Get(url)
-
 	if err != nil {
 		return []string{}
 	}

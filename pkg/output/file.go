@@ -101,12 +101,12 @@ func CreateOutputFile(path string) string {
 
 // AppendWhere checks which format the output should be (html, json or txt).
 func AppendWhere(what string, status string, key string, record string, format string, outputFile string) {
-	switch {
-	case format == "html":
+	switch format {
+	case "html":
 		{
 			AppendOutputToHTML(what, status, outputFile)
 		}
-	case format == "json":
+	case "json":
 		{
 			AppendOutputToJSON(what, key, record, outputFile)
 		}

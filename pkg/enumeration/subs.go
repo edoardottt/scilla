@@ -33,6 +33,7 @@ import (
 	"net/http"
 	"os"
 	"sync"
+	"sync/atomic"
 
 	dnsUtils "github.com/edoardottt/scilla/internal/dns"
 	httpUtils "github.com/edoardottt/scilla/internal/http"
@@ -47,7 +48,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 	subs map[string]output.Asset, mutex *sync.Mutex, plain bool, ua string, rua bool, alive bool, custom string) {
 	ignoreBool := len(ignore) != 0
 
-	var count int
+	var count int32
 
 	var total = len(urls)
 
@@ -79,7 +80,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 			defer waitgroup.Done()
 			defer func() { <-limiter }()
 
-			count++
+			atomic.AddInt32(&count, 1)
 
 			if !alive {
 				found := false
@@ -98,7 +99,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 					return
 				}
 
-				if ua != "Go http/Client" {
+				if ua != DefaultGoUserAgent {
 					req.Header.Set("User-Agent", ua)
 				}
 
@@ -123,8 +124,10 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 		}(domain)
 
 		if !plain { // update counter
+			current := atomic.LoadInt32(&count)
+
 			fmt.Fprint(os.Stdout, "\r")
-			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
+			fmt.Printf("\r%0.2f%% : %d / %d", mathUtils.Percentage(int(current), total), current, total)
 		}
 	}
 

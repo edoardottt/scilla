@@ -49,8 +49,8 @@ func ThreatcrowdSubdomains(domain string, plain bool) []string {
 	wrapper := struct {
 		Records []string `json:"subdomains"`
 	}{}
-	resp, err := client.Get(url)
 
+	resp, err := client.Get(url)
 	if err != nil {
 		return result
 	}
@@ -58,8 +58,8 @@ func ThreatcrowdSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	dec := json.NewDecoder(resp.Body)
-	err = dec.Decode(&wrapper)
 
+	err = dec.Decode(&wrapper)
 	if err != nil {
 		return result
 	}
