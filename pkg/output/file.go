@@ -52,8 +52,8 @@ func CreateOutputFolder(path string) {
 // CreateOutputFile creates the output file (txt/json/html).
 func CreateOutputFile(path string) string {
 	dir, file := filepath.Split(path)
-	_, err := os.Stat(path)
 
+	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		sepPresent := strings.Contains(path, string(os.PathSeparator))
 		if _, err := os.Stat(dir); os.IsNotExist(err) && sepPresent {

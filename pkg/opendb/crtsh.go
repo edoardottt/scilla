@@ -64,8 +64,8 @@ func CrtshSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-	body, _ := io.ReadAll(resp.Body)
 
+	body, _ := io.ReadAll(resp.Body)
 	if err := json.Unmarshal(body, &results); err != nil {
 		return []string{}
 	}

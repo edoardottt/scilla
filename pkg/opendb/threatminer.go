@@ -65,8 +65,8 @@ func ThreatMinerSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-	body, _ := io.ReadAll(resp.Body)
 
+	body, _ := io.ReadAll(resp.Body)
 	if err := json.Unmarshal(body, &result); err != nil {
 		return []string{}
 	}
