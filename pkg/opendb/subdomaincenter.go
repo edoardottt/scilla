@@ -63,8 +63,8 @@ func SubdomainCenterSubdomains(domain string, plain bool) []string {
 
 	// Decode the response body as list of string
 	var response []string
-	err = json.Unmarshal(body, &response)
 
+	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return result
 	}

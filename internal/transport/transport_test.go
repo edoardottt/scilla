@@ -51,8 +51,8 @@ func TestCheckPortsArray(t *testing.T) {
 		{
 			name:  "invalid value1",
 			input: "1,123456",
-			want:  []int{1},
-			erro:  nil,
+			want:  nil,
+			erro:  fmt.Errorf("%w", transportUtils.ErrInvalidArray),
 		},
 		{
 			name:  "invalid value2",

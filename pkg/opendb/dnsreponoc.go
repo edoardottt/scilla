@@ -58,6 +58,7 @@ func scrape(body io.ReadCloser) []string {
 						row = tablecell.Text()
 					}
 				})
+
 				result = append(result, row)
 			})
 		}
@@ -77,8 +78,8 @@ func DNSRepoNocSubdomains(domain string, plain bool) []string {
 	}
 
 	url := "https://dnsrepo.noc.org/?domain=" + domain
-	resp, err := client.Get(url)
 
+	resp, err := client.Get(url)
 	if err != nil {
 		return []string{}
 	}

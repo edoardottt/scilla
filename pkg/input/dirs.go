@@ -68,6 +68,7 @@ func ReadDictDirs(inputFile string) []string {
 			if dir[len(dir)-1:] == "/" {
 				dir = dir[:len(dir)-1]
 			}
+
 			text = append(text, dir)
 		}
 	}

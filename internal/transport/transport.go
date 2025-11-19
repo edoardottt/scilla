@@ -38,8 +38,15 @@ import (
 )
 
 var (
-	ErrInvalidArray = errors.New("the inputted ports array is not valid")
-	ErrInvalidRange = errors.New("the inputted ports range is not valid")
+	ErrInvalidArray = errors.New("invalid port array format")
+	ErrInvalidRange = errors.New("invalid port range format")
+)
+
+const (
+	maxPort             = 65535
+	minPort             = 1
+	portsArrayDelimiter = byte(',')
+	portsRangeDelimiter = byte('-')
 )
 
 // CheckPortsArray checks the basic rules to
@@ -48,20 +55,17 @@ var (
 // - check if they can be converted to integers.
 // - check if they are in the port array (1 - 65535).
 func CheckPortsArray(input string) ([]int, error) {
-	delimiter := byte(',')
-	sliceOfPorts := strings.Split(input, string(delimiter))
+	sliceOfPorts := strings.Split(input, string(portsArrayDelimiter))
 	sliceOfPorts = sliceUtils.RemoveDuplicateValues(sliceOfPorts)
 	result := []int{}
 
 	for _, elem := range sliceOfPorts {
 		try, err := strconv.Atoi(elem)
-		if err != nil {
+		if err != nil || try < minPort || try > maxPort {
 			return nil, fmt.Errorf("%w", ErrInvalidArray)
 		}
 
-		if try > 0 && try < 65536 {
-			result = append(result, try)
-		}
+		result = append(result, try)
 	}
 
 	return result, nil
@@ -70,13 +74,8 @@ func CheckPortsArray(input string) ([]int, error) {
 // CheckPortsRange checks the basic rules to
 // be valid and then returns the starting port and the ending port.
 func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, error) {
-	// If there's ports range, define it as inputs for the struct
-	delimiter := byte('-')
-	// If there is only one number
-
-	// If starting port isn't specified
 	switch {
-	case portsRange[0] == delimiter:
+	case portsRange[0] == portsRangeDelimiter:
 		{
 			maybeEnd, err := strconv.Atoi(portsRange[1:])
 			if err != nil {
@@ -90,7 +89,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			break
 		}
 
-	case portsRange[len(portsRange)-1] == delimiter:
+	case portsRange[len(portsRange)-1] == portsRangeDelimiter:
 		{
 			// If ending port isn't specified
 			maybeStart, err := strconv.Atoi(portsRange[:len(portsRange)-1])
@@ -105,7 +104,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 			break
 		}
 
-	case !strings.Contains(portsRange, string(delimiter)):
+	case !strings.Contains(portsRange, string(portsRangeDelimiter)):
 		{
 			// If a single port is specified
 			maybePort, err := strconv.Atoi(portsRange)
@@ -124,7 +123,7 @@ func CheckPortsRange(portsRange string, startPort int, endPort int) (int, int, e
 	default:
 		{
 			// If a range is specified
-			sliceOfPorts := strings.Split(portsRange, string(delimiter))
+			sliceOfPorts := strings.Split(portsRange, string(portsRangeDelimiter))
 			if len(sliceOfPorts) != 2 {
 				return 0, 0, fmt.Errorf("%w", ErrInvalidRange)
 			}
@@ -165,8 +164,8 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 		case strings.Contains(*portsPtr, "-"):
 			{
 				portsRange := *portsPtr
-				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
 
+				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -177,7 +176,6 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 		case strings.Contains(*portsPtr, ","):
 			{
 				portsArray, err = CheckPortsArray(*portsPtr)
-
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)
@@ -188,8 +186,8 @@ func PortsInputHelper(portsPtr *string, startPort, endPort int, portsArray []int
 		default:
 			{
 				portsRange := *portsPtr
-				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
 
+				startPort, endPort, err = CheckPortsRange(portsRange, startPort, endPort)
 				if err != nil {
 					fmt.Println(err)
 					os.Exit(1)

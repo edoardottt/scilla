@@ -58,7 +58,6 @@ func ThreatMinerSubdomains(domain string, plain bool) []string {
 	url := "https://api.threatminer.org/v2/domain.php?q=" + domain + "&rt=5"
 
 	resp, err := client.Get(url)
-
 	if err != nil {
 		return []string{}
 	}
@@ -66,8 +65,8 @@ func ThreatMinerSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-	body, _ := io.ReadAll(resp.Body)
 
+	body, _ := io.ReadAll(resp.Body)
 	if err := json.Unmarshal(body, &result); err != nil {
 		return []string{}
 	}

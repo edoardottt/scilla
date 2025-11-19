@@ -52,8 +52,8 @@ func CreateOutputFolder(path string) {
 // CreateOutputFile creates the output file (txt/json/html).
 func CreateOutputFile(path string) string {
 	dir, file := filepath.Split(path)
-	_, err := os.Stat(path)
 
+	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		sepPresent := strings.Contains(path, string(os.PathSeparator))
 		if _, err := os.Stat(dir); os.IsNotExist(err) && sepPresent {
@@ -101,12 +101,12 @@ func CreateOutputFile(path string) string {
 
 // AppendWhere checks which format the output should be (html, json or txt).
 func AppendWhere(what string, status string, key string, record string, format string, outputFile string) {
-	switch {
-	case format == "html":
+	switch format {
+	case "html":
 		{
 			AppendOutputToHTML(what, status, outputFile)
 		}
-	case format == "json":
+	case "json":
 		{
 			AppendOutputToJSON(what, key, record, outputFile)
 		}

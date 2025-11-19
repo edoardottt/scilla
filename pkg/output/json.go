@@ -61,16 +61,16 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 		log.Fatal(err)
 	}
 
-	switch {
-	case key == "PORT":
+	switch key {
+	case "PORT":
 		{
 			data.Port = append(data.Port, output)
 		}
-	case key == "SUB":
+	case "SUB":
 		{
 			data.Subdomain = append(data.Subdomain, output)
 		}
-	case key == "DIR":
+	case "DIR":
 		{
 			data.Dir = append(data.Dir, output)
 		}
@@ -83,6 +83,7 @@ func AppendOutputToJSON(output string, key string, record string, filename strin
 			if _, ok := data.DNS[record]; !ok {
 				data.DNS[record] = make([]string, 0)
 			}
+
 			data.DNS[record] = append(data.DNS[record], output)
 		}
 	}

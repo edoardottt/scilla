@@ -48,8 +48,8 @@ func HackerTargetSubdomains(domain string, plain bool) []string {
 		Timeout: httpUtils.Seconds30,
 	}
 	result := make([]string, 0)
-	raw, err := client.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 
+	raw, err := client.Get("https://api.hackertarget.com/hostsearch/?q=" + domain)
 	if err != nil {
 		return result
 	}
@@ -68,6 +68,7 @@ func HackerTargetSubdomains(domain string, plain bool) []string {
 		if len(parts) != twoParts {
 			continue
 		}
+
 		result = append(result, parts[0])
 	}
 

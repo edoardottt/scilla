@@ -51,17 +51,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 			fmt.Printf("%s\n", ip.String())
 		}
 
-		if outputFileJSON != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "json", outputFileJSON)
-		}
-
-		if outputFileHTML != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "html", outputFileHTML)
-		}
-
-		if outputFileTXT != "" {
-			output.AppendWhere(ip.String(), "", "DNS", "A", "txt", outputFileTXT)
-		}
+		appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, ip.String(), "A")
 	}
 	// -- CNAME RECORD --
 	cname, _ := net.LookupCNAME(domain)
@@ -73,17 +63,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 		fmt.Printf("%s\n", cname)
 	}
 
-	if outputFileJSON != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "json", outputFileJSON)
-	}
-
-	if outputFileHTML != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "html", outputFileHTML)
-	}
-
-	if outputFileTXT != "" {
-		output.AppendWhere(cname, "", "DNS", "CNAME", "txt", outputFileTXT)
-	}
+	appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, cname, "CNAME")
 
 	// -- NS RECORDS --
 	nameserver, _ := net.LookupNS(domain)
@@ -96,17 +76,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 			fmt.Printf("%s\n", nsRecord.Host)
 		}
 
-		if outputFileJSON != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "json", outputFileJSON)
-		}
-
-		if outputFileHTML != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "html", outputFileHTML)
-		}
-
-		if outputFileTXT != "" {
-			output.AppendWhere(nsRecord.Host, "", "DNS", "NS", "txt", outputFileTXT)
-		}
+		appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, nsRecord.Host, "NS")
 	}
 
 	// -- MX RECORDS --
@@ -120,17 +90,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 			fmt.Printf("%s %v\n", mxRecord.Host, mxRecord.Pref)
 		}
 
-		if outputFileJSON != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "json", outputFileJSON)
-		}
-
-		if outputFileHTML != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "html", outputFileHTML)
-		}
-
-		if outputFileTXT != "" {
-			output.AppendWhere(mxRecord.Host, "", "DNS", "MX", "txt", outputFileTXT)
-		}
+		appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, mxRecord.Host, "MX")
 	}
 
 	// -- SRV SERVICE --
@@ -150,17 +110,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 			fmt.Printf("%v:%v:%d:%d\n", srv.Target, srv.Port, srv.Priority, srv.Weight)
 		}
 
-		if outputFileJSON != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "json", outputFileJSON)
-		}
-
-		if outputFileHTML != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "html", outputFileHTML)
-		}
-
-		if outputFileTXT != "" {
-			output.AppendWhere(srv.Target, "", "DNS", "SRV", "txt", outputFileTXT)
-		}
+		appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, srv.Target, "SRV")
 	}
 
 	// -- TXT RECORDS --
@@ -173,17 +123,7 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 			fmt.Printf("%s\n", txt)
 		}
 
-		if outputFileJSON != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "json", outputFileJSON)
-		}
-
-		if outputFileHTML != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "html", outputFileHTML)
-		}
-
-		if outputFileTXT != "" {
-			output.AppendWhere(txt, "", "DNS", "TXT", "txt", outputFileTXT)
-		}
+		appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, txt, "TXT")
 	}
 
 	if outputFileHTML != "" {
@@ -191,4 +131,18 @@ func LookupDNS(domain string, outputFileJSON, outputFileHTML, outputFileTXT stri
 	}
 
 	fmt.Println()
+}
+
+func appendDNSOutputHelper(outputFileJSON, outputFileHTML, outputFileTXT, data, rtype string) {
+	if outputFileJSON != "" {
+		output.AppendWhere(data, "", "DNS", rtype, "json", outputFileJSON)
+	}
+
+	if outputFileHTML != "" {
+		output.AppendWhere(data, "", "DNS", rtype, "html", outputFileHTML)
+	}
+
+	if outputFileTXT != "" {
+		output.AppendWhere(data, "", "DNS", rtype, "txt", outputFileTXT)
+	}
 }

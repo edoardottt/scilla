@@ -69,6 +69,7 @@ func CleanSubdomainsOk(target string, input []string) []string {
 				splits := strings.Split(elem, "\n")
 				elem = splits[1]
 			}
+
 			result = append(result, elem)
 		}
 	}

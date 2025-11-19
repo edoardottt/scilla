@@ -55,8 +55,8 @@ func CrtshSubdomains(domain string, plain bool) []string {
 	var results []CrtShResult
 
 	url := "https://crt.sh/?q=%25." + domain + "&output=json"
-	resp, err := client.Get(url)
 
+	resp, err := client.Get(url)
 	if err != nil {
 		return []string{}
 	}
@@ -64,8 +64,8 @@ func CrtshSubdomains(domain string, plain bool) []string {
 	defer resp.Body.Close()
 
 	output := make([]string, 0)
-	body, _ := io.ReadAll(resp.Body)
 
+	body, _ := io.ReadAll(resp.Body)
 	if err := json.Unmarshal(body, &results); err != nil {
 		return []string{}
 	}
