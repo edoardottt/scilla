@@ -75,7 +75,7 @@ func CreateSubdomains(filename string, scheme string, url string) []string {
 		subs = strings.Fields(defaultSubdomainsWordlist)
 	}
 
-	result := []string{}
+	result := make([]string, 0, len(subs))
 
 	for _, sub := range subs {
 		path := urlUtils.BuildURL(scheme, sub, url)

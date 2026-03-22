@@ -57,6 +57,7 @@ func NewCustomResolver(customDNS string) *net.Resolver {
 			d := net.Dialer{
 				Timeout: time.Millisecond * time.Duration(DNSTimeout),
 			}
+
 			return d.DialContext(ctx, network, customDNS+":53")
 		},
 	}

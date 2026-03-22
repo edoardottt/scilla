@@ -46,7 +46,8 @@ func SubdomainCenterSubdomains(domain string, plain bool) []string {
 		Timeout: httpUtils.Seconds30,
 	}
 
-	result := make([]string, 0)
+	var result []string //nolint:prealloc
+
 	url := "http://api.subdomain.center/?domain=" + domain
 
 	resp, err := client.Get(url)
