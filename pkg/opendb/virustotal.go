@@ -37,7 +37,7 @@ import (
 
 // VirusTotalSubdomains retrieves from the url below some known subdomains.
 func VirusTotalSubdomains(target, apikey string, plain bool) []string {
-	var result []string
+	var result []string //nolint:prealloc
 
 	if !plain {
 		fmt.Println("Pulling data from VirusTotal")

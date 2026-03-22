@@ -44,7 +44,9 @@ func ThreatcrowdSubdomains(domain string, plain bool) []string {
 	client := http.Client{
 		Timeout: httpUtils.Seconds30,
 	}
-	result := make([]string, 0)
+
+	var result []string //nolint:prealloc
+
 	url := "https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=" + domain
 	wrapper := struct {
 		Records []string `json:"subdomains"`

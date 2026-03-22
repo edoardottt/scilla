@@ -91,7 +91,7 @@ func CreateUrls(filename string, scheme string, url string) []string {
 		dirs = strings.Fields(defaultDirsWordlist)
 	}
 
-	result := []string{}
+	result := make([]string, 0, 2*len(dirs))
 
 	for _, dir := range dirs {
 		path, path2 := urlUtils.AppendDir(scheme, url, dir)
