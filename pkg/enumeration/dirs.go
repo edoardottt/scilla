@@ -30,7 +30,6 @@ package enumeration
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"sync"
 	"sync/atomic"
 
@@ -72,7 +71,8 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 		waitgroup.Add(1)
 
 		if !plain {
-			fmt.Fprint(os.Stdout, "\r")
+			// \r moves to start, \033[K clears the existing line
+			fmt.Print("\r\033[K")
 		}
 
 		output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
@@ -112,7 +112,8 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 		if !plain { // update counter
 			current := atomic.LoadInt32(&count)
 
-			fmt.Fprint(os.Stdout, "\r")
+			// \r moves to start, \033[K clears the existing line
+			fmt.Print("\r\033[K")
 			fmt.Printf("\r%0.2f%% : %d / %d", mathUtils.Percentage(int(current), total), current, total)
 		}
 	}
@@ -121,6 +122,7 @@ func AsyncDir(urls []string, ignore []string, outputFileJSON, outputFileHTML, ou
 	output.PrintDirs(dirs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r")
+		// \r moves to start, \033[K clears the existing line
+		fmt.Print("\r\033[K")
 	}
 }

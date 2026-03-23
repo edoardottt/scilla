@@ -29,7 +29,6 @@ package output
 
 import (
 	"fmt"
-	"os"
 	"sync"
 
 	urlUtils "github.com/edoardottt/scilla/internal/url"
@@ -75,7 +74,8 @@ func PrintSubs(subs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			if plain {
 				fmt.Printf("%s\n", subDomainFound)
 			} else {
-				fmt.Fprint(os.Stdout, "\r")
+				// \r moves to start, \033[K clears the existing line
+				fmt.Print("\r\033[K")
 				fmt.Printf("%s ", subDomainFound)
 
 				if len(resp) > 0 && resp[0] == '2' {
