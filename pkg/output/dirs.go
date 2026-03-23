@@ -29,7 +29,6 @@ package output
 
 import (
 	"fmt"
-	"os"
 	"sync"
 
 	"github.com/fatih/color"
@@ -52,7 +51,8 @@ func PrintDirs(dirs map[string]Asset, ignore []string, outputFileJSON, outputFil
 			var resp = asset.Value
 
 			if !plain {
-				fmt.Fprint(os.Stdout, "\r")
+				// \r moves to start, \033[K clears the existing line
+				fmt.Print("\r\033[K")
 
 				if string(resp[0]) == "2" || string(resp[0]) == "3" {
 					fmt.Printf("%s ", domain)

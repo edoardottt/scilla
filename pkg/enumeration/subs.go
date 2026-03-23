@@ -31,7 +31,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 	"sync/atomic"
 
@@ -71,7 +70,8 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 		waitgroup.Add(1)
 
 		if !plain {
-			fmt.Fprint(os.Stdout, "\r")
+			// \r moves to start, \033[K clears the existing line
+			fmt.Print("\r\033[K")
 		}
 
 		output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
@@ -126,7 +126,8 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 		if !plain { // update counter
 			current := atomic.LoadInt32(&count)
 
-			fmt.Fprint(os.Stdout, "\r")
+			// \r moves to start, \033[K clears the existing line
+			fmt.Print("\r\033[K")
 			fmt.Printf("\r%0.2f%% : %d / %d", mathUtils.Percentage(int(current), total), current, total)
 		}
 	}
@@ -135,6 +136,7 @@ func AsyncGet(protocol string, urls []string, ignore []string, outputFileJSON, o
 	output.PrintSubs(subs, ignore, outputFileJSON, outputFileHTML, outputFileTXT, mutex, plain)
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r")
+		// \r moves to start, \033[K clears the existing line
+		fmt.Print("\r\033[K")
 	}
 }

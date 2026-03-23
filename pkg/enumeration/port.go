@@ -30,7 +30,6 @@ package enumeration
 import (
 	"fmt"
 	"net"
-	"os"
 	"sync"
 	"time"
 
@@ -147,7 +146,8 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 
 			if resp {
 				if !plain {
-					fmt.Fprint(os.Stdout, "\r")
+					// \r moves to start, \033[K clears the existing line
+					fmt.Print("\r\033[K")
 					fmt.Printf("%s ", host)
 					color.Green("%s\n", portStr)
 				} else {
@@ -171,7 +171,8 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 		}(portStr, host)
 
 		if !plain { // update counter
-			fmt.Fprint(os.Stdout, "\r")
+			// \r moves to start, \033[K clears the existing line
+			fmt.Print("\r\033[K")
 			fmt.Printf("%0.2f%% : %d / %d", mathUtils.Percentage(count, total), count, total)
 		}
 	}
@@ -179,7 +180,8 @@ func AsyncPort(portsArray []int, portsArrayBool bool, startingPort int, endingPo
 	waitgroup.Wait()
 
 	if !plain {
-		fmt.Fprint(os.Stdout, "\r")
+		// \r moves to start, \033[K clears the existing line
+		fmt.Print("\r\033[K")
 	}
 
 	if outputFileHTML != "" {
