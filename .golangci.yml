@@ -11,12 +11,11 @@ linters:
     - errcheck
     - exhaustive
     - gochecknoinits
-    - goconst
     - gocritic
     - godot
     - godox
     - goheader
-    - gomodguard
+    - gomodguard_v2
     - goprintffuncname
     - govet
     - ineffassign

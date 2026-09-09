@@ -6,7 +6,6 @@ require (
 	github.com/PuerkitoBio/goquery v1.13.0
 	github.com/bobesa/go-domain-util v0.0.0-20250410211237-17ab3b2f4a95
 	github.com/fatih/color v1.19.0
-	github.com/gocolly/colly v1.2.0
 	github.com/stretchr/testify v1.12.1
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -16,7 +15,8 @@ require (
 	github.com/antchfx/htmlquery v1.3.6 // indirect
 	github.com/antchfx/xmlquery v1.5.1 // indirect
 	github.com/antchfx/xpath v1.3.8 // indirect
-	github.com/gobwas/glob v1.0.0 // indirect
+	github.com/gobwas/glob v0.2.3 // indirect
+	github.com/gocolly/colly/v2 v2.0.1
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect

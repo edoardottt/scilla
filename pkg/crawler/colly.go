@@ -39,8 +39,8 @@ import (
 	ignoreUtils "github.com/edoardottt/scilla/internal/ignore"
 	urlUtils "github.com/edoardottt/scilla/internal/url"
 	"github.com/edoardottt/scilla/pkg/output"
-	"github.com/gocolly/colly"
-	"github.com/gocolly/colly/extensions"
+	"github.com/gocolly/colly/v2"
+	"github.com/gocolly/colly/v2/extensions"
 )
 
 const (
