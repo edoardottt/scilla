@@ -12,3 +12,21 @@ updates:
       include: "scope"
     labels:
       - "Maintenance"
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "devel"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "Maintenance"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

@@ -271,14 +271,6 @@ golangci-lint run
 
 If there aren't errors, go ahead :)
 
-**To do:**
-
-- [ ] Add more tests
-  
-- [ ] Tor support
-  
-- [ ] Proxy support
-
 In the news 📰
 -------
 
